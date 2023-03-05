@@ -189,10 +189,12 @@ input[name="quantity"] {
 .cancelButton {
     width: 80%;
     height: 40px;
+    text-decoration: none;
     color: white;
     background-color: rgb(255, 86, 86);
     border: 1px solid white;
     border-radius: 5px;
+    padding: 10px 20px;
 }
 
 
@@ -247,6 +249,25 @@ input[name="selecting"] {
 .flex-form {
     display: flex;
     border-bottom: 1px solid rgb(196, 196, 196);
+}
+.flex-form:last-child {
+    display: flex;
+
+    border-bottom:none;
+}
+.flex-form:last-child .check-out{
+    flex-basis: 100%;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
+.check-out{
+    margin: 30px 20px 0px 20px;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: rgb(255, 86, 86);
+    padding: 10px 15px 14px 58px;
 }
 
     .flex-form p {
@@ -351,20 +372,7 @@ input[name="selecting"] {
     background: transparent;
 }
 
-.check-out {
-    margin: 30px 20px 54px 20px;
-    border: 1px solid black;
-    border-radius: 25px;
-    background-color: rgb(255, 86, 86);
-    padding: 10px 15px 14px 58px;
-}
 
-    .check-out a {
-        text-decoration: none;
-        color: white;
-        font-size: 14px;
-        text-align: center;
-    }
 
 .address-form input {
     margin-top: 15px;

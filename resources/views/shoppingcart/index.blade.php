@@ -201,10 +201,11 @@
                                 </p>
                             </div>
                         </div>
-
+                        <div class="flex-form">
                         <a class="check-out" href="/checkout">
                             Check Out
                         </a>
+        </div>
 
 
 

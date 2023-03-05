@@ -293,6 +293,7 @@ a {
 .genderLabelInput .genderLabel {
     color: #636363;
     font-size: 14px;
+    flex-basis: 13%;
     margin-right: 40px;
 }
 

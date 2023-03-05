@@ -82,7 +82,7 @@
         padding-bottom: 7px;
         border: 0.5px solid rgb(197, 197, 197);
         width: 100%;
-        height: 25px;
+        height: 40px;
     }
 
     .newAddressForm .streetAddressSetting .streetAddressLabel {
@@ -99,7 +99,7 @@
         padding-bottom: 7px;
         border: 0.5px solid rgb(197, 197, 197);
         width: 100%;
-        height: 25px;
+        height: 40px;
     }
 
     .newAddressForm .userPhoneSetting .addressUserPhoneInputLabel {
@@ -116,7 +116,7 @@
         padding-bottom: 7px;
         border: 0.5px solid rgb(197, 197, 197);
         width: 100%;
-        height: 25px;
+        height: 40px;
     }
 
     .newAddressForm .townSetting .townLabel {
@@ -140,7 +140,7 @@
         padding-bottom: 7px;
         border: 0.5px solid rgb(197, 197, 197);
         width: 100%;
-        height: 25px;
+        height: 40px;
     }
 
     .newAddressForm .townSetting .townInput {
@@ -361,7 +361,7 @@ img.paypalLogo {
     font-weight: lighter;
 }
 
-.subtotal .thItem, .subtotal .tdItem, .tax .thItem, .tax tdItem {
+.subtotal .thItem, .subtotal .tdItem, .tax .thItem, .tax .tdItem {
     font-weight: bolder;
 }
 
@@ -392,7 +392,7 @@ img.paypalLogo {
         padding-bottom: 7px;
         border: 0.5px solid rgb(197, 197, 197);
         width: 100%;
-        height: 25px;
+        height: 40px;
     }
 
 .btnBox {
@@ -447,4 +447,7 @@ img.paypalLogo {
 
 .total th, .total th {
     padding: 20px 0px;
+}
+.subtotal .tdItem{
+    text-align: right;
 }

@@ -166,11 +166,16 @@ form header .linkBar .pagelink {
                 margin-right: 10px;
             }
 
-        .categories .ul .li {
+        .categories .ul .li a{
             font-family: 'Nunito Sans', sans-serif;
+
             padding-bottom: 10px;
+            display: flex;
             font-size: 18px;
             padding: 10px 20px;
+            align-items: center;
+            text-decoration: none;
+            color: black;
         }
 
             .categories .ul .li:hover {
@@ -201,8 +206,7 @@ form header .linkBar .pagelink {
                 }
 
                 .categories .ul .ul li a {
-                    text-decoration: none;
-                    color: black;
+                   
                     /* color: rgb(103, 129, 123); */
                 }
 /* Design Item Block */

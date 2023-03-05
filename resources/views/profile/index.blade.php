@@ -66,11 +66,11 @@
 
                     <div class="genderLabelInput">
                         <label for="gender" class="genderLabel">Gender</label>
-                        {{-- <asp:RadioButtonList ID="GenderRadioButtonList" runat="server" CssClass="auto-style1"
+                        {{-- <div ID="GenderRadioButtonList" runat="server" CssClass="auto-style1"
                             RepeatDirection="Horizontal" Width="361px">
                             <asp:ListItem style="font-size: 13px" Selected="True">Male</asp:ListItem>
                             <asp:ListItem style="font-size: 13px">Female</asp:ListItem>
-                        </asp:RadioButtonList> --}}
+                        </div> --}}
 
                         <input type="radio" style="font-size: 13px" name="gender" value="Male"
                             {{ auth()->user()->gender == 'Male' ? 'checked' : '' }}>Male

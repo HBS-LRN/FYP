@@ -111,12 +111,14 @@ header nav .custDetail img {
     height: 50px;
     border-radius: 100%;
 }
-
-header .navigationBar .nav .span {
+header .navigationBar .nav .div{
+    flex-basis: 25%;
+    
+}
+header .navigationBar .nav .span a{
     color: gray;
     text-decoration: none;
-    flex-basis: 25%;
-    justify-content: center;
+    
     
     
     font-weight: bolder;
@@ -169,7 +171,7 @@ header .navigationBar .nav .span:nth-child(9) .underlineEffect{
 header .navigationBar .nav .span:nth-child(10) .underlineEffect{
     margin: 0% 25%;
 } */
-    header .navigationBar .nav .span:hover .underlineEffect {
+    header .navigationBar .nav .span a:hover .underlineEffect {
         background-color: rgb(197, 196, 196);
         padding: 0px 0px 2px 0px;
     }

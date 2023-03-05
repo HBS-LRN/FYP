@@ -18,6 +18,11 @@
     -webkit-appearance: none;
 
     }
+    .nav-links li:nth-last-child(2) .iconLink a{
+    padding-left: 10px;
+  
+
+}
 </style>
 </head>
 
@@ -68,7 +73,7 @@
 
         <li>
             <div class="iconLink">
-                <a href="/memberPoint"><i class="fa fa-user-plus"></i>Member Point</a>
+                <a href="/memberPoint"><i class="fa fa-user-plus"></i><span class="memberPoint">Member Point</span></a>
             </div>
 
         </li>

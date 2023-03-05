@@ -38,9 +38,13 @@
 
 
                             </div>
-                            @error('address_username')
+                            <div class="errBox">
+                                <label for=""></label>
+                                @error('address_username')
                                 <p class="error" style="color:red">*{{ $message }}</p>
                             @enderror
+                            </div>
+                            
 
                             <br>
                             <div class="phoneNumberSetting">
@@ -50,9 +54,13 @@
 
 
                             </div>
-                            @error('address_userphone')
+                            <div class="errBox">
+                                <label for=""></label>
+                                @error('address_userphone')
                                 <p class="error" style="color:red">*{{ $message }}</p>
                             @enderror
+                            </div>
+                           
                             <br>
 
                             <div class="streetAddressSetting">
@@ -63,9 +71,13 @@
 
 
                             </div>
-                            @error('street')
+                            <div class="errBox">
+                                <label for=""></label>
+                                @error('street')
                                 <p class="error" style="color:red">*{{ $message }}</p>
                             @enderror
+                            </div>
+                           
                             <br>
 
                             <div class="stateSetting">
@@ -79,10 +91,15 @@
                                     @endforeach
                                 </select>
                             </div>
+    <div class="errBox">
+        <label for="">
 
-                            @error('area')
+        </label>
+        @error('area')
                                 <p class="error" style="color:red">*{{ $message }}</p>
                             @enderror
+    </div>
+                            
 
 
                             <br>
@@ -92,10 +109,13 @@
                                     value="{{ old('postcode') }}" />
 
                             </div>
-
-                            @error('postcode')
+                            <div class="errBox">
+                                <label for=""></label>
+                                @error('postcode')
                                 <p class="error" style="color:red">*{{ $message }}</p>
                             @enderror
+                            </div>
+                           
 
 
 
