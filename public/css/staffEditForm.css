@@ -1,0 +1,64 @@
+﻿.form {
+    margin: 100px auto;
+    width: 60%;
+    padding: 30px 80px 30px 30px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 20px grey;
+}
+
+     titleEditStaff {
+        color: blue;
+        font-size: 60px;
+        margin-left: 30px;
+        margin-bottom: 15px;
+    }
+
+    .form .flex {
+        display: flex;
+        margin-bottom: 20px;
+
+    }
+
+        .form .flex .label {
+            flex-basis: 30%;
+        }
+
+        .form .flex .input {
+            flex-basis: 70%;
+            padding: 10px;
+            outline: none;
+            border: 1px solid grey;
+        }
+
+            .form .flex .input:focus {
+                border: 1px solid blue;
+            }
+
+    .form .editBtnSubmit {
+        display: flex;
+        justify-content: right;
+        justify-items: center;
+        align-items: center;
+    }
+
+        .form .editBtnSubmit .editBtnStaff {
+            font-size: 15px;
+            padding: 5px 40px;
+            border-radius: 20px;
+        }
+.editBtnStaff {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+}
+
+.box .titleEditStaff {
+    font-size: 60px;
+    text-align: center;
+    margin-bottom: 15px;
+}

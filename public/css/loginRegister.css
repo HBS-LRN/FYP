@@ -1,0 +1,140 @@
+*{
+    margin:0;
+    padding:0;
+    
+  
+}
+
+.loginRegister-container{
+    height:100%;
+    width:100%;
+    background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/login-reg.jpg);
+    background-position:center;
+    background-size:cover;
+    position:absolute;
+}
+
+.form-box{
+    font-family: 'Source Sans Pro';
+    width:420px;
+    height:480px;
+    position:relative;
+    margin:8% auto;
+    background-color: rgb(255, 255, 255);
+    padding:8px;
+    overflow: hidden;
+    border-radius:20px;
+    
+}
+
+.button-container{
+    width:220px;
+    margin:35px auto;
+    position:relative;
+    box-shadow:0 0 20px 9px #fd61241f;
+    border-radius:30px;
+    
+}
+.toggle-btn{
+    padding:10px 30px;
+    cursor:pointer;
+    background:transparent;
+    border:0;
+    outline:none;
+    position:relative;
+
+}
+#btn{
+    top:0;
+    left:0;
+    position:absolute;
+    width:110px;
+    height:100%;
+    background:linear-gradient(to right,#3881b3,#5549c0);
+    border-radius:30px;
+    transition:.5s;
+}
+
+.input-box{
+    top:160px;
+    position:absolute;
+    width:280px;
+    transition:.5s;
+}
+.register-input-box{
+    top:130px;
+    position:absolute;
+    width:280px;
+    transition:.5s;
+}
+.input-field{
+    width:100%;
+    padding:10px 0;
+    margin:5px 0;
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:1px solid #999;
+    outline:none;
+    background:transparent;
+
+}
+.submit-btnRegister{
+    margin:20px 0px 0px 45px;
+    width:85%;
+    padding:10px 30px;
+    cursor:pointer;
+    display:block;
+    background:linear-gradient(to right,#3881b3,#5549c0);
+    border:0;
+    outline:none;
+    border-radius:30px;
+}
+.submit-btnLogin{
+    margin:50px 0px 60px 40px;
+    width:85%;
+    padding:10px 30px;
+    cursor:pointer;
+    display:block;
+    background:linear-gradient(to right,#3881b3,#5549c0);
+    border:0;
+    outline:none;
+    border-radius:30px;
+}
+.checkbox{
+    margin:30px 10px 30px 0;
+
+}
+
+span a{
+
+    text-decoration: none;
+    color:#777;
+    font-size:12px;
+   
+}
+
+span {
+    color:#777;
+    font-size:12px;
+   
+}
+
+
+
+#login{
+    left:50px;
+}
+#register{
+    left:450px;
+}
+
+
+
+
+
+
+
+
+
+

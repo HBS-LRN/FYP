@@ -1,0 +1,80 @@
+*{
+    margin: 0%;
+    padding: 0%;
+    color: rgb(241, 239, 239);
+    text-decoration: none;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bold;
+
+}
+.pageBody{
+    
+    /* background-image: linear-gradient(to bottom right, white,white,rgb(107, 106, 106),gray); */
+    background-image: linear-gradient(to bottom right, rgb(122, 122, 122), rgb(70, 70, 70),rgb(26, 24, 24),black,black,black);
+    min-width: 100vh;
+    min-height: 100vh;
+}
+.pageBody .topheader{
+    display: flex;
+    align-items: center;
+}
+.pageBody .topheader .div{
+    flex-basis: 20%;
+}
+
+.pageBody .topheader .logo {
+    padding: 15px;
+    padding-left: 120px;
+    flex-basis: 10%;
+}
+.pageBody .topheader .logo img{
+    width: 100px;
+}
+.pageBody .topheader .optionNav{
+    display: flex;
+    flex-basis: 60%;
+}
+.pageBody .topheader .optionNav a{
+    flex-basis: 15%;
+}
+.pageBody .topheader .optionNav a:nth-last-child(1){
+    flex-basis: 20%;
+}
+.pageBody .topheader .optionNav a .underlineEffect{
+    content:" ";
+    transition: padding 0.8s;
+    margin-right:45%;
+}
+.pageBody .topheader .optionNav a:nth-last-child(2) .underlineEffect{
+    margin-right:40%;
+}
+.pageBody .topheader .optionNav a:nth-last-child(1) .underlineEffect{
+    margin-right:20%;
+}
+.pageBody .topheader .optionNav a:hover .underlineEffect{
+    background-color: rgb(253, 253, 253);
+    padding: 0px 0px 2px 0px;
+}
+.pageBody .topheader .loginSignUp{
+    display: inline-block;
+    
+}
+.pageBody .topheader .loginSignUp .span{
+    float: left;
+    color: black;
+    padding: 10px;
+    margin-right: 20px;
+}
+.pageBody .topheader .loginSignUp .infor{
+    background-color: rgb(248, 248, 248);
+    border-radius: 10px;
+}
+.pageBody .topheader .loginSignUp .infor .fa-bell{
+    color: black;
+}
+.pageBody .topheader .loginSignUp .signUp{
+    background-color: rgb(39, 219, 84);
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 20px rgb(39, 219, 84);
+}

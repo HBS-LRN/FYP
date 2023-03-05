@@ -1,0 +1,869 @@
+﻿.staff-login-container {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.staff-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+}
+
+    .logo img {
+        height: 400px;
+        margin-top: 100px;
+        width: 350px;
+    }
+
+.text .txtstaffEmail {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 30px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.text .txtstaffPassword {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.staff-form {
+    margin: 6px 40px 0px 50px;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+.submit-btnLogin {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 98%;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+.error {
+    color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.staff-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.text {
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 10px;
+}
+
+.password {
+    margin-top: 5px
+}
+
+
+.editAddressContent {
+    flex-basis: 80%;
+    border: 1px solid white;
+    box-shadow: 5px 10px 18px #888888;
+    margin-right: 50px;
+    padding-right: 50px;
+    width: 70%;
+    padding-bottom: 130px;
+    margin-left: 40px;
+    background-color: white;
+}
+
+.editAddressTitle {
+    font-weight: 500;
+    margin-left: 20px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.profileTitle {
+    font-weight: 400;
+    color: black;
+}
+
+
+.addAddress {
+    width: 22%;
+    height: 40px;
+    color: white;
+    background-color: rgb(255, 86, 86);
+    border: 1px solid white;
+    border-radius: 5px;
+    float: right;
+    margin-top: -62px;
+}
+
+.hr1 {
+    width: 100%;
+    height: 0;
+    background: #f7f7f7;
+}
+
+.userInfo {
+    font-size: 14px;
+}
+
+.userAddress {
+    margin-left: 25px;
+}
+
+.name {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.editAddressContent {
+    margin-left: 20px;
+}
+
+    .editAddressContent .fullNameLabel {
+        color: #636363;
+        font-size: 14px;
+    }
+
+    .editAddressContent .fullNameInput {
+        border-radius: unset;
+        margin-left: 82px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .phoneNumberLabel {
+        color: #636363;
+        font-size: 14px;
+    }
+
+    .editAddressContent .phoneNumberInput {
+        border-radius: unset;
+        margin-left: 47px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .streetAddressLabel {
+        color: #636363;
+        font-size: 14px;
+    }
+
+    .editAddressContent .streetAddressInput {
+        border-radius: unset;
+        margin-left: 50px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .stateLabel {
+        color: #636363;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .editAddressContent .stateInput {
+        border-radius: unset;
+        margin-left: 105px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .townLabel {
+        color: #636363;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .editAddressContent .townInput {
+        border-radius: unset;
+        margin-left: 105px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .postalCodeLabel {
+        color: #636363;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .editAddressContent .postalCodeInput {
+        border-radius: unset;
+        margin-left: 75px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 40%;
+    }
+
+    .editAddressContent .stateInput {
+        border-radius: unset;
+        margin-left: 104px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 45%;
+        text-align: center;
+    }
+
+.submitEditAddress {
+    margin-top: 35px;
+    border: 1px solid rgb(170, 183, 197);
+    border-radius: 5px;
+    background-color: #f17163;
+    width: 10%;
+    height: 30px;
+    padding-top: 3px;
+    float: right;
+    color: white;
+}
+
+
+.staff-login-container {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.staff-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+}
+
+    .logo img {
+        height: 400px;
+        margin-top: 100px;
+        width: 350px;
+    }
+
+.text .txtstaffEmail {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 30px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.text .txtstaffPassword {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.staff-form {
+    margin: 6px 40px 0px 50px;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+.submit-btnLogin {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 98%;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+.error {
+    color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.staff-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.text {
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 10px;
+}
+
+.password {
+    margin-top: 5px
+}
+
+
+/*customer register*/
+
+.customer-login-container {
+    height: fit-content;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.customer-login {
+    margin: 80px auto;
+    background-color: white;
+    width: 60%;
+    height: 85%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+    align-items: center;
+    padding-bottom: 84px;
+    display: flex;
+}
+
+    .logo img {
+        height: 400px;
+        width: 400px;
+    }
+
+.txtCustTelephone {
+    height: 100px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustName {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustPassword {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustEmail {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustConfirmPassword {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.customer-form {
+    margin: 6px 40px 0px 50px;
+    float: left;
+}
+
+.customer-form {
+    margin-right: 100px;
+    padding-bottom: 3%;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+
+
+
+.submit-btnRegister {
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+.error {
+    color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.checkbox {
+    margin-top: 15px;
+    display: flex;
+}
+
+    .checkbox .CheckBox {
+    }
+
+.popUpTeamNCondition .model1 {
+    width: 810px;
+    height: 650px;
+    background-color: white;
+    padding: 0px 20px 0px 20px;
+    margin-top: -350px;
+    position: fixed;
+}
+
+    .popUpTeamNCondition .model1 h1 {
+        margin: 20px 0px 40px 10px;
+        text-decoration: underline;
+        color: rgb(0, 0, 0);
+        font-size: 25px;
+        font-style: italic;
+        text-shadow: 0px 0px 5px white;
+    }
+
+    .popUpTeamNCondition .model1 pre {
+        margin: 20px 0px 40px -90px;
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+        font-style: normal;
+        text-shadow: 0px 0px 5px white;
+    }
+
+    .popUpTeamNCondition .model1 b {
+        margin: 20px 0px 40px 0px;
+        text-decoration: underline;
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-style: normal;
+        text-shadow: 0px 0px 5px white;
+    }
+
+.popUpTeamNCondition {
+    width: 100%;
+    height: 150vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+/*customer login
+*/
+
+.customer-login-container {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.customer-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+}
+
+.text .txtCustEmail {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 30px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.text .txtCustPassword {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.customer-form {
+    margin: 6px 40px 0px 50px;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+.submit-btnLogin {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 98%;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+.error {
+    color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.customer-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.text {
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 10px;
+}
+
+.password {
+    margin-top: 5px
+}

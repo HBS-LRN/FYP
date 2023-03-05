@@ -1,0 +1,678 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap%27');
+          
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap%27');
+/* selected item page design*/
+section .top{
+    display: flex;
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+section .top .pictures{
+    flex-basis: 40%;
+    margin-left: 160px;
+    box-shadow: 0px 0px 10px rgba(128, 128, 128, 0.336);
+}
+section .top .itemDetail{
+    flex-basis: 60%;
+    height: 800px;
+    overflow-y: auto;
+    -webkit-appearance: none;
+    box-shadow: 0px 0px 10px rgba(128, 128, 128, 0.219);
+    float: left;
+    margin-left: 40px;
+    margin-right: 160px;
+    padding:0px 50px;
+}
+/* top picture design */
+section .pictures #imgs{
+   position: relative; 
+   height: 650px;
+
+}
+section .pictures #imgs img{
+    width: 450px;
+    height: 650px;
+    display: none;
+    position: absolute;
+}
+
+section .pictures #imgs:hover i{
+    display: inherit;
+}
+section .pictures #imgs i:hover{
+    cursor: pointer;
+}
+section .pictures #imgs i{
+    display: none;
+    font-size: 70px;
+    color: #8a8383;
+    position: absolute;
+    z-index: 3;
+}section .pictures #imgs i:nth-child(1){
+    left: 0.5%;
+    top: 40%;
+}
+section .pictures #imgs .fa-angle-right{
+    right: 1%;
+    top: 40%;
+}
+/* Fading animation */
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @-webkit-keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+  
+  @keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+section .pictures #imgSelection{
+    display: flex;
+    width: 450px;
+    overflow-x:hidden;
+
+}
+section .pictures #imgSelection:hover i{
+    display: inherit;
+}section .pictures #imgSelection i{
+    cursor: pointer;
+}
+section .pictures #imgSelection i{
+    font-size: 25px;
+    position: absolute;
+    left: 0%;
+    display: none;
+    z-index: 3;
+}
+section .pictures #imgSelection i:nth-child(1){
+    top: 135%;
+    left: 10.5%;
+}section .pictures #imgSelection .fa-angle-right{
+    top: 135%;
+    left: 38.9%;
+}
+section .pictures #imgSelection img{
+width: 150px;
+height: 150px;
+
+}
+section .pictures #imgSelection img:hover{
+    filter: blur(5px);
+}
+
+/* top item decription design */
+.top .itemDetail::-webkit-scrollbar{
+    -webkit-appearance: none;
+}
+
+.top .itemDetail .prices{
+    font-size: 30px;
+    color: #f33f3f;
+}
+.top .itemDetail .detail li{
+    margin-bottom: 30px;
+    color: gray;
+}
+.top .itemDetail .detail p i{
+    color: rgb(6, 114, 114);
+    margin-right: 10px;
+}
+/* quantity bar design */
+
+.top .itemDetail .detail .qty input[type="number"]{
+    width: 25px;
+    height: 55px;
+    text-align: center;
+    border: none;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    outline: none;
+    
+}
+.top .itemDetail .detail .qty i:hover{
+    color: black;
+    cursor: pointer;
+}
+.top .itemDetail .detail .qty i{
+    border-radius: 40px;
+    text-align: center;
+    position: relative;
+
+    width: 35px;
+    padding: 18px 0px;
+    border: 1px solid gray;
+    color: #8a8383;
+}
+ .top .itemDetail .detail .qty .fa-window-minimize{
+    width: 35px;
+    padding: 13px 0px 22px 0px ;
+    bottom: 4px
+} 
+.top .itemDetail .detail .qty input[type="number"]::-webkit-outer-spin-button, .top .itemDetail .detail .qty input[type="number"]::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    appearance: none;
+}
+.top .itemDetail .detail .qty button{
+    text-decoration: none;
+    background-color: #95adbe;
+    text-align: center;
+    padding: 10px 50px;
+    border-radius: 20px;
+    margin-left: 50px;
+    color: #ffffff;
+   
+}.top .itemDetail .detail .qty button:last-child{
+    background-color: #f33f3f;
+    margin-left: 20px;
+    padding: 10px 60px;
+}
+.top .itemDetail .detail .qty button:hover{
+    box-shadow: 0px 0px 6px gray ;
+}
+/* Add WishList button and design */
+.top .itemDetail .detail .addWishList span {
+    padding-left: 20px;
+}
+.top .itemDetail .detail .addWishList{
+    margin-top: 30px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    border-bottom: 1px solid gray;
+}
+.top .itemDetail .detail .addWishList i:hover{
+    cursor: pointer;
+}
+.top .itemDetail .detail .addWishList .fas{
+    display: none;
+    color: red;
+}
+.top .itemDetail .detail .addWishList .far
+{
+    display: inline;
+}
+.top .itemDetail .detail .itemDecription p{
+    color: gray;  
+}
+.top .itemDetail .detail .itemDecription p span{
+    color: black;
+}
+.top .itemDetail .detail .itemDecription p i{
+    color: grey;
+    margin:0px 10px;
+    font-size: 20px;
+}
+/* Bottom design */
+.bottom {
+    box-shadow: 0px -10px 10px rgba(128, 128, 128, 0.089);
+    padding: 40px 0px 0px 0px;
+
+}
+
+.bottom .reviewsBar{
+    margin:40px auto;
+    height: 780px;
+    width: 800px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+    padding-top: 10px;
+   box-shadow: 0px 0px 10px rgb(161, 161, 161);
+ 
+}
+.bottom h2{
+    font-size: 40px;
+    text-align: center;
+    margin: 0%;
+}
+/* customer reviews bar design */
+.bottom .reviewsBar .RankNav{
+    width: 780px;
+    margin: 0px 0px 00px 10px;
+    height: 150px;
+    background-color: #e0d4d457;
+    display: block;
+    justify-content: center;
+}
+
+.bottom .reviewsBar .RankNav span:hover{
+   box-shadow: 0px 0px 5px grey;
+    cursor: pointer;
+}
+.bottom .reviewsBar .RankNav span:nth-child(1):hover{
+    box-shadow: none;
+    cursor: pointer;
+}
+.bottom .reviewsBar .RankNav>span{
+    float: left;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+    background-color: none;
+    border: 1px solid grey;
+    padding: 5px 30px;
+    margin: 20px 5px 0px 5px;
+    text-align: center;
+}
+.bottom .reviewsBar .RankNav> span:nth-child(1) {
+    padding-top: 1%;
+    font-size: 30px;
+    border: none;
+    color: rgb(218, 83, 83);
+     
+}
+.bottom .reviewsBar .RankNav> span:nth-child(1) p{
+    margin-top: 0%;
+}
+.bottom .reviewsBar .rank{
+    padding-top: 10px;
+    overflow-y: auto;
+    height: 595px;
+    width: 100%;
+    text-align: left;
+    float: left;
+    display: none;
+}
+.bottom .reviewsBar .rank::-webkit-scrollbar{
+    -webkit-appearance: none;
+}
+.bottom .reviewsBar #rank5B{
+    display: block;
+}
+/* customer comments bar design */
+.bottom .reviewsBar .rank .customerReview .reviewRange .fa-star{
+    color: rgb(224, 193, 13);
+    font-size: 20px;
+}
+.bottom .reviewsBar .rank .customerReview .people{
+    color: rgb(145, 145, 145);
+}
+.bottom .reviewsBar .rank div{
+    margin-top: 10px;
+    font-size: 15px;
+}
+.bottom .reviewsBar .rank .comments{
+    margin-top: 10px;
+    display: inline-block;
+}.bottom .reviewsBar .rank .comments div{
+    float: left;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.bottom .reviewsBar .rank .comments div span{
+    color: gray;
+    margin-left: 10px;
+}
+.bottom .reviewsBar .rank .comments .likeComment #likeButton{
+    color: grey;
+    
+}
+
+.bottom .reviewsBar .rank .comments div i:hover{
+    cursor: pointer;
+}
+.bottom .reviewsBar .rank .customerReview{
+    border-bottom: 1px solid gray;
+    width: 750px;
+    padding-left: 50px;
+    padding-bottom: 20px;
+}
+.bottom .reviewsBar .rank .customerReview .userCommentTop{
+    display: flex;
+} 
+.bottom .reviewsBar .rank .customerReview #content{
+    margin-left: 12%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+}
+.bottom .reviewsBar .rank .customerReview .comments{
+    margin-left: 12%;
+    
+}.bottom .reviewsBar .rank .customerReview .comments .adminComment{
+    display: block;
+    
+} 
+
+.bottom .reviewsBar .rank .customerReview .comments span[class="comment"] i{
+    transform: rotate(90deg);
+}
+
+.bottom .reviewsBar .rank .customerReview .comments div[class="comment"]{
+    align-items: center;
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    color: #3f3f3f;
+    font-size: 15px;
+    float: left;
+    width: 95%;
+    display: none;
+    padding: 5px 10px;
+}
+
+
+.bottom .reviewsBar .rank .customerReview .comments.showAnswer div[class="comment"]{
+    display:flex;
+}
+.bottom .reviewsBar .rank .customerReview .comments div[class="comment"] img{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 20px;
+}
+.bottom .reviewsBar .rank .customerReview .userCommentTop .userImage img{
+    border-radius: 100%;
+}
+.bottom .reviewsBar .rank .customerReview .userCommentTop .userImage{
+    flex-basis: 12%;
+}
+.bottom .reviewsBar .rank .customerReview .userCommentTop .nameAndRank{
+    flex: 70%;
+}
+/* related Product recommend Scoll bar design */
+.relatedItemRecommendBar {
+    box-shadow: 0px -10px 10px rgba(128, 128, 128, 0.089);
+    margin-bottom: 100px;
+    padding-top: 50px;
+}
+.relatedItemRecommendBar h1{
+    width: 30%;
+    margin: 0px auto;
+    
+    align-items: center;
+    text-align: center;
+   
+   
+}
+.relatedItemRecommendBar i:hover{
+    cursor: pointer;
+    color: #95adbe;
+}
+.relatedItemRecommendBar i{
+    font-size: 40px;
+    position: absolute;
+    color: #8a4b4b;
+}
+
+.relatedItemRecommendBar .fa-angle-left{
+    top: 322%;
+    left: 14%;
+}
+.relatedItemRecommendBar .fa-angle-right{
+    right: 14.5%;
+    top: 322%;
+}
+.relatedItemRecommendBar .dots{
+    position: absolute;
+    left: 47%;
+}
+.relatedItemRecommendBar .fa-circle{
+    color: gray;
+    position: static;
+    margin-left: 10px;
+    font-size: 15px;
+}
+.relatedItemRecommendBar .fa-circle:hover{
+    opacity: 0.5;
+}
+
+.relatedItemRecommendBar #recommendItemScollBar{
+    display: flex;
+    width: 1055px;
+    overflow-x: hidden;
+    margin: 20px auto;
+}
+.relatedItemRecommendBar #recommendItemScollBar .item{
+    margin: 0px 5px;
+    text-align: center;
+}
+.relatedItemRecommendBar #recommendItemScollBar .item img{
+    border-radius: 20px;
+    width: 200px;
+    height: 200px;
+}
+.relatedItemRecommendBar #recommendItemScollBar .item a{
+    text-decoration: none;
+    color: #8a8383;
+}
+.relatedItemRecommendBar #recommendItemScollBar .item .price{
+    margin: 0px;
+}
+.relatedItemRecommendBar #recommendItemScollBar .item .itemDetial{
+    overflow-x: hidden;
+    white-space:nowrap ;
+    width: 190px;
+    padding: 5px;
+    text-overflow: ellipsis;
+}
+
+.emptyRecord p{
+    color:grey;
+    margin:250px 208px;
+    font-size:18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.section{
+                min-width: 100%;
+
+                position: unset;
+            }
+            .section .background{
+                background-repeat: no-repeat;
+                min-width: 80vh;
+                min-height: 110vh;
+                object-fit: cover;
+                background-position:center;
+
+            }
+            .section .background:nth-child(1){
+                background-image:url(../image/DiningSet.png);
+
+            }
+            .section .background:nth-child(2){
+                background-image: url(../image/kitchen2Edited.png);
+
+            }
+            .section .background:nth-child(3){
+                background-image: url(../image/livingRoom.png);
+            }
+            .section .background button{
+                text-decoration: none;
+                background-image: linear-gradient(rgb(231, 231, 231),rgb(187, 187, 187));
+                padding: 10px 20px;
+                color: black;
+                position: relative;
+
+                top: vh;
+                font-size: 15px;
+                border-radius: 10px;
+                font-family: 'Poppins', sans-serif;
+            }
+            .section .background button:hover{
+                background-image:linear-gradient(rgb(196, 196, 196),rgb(255, 255, 255)) ;
+                color: gray;
+                box-shadow: 0px 0px 10px rgba(221, 221, 221, 0.692);
+            }
+            .section .background h2{
+                margin: 0%;
+                padding: 0%;
+                text-align: center;
+                position: relative;
+                color: rgb(255, 255, 255);
+                top: 86vh;
+            }
+            .section .background p{
+                text-align: center;
+                position: relative;
+                margin: 0%;
+                text-transform: uppercase;
+                top: 88vh;
+                color: rgb(255, 255, 255);
+            }
+            .section2{
+                display: flex;
+            }
+            .subTitle{
+                margin-top: 80px;
+                margin-bottom: 10px;
+                text-align: center;
+                font-size: 28px;
+                font-family: 'Poppins', sans-serif;
+            }
+            #sideShow{
+                display: flex;
+                width:1109px;
+                overflow-x: hidden;
+                margin-bottom: 40px;
+                align-items: center;
+            }
+            .section2 .slideButton{
+                flex-basis: 23%;
+            }
+
+            .sideShow .img{
+                margin: 0px 5px;
+                text-align: center;
+            }
+            .sideShow .img img{
+                width: 300px;
+                object-fit: cover;
+                height: 300px;
+                border-radius: 10px;
+            }
+            .sideShow .img a{
+                width: 300px;
+                color: black;
+                font-family: 'Poppins', sans-serif;
+                text-decoration: none;
+            }
+            .section2 .slideButton:nth-child(1){
+                text-align: right;
+            }
+            .section2 .slideButton i{
+                font-size: 70px;
+                margin: 110px 30px 0px 25px;
+            }
+            .section2 .slideButton i:hover{
+                cursor: pointer;
+                color: gray;
+            }
+            .dotBlock{
+                position: absolute;
+                top: 427%;
+                left: 48%;
+
+            }
+            .dotBlock i{
+                opacity: 0.5;
+                font-size: 15px;
+                margin: 0px 4px;
+                background-color: rgb(0, 0, 0);
+
+                border-radius: 100%;
+            }
+            .dotBlock i:nth-child(1){
+                opacity: 1;
+            }
+            .item{
+                margin-bottom: 60px;
+            }
+            .item .itemSide:nth-child(1){
+                margin-top: 100px;
+            }
+            .item .itemSide h3{
+                text-align: center;
+                font-size: 28px;
+                font-family: 'Poppins', sans-serif;
+                margin: 40px 0px 20px 20px;
+            }
+            .item .itemSide .itemSideBar{
+                width: 1516px;
+                margin: 0px 0px 100px 0px;
+                display: flex;
+                overflow-x: hidden;
+                font-family: 'Poppins', sans-serif;
+            }
+            .item .itemSide:nth-child(3) .itemSideBar{
+                margin: 0px 0px 150px 0px;
+            }
+            .item .itemSide .itemSideBar .image{
+                margin: 0px 5px;
+
+
+            }
+            .item .itemSide .itemSideBar .image .itemDetial{
+                overflow: hidden;
+                width: 280px;
+                white-space:nowrap ;
+                text-overflow: ellipsis;
+                padding: 0px 5px;
+
+            }
+            .item .itemSide .itemSideBar .image img{
+                width: 293px;
+                height: 300px;
+                border-radius: 20px;
+            }
+            .item .itemSide i{
+                position: absolute;
+                background-color: rgb(175, 175, 175);
+                padding: 50px 20px;
+                border-radius: 5px;
+                margin: 0%;
+                opacity: 0.7;
+                text-align: center;
+                font-size: 25px;
+
+            }
+            .item .itemSide i:hover{
+                opacity: 1;
+            }
+            .item .itemSide .fa-chevron-left{
+                display: none;
+
+            }
+            .item .itemSide:nth-child(1) .fa-chevron-left{
+                top: 463%;
+
+            }
+            .item .itemSide:nth-child(1) .fa-chevron-right{
+                right: 0%;
+                top: 463%;
+            }
+            .item .itemSide:nth-child(2) .fa-chevron-left{
+                top: 535%;
+
+            }
+            .item .itemSide:nth-child(2) .fa-chevron-right{
+                right: 0%;
+                top: 535%;
+            }
+            .item .itemSide:nth-child(3) .fa-chevron-left{
+                top:610%
+
+            }
+            .item .itemSide:nth-child(3) .fa-chevron-right{
+                right: 0%;
+                top:610%
+            }
+            .item .itemSide .itemSideBar .image a{
+                text-decoration: none;
+                color: black;
+                text-align: center;
+            }

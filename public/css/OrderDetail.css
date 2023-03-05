@@ -1,0 +1,901 @@
+﻿.Pagebody {
+    display: block;
+    background-color: white;
+}
+
+    .Pagebody form {
+        background-color: white;
+        width: 100px;
+        box-shadow: 0px 0px 5px grey;
+        padding-bottom: 30px;
+    }
+
+.name_cust {
+    padding-left: 20px;
+}
+
+.title-container {
+    padding: 5px 0px 0px 0px;
+}
+
+    .title-container .Prodtitle {
+        font-size: 40px;
+        margin: 50px 0px 0px 20px;
+    }
+
+.content .title-container .add_content {
+    border-top: 1px solid grey;
+}
+
+.cust_cont {
+    display: flex;
+}
+
+.button {
+    display: flex;
+    position: relative;
+    top: 10px;
+    left: 180px;
+}
+
+    .button button {
+        margin: 15px 10px;
+        flex-basis: 30%;
+        padding: 0px 20px;
+    }
+
+.package2 {
+    color: white;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #12bddb;
+    margin-right: 5px;
+    padding: 5px 10px;
+}
+
+.completed2 {
+    color: white;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #86f071;
+    margin-right: -15px;
+    padding: 5px 10px;
+}
+
+.delivered2 {
+    color: white;
+    font-weight: bold;
+    background-color: #1270db;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 2px;
+    padding: 5px 10px;
+}
+
+.cancel {
+    color: white;
+    font-weight: bold;
+    background-color: #f17163;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 2px;
+    padding: 5px 10px;
+    position: relative;
+    top: 3%;
+    left: 5%;
+}
+
+    .delivered2:hover, .cancel:hover, .completed2:hover, .package2:hover {
+        box-shadow: 2px 2px 2px slategray;
+    }
+
+button#status:hover {
+    box-shadow: 2px 2px rgb(167, 165, 165);
+}
+
+.scroll-wrap .sortable .tbody .tr .td img {
+    width: 200px;
+    height: 200px;
+}
+
+.table .tr .th {
+    background: rgb(165, 200, 245);
+    position: sticky;
+    top: 0%;
+    color: grey;
+    text-align: center;
+}
+
+.table .tr .td {
+    text-align: center;
+}
+
+.scroll-wrap {
+    overflow: auto;
+    height: 800px;
+}
+
+    .scroll-wrap::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+
+.detail_cont {
+    width: 655px;
+    display: grid;
+    grid-template-columns: 60% 100%;
+    text-align: justify;
+    margin-left: 50px;
+    margin-top: 0px;
+}
+
+.details {
+    float: left;
+}
+
+.cal {
+    text-align: left;
+    padding-left: 300px;
+}
+
+.auto-style2 {
+    position: relative;
+    top: 25px;
+    left: 547px;
+    margin-top: 0;
+}
+
+
+.form {
+    margin: 0px auto;
+    width: 60%;
+    padding: 30px 60px 30px 30px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 20px grey;
+}
+
+.titleaddMeal {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form .flex {
+    display: flex;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+    .form .flex .label {
+        flex-basis: 30%;
+        text-align: left;
+    }
+
+    .form .flex .input {
+        flex-basis: 70%;
+        padding: 10px;
+        outline: none;
+        border: 1px solid grey;
+    }
+
+        .form .flex .input:focus {
+            border: 1px solid blue;
+        }
+
+.form .addMeal {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}
+
+    .form .addMeal .addMealButton {
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: rgb(255, 86, 86);
+        color: white;
+        font-size: 15px;
+        height: 34px;
+        cursor: pointer;
+        padding: 5px 60px;
+    }
+.image {
+    height: 220px;
+    width: 220px;
+    margin-left: 26px;
+}
+.form .editMeal {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}
+
+    .form .editMeal .editMealButton {
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: rgb(255, 86, 86);
+        color: white;
+        font-size: 15px;
+        height: 34px;
+        cursor: pointer;
+        padding: 5px 60px;
+    }
+.editMeal {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.form .editMealInventory .editMealInventoryButton {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+}
+.form .editMealInventory {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}
+.editMealInventory {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.form .editBtnSubmit .editBtnRating {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+}
+.form .editBtnSubmit {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}
+.titleManageRating {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.form .AddBtnSubmit .AddBtnStaff {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+}
+.form .AddBtnSubmit {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}
+.titleAddStaff {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.customerGender td {
+    border: none;
+}
+.titleEditCustomer {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form .editBtnSubmit {
+    display: flex;
+    justify-content: right;
+    justify-items: center;
+    align-items: center;
+}.form .editBtnSubmit .editBtnCustomer{
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+}
+.titleEditStaff {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.form .editBtnSubmit .editBtnStaff {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(255, 86, 86);
+    color: white;
+    font-size: 15px;
+    height: 34px;
+    cursor: pointer;
+    padding: 5px 60px;
+} 
+
+
+
+/* List Of Meal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+/* table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+} */
+
+/* td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+} */
+
+/* tr:nth-child(even) {
+    background-color: #dddddd;
+} */
+
+.box4 {
+    flex-basis: 25%;
+    display: block;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    box-shadow: 5px 10px 8px 10px #dbdada;
+    background-color: white;
+    text-align: right;
+    font-family: "Courier New", Courier, monospace;
+    height: 80%;
+    width: 95%;
+    margin: -30px 0px 0px 25px;
+}
+
+    .box4 div:nth-child(1) table {
+        margin: -20px 28px;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        /* border-style: hidden; */
+        /* border-radius: 5px; */
+        width: 95%;
+        /* position: absolute;
+    z-index: 1; */
+        /* box-shadow: 5px 10px 8px 10px #dbdada; */
+    }
+
+    .box4 div:nth-child(1) th, td {
+        border: 2px solid gray;
+        /* border-style: hidden; */
+        text-align: left;
+        padding: 8px;
+        color: black;
+        /* background: linear-gradient(#8c8c8d,#bdbcbc); */
+    }
+
+    /* .box4 div:nth-child(1) td{
+    border: 2px solid gray;
+    border-style: hidden;
+    text-align: left;
+    padding: 8px;
+    color: black;
+} */
+
+    .box4 div:nth-child(1) tr {
+        background-color: transparent;
+    }
+
+        .box4 div:nth-child(1) tr:hover {
+            background-color: #cae7f5;
+            cursor: pointer;
+        }
+
+    /* .box4 div:nth-child(1) input{
+    float: left;
+    color: black;
+    font-size: large;
+    width: 250px; 
+    height: 40px;
+    margin: 60px -179px;
+} */
+
+    .box4 div:nth-child(1) label {
+        font-weight: bold;
+        float: left;
+        font-size: 20px;
+        color: black;
+        margin: 50px 26px;
+    }
+
+.box5 {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    height: 60%;
+    width: 50%;
+    margin: 100px 0px 0px 0px;
+}
+
+.box6 {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    height: 50%;
+    width: 40%;
+    margin: -296px 0px 0px 670px;
+}
+
+.box7 {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    height: 50%;
+    width: 40%;
+    margin: 180px 0px 0px 350px;
+}
+
+
+
+
+/* add record */
+.add {
+    background: blue;
+    color: white;
+    width: 120px;
+    border-radius: 5px;
+    font-size: 17px;
+    height: 35px;
+    opacity: 0.9;
+    margin: -20px 60px;
+}
+
+/** Popup **/
+.popup .overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 1;
+    display: none;
+}
+
+.popup .add_content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    background-color: #fff;
+    width: 520px;
+    height: 350px;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.popup .close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    background: #222;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.popup.active_popup .overlay {
+    display: block;
+}
+
+.popup.active_popup .add_content {
+    transition: all 300ms ease-in-out;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.popup_container {
+    width: 500px;
+    padding: 0px 0px;
+    margin-top: 30px;
+}
+
+
+.ratingButton {
+    width: 20%;
+    height: 40px;
+    color: white;
+    margin: 0px 0px 30px 670px;
+    background-color: #95adbe;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.popup_title {
+    font-size: 30px;
+    font-weight: bolder;
+    width: 100%;
+    text-align: center;
+}
+
+.sortable tr th {
+    background: rgb(165, 200, 245);
+    position: sticky;
+    top: -1px;
+    color: grey;
+}
+
+td {
+    text-align: center;
+}
+
+.submit {
+    width: 25%;
+    padding: 10px;
+    background: green;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+}
+
+.mealTable img {
+    padding: 2px;
+    width: 120px;
+    height: 150px;
+}
+
+.searchBar {
+}
+
+.edit {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #95adbe;
+    color: white;
+    width: 80%;
+    font-size: 15px;
+    height: 30px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.delete {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #f17163;
+    color: white;
+    width: 100%;
+    font-size: 15px;
+    height: 30px;
+}
+
+.salesCategory {
+    width: 35%;
+    font-size: 15px;
+    text-align: left;
+    float: left;
+    margin-bottom: 0;
+    margin-top: 15px;
+}
+
+.category_field {
+    width: 50%;
+    height: 50px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+/* filter */
+.filter_cont {
+    float: right;
+    margin: 60px 340px;
+    background: rgb(147, 168, 228);
+    border-radius: 10px;
+    position: relative;
+    z-index: 4;
+}
+
+
+#filter {
+    color: white;
+    background: rgb(137, 142, 221);
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    font-size: 16px;
+}
+
+.filter_cont > ul > li {
+    list-style-type: none;
+    padding: 5px;
+    width: 100px;
+    text-align: center;
+    display: none;
+}
+
+ul.sub-drop-price, ul.sub-drop-dis, ul.sub-drop-cat {
+    list-style-type: none;
+    position: absolute;
+    background: #bdbcbc;
+    width: 250px;
+    padding-left: 15px;
+    display: none;
+    margin-left: 95px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+ul.sub-drop-price {
+    top: 50px;
+}
+
+ul.sub-drop-dis {
+    top: 85px;
+}
+
+ul.sub-drop-cat {
+    top: 115px;
+}
+
+    ul.sub-drop-price li, ul.sub-drop-dis li, ul.sub-drop-cat li {
+        align-items: center;
+    }
+
+.filter_cont li:hover .sub-drop-price, .filter_cont li:hover .sub-drop-dis, .filter_cont li:hover .sub-drop-cat {
+    display: block;
+}
+
+/* .filter_cont > ul > li:hover{
+    background: rgb(89, 151, 233);
+    border-radius: 5px;
+} */
+
+.filter_cont:hover > ul > li {
+    display: block;
+    position: inherit;
+}
+
+.sub-drop-price input, .sub-drop-dis input {
+    width: 100px;
+}
+
+.sub-drop-cat select {
+    width: 94%;
+}
+
+.sub-drop-price input::placeholder, .sub-drop-dis input::placeholder, .sub-drop-cat input::placeholder {
+    text-align: center;
+}
+
+.fa-filter {
+    margin-right: 5px;
+}
+
+/* product popup */
+.popup_prod .prod_overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 5;
+    display: none;
+}
+
+.popup_prod .prod_add_content, .popup_prod .add_content_BedroomSET {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    background-color: #fff;
+    width: 600px;
+    height: 700px;
+    z-index: 6;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.popup_prod .add_content_BedroomSET {
+    height: 700px;
+}
+
+.popup_prod .prod_close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    background: #222;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.popup_prod.active_popup .prod_overlay {
+    display: block;
+}
+
+.popup_prod.active_popup .prod_add_content, .popup_prod.active_popup .add_content_BedroomSET {
+    transition: all 300ms ease-in-out;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.popup_prod.prod_popup_container {
+    width: 600px;
+    padding: 0px 0px;
+    margin-top: 30px;
+}
+
+
+
+.popup_prod.ratingButton {
+    width: 20%;
+    height: 40px;
+    color: white;
+    margin: 0px 0px 30px 670px;
+    background-color: #95adbe;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.popup_prod.prod_popup_title {
+    font-size: 30px;
+    font-weight: bolder;
+    width: 93%;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.product_label {
+    width: 35%;
+    font-size: 15px;
+    text-align: left;
+    float: left;
+    margin-bottom: 0;
+    margin-top: 15px;
+}
+
+.product_field {
+    width: 50%;
+    height: 50px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+#product_size {
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+    margin-left: 238px;
+}
+
+    #product_size input {
+        font-size: 15px;
+        text-align: center;
+    }
+
+.length, .width, .height {
+    width: 90%;
+    height: 40px;
+}
+
+input#width.width {
+    margin-left: 5px;
+}
+
+input#height.height {
+    margin-left: 10px;
+}
+
+#prod_desc {
+    height: 100px;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+.scroll-wrap::-webkit-scrollbar, .prod_scroll-wrap-popup::-webkit-scrollbar {
+    display: none;
+}
+
+#result_sub_cat, #bedset_field, #dining_field, #living_field, #study_field, #kitchen_field, #outdoor_field {
+    display: none;
+}
+
+.prod_scroll-wrap-popup {
+    height: 600px;
+    overflow: auto;
+    position: relative;
+    width: 100%;
+}
+
+form .flex {
+    display: flex;
+}
+
+    form .flex div {
+        flex-basis: 80%;
+    }
+
+    form .flex label {
+        flex-basis: 25%;
+    }
+
+
+.edit {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #95adbe;
+    color: white;
+    width: 100%;
+    font-size: 15px;
+    height: 30px;
+    cursor: pointer;
+    margin-bottom: 65px;
+}
+
+.delete {
+    position: relative;
+    top: 14px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #f17163;
+    color: white;
+    width: 80%;
+    font-size: 15px;
+    height: 30px;
+    margin-top: 50px;
+}
+
+.scroll-wrap {
+    overflow: auto;
+    height: 530px;
+}
+
+.box4 {
+    height: 700px;
+}
+.td .img {
+    width:200px;
+    height:200px;
+}

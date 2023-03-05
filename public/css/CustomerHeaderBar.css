@@ -1,0 +1,71 @@
+﻿header .loginBar {
+    background-color: rgb(231, 231, 231);
+    position: absolute;
+    float: left;
+    width: 10%;
+    display: none;
+    height: 18%;
+    right: 23%;
+    top: 14%;
+    z-index: 1;
+    box-shadow: 0px 0px 10px rgb(100, 76, 76);
+}
+
+header .navigationBar {
+    padding: 0px;
+    width: 1519.2px;
+    height: 80px;
+    background-color: rgb(236, 236, 236);
+}
+
+    header .navigationBar .nav {
+        width: 1508px;
+        height: 80px;
+        margin: 0px;
+        padding: 5px 0px 5px 10px;
+    }
+
+#result::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+#result {
+    background-color: rgb(255, 255, 255);
+    float: left;
+    border-radius: 20px 20px 0px 0px;
+    width: 25%;
+    padding: 5px 10px;
+    position: absolute;
+    left: 23.5%;
+    top: 16.5%;
+    z-index: 10;
+    height: 55%;
+    overflow-y: auto;
+    box-shadow: 0px 0px 10px grey;
+    opacity: 0.8;
+    display: none;
+}
+
+    #result .srcP {
+        display: flex;
+        word-break: break-all;
+        float: left;
+    }
+
+        #result .srcP .productA .imgSrc {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+            border-radius: 20px;
+        }
+
+        #result .srcP .productA {
+            color: black;
+            display: flex;
+            text-align: left;
+            font-weight: bolder;
+            font-size: 15px;
+            justify-items: center;
+            align-items: center;
+            text-decoration: none;
+        }

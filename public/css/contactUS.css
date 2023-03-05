@@ -1,0 +1,79 @@
+﻿span.contactUs {
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size: 30px;
+    margin-left: 100px;
+    right: 0;
+    left: 0;
+    margin-top: -70px;
+    position: absolute;
+    text-align: center;
+}
+
+.contactUsBar {
+    margin-top: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 10vh;
+    width: 100%;
+    background-image: url("../image/Dessert/tang-yuan.png");
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+}
+
+.info {
+    margin-left: 100px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.edit2 {
+    margin-left: 850px;
+    margin-top: -525px;
+}
+
+textarea#message {
+    resize: none;
+}
+
+.Ourlocation iframe {
+    margin-top: 30px;
+    box-shadow: 0px 0px 5px rgb(255, 255, 255);
+    width: 170vh;
+    height: 80vh;
+}
+
+input {
+    width: 60%;
+    border-radius: 10px;
+    padding: 7px 20px;
+}
+
+.flex textarea {
+    margin-top: 10px;
+}
+
+input#enquiry {
+    width: 15%;
+}
+
+.companyName {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+}
+
+.operation {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    color: black;
+}
+
+.companyContent {
+    color: rgb(143, 143, 143);
+    font-weight:bolder;
+}
+
+.form .info .flex div img {
+    width: 150px;
+    margin-left: -20px;
+}

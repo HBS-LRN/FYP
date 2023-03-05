@@ -1,0 +1,45 @@
+.rules{
+    margin:70px 200px 30px 150px;
+}
+
+p{
+    color:gray;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    margin-bottom: 35px;
+}
+
+h3{
+    margin-bottom:-11px;
+    font-weight: 600;
+    color: #636363;
+    font-size: 20px;
+}
+
+h2.termsAndConditions{
+    color: #636363;
+    margin-bottom: 20px;
+    
+}
+
+.TermsConditionBar{
+    background-color: #636363;
+    margin-top:0;
+    padding-top:20px;
+    padding-bottom:70px;
+    background-image:url("../image/Dessert/tang-yuan.png");
+    filter:blur(1px);
+    -webkit-filter:blur(1px);
+}
+
+.TermsCondition{
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size:40px;
+    margin-left:100px;
+    right:0;
+    left:0;
+    margin-top:-70px;
+    position:absolute;
+    text-align: center;
+}

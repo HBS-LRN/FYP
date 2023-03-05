@@ -1,0 +1,427 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+
+
+
+
+.shoppingCartBar {
+    background-color: #636363;
+    margin-top: 0;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    background-image: url("../image/Dessert/tang-yuan.png");
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+}
+
+.shoppingCart {
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size: 40px;
+    right: 0;
+    left: 0;
+    margin-top: -70px;
+    position: absolute;
+    text-align: center;
+}
+
+    .shoppingCart .a .fa-arrow-left {
+        background-color: rgb(230, 228, 228);
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+.shoppingCartContent {
+    display: flex;
+    margin: 0%;
+    padding: 60px 0px 150px 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    background-color: #f7f7f7;
+}
+
+
+
+
+
+.shoppingCartListItem {
+    margin-bottom: 65px;
+    flex-basis: 80%;
+    border: 1px solid white;
+    box-shadow: 5px 10px 18px #888888;
+}
+
+
+
+hr {
+    width: 95%;
+    height: 0;
+    color: #a14141;
+}
+
+.item-sub-total input[name="subtotal"] {
+    background: transparent;
+    border: none;
+    font-size: 17px;
+    width: 60px;
+    color: black;
+}
+
+.item-price input[name="price"] {
+    background: transparent;
+    border: none;
+    font-size: 17px;
+    width: 60px;
+    color: black;
+}
+
+.productSearch input[name="productname"] {
+    margin-left: 20px;
+    margin-top: 17px;
+    padding: 15px 0px 15px 50px;
+    font-size: 15px;
+    border: 2px solid rgb(83, 83, 83);
+    width: 82%;
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+}
+
+.productSearch i {
+    position: relative;
+    right: 890px;
+    color: rgb(65, 64, 64);
+}
+
+.productSearch {
+    margin-bottom: 7px;
+}
+
+.product-items {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(196, 196, 196);
+    border-top: 1px solid rgb(196, 196, 196);
+    padding: 10px 0px;
+}
+
+    .product-items div {
+        flex-basis: 40%;
+    }
+
+        .product-items div:nth-child(1) {
+            flex-basis: 1%;
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .product-items div:nth-child(2) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+
+
+
+
+
+.subTotal-price input[name="overallSubTotal"] {
+    border: none;
+    width: 65px;
+    font-size: 18px;
+    color: black;
+}
+
+input[name="quantity"]::-webkit-inner-spin-button, input[name="quantity"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[name="quantity"] {
+    width: 20px;
+    padding: 12px;
+  
+    background-color: transparent;
+    border: none;
+    color: black;
+    border-top: 0.5px solid rgb(197, 197, 197);
+    border-bottom: 0.5px solid rgb(197, 197, 197);
+}
+
+
+.item-quantity-input i {
+    padding: 12px 4px;
+    border: 1px solid rgb(73, 73, 73);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+    .item-quantity-input i:hover {
+        background-color: #737375;
+    }
+
+.item-quantity-input .minus {
+    margin-right: 7px;
+}
+
+.item-quantity-input .plus {
+    margin-left: 2px;
+}
+
+
+
+.scroll-wrap img {
+    height: 102px;
+    width: 102px;
+    border: 0.5px solid rgb(194, 191, 191);
+    border-radius: 16px;
+}
+
+
+
+.cancelButton {
+    width: 80%;
+    height: 40px;
+    color: white;
+    background-color: rgb(255, 86, 86);
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+
+.scroll-wrap {
+    height: 850px;
+    overflow: auto;
+}
+
+    .scroll-wrap::-webkit-scrollbar {
+        display: none;
+    }
+
+input[name="selecting"] {
+    width: 50px;
+    height: 20px;
+}
+
+.cartTotal {
+    border: 1px solid white;
+    border-radius: 15px;
+    flex-basis: 27%;
+    margin: 0px 20px 400px 40px;
+    background-color: #ffffff;
+    box-shadow: 5px 10px 18px #888888;
+    padding-right: 25px;
+}
+
+.cartTotalContent {
+    margin-left: 30px;
+}
+
+.address .address-form {
+    display: none;
+}
+
+.address.showAddress .address-form {
+    display: block;
+}
+
+.customerAddress {
+    color: rgb(251, 14, 14);
+}
+
+.cartTotalContent h1 {
+    font-size: 20px;
+}
+
+.cartTotalContent h2 {
+    margin-left: 3px;
+}
+
+.flex-form {
+    display: flex;
+    border-bottom: 1px solid rgb(196, 196, 196);
+}
+
+    .flex-form p {
+        text-align: right;
+    }
+
+.cartTotalContent .flex-form:nth-child(3) {
+    padding-bottom: 25px;
+}
+
+    .cartTotalContent .flex-form:nth-child(3) h2 {
+        margin-top: 50px;
+    }
+
+.cartTotalContent .flex-form div:nth-child(1) {
+    flex-basis: 250%;
+}
+
+    .cartTotalContent .flex-form div:nth-child(1) h2 {
+        font-size: 18px;
+        color: #000000;
+    }
+
+.cartTotalContent .flex-form:nth-child(3) div:nth-child(1) {
+    flex-basis: 100%;
+    padding-right: 50px;
+}
+
+.cartTotalContent .flex-form div:nth-child(2) {
+    flex-basis: 200%;
+}
+
+.cartTotalContent .flex-form:nth-child(2) div:nth-child(1) {
+    flex-basis: 150%;
+}
+
+.cartTotalContent .flex-form:nth-child(2) p {
+    float: left;
+    font-size: 18px;
+    padding-left: 0px;
+}
+
+.cartTotalContent .flex-form:nth-child(3) .address p {
+    font-size: 13px;
+    text-align: left;
+}
+
+.cartTotalContent .flex-form:nth-child(3) .address {
+    flex-basis: 350%;
+    padding-left: 0px;
+}
+
+    .cartTotalContent .flex-form:nth-child(3) .address p:nth-child(1) span {
+        width: 97px;
+        text-align: right;
+        display: inline-block;
+    }
+
+    .cartTotalContent .flex-form:nth-child(3) .address p .shippingOption {
+        margin-right: 100px;
+    }
+
+.calculateShipping {
+    color: rgb(251, 14, 14);
+    font-size: 14px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.cartTotalContent .flex-form:nth-child(4) div:nth-child(1) {
+    flex-basis: 110%;
+}
+
+.calculateShipping:hover {
+    color: rgb(247, 107, 107);
+}
+
+
+.deliveryFee {
+    color: rgb(7, 1, 1);
+    font-size: 15px;
+}
+
+.cartTotalContent .flex-form:nth-child(4) p {
+    margin-right: 65px;
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+}
+
+.totalPrice input[name="overallTotal"] {
+    font-size: 25px;
+    border: none;
+    width: 77px;
+    color: black;
+}
+
+.address .delivery {
+    font-size: 18px;
+    width: 46px;
+    color: black;
+    border: none;
+    background: transparent;
+}
+
+.check-out {
+    margin: 30px 20px 54px 20px;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: rgb(255, 86, 86);
+    padding: 10px 15px 14px 58px;
+}
+
+    .check-out a {
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        text-align: center;
+    }
+
+.address-form input {
+    margin-top: 15px;
+    padding: 15px 5px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 100%;
+    float: right;
+    border-radius: 25px;
+}
+
+.address-form select {
+    margin-top: 15px;
+    padding: 15px 5px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 107%;
+    float: right;
+    border-radius: 25px;
+}
+
+
+.product-description {
+    padding: 20px 0px;
+    display: flex;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+}
+
+    .product-description div {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        /* margin-bottom:12px; */
+        font-size: 18px;
+        flex-basis: 30%;
+    }
+
+        .product-description div:nth-child(1) {
+            display: flex;
+            flex-basis: 1%;
+            justify-content: left;
+        }
+
+option {
+    padding: 0 6px;
+    margin: 0 0;
+    padding: 0 10px;
+}
+
+    option li:hover {
+        background-color: rgb(0, 0, 0);
+        color: white
+    }
+.address input[name="delivery"] {
+    font-size: 18px;
+    width: 46px;
+    color: black;
+    border: none;
+    background: transparent;
+}

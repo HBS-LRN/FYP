@@ -1,0 +1,125 @@
+﻿.sectionBody {
+    font-family: 'Poppins', sans-serif;
+    /* box-shadow: 0px 0px 10px; */
+    height: 125vh;
+    padding-top: 30px;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Beancurd/shuizhu-tofu.png);
+    background-position: center;
+    background-size: cover;
+}
+
+    .sectionBody .formBox .left .img {
+        width: 300px;
+    }
+
+    .sectionBody .formBox .left {
+        flex-basis: 40%;
+        display: flex;
+        box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .sectionBody .right {
+        flex-basis: 60%;
+        padding-left: 50px;
+    }
+    /* .pageBody .sectionBody .flex{
+   
+        margin-bottom: 20px;
+    } */
+    .sectionBody .flex .label {
+        /* flex-basis: 40%;
+        display: flex; */
+
+        align-items: center;
+    }
+
+    .sectionBody .flex .input {
+        /* flex-basis: 60%; */
+        height: 30px;
+        padding: 10px 20px;
+        width: 75%;
+        font-size: 18px;
+        border: 2.3px solid rgb(23, 23, 26);
+        border-radius: 24px;
+        outline: none;
+        box-shadow: 6px 7px 5px #bbb9ba;
+    }
+
+    .sectionBody .flex .p {
+        margin: 15px 0px 10px 0px;
+    }
+
+    .sectionBody .flex .input:nth-last-child(2) {
+        border: none;
+        box-shadow: none;
+    }
+
+    .sectionBody .flex .input:focus {
+        box-shadow: 0px 0px 10px rgb(100, 100, 100);
+        border: none;
+    }
+
+    .sectionBody .flex .input #numPeople {
+        width: 10%;
+        text-align: center;
+        border: none;
+        outline: none;
+        margin: 0px 5px;
+        border-radius: 20px;
+        background: none;
+    }
+
+    .sectionBody .flex .input:nth-last-child(2) .fas {
+        color: grey;
+        border-radius: 20px;
+        padding: 5px 10px;
+        background-color: rgb(226, 226, 226);
+        color: black;
+    }
+
+        .sectionBody .flex .input:nth-last-child(2) .fas:hover {
+            background-color: gold;
+        }
+
+    .sectionBody .flex .input #numPeople:focus {
+        box-shadow: 0px 0px 10px grey;
+    }
+
+    .sectionBody .flex .input #numPeople::-webkit-inner-spin-button, .pageBody .sectionBody .flex .input #numPeople::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
+
+    .sectionBody .title {
+        text-align: left;
+    }
+
+    .sectionBody .formBox {
+        display: flex;
+        padding-bottom: 20px;
+        background-color: rgb(255, 255, 255);
+        width: 60%;
+        margin: 0px auto;
+    }
+
+    .sectionBody .right .btnBox {
+        display: flex;
+        justify-content: left;
+        padding: 10px 0px;
+    }
+
+        .sectionBody .right .btnBox .submitBtn {
+            flex-basis:100%;
+            background: linear-gradient(to right,#ff105f,#ffad06);
+            width: 75%;
+            font-size: 15px;
+            height: 38px;
+            border-radius: 25px;
+            text-align: center;
+            padding: 5px;
+        }
+
+            .sectionBody .right .btnBox .submitBtn:hover {
+                background: linear-gradient(to left,#ff105f,#ffad06);
+            }

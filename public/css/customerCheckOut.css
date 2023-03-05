@@ -1,0 +1,450 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+
+
+.customerAccContent .nav-links li:nth-child(3) .purchase {
+    margin-left: 5px;
+}
+
+.customerAccContent .nav-links li:nth-child(2) .arrow {
+    margin-left: 8px;
+}
+
+.customerAccContent .nav-links li:nth-child(2) .account {
+    margin-left: 4px;
+}
+
+.all {
+    background-color: #f7f7f7;
+}
+
+.checkoutBar {
+    background-color: #636363;
+    margin-top: 0;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    background-image: url("../image/Dessert/tang-yuan.png");
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+}
+
+.checkout {
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size: 40px;
+    margin-left: 100px;
+    right: 0;
+    left: 0;
+    margin-top: -70px;
+    position: absolute;
+    text-align: center;
+}
+
+.newAddressContent {
+    flex-basis: 80%;
+    border: 1px solid white;
+    box-shadow: 5px 10px 18px #888888;
+    margin: 50px 80px;
+    padding-right: 100px;
+    width: 40%;
+    padding-bottom: 170px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 28px;
+    margin-left: 20px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.userSetting, .streetAddressSetting, .townSetting, .stateSetting, .postalCodeSetting {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.newAddressForm {
+    margin-left: 20px;
+}
+
+    .newAddressForm .userSetting .userNameLabel {
+        flex-basis: 30%;
+        color: black;
+        font-size: 17px;
+        margin: 0px;
+    }
+
+    .newAddressForm .userSetting .userNameInput {
+        flex-basis: 70%;
+        border-radius: unset;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 100%;
+        height: 25px;
+    }
+
+    .newAddressForm .streetAddressSetting .streetAddressLabel {
+        flex-basis: 30%;
+        color: black;
+        font-size: 17px;
+        margin: 0px;
+    }
+
+    .newAddressForm .streetAddressSetting .streetAddressInput {
+        flex-basis: 70%;
+        border-radius: unset;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 100%;
+        height: 25px;
+    }
+
+    .newAddressForm .userPhoneSetting .addressUserPhoneInputLabel {
+        flex-basis: 30%;
+        color: black;
+        font-size: 17px;
+        margin: 0px;
+    }
+
+    .newAddressForm .userPhoneSetting .addressUserPhoneInput {
+        flex-basis: 70%;
+        border-radius: unset;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 100%;
+        height: 25px;
+    }
+
+    .newAddressForm .townSetting .townLabel {
+        flex-basis: 30.9%;
+        color: black;
+        font-size: 17px;
+        margin: 0px;
+    }
+
+    .newAddressForm .postalCodeSetting .postalCodeLabel {
+        color: black;
+        font-size: 17px;
+        flex-basis: 30%;
+        margin: 0px
+    }
+
+    .newAddressForm .postalCodeSetting .postalCodeInput {
+        flex-basis: 70%;
+        border-radius: unset;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 100%;
+        height: 25px;
+    }
+
+    .newAddressForm .townSetting .townInput {
+        flex-basis: 73%;
+        border-radius: unset;
+        border: 0.5px solid rgb(197, 197, 197);
+        height: 40px;
+        text-align: center;
+    }
+
+.newAddressContent .newAddressTitle .title {
+    font-weight: bolder;
+}
+
+.yourOrderTitle {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 28px;
+    text-align: center;
+    margin: 0px;
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+/*product*/
+.containerBorder {
+    margin: 0%;
+    display: flex;
+}
+
+.CheckOutcontainer {
+    flex-basis: 40%;
+    margin: 50px 80px 50px 0px;
+    padding-top: 20px;
+    padding-bottom: 100px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 1px solid #dadada;
+    background-color: rgb(240, 240, 240);
+    width: 30%;
+}
+
+.checkoutContent {
+    border: 1px solid white;
+}
+
+
+
+.tableContent, .totalPriceTable {
+    border: 1px solid white;
+    background-color: white;
+}
+
+.tableContent {
+    width: 100%;
+    border-collapse: collapse;
+    padding-left: 100px;
+}
+
+.productName, .productSubTotal {
+    color: black;
+    text-align:right;
+    font-weight: 550;
+}
+
+.productName {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.item {
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+}
+
+.subtotalName, .subtotalPrice {
+    color: black;
+}
+
+.thItem .productSubTotal {
+    padding-right: 20px;
+}
+
+.thead {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    height: 50px;
+}
+
+.tbody .tdItem {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+
+.thead .tableHeader {
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.tbody .item, .subtotal, .tax {
+    border-bottom: 0.7px solid #c0c0c0;
+}
+
+.totalPrice {
+    font-size: 30px;
+    color: #ff5959;
+    font-weight: bold;
+    text-align:right;
+}
+
+.total .totalPriceTitle {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.productInfo {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.thItem {
+    text-align: left;
+    padding: 10px;
+    color: black;
+    font-weight: normal;
+}
+
+.tdItem:last-child {
+    text-align: right;
+}
+
+.thItem:last-child {
+    text-align: right;
+}
+
+.paymentMethod {
+    margin-top: 20px;
+}
+
+.placeOrder {
+    margin-left: 20px;
+    margin-top: 10px;
+    width: 25%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #b0c4d6;
+    font-size: 14px;
+    font-weight: 500;
+    float: right;
+}
+
+.directBankInBlock {
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    display: none;
+}
+
+.paymentMethod-directBankIn {
+    margin-top: 20px;
+}
+
+img.publicBankLogo {
+    margin-left: 60px;
+    margin-top: 2px;
+}
+
+.publicBankLabelInput {
+    vertical-align: top;
+    align-items: center;
+    display: flex;
+}
+
+img.mayBankLogo {
+    margin-left: 80px;
+}
+
+.maybankLabelInput {
+    margin-top: 10px;
+    vertical-align: top;
+    align-items: center;
+    display: flex;
+}
+
+img.hongLeongBankLogo {
+    margin-left: 22px;
+}
+
+.hongLeongBankLabelInput {
+    margin-top: 10px;
+    margin-bottom: 3px;
+    vertical-align: top;
+    align-items: center;
+    display: flex;
+}
+
+.paymentMethod-paypal {
+    margin-top: 20px;
+}
+
+img.paypalLogo {
+    margin-left: 26px;
+}
+
+.paypalBlock {
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    display: none;
+}
+
+.paymentMethod-payOnDelivery {
+    margin-top: 20px;
+}
+
+.item .tdItem {
+    font-weight: lighter;
+}
+
+.subtotal .thItem, .subtotal .tdItem, .tax .thItem, .tax tdItem {
+    font-weight: bolder;
+}
+
+.RadioButtonList1 {
+    float: left;
+    position: absolute;
+    right: 8%;
+}
+
+
+
+.newAddressForm .userPhoneSetting {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+    .newAddressForm .userPhoneSetting .addressUserPhoneInputLabel {
+        flex-basis: 30%;
+        color: black;
+        font-size: 17px;
+        margin: 0px;
+    }
+
+    .newAddressForm .userPhoneSetting .addressUserPhoneInput {
+        flex-basis: 70%;
+        border-radius: unset;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        border: 0.5px solid rgb(197, 197, 197);
+        width: 100%;
+        height: 25px;
+    }
+
+.btnBox {
+    display: flex;
+    justify-content: right;
+    justify-items: right;
+}
+
+    .btnBox .editAddressBtn {
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: rgb(255, 86, 86);
+        border: 1px solid white;
+        border-radius: 5px;
+    }
+
+.item {
+    color: black;
+    margin: 0px;
+}
+
+    .item .tdItem {
+        font-weight: lighter;
+        color: grey;
+    }
+
+.productName, .productSubTotal {
+    color: black;
+    text-align: right;
+    font-weight: 550;
+}
+
+.productSubTotal {
+    padding-right: 15px;
+}
+
+.DelieryFee .tdItem {
+    text-align: right;
+}
+
+.totalPrice {
+    font-size: 30px;
+    color: #ff5959;
+    font-weight: bold;
+    text-align: right;
+}
+
+.productName {
+    text-align: left;
+}
+
+.total th, .total th {
+    padding: 20px 0px;
+}

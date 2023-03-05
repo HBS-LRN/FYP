@@ -1,0 +1,104 @@
+body{
+    margin:0;
+    padding:0;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: rgb(236, 230, 230);
+}
+form{
+    float: left;
+    background-color: white;
+    padding: 40px;
+    margin-top: 150px;
+    margin-left: 550px;
+
+}
+form input{
+    padding: 2px 20px;
+}
+form img{
+    margin-bottom: 30px;
+    margin-left: 50px;
+}
+form #event{
+    margin-left: 35px;
+    margin-bottom: 20px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+form #quantity{
+    margin-left: 13px;
+    margin-bottom: 20px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+form #total{
+    margin-left: 8px;
+    margin-bottom: 20px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+form #amount{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    outline: none;
+     width: 200px;
+}
+
+form #amount:hover{
+    border-color:rgb(0, 183, 255) ;
+}
+input[type="submit"]{
+    margin-top:20px;
+    text-align: center;
+    font-weight: bolder;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.452),rgba(0, 0, 0, 0.719));
+}
+input[type="submit"]:hover{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.719),rgba(255, 255, 255, 0.452));
+}
+.loginPayment .login{
+    margin: 10px 0px;
+    font-size: 20px;
+    text-align: center;
+}
+.loginPayment img{
+    margin-bottom: 0px;
+}
+.loginPayment input{
+    margin-bottom: 10px;
+}
+.loginPayment #PassWord{
+    margin-left: 53px;
+}
+.loginPayment #userName{
+                margin-left:20px; 
+            }
+
+form #otp{
+    width: 200px;
+}
+
+label[for="otp"]{
+    margin-right: 50px;
+}
+
+
+input[type="submit"]{ 
+    margin-top:20px;
+    text-align: center;
+    font-weight: bolder;
+     background-image: linear-gradient(rgba(255, 255, 255, 0.452),rgba(0, 0, 0, 0.719));
+}
+input[type="submit"]:hover{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.719),rgba(255, 255, 255, 0.452));
+}
+input[name="require"]{
+    margin-left: 15px;
+}

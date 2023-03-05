@@ -1,0 +1,18 @@
+.pageBody .sectionBody{
+    margin: 0px 120px;
+} 
+.pageBody .sectionBody .divBox{
+    box-shadow: 0px 0px 20px white;
+    border-radius: 20px;
+    padding: 30px;
+    color: black;
+    margin-top: 20px;
+    background-image: linear-gradient(to bottom right, rgb(247, 245, 245),rgb(121, 119, 119));
+}
+.pageBody .sectionBody .divBox .title{
+    text-decoration: underline;
+    color: black;
+}
+.pageBody .sectionBody .divBox .p{
+    color: black;
+}

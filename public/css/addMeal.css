@@ -1,0 +1,93 @@
+.form {
+    margin: 0px auto;
+    width: 60%;
+    padding: 30px 60px 30px 30px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 20px grey;
+}
+
+.titleaddMeal {
+    font-size: 60px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form .flex {
+  display: flex;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.form .flex .label {
+    flex-basis: 30%;
+    text-align: left;
+}
+
+.form .flex .input {
+   flex-basis: 70%;
+   padding: 10px;
+   outline: none;
+   border: 1px solid grey;
+}
+
+.form .flex .input:focus {
+ border: 1px solid blue;
+}
+
+.form .addMeal {
+display: flex;
+justify-content: right;
+justify-items: center;
+align-items: center;
+}
+
+.form .addMeal .addMealButton {
+ border: 1px solid black;
+ border-radius: 5px;
+ background-color: rgb(255, 86, 86);
+ color: white;
+ font-size: 15px;
+ height: 34px;
+ cursor: pointer;
+ padding: 5px 60px;
+}
+
+td {
+padding: 0px;
+border: none;
+}
+.error {
+color: red;
+font-size: 13px;
+
+width: 100%;
+position:relative;
+right:35px;
+
+}
+.error:nth-child(4) {
+right:25px;
+
+}
+
+.error:nth-child(10) {
+right:20px;
+
+
+}
+.error1 {
+right:45px;
+}
+.error:nth-child(6) {
+right:24px;
+
+}
+.error:nth-child(12) {
+right:55px;
+
+}
+.form .table {
+margin:0px;
+}

@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.employee-signUp-container{
+    height:100%;
+    width:100%;
+    background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position:center;
+    background-size:cover;
+    position:absolute;
+    font-family: 'Poppins', sans-serif;
+}
+.employee-signUp{
+    margin:80px auto;
+    background-color:white;
+    width:60%;
+    height:85%;
+    display:flex;
+
+}
+.logo{
+   box-shadow:10px 0px 10px rgba(236, 236, 236, 0.788);
+   align-items: center;
+   padding-bottom:84px;
+   display:flex;
+}
+.logo img{
+    height:400px;
+    width:400px;
+    
+}
+.employee-form{
+    width:39%;
+}
+input{
+    height:30px;
+    width:100%;
+    font-size:18px;
+    margin:10px 0px 10px 0px;
+    background: none;
+    padding:25px 10px;
+    border:2.3px solid rgb(23, 23, 26);
+    border-radius:24px;
+    outline:0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input[name="empconfirmedPassword"]{
+    height:30px;
+    width:100%;
+    font-size:18px;
+    margin:10px 0px 13px 0px;
+    background: none;
+    padding:25px 10px;
+    border:2.3px solid rgb(23, 23, 26);
+    border-radius:24px;
+    outline:0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover{
+    border:2.3px solid rgb(61, 19, 214);
+ 
+ }
+.employee-form{
+    margin:6px 40px 0px 50px;
+}
+.text-form a{
+    text-decoration:none;
+    color:rgb(253, 115, 115);
+
+}
+.login-form{
+    margin-bottom:40px;
+}
+
+.login-form h1{
+    font-size:28px;
+    color:#353435;
+}
+
+label{
+    font-size:13px;
+    color:rgb(71, 71, 71);
+}
+
+.verification a{
+    font-size:12px;
+    color:rgb(71, 71, 71);
+    text-decoration:none;
+   
+}
+.verification{
+    margin:0px 1px 0px 173px;
+
+}
+
+.submit a{
+    color:rgb(41, 40, 40);
+    
+}
+
+.submit{
+    background:linear-gradient(to right,#ff105f,#ffad06);
+    width:330px;
+    height:38px;
+    border-radius:25px;
+    text-align:center;
+    padding-top:5px;
+    margin:30px 0px 0px 15px;
+}
+    
+
+
+
+
+

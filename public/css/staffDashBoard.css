@@ -1,0 +1,426 @@
+﻿/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 4, 2022, 12:50:29 PM
+    Author     : TEE FO YO
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100%;
+    height: 100vh;
+    flex-basis: 18.5%;
+}
+
+.side-navigation .nav-links {
+    height: 100%;
+    padding: 30px 0 200px 0;
+    overflow: auto;
+}
+
+    .side-navigation .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+.side-navigation {
+    width: 270px;
+    height: 100%;
+    background: #11101d;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px 20px;
+}
+
+.logo-details {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+    .logo-details img {
+        width: 100px;
+        border-radius: 6px;
+        margin-left: 15px;
+    }
+
+    .logo-details p {
+        margin-left: 10px;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 600;
+    }
+
+.nav-links {
+    list-style: none;
+    position: relative;
+}
+
+    .nav-links .sub-menu {
+        list-style: none;
+        position: relative;
+    }
+
+
+    .nav-links li {
+        padding: 10px 0px;
+    }
+
+.side-navigation .nav-links li:hover {
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(255,255,255,0);
+    background: #1d1b31;
+}
+
+.side-navigation .nav-links li a:hover {
+    color: #0073ff;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+.nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+}
+
+    .nav-links li a i {
+        font-size: 22px;
+        margin-right: 20px;
+    }
+
+.side-navigation .nav-links .sub-menu {
+    padding: 6px 6px 14px 10px;
+    margin-top: -10px;
+    display: none;
+}
+
+.side-navigation .nav-links li.showSubMenu i.arrow {
+    transform: rotate(-180deg);
+    margin-bottom: 16px;
+}
+
+.side-navigation .nav-links li.showSubMenu .sub-menu {
+    display: block;
+}
+
+.side-navigation .nav-links .showSubMenu {
+    margin-bottom: -13px;
+}
+
+.side-navigation .nav-links .sub-menu a {
+    color: #fff;
+    font-size: 15px;
+    padding: 5px 0;
+    white-space: nowrap;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.iconLink {
+    display: flex;
+}
+
+    .iconLink .arrow {
+        margin-top: 15px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+.nav-links .sub-menu a {
+    color: #fff;
+    font-size: 15px;
+    padding: 0px 0;
+}
+
+
+
+
+.side-navigation .profile-content {
+    position: fixed;
+    bottom: 0;
+    margin-left: -20px;
+    width: 270px;
+    display: flex;
+    align-items: center;
+    background: #1d1b31;
+    padding: 11px 0;
+    transition: all 0.5s ease;
+}
+
+.profile {
+    flex-basis: 20%;
+}
+
+.profile-namejob {
+    flex-basis: 55%;
+}
+
+.icon-log-out {
+    flex-basis: 20%;
+    padding-left: 10px;
+}
+
+.side-navigation.close .profile-content {
+    width: 78px;
+}
+
+.side-navigation .profile-content img {
+    height: 52px;
+    width: 52px;
+    border-radius: 16px;
+    margin: 0 14px 0 12px;
+    background: #1d1b31;
+    transition: all 0.5s ease;
+}
+
+.side-navigation.close .profile-content img {
+    padding: 10px;
+}
+
+
+
+.side-navigation .profile-content i,
+.side-navigation .profile-content .profile_name,
+.side-navigation .profile-content .job_role {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 515;
+    white-space: nowrap;
+}
+
+
+.side-navigation .profile-content .job_role {
+    font-size: 13px;
+}
+
+.hoverActive {
+    background: #fff;
+    width: 100%;
+    height: 47px;
+    position: absolute;
+    left: 0;
+    top: 2.0%;
+    z-index: -1;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(255,255,255,0);
+    display: none;
+    transition: top 0.5s;
+}
+
+.Pagebody {
+    display: flex;
+    background-color: whitesmoke;
+}
+
+.box {
+    height: 700px;
+    flex-basis: 81.5%;
+}
+
+    .box div:nth-child(1) h1 {
+        color: blue;
+        font-size: 60px;
+        margin-left: 30px;
+    }
+
+    .box .topBox {
+        display: flex;
+    }
+
+.box1 {
+    flex-basis: 25%;
+    display: block;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    box-shadow: 5px 10px 8px 10px #dbdada;
+    background-color: white;
+    color: blue;
+    text-align: right;
+    font-family: "Courier New", Courier, monospace;
+    height: 150px;
+    width: 50px;
+    margin: 40px 20px 0px 10px;
+}
+
+    .box1 div:nth-child(1) {
+        float: right;
+    }
+
+    .box1 p:last-child {
+        text-align: center;
+        margin-left: 170px;
+    }
+
+        .box1 p:last-child a:hover {
+            text-decoration: underline;
+        }
+
+        .box1 p:last-child a {
+            text-decoration: none;
+            font-size: small;
+            font-weight: bold;
+            color: black;
+        }
+
+    .box1 div:nth-child(1) i {
+        font-size: 80px;
+        color: rgb(112, 107, 107);
+        opacity: 0.3;
+        padding: 30px 20px 0px 30px;
+    }
+
+    .box1 div:nth-child(2) {
+        padding: 25px 9px 0px 0px;
+    }
+
+    .box1 div h1 {
+        position: absolute;
+    }
+
+    .box1 div:nth-child(2) h1 {
+        padding: 0%;
+        margin-left: 5px;
+        text-align: left;
+        font-size: 40px;
+    }
+
+    .box1 div p {
+        position: relative;
+        top: 85px;
+    }
+
+    .box1 div:nth-child(2) p {
+        padding: 0%;
+        margin-left: 5px;
+        text-align: left;
+        font-size: 20px;
+        color: rgb(182, 180, 180);
+    }
+
+.box2 {
+    flex-basis: 25%;
+    display: block;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    box-shadow: 5px 10px 8px 10px #dbdada;
+    background-color: white;
+    color: blue;
+    text-align: right;
+    font-family: "Courier New", Courier, monospace;
+    height: 75%;
+    width: 65%;
+    margin: 30px 20px 0px 10px;
+}
+
+    .box2 div:nth-child(1) h1 {
+        padding: 0%;
+        margin-left: 5px;
+        text-align: left;
+        font-size: 30px;
+    }
+
+    .box2 div:nth-child(1) button {
+        border: none;
+        border-radius: 4px;
+        background-color: #0073ff;
+        color: white;
+        padding: 8px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin-left: 490px;
+        cursor: pointer;
+    }
+
+    .box2 div:nth-child(1) table {
+        font-family: "Courier New", Courier, monospace;
+        border-style: hidden;
+        width: 100%;
+        border-collapse: collapse;
+        cursor: pointer;
+    }
+
+    .box2 div:nth-child(1) td, th {
+        color: black;
+        border-style: hidden;
+        text-align: left;
+        padding: 10px 10px 10px 10px;
+    }
+
+    .box2 div:nth-child(1) tr:hover {
+        background-color: #cae7f5;
+    }
+
+.box3 {
+    flex-basis: 25%;
+    display: block;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    box-shadow: 5px 10px 8px 10px #dbdada;
+    background-color: white;
+    color: blue;
+    text-align: right;
+    font-family: "Courier New", Courier, monospace;
+    height: 75%;
+    width: 30%;
+    margin: -525px 20px 0px 858px;
+    float: right;
+    cursor: pointer;
+}
+
+    .box3 div:nth-child(1) h1 {
+        padding: 0%;
+        margin-left: 5px;
+        text-align: left;
+        font-size: 30px;
+    }
+
+    .box3 div:nth-child(1) h3 {
+        color: #000;
+        padding: 0%;
+        margin-left: 70px;
+        text-align: left;
+    }
+
+    .box3 div:nth-child(1) p {
+        color: #000;
+        font-size: smaller;
+        padding: 0%;
+        margin-left: 70px;
+        text-align: left;
+    }
+
+    .box3 div:nth-child(1) img {
+        float: left;
+        margin-left: 20px;
+        margin-top: 30px;
+        width: 35px;
+        height: 35px;
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
+.scroll-wrap {
+    height: 500px;
+    overflow: auto;
+}
+
+    .scroll-wrap::-webkit-scrollbar {
+        display: none;
+    }

@@ -1,0 +1,47 @@
+﻿.dataProtectionBar {
+    background-color: #636363;
+    margin-top: 0;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    background-image: url("../image/Dessert/tang-yuan.png");
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+}
+
+.dataProtection {
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size: 40px;
+    margin-left: 100px;
+    right: 0;
+    left: 0;
+    margin-top: -70px;
+    position: absolute;
+    text-align: center;
+}
+
+h2 {
+    color: black;
+    margin-top: 50px;
+    margin-bottom: 25px;
+    font-weight: 400;
+}
+
+.dataProtectionContent {
+    margin: 80px 0px 100px 200px;
+    color: gray;
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+}
+
+    .dataProtectionContent .content {
+        padding: 0px 250px 0px 0px;
+    }
+
+.sub-content {
+    padding-left: 20px;
+}
+
+    .sub-content li {
+        padding: 8px;
+    }

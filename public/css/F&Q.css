@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+.container{
+	font-family: 'Poppins', sans-serif;
+	margin:70px 190px;
+}
+.question{
+	color: rgb(73, 73, 73);
+    border-top:1px solid #999;
+    border-bottom:1px solid #999;
+	padding:20px 30px;
+	
+}
+.question i{
+
+	margin-right:30px;
+}
+.question .answer{
+	margin:20px 35px;
+	color:rgb(122, 122, 122);
+	padding: 10px;
+	border-radius: 15px;
+	display:none;
+
+}
+
+.question.showAnswer .answer{
+    display: block;
+    
+}
+.question.showAnswer .arrow{
+    transform: rotate(-45deg);
+}
+.mailtoHref{
+	text-decoration:none;
+	color:black;
+}
+.question i{
+	cursor:pointer;
+}
+
+.FAQBar{
+    background-color: #636363;
+    margin-top:0;
+    padding-top:20px;
+    padding-bottom:70px;
+    background-image:url("../image/Dessert/tang-yuan.png");
+    filter:blur(1px);
+    -webkit-filter:blur(1px);
+}
+
+.FAQ{
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size:40px;
+    margin-left:100px;
+    right:0;
+    left:0;
+    margin-top:-70px;
+    position:absolute;
+    text-align: center;
+}

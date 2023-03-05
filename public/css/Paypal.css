@@ -1,0 +1,78 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: rgb(236, 230, 230);
+}
+
+form {
+    background-color: white;
+    padding: 40px;
+    width: 30%;
+    margin: 150px auto;
+}
+
+    form .imgBox {
+        padding: 0px 30px 0px 130px;
+    }
+
+    form .flex {
+        display: flex;
+        margin-bottom: 0px;
+        margin-top: 20px;
+    }
+
+.error {
+    margin-left: 130px;
+    font-size: 13px;
+}
+
+form .flex .label {
+    flex-basis: 30%;
+    display: flex;
+    align-items: center;
+}
+
+form .flex .input {
+    flex-basis: 70%;
+    padding: 10px;
+}
+
+form .flex:nth-child(1) {
+    margin: 0px;
+}
+
+form .btn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: right;
+}
+
+.btn .require {
+    text-align: center;
+    font-weight: bolder;
+    padding: 5px 20px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.452),rgba(0, 0, 0, 0.719));
+    margin-left: 10px;
+}
+
+input[type="submit"], .btn .submit {
+    text-align: center;
+    font-weight: bolder;
+    padding: 5px 20px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.452),rgba(0, 0, 0, 0.719));
+}
+
+    input[type="submit"]:hover, .btn .submit:hover, .btn .require:hover {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.719),rgba(255, 255, 255, 0.452));
+    }
+
+.loginPayment .login {
+    margin: 10px 0px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.loginPayment img {
+    margin-bottom: 0px;
+}
