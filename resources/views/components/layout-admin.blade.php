@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html>
 
 <head>
-    <title></title>
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 
@@ -10,7 +7,6 @@
 
 </head>
 
-<body>
 
     <div class="header">
         <div class="side-navigation">
@@ -98,7 +94,9 @@
         </div>
 
     </div>
-    <script>
+  
+
+<script>
       let arrow = document.querySelectorAll(".arrow");
       
       for (var i = 0; i < arrow.length; i++) {
@@ -109,7 +107,3 @@
         });
       }
       </script>
-  </body>
-</body>
-
-</html>

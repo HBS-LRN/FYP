@@ -15,8 +15,9 @@
             color: white;
         }
     </style>
+    <div class="Pagebody">
     <x-layout-admin>
-    </x-layout-admin>
+    </x-layout-admin> 
     <div class="box">
         <div class="topBox">
             <div class="box1">
@@ -168,6 +169,8 @@
         </div>
 
     </div>
+    </div>
+      
 
     <script src="../JavaScript/jquery-3.6.0.min.js"></script>
     <script src="../JavaScript/sweetalert2.all.min.js"></script>
