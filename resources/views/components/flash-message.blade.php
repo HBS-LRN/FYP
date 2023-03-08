@@ -23,6 +23,24 @@
     </script>
 @endif
 
+@if (session()->has('resgisterSucessful'))
+    <div class="register-meesage" data-registerdata={{ session('resgisterSucessful') }}></div>
+
+    <script>
+
+        const successData = $('.register-meesage').data('registerdata')
+        if (successData) {
+           
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Register Successful!',
+                text: 'You Can now Log In With Your Registered Email',
+            })
+
+        }
+    </script>
+@endif
 @if (session()->has('successfullyUpdate'))
     <div class="update-meesage" data-flashdata='successfullyUpdate'></div>
     <script>
