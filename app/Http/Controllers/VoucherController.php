@@ -92,6 +92,7 @@ class VoucherController extends Controller
 
     public function showVoucher()
     {
+        
 
         return view('webservices.voucherRedeem');
         $response = Http::get('https://api.jsonbin.io/v3/b/63fe2217ebd26539d086e978');

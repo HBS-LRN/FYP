@@ -73,13 +73,9 @@ class UserController extends Controller
         
         ]);
 
-
-
-        //call repository class to create user
-        $user = $this->userRepositoryInterface->create($data);
-
-       
-        return redirect('/')->with('message', 'User created and log in');
+          //call repository class to create user
+          $user = $this->userRepositoryInterface->create($data);
+          return redirect('/login')->with('resgisterSucessful', $user);
     }
 
 
