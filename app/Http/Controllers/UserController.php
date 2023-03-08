@@ -54,7 +54,7 @@ class UserController extends Controller
         }
 
         //call repository class to update the class
-        $this->userRepositoryInterface->update(Auth::user(), $data);
+        $this->userRepositoryInterface->updateUser(Auth::user(), $data);
 
         return back()->with('successfullyUpdate', true);
     }
@@ -78,8 +78,7 @@ class UserController extends Controller
         //call repository class to create user
         $user = $this->userRepositoryInterface->create($data);
 
-        //login 
-        auth()->login($user);
+       
         return redirect('/')->with('message', 'User created and log in');
     }
 
