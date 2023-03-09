@@ -83,22 +83,28 @@
 <body>
     <div class="box">
       <h2 class="editMeal">Edit Meal</h2>
+      <form action="/mealupdate/{{$meal->id}}" method="POST" enctype="multipart/form-data">
+        @csrf
+
           <div class="form">
               <!-- <asp:HiddenField ID="hiddenMealID" runat="server" /> -->
                 
                 <div class="flex">
                     <label for="mealID" class="label">Meal ID : </label>
-                    <input type="text" id="txtMealID" class="input" Text="1000" ReadOnly="true" value="{{$meal->id}}"/>                  
+                    <input type="text" id="txtMealID" name="meal_id" class="input" Text="1000" ReadOnly="true" value="{{$meal->id}}"/>                  
                 </div>
 
                 <div class="flex">
                     <label for="mealName" class="label">Meal Name :</label>
-                    <input type="text" id="txtMealName" class="input" value="{{ $meal->meal_name }}" />
+                    <input type="text" id="txtMealName" name="meal_name" class="input" value="{{ $meal->meal_name }}" />
                 </div>
+                @error('meal_name')
+                        <p class="error">{{ $message }}</p>
+                @enderror
             
               <div class="flex">
                         <label for="mealCategory" class="label">Meal Category :</label>
-                        <select name="ddlMealCategory" class="input">
+                        <select name="category_id" class="input">
                         <option value=""> Select category</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" @if($meal->Category->id == $category->id) selected="selected" @endif>{{ $category->name }}</option>
@@ -106,32 +112,43 @@
                 </select>
                        
                 </div>
+                @error('category_id')
+                        <p class="error">{{ $message }}</p>
+                @enderror
 
                 <div class="flex">
                     <label for="mealQuantity" class="label">Meal Quantity :</label>
-                    <input type="number" id="txtMealQuantity" class="input" value="{{ $meal->meal_qty }}" />
+                    <input type="number" name="meal_qty" id="txtMealQuantity" class="input" value="{{ $meal->meal_qty }}" />
                     
                 </div>
-             
+                @error('meal_qty')
+                        <p class="error">{{ $message }}</p>
+                @enderror
+
                 <div class="flex">
                     <label for="mealPrice" class="label">Meal Price :</label>
-                    <input type="text" id="txtMealPrice" class="input" value="{{ $meal->meal_price }}" />
-                      
+                    <input type="text" id="txtMealPrice" name="meal_price" class="input" value="{{ $meal->meal_price }}" />  
                 </div>
+                @error('meal_price')
+                        <p class="error">{{ $message }}</p>
+                @enderror
             
                 <div class="flex">
                     <label for="Image" class="label">Upload Image:</label>
                     <input type="file" id="FileUpload" name="meal_image" accept=".png,.jpg,.jpeg,.gif" />
-
                 </div>
+                @error('meal_image')
+                        <p class="error">{{ $message }}</p>
+                @enderror
                     
 
                 <div class="editMeal">
-                <button id="edit" class="editMealButton" Text="Edit Meal">Edit Meal </button>
+                <button id="edit" type="submit" class="editMealButton" Text="Edit Meal">Edit Meal </button>
                 </div>
             
 
         </div>
-
+   </form>
     </div>
+    
 </body>

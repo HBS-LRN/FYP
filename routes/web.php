@@ -50,9 +50,10 @@ Route::get('/meal/create', [MealController::class, 'create']);
 Route::post('/meal/store', [MealController::class, 'store']);
 
  // Show update meal form
- Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
+Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
 
-
+ //Update meal
+Route::post('/mealupdate/{id}', [MealController::class, 'update']);
 
 
 // Show All category Data
