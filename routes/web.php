@@ -2,9 +2,11 @@
 
 use App\Models\Voucher;
 use App\Models\Category;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ShoppingCart;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
@@ -145,8 +147,7 @@ Route::get('/address/{id}/delete', [AddressController::class, 'delete'])->middle
 // Update address as set as current address
 Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurrent'])->middleware('auth');
 
-// delete address
-Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('auth');
+
 
 
 //show customer purchase status
@@ -156,18 +157,22 @@ Route::get('/purchase', [OrderController::class, 'show']);
 Route::post('/comment', [OrderController::class, 'comment']);
 
 
+// web service
+Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('auth');
 //web servcie
-Route::get('/voucher', [VoucherController::class, 'showVoucher']);
+Route::get('/voucher', [VoucherController::class, 'show']);
+//web servcie
+Route::get('/voucher/{id}', [VoucherController::class, 'store']);
+Route::post('/update/voucher', [VoucherController::class, 'update']);
 
+Route::get('/webServiceRegister', [VoucherController::class, 'storeWebServiceClient']);
 
-Route::get('/invoice-pdf', function () {
-    // return view('invoice-pdf');
+Route::get('/gift', [GiftController::class, 'index']);
+Route::post('/gift/store', [GiftController::class, 'store']);
 
-    $pdf = Pdf::loadView('invoice-pdf')->setOptions(['defaultFont' => 'sans-serif']);;
-    return $pdf->download('invoice-pdf.pdf');
-});
-
-
+   
 
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
+
+

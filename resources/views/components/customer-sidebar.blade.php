@@ -70,13 +70,19 @@
             </div>
 
         </li>
+        <li>
+            <div>
+                <a href="/voucher"><i class="fa fa-ticket" aria-hidden="true"></i>Voucher</a>
+            </div>
 
+        </li>
         <li>
             <div class="iconLink">
                 <a href="/memberPoint"><i class="fa fa-user-plus"></i><span class="memberPoint">Member Point</span></a>
             </div>
 
         </li>
+      
         <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
 
 

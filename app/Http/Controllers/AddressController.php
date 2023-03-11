@@ -7,9 +7,19 @@ use App\Models\State;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Repository\AddressRepositoryInterface;
 
 class AddressController extends Controller
 {
+
+
+    private $addressRepositoryInterface;
+
+    public function __construct(AddressRepositoryInterface $addressRepositoryInterface)
+    {
+        $this->addressRepositoryInterface = $addressRepositoryInterface;
+    }
+
     public function index()
     {
 
@@ -27,21 +37,13 @@ class AddressController extends Controller
     public function create()
     {
 
-
-
-
-        return view('address.create', [
-
-
-            'areas' =>  State::all()
-
-        ]);
+        return view('address.create', ['areas' =>  State::all()]);
     }
 
 
     public function store(Request $request)
     {
-        $formFields = $request->validate([
+        $data = $request->validate([
 
             'address_username' => 'required',
             'address_userphone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
@@ -58,11 +60,12 @@ class AddressController extends Controller
         ]);
 
 
-        $formFields['user_id'] = auth()->id();
-        $formFields['active_flag'] = "N";
+        $data['user_id'] = auth()->id();
+        $data['active_flag'] = "N";
 
-        Address::create($formFields);
 
+        //call address repository interface to create data 
+        $this->addressRepositoryInterface->create($data);
         return redirect('/address')->with('successfullyUpdate', true);
     }
 
@@ -70,7 +73,9 @@ class AddressController extends Controller
     {
 
         $address = Address::find($id);
-        $formFields = $request->validate([
+        $data['user_id'] = auth()->id();
+        $data['active_flag'] = $address->active_flag;
+        $data = $request->validate([
 
             'address_username' => 'required',
             'address_userphone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
@@ -86,15 +91,9 @@ class AddressController extends Controller
             'address_userphone.regax'    => 'please follow format xxx-xxxxxxxxx',
         ]);
 
-       
 
-
-
-        $formFields['user_id'] = auth()->id();
-        $formFields['active_flag'] = $address->active_flag;
-
-        $address->update($formFields);
-
+        //call address repository interface to update data 
+        $this->addressRepositoryInterface->update($address,$data);
         return redirect('/address')->with('successfullyUpdate', true);
     }
 
@@ -102,14 +101,8 @@ class AddressController extends Controller
     {
 
         $address = Address::find($id);
-
-        // Make sure logged in user is owner
-        //  if($address->user_id != auth()->id()) {
-        //     abort(403, 'Unauthorized Action');
-        // }
-
-
-        $address->delete();
+        //call address repository interface to delete data 
+        $this->addressRepositoryInterface->delete($address);
         return redirect('/address')->with('successfullyUpdate', true);
     }
     public function edit($id)

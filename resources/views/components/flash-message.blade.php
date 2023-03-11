@@ -23,14 +23,16 @@
     </script>
 @endif
 
+
+
+
 @if (session()->has('resgisterSucessful'))
     <div class="register-meesage" data-registerdata={{ session('resgisterSucessful') }}></div>
 
     <script>
-
         const successData = $('.register-meesage').data('registerdata')
         if (successData) {
-           
+
             Swal.fire({
                 type: 'success',
                 icon: 'success',
@@ -106,13 +108,65 @@
         }
     </script>
 @endif
+@if (session()->has('successfulStoreClient'))
+    <div class="success-meesage" data-successdata={{ session('successfulStoreClient') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'You Can Now Redeem To This Voucher',
+                showConfirmButton: false,
+                timer: 1500
+
+            })
+        }
+    </script>
+@endif
+
+@if (session()->has('successfullyPromoteUpdate'))
+    <div class="success-meesage" data-successdata={{ session('successfullyPromoteUpdate') }}></div>
+    <script>
+        const successData = $('.success-meesage').data('successdata')
+        if (successData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'Your Delivery Fee Has Been Offered With Voucher Selected',
+
+            })
+        }
+    </script>
+@endif
 
 
+
+@if (session()->has('pointNotEnough'))
+    <div class="fail-meesage" data-faildata={{ session('pointNotEnough') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'You Do Not Have Enough Member Point To Redeem',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
 @if (session()->has('noAddressFound'))
     <div class="fail-meesage" data-faildata={{ session('noAddressFound') }}></div>
 
     <script>
-
         const failData = $('.fail-meesage').data('faildata')
         if (failData) {
 
@@ -131,13 +185,55 @@
     </script>
 @endif
 
+@if (session()->has('redeemUnsuccessful'))
+    <div class="fail-meesage" data-faildata={{ session('redeemUnsuccessful') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'info',
+                title: 'You Need To Register To This Platform To Redeem Your Voucher',
+                footer: '<a href="/webServiceRegister" class="confirmRegister">Click Here To Register </a>',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+
+<script>
+    $('.confirmRegister').on('click', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href')
+        Swal.fire({
+            title: 'Are u sure to register to this platform?',
+            text: 'It Will Help You To Auto Register With This Account Email And Password To This Platform',
+            type: 'warning',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Register',
+
+        }).then((result) => {
+            if (result.value) {
+                document.location.href = href;
+            }
+        })
+    })
+</script>
 
 
 @if (session()->has('linkExpired'))
     <div class="fail-meesage" data-faildata={{ session('linkExpired') }}></div>
 
     <script>
-
         const failData = $('.fail-meesage').data('faildata')
         if (failData) {
 
@@ -158,7 +254,6 @@
     <div class="fail-meesage" data-faildata={{ session('noItemFound') }}></div>
 
     <script>
-
         const failData = $('.fail-meesage').data('faildata')
         if (failData) {
 
@@ -183,7 +278,6 @@
     <div class="payment-meesage" data-paymentdata={{ session('paymentNotFound') }}></div>
 
     <script>
-
         const failData = $('.payment-meesage').data('paymentdata')
         if (failData) {
 
@@ -218,6 +312,34 @@
             if (result.value) {
                 document.location.href = href;
             }
+        })
+    })
+</script>
+
+
+<script>
+    $('.redeem').on('click', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href')
+        Swal.fire({
+            title: 'Hold Tight! Redirecting You To Third Party Services',
+            html: '<b></b> milliseconds being Redirect You To Third Party Services!',
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+        
+                document.location.href = href;
+            
         })
     })
 </script>

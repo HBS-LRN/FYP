@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use GuzzleHttp\Client;
+use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -13,12 +15,11 @@ use App\FactoryPattern\UserFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
-
 use Illuminate\Validation\Rules\Password;
 use App\Repository\UserRepositoryInterface;
-use App\Mail\ResetPassword;
 
 class UserController extends Controller
 {
@@ -38,6 +39,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
+        $user = auth()->user();
 
         $data = $request->validate([
             'name' => ['required', 'min:3'],
@@ -51,10 +53,11 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('user', 'public');
+            $user->image =  $data['image'];
         }
 
         //call repository class to update the class
-        $this->userRepositoryInterface->update(Auth::user(), $data);
+        $this->userRepositoryInterface->updateUser($user, $data);
 
         return back()->with('successfullyUpdate', true);
     }
@@ -70,12 +73,12 @@ class UserController extends Controller
             'TermCondition' => 'required'
         ], [
             'password.regex'    => '*Minimum eight characters, at least one letter, one number and one special character',
-        
+
         ]);
 
-          //call repository class to create user
-          $user = $this->userRepositoryInterface->create($data);
-          return redirect('/login')->with('resgisterSucessful', $user);
+        //call repository class to create user
+        $user = $this->userRepositoryInterface->create($data);
+        return redirect('/login')->with('resgisterSucessful', $user);
     }
 
 
@@ -116,6 +119,8 @@ class UserController extends Controller
 
         //if user login successfully
         if (User::login($data)) {
+            //create the unqiue bearer token as the personal access api token
+            $this->userRepositoryInterface->generatePrivateToken(auth()->user());
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
 
@@ -130,6 +135,8 @@ class UserController extends Controller
         return redirect('/')->with('message', 'You have been logged out!');
     }
 
+
+ 
     //show dashboard Form
     public function dashboard()
     {
@@ -252,7 +259,8 @@ class UserController extends Controller
         return view('profile.memberPoint');
     }
 
-    public function showDashboard(){
+    public function showDashboard()
+    {
         return view('staff.dashboard');
     }
 }
