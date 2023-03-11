@@ -102,6 +102,24 @@ class MealController extends Controller
         ]);
     }
 
+    //for retreive/show meal list
+    public function adshow()
+    {
+        return view('meals.adshow',[
+            'meals' => Meal::all()
+        ]);
+
+    }
+
+    //for show selected meal from meal list
+    public function upshow($id){
+        return view('meals.adupdate',[
+            'meal'=> Meal::find($id),
+            'categories' => Category::all(),
+        ]);
+    }
+
+
     public function show($id)
     {
 
@@ -138,5 +156,36 @@ class MealController extends Controller
         Meal::create($formFields);
 
         return back();
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $meal = Meal::find($id);
+        $formFields = $request->validate([
+
+            'meal_price' => 'required|numeric|min:0',
+            'meal_qty' => 'required|integer|min:0',
+            'meal_name' => 'required',
+            'category_id' => 'required'
+
+        ], [
+            'meal_price.required'    => 'Please Provide A Meal Price',
+            'meal_price.numeric'    => 'Please Provide A Number',
+            'meal_price.integer'    => 'Please Provide A Number',
+            'meal_qty.required'      => 'Please Provide A Meal Quantity ',
+            'meal_name.required' => 'Please Provide A Meal Name',
+            'category_id.required'      => 'Please Select A Category',
+        ]);
+
+        if ($request->hasFile('meal_image')) {
+            $formFields['meal_image'] = $request->file('meal_image')->store('meals', 'public');
+        }
+
+        $formFields['meal_id'] = auth()->id();
+
+        $meal->update($formFields);
+
+        return redirect('/meal/adshow')->with('successfullyUpdate', true);
     }
 }

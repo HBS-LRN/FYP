@@ -41,6 +41,8 @@ Route::get('/category/create', [CategoryController::class, 'create']);
 // Store category Data
 Route::post('/category/store', [CategoryController::class, 'store']);
 
+ // Show admin meal list 
+ Route::get('/meal/adshow', [MealController::class, 'adshow']);
 
 
 // Show Meal Create Form
@@ -48,6 +50,12 @@ Route::get('/meal/create', [MealController::class, 'create']);
 
 // Store Meal Data
 Route::post('/meal/store', [MealController::class, 'store']);
+
+ // Show update meal form
+Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
+
+ //Update meal
+Route::post('/mealupdate/{id}', [MealController::class, 'update']);
 
 
 // Show All category Data
