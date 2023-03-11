@@ -44,7 +44,7 @@
                     <br>
                     <div class="emailLabelInput">
                         <label for="email" class="emailLabel">Email :</label>
-                        <input type="text" class="email" name="email" value="{{ auth()->user()->email }}" />
+                        <input type="text" class="email" name="email" value="{{ auth()->user()->email }}" disabled />
 
                     </div>
                     @error('email')

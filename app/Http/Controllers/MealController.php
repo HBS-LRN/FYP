@@ -73,11 +73,12 @@ class MealController extends Controller
 
 
         $meal = Meal::find($id);
+        $category = Category::find($meal->category_id);
 
         return view('meals.index', [
 
 
-            'meals' => Meal::where('category_id', '=', $meal->category_id)->paginate(),
+            'meals' => $category->categorymeals->where('meal_qty', '!=', '0'),
             'categories' => Category::all(),
             'searchMeal' => $meal,
             'popup' => true

@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\State;
+use GuzzleHttp\Client;
 use App\Models\Delivery;
 use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use App\Models\MealOrderDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Input\Input;
 
 class ShoppingCartController extends Controller
@@ -22,28 +24,53 @@ class ShoppingCartController extends Controller
     public function index()
     {
 
-        $user = User::find(auth()->user()->id);
-        $addresses = $user->addresses;
-        $states = State::all();
-        $addressFee = 0;
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
 
 
+        //get vouchers details api through webservices through the bearer token 
+        $response = $client->get('voucherDetail', [
 
-        //finding address fee
-        foreach ($addresses as $address) {
-            if ($address->active_flag == 'T') {
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
 
-                foreach ($states as $state) {
-                    if ($address->area == $state->state_name)
-                        $addressFee = $state->delivery_fee;
+
+        ]);
+        $claimVouchers = json_decode($response->getBody(), true);
+        //get vouchers api through webservices through the bearer token 
+        $response = $client->get('vouchers', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+
+        ]);
+
+        $vouchers = json_decode($response->getBody(), true);
+
+
+        //declare a new user voucher that only store the voucher that claimed by the user
+        $userVouchers = array();
+        foreach ($vouchers as $voucher) {
+            foreach ($claimVouchers as $claimedVoucher) {
+                if ($claimedVoucher['user_email'] == auth()->user()->email && $claimedVoucher['voucher_id'] == $voucher['id']) {
+                    array_push($userVouchers, $voucher);
                 }
             }
         }
 
+        $user = auth()->user();
 
         return view('shoppingcart.index', [
             'shoppingCarts' => $user->meals,
-            'addressFee ' => $addressFee
+            'addressFee' => $this->findDeliveryFee(),
+            'vouchers' => $userVouchers
         ]);
     }
     public function checkout()
@@ -59,7 +86,6 @@ class ShoppingCartController extends Controller
             return redirect()->back()->with('noAddressFound', true);
         }
 
-
         $subTotal = 0;
         $totalPrice = 0;
 
@@ -72,9 +98,45 @@ class ShoppingCartController extends Controller
         }
 
 
-        $totalPrice =    $subTotal + 4.50;
-
+        //find total price with delivery Fee
+        $totalPrice =  $subTotal + $this->findDeliveryFee();
+        //find user current used address
         $address = $user->addresses->where('active_flag', '=', 'T');
+
+        if (session()->has('voucherID')) {
+
+            $client = new Client([
+                'base_uri' => 'http://localhost:8000/api/',
+                'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+            ]);
+
+
+            //get vouchers api through webservices through the bearer token 
+            $response = $client->get('vouchers', [
+
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . auth()->user()->token,
+                ]
+
+
+            ]);
+
+            $vouchers = json_decode($response->getBody(), true);
+
+            foreach ($vouchers as $voucher) {
+
+                if ($voucher['id'] == Session::get('voucherID')) {
+                    $voucherUsed = $voucher;
+                }
+            }
+        }
+
+
+
+
+
+
 
 
         return view('shoppingcart.checkout', [
@@ -83,19 +145,48 @@ class ShoppingCartController extends Controller
             'areas' =>  State::all(),
             'itemCheckOuts' => $user->meals,
             'subTotal' => $subTotal,
-            'totalPrice' => $totalPrice
+            'totalPrice' => $totalPrice,
+            'voucher' => $voucherUsed,
+            'addressFee' => $this->findDeliveryFee()
+
 
 
         ]);
     }
 
+    public function findDeliveryFee()
+    {
+
+        if (Session::has('promoteDeliveryFee')) {
+            return Session::get('promoteDeliveryFee');
+        } else {
+            $user = auth()->user();
+            $states = State::all();
+            $addresses = $user->addresses;
+            $addressFee = 0;
+            foreach ($addresses as $address) {
+                if ($address->active_flag == 'T') {
+
+                    foreach ($states as $state) {
+                        if ($address->area == $state->state_name)
+                            $addressFee = $state->delivery_fee;
+                    }
+                }
+            }
+            return $addressFee;
+        }
+    }
     public function redirectToPay(Request $request)
     {
+
+
 
 
         if ($request['paymethod'] == '') {
             return redirect()->back()->with('paymentNotFound', true);
         }
+
+        $voucherID = Session::get('voucherID');
         //find user
         $user = User::find(auth()->user()->id);
         $order = new Order();
@@ -147,7 +238,7 @@ class ShoppingCartController extends Controller
 
 
 
-                
+
             MealOrderDetail::create($newMealOrderDetail);
 
             //delete the delete cart in the table 
@@ -158,17 +249,83 @@ class ShoppingCartController extends Controller
 
 
 
+
+
         //update member point
-        $memberPoint = $memberPoint / 5;
+       // $memberPoint = $memberPoint / 5;
         $memberPoint = ceil($memberPoint);
         if (auth()->user()->point != null) {
             $memberPoint =  $memberPoint + auth()->user()->point;
         }
         $user->point =  $memberPoint;
         $user->update();
-     
 
+
+        //if User has use the voucher 
+        if (Session::has('voucher')) {
+
+            $client = new Client([
+                'base_uri' => 'http://localhost:8000/api/',
+                'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+            ]);
+
+            //delete the voucher that user own it since it has been used by the particular user 
+            $client->delete('userUsedVoucher/' . Session::get('voucher'), [
+
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . auth()->user()->token,
+                ]
+
+
+            ]);
+
+
+
+            //update the quantity of the voucher that has been used by user
+            $client->put('vouchers/' . $voucherID, [
+
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . auth()->user()->token,
+                ],
+                'json' => [
+                    'qty' => $this->quantityVoucher($voucherID) - 1
+                ],
+
+
+            ]);
+
+            session()->forget('voucherID');
+            session()->forget('voucher');
+            session()->forget('promoteDeliveryFee');
+        }
         return redirect('purchase');
+    }
+
+
+
+    public function quantityVoucher($voucherID)
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get vouchers api through webservices through the bearer token 
+        $response = $client->get('vouchers/' . $voucherID, [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+
+        ]);
+
+        $voucher = json_decode($response->getBody(), true);
+        return $voucher['qty'];
     }
 
     public function delete($id)
@@ -190,6 +347,9 @@ class ShoppingCartController extends Controller
 
 
 
+        if(auth()->id() == null){
+            return redirect()->back()->with('registerMeesage', true);
+        }
         //create a shopping cart
         $shoppingCart = $request->except('price', '_token');
         $shoppingCart['user_id'] = auth()->id();

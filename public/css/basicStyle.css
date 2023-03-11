@@ -1,4 +1,6 @@
-body, html, #wrapper {
+body,
+html,
+#wrapper {
     padding: 0%;
     margin: 0%;
     width: 100%;
@@ -12,7 +14,8 @@ body, html, #wrapper {
     padding: 0%;
 }
 
-header nav, header .navigationBar .nav {
+header nav,
+header .navigationBar .nav {
     display: flex;
 }
 
@@ -24,10 +27,10 @@ header .navigationBar .nav {
     padding-top: 20px;
 }
 
-    .loginRegister span a {
-        text-decoration: none;
-        color: gray;
-    }
+.loginRegister span a {
+    text-decoration: none;
+    color: gray;
+}
 
 .MealOrderQty {
     background-color: rgb(82, 72, 72);
@@ -59,38 +62,38 @@ header .loginBar {
     box-shadow: 0px 0px 10px rgb(100, 76, 76);
 }
 
-    header .loginBar li:hover {
-        background-color: rgb(255, 255, 255);
-    }
+header .loginBar li:hover {
+    background-color: rgb(255, 255, 255);
+}
 
-    header .loginBar li i {
-        margin-right: 10px;
-        margin-left: 10px;
-        color: grey;
-    }
+header .loginBar li i {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: grey;
+}
 
-    header .loginBar a {
-        text-decoration: none;
-        color: black;
-    }
+header .loginBar a {
+    text-decoration: none;
+    color: black;
+}
 
-    header .loginBar li {
-        padding: 10px 5px;
-        list-style: none;
-    }
+header .loginBar li {
+    padding: 10px 5px;
+    list-style: none;
+}
 
 header .navigationBar {
-    
-    width:1519.2px;
-    height:80px;
+
+    width: 1519.2px;
+    height: 80px;
     background-color: rgb(236, 236, 236);
 }
 
-    header .navigationBar nav {
-        width:1508px;
-        height:80px;
-       
-    }
+header .navigationBar nav {
+    width: 1508px;
+    height: 80px;
+
+}
 
 header nav div {
     font-family: 'Roboto', sans-serif;
@@ -101,7 +104,7 @@ header nav div {
     word-wrap: normal;
     bottom: 20px;
     width: 100px;
-    
+
     left: 60px;
     position: absolute;
 }
@@ -111,49 +114,52 @@ header nav .custDetail img {
     height: 50px;
     border-radius: 100%;
 }
-header .navigationBar .nav .div{
+
+header .navigationBar .nav .div {
     flex-basis: 25%;
-    
+
 }
-header .navigationBar .nav .span a{
+
+header .navigationBar .nav .span a {
     color: gray;
     text-decoration: none;
-    
-    
-    
+
+
+
     font-weight: bolder;
     text-align: center;
     font-size: 20px;
     font-family: 'Roboto', sans-serif;
-    
+
 }
 
-    header .navigationBar .nav .span .underlineEffect {
-        content: " ";
-        transition: padding 0.8s;
-        margin: 0pc 10px;
-    }
+header .navigationBar .nav .span .underlineEffect {
+    content: " ";
+    transition: padding 0.8s;
+    margin: 0pc 10px;
+}
 
-    header .navigationBar .nav .span:nth-child(1) .underlineEffect {
-        margin: 0% 25%;
-    }
+header .navigationBar .nav .span:nth-child(1) .underlineEffect {
+    margin: 0% 25%;
+}
 
-    header .navigationBar .nav .span:nth-child(2) .underlineEffect {
-        margin: 0% 33%;
-    }
+header .navigationBar .nav .span:nth-child(2) .underlineEffect {
+    margin: 0% 33%;
+}
 
-    header .navigationBar .nav .span:nth-child(3) .underlineEffect {
-        margin: 0% 34%;
-    }
+header .navigationBar .nav .span:nth-child(3) .underlineEffect {
+    margin: 0% 34%;
+}
 
-    header .navigationBar .nav .span:nth-child(4) .underlineEffect {
-        margin: 0% 36%;
-    }
+header .navigationBar .nav .span:nth-child(4) .underlineEffect {
+    margin: 0% 36%;
+}
 
-    header .navigationBar .nav .span:nth-child(5) .underlineEffect {
-        margin: 0% 44%;
-    }
-    /* header .navigationBar .nav .span:nth-child(5) .underlineEffect{
+header .navigationBar .nav .span:nth-child(5) .underlineEffect {
+    margin: 0% 44%;
+}
+
+/* header .navigationBar .nav .span:nth-child(5) .underlineEffect{
     margin: 0% 16%;
 }
 header .navigationBar .nav .span:nth-child(6) .underlineEffect{
@@ -171,10 +177,10 @@ header .navigationBar .nav .span:nth-child(9) .underlineEffect{
 header .navigationBar .nav .span:nth-child(10) .underlineEffect{
     margin: 0% 25%;
 } */
-    header .navigationBar .nav .span a:hover .underlineEffect {
-        background-color: rgb(197, 196, 196);
-        padding: 0px 0px 2px 0px;
-    }
+header .navigationBar .nav .span a:hover .underlineEffect {
+    background-color: rgb(197, 196, 196);
+    padding: 0px 0px 2px 0px;
+}
 
 header .navigationBar .nav .dropdown {
     display: block;
@@ -189,22 +195,22 @@ header .navigationBar .nav .dropdown {
     z-index: 10;
 }
 
-    header .navigationBar .nav .dropdown a {
-        text-align: left;
-        text-decoration: none;
-        color: rgb(116, 116, 116);
-        font-size: 18px;
-        font-weight: lighter;
-    }
+header .navigationBar .nav .dropdown a {
+    text-align: left;
+    text-decoration: none;
+    color: rgb(116, 116, 116);
+    font-size: 18px;
+    font-weight: lighter;
+}
 
-        header .navigationBar .nav .dropdown a p {
-            margin: 0%;
-            padding: 10px 20px;
-        }
+header .navigationBar .nav .dropdown a p {
+    margin: 0%;
+    padding: 10px 20px;
+}
 
-            header .navigationBar .nav .dropdown a p:hover {
-                background-color: rgb(233, 231, 231);
-            }
+header .navigationBar .nav .dropdown a p:hover {
+    background-color: rgb(233, 231, 231);
+}
 
 header .navigationBar nav .span:hover {
     cursor: pointer;
@@ -249,10 +255,10 @@ header nav div:nth-child(4) {
     color: grey;
 }
 
-    header nav div:nth-child(4) a {
-        text-decoration: none;
-        color: gray;
-    }
+header nav div:nth-child(4) a {
+    text-decoration: none;
+    color: gray;
+}
 
 header nav div:nth-child(2) i {
     position: relative;
@@ -272,9 +278,10 @@ header nav div input[type=search] {
     font-size: 20px;
 }
 
-header nav div:nth-child(4) i, header nav div:nth-child(3) i {
+header nav div:nth-child(4) i,
+header nav div:nth-child(3) i {
     color: grey;
-    font-size:22px;
+    font-size: 22px;
     margin-right: 10px;
 }
 
@@ -287,16 +294,16 @@ footer {
     width: 100%;
 }
 
-    footer .col {
-        flex-basis: 25%;
-    }
+footer .col {
+    flex-basis: 25%;
+}
 
-        footer .col .content p {
-            font-size: 15px;
-            margin: 0.5% 0% 0% 0%;
-            color: rgb(122, 119, 119);
-            font-family: 'Roboto', sans-serif;
-        }
+footer .col .content p {
+    font-size: 15px;
+    margin: 0.5% 0% 0% 0%;
+    color: rgb(122, 119, 119);
+    font-family: 'Roboto', sans-serif;
+}
 
 .footer .col .content img {
     width: 260px;
@@ -307,6 +314,7 @@ footer {
     flex-basis: 30%;
     padding-left: 90px;
 }
+
 /* 
 footer .col:nth-child(3){
     flex-basis: 15%;
@@ -331,12 +339,11 @@ footer .col:nth-child(2) .content a {
     color: gray;
 }
 
-    footer .col:nth-child(2) .content a .p {
-        margin: 20px 0px;
-    }
+footer .col:nth-child(2) .content a .p {
+    margin: 20px 0px;
+}
 
-footer .col:nth-child(2) .content
-footer .col:nth-child(2) .content img {
+footer .col:nth-child(2) .content footer .col:nth-child(2) .content img {
     width: 200px;
 }
 
@@ -353,9 +360,9 @@ footer .col:nth-child(3) .content a {
     text-decoration: underline;
 }
 
-    footer .col:nth-child(3) .content a:hover {
-        text-decoration: underline;
-    }
+footer .col:nth-child(3) .content a:hover {
+    text-decoration: underline;
+}
 
 footer .col:nth-child(4) .content img {
     width: 50px;
@@ -370,3 +377,5 @@ footer .col:nth-child(4) .content iframe {
 .fa-user {
     color: grey;
 }
+
+
