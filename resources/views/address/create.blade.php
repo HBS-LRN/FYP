@@ -23,7 +23,7 @@
 
                 <div class="addAddressContent">
                     <div class="addAddressTitle">
-                        <h3 class="profileTitle">Add Address</h3>
+                        <h3 class="profileTitle">Add Address - Only Kuala Lumpur And Selangor Area Available</h3>
                         <hr class="hr1">
                     </div>
 

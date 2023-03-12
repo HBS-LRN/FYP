@@ -2,14 +2,15 @@
 
 namespace App\Repository;
 
-use App\Models\User;
 
-interface UserRepositoryInterface{
-    public function create(array $data): User;
-    public function update(User $user, array $data): User;
-    public function delete(User $user): bool;
-    public function getById(int $id): ?User;
-    public function getAllUsers();
+use App\Models\User;
+use App\Repository\Base\BaseRepositoryInterface;
+
+interface UserRepositoryInterface extends BaseRepositoryInterface{
+  
+ 
+    public function generatePrivateToken($user);
     public function updatePassword(User $user, $password);
+    public function updateUser(User $user, array $data);
     
 }

@@ -24,7 +24,7 @@
 
                 <div class="addAddressContent">
                     <div class="addAddressTitle">
-                        <h3 class="profileTitle">Add Address</h3>
+                        <h3 class="profileTitle">Edit Address</h3>
                         <hr class="hr1">
                     </div>
 

@@ -51,6 +51,167 @@
                 color: black;
 
             }
+
+      
+            /* .redeem{
+    margin-top: 70px;
+    font-size: 15px;
+    color: #FF9900;
+    text-decoration: none;
+  }
+  
+  .redeem:hover {
+    text-decoration: underline;
+  } */
+
+            .progress-wrapper {
+                position: relative;
+                width: 200px;
+                height: 200px;
+            }
+
+            .progress {
+                position: absolute;
+                top: 40px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #f0f0f0;
+                border-radius: 50%;
+            }
+
+            .progress-bar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                background-color: #FF9900;
+                border-radius: 50%;
+                transform: rotate(360deg);
+            }
+
+            .progress-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+                font-weight: bold;
+                color: #444;
+            }
+
+            /* .redeem{
+    margin-top: 70px;
+    font-size: 15px;
+    color: #FF9900;
+    text-decoration: none;
+  }
+  
+  .redeem:hover {
+    text-decoration: underline;
+  } */
+
+            .vourcherBOX {
+                display: flex;
+                margin-top: 20px;
+                box-shadow: 0px 0px 5px grey;
+            }
+
+            .vourcherBOX .vourcherImg {
+                width: 100px;
+                height: 100px;
+                border: 1px dotted grey;
+            }
+
+            .vourcherBOX .vourcherInfrontDetailBox {
+                padding: 10px;
+                display: flex;
+
+                border-radius: 0px 30px 30px 0px;
+                flex-basis: 50%;
+            }
+
+            .vourcherBOX .vourcherInfrontDetailBox .vourcherCenterDetailBox {
+                padding-left: 10px;
+            }
+
+            .vourcherBOX .vourcherInfrontDetailBox .vourcherCenterDetailBox p {
+                color: rgb(0, 0, 0);
+                margin: 0%;
+                padding-bottom: 10px;
+                font-size: 17px;
+            }
+
+            .vourcherBOX .vourcherBackDetailBox {
+                padding: 10px;
+                padding-left: 30px;
+                border-radius: 30px 0px 0px 30px;
+
+            }
+
+            .vourcherBOX .vourcherBackDetailBox p {
+                color: rgb(0, 0, 0);
+                margin: 0%;
+                padding-bottom: 10px;
+                font-size: 19px;
+            }
+
+            .vourcherBOX .vourcherBackDetailBox .usedButton {
+                color: white;
+                background-color: greenyellow;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                color: #fff;
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+            .vourcherBOX .vourcherBackDetailBox .redeemButton {
+                color: white;
+                background-color: greenyellow;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+
+            .vourcherBOX .vourcherBackDetailBox .redeemButton:hover {
+                color: #fff;
+                background-color: #c82333;
+                border-color: #bd2130;
+
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+                box-shadow: 0 0 0 .2rem rgba(95, 113, 48, 0.5);
+            }
+
+            .redeemButton {
+                color: white;
+                background-color: greenyellow;
+                text-decoration: none;
+                padding: 10px 10px;
+                border-radius: 10px;
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+
+            .redeemButton:hover {
+                color: #fff;
+                background-color: #c82333;
+                border-color: #bd2130;
+
+                color: #fff;
+                background-color: #28a745;
+                border-color: #28a745;
+                box-shadow: 0 0 0 .2rem rgba(95, 113, 48, 0.5);
+            }
         </style>
     </head>
 
@@ -141,7 +302,7 @@
 
 
                     </div>
-                    @else
+                @else
                     <div class="scroll-wrap" id="itemNonFound" runat="server">
                         <div class="noFoundBox">
                             <div class="noFoundDetail">
@@ -151,193 +312,237 @@
                         </div>
 
                     </div>
-                    @endunless
-                </div>
-                <div class="cartTotal">
-                    <div class="cartTotalContent">
-                        <h1>Cart Totals</h1>
-                        <div class="flex-form">
-                            <div class="subTotal">
-                                <h2>Sub Total</h2>
-                            </div>
-                            <div class="subTotal-price">
-                                <p>
-                                    RM<input type="text" id="overallSubTotal" name="overallSubTotal" value="0.00"
-                                        disabled>
-                                </p>
-                            </div>
+                @endunless
+            </div>
+            <div class="cartTotal">
+                <div class="cartTotalContent">
+                    <h1>Cart Totals</h1>
+                    <div class="flex-form">
+                        <div class="subTotal">
+                            <h2>Sub Total</h2>
                         </div>
-                        <div class="flex-form">
-                            <div class="shipping">
-                                <h2>Shipping</h2>
-                            </div>
-                            <div class="address">
-                                <p>
-                                    Delivery Fee:<span class="deliveryFee">RM <input type="text" id="delivery"
-                                            name="delivery" value="4.50" /></span>
-                                </p>
+                        <div class="subTotal-price">
+                            <p>
+                                RM<input type="text" id="overallSubTotal" name="overallSubTotal" value="0.00"
+                                    disabled>
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="flex-form">
+                        <div class="shipping">
+                            <h2>Shipping</h2>
+                        </div>
+                        <div class="address">
+                            <p>
+                                Delivery Fee:<span class="deliveryFee">RM <input type="text" id="delivery"
+                                        name="delivery"
+                                        value=@if (session()->has('promoteDeliveryFee')) {{ session('promoteDeliveryFee') }} @else {{ $addressFee }} @endif
+                                        disabled /></span>
+
+                            </p>
+                        
+                            <p>Click Below Link To Manage Your Address</p>
+                            <!--<p>To: <span class="customerAddress">Jalan 1A/6,47000 Sungai Buloh</span></p>-->
 
 
 
-                                <p>Click Below Link To Manage Your Address</p>
-                                <!--<p>To: <span class="customerAddress">Jalan 1A/6,47000 Sungai Buloh</span></p>-->
+                            <div class="calculateShipping"><a href="/address">
+                                    <p style="text-decoration-line:none; color:red">Manage Your Addresses</p>
+                                </a></div>
 
-
-
-                                <div class="calculateShipping"><a href="/address">
-                                        <p style="text-decoration-line:none; color:red">Manage Your Addresses</p>
-                                    </a></div>
-
-
-                            </div>
 
                         </div>
-                        <div class="flex-form">
-                            <div class="Total">
-                                <h2>Total</h2>
-                            </div>
-                            <div class="totalPrice">
-                                <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0" disabled>
-                                </p>
-                            </div>
+
+                    </div>
+
+
+                    <div class="flex-form">
+
+
+                        <div class="progress-container">
+
+                            <form action="/update/voucher" method="POST">
+                                @csrf
+                                <input type="hidden" id="deliveryFee" name="deliveryFee" value="{{ $addressFee }}">
+
+                                @foreach ($vouchers as $voucher)
+                                    <div class="vourcherBOX">
+                                        <div class="vourcherInfrontDetailBox">
+
+                                            <img src="../image/grabfood.jpg" class="vourcherImg" />
+
+                                            <div class="vourcherCenterDetailBox">
+                                                <p class="discount"><b>{{ $voucher['code'] }}</b></p>
+                                                <p class="minSpend">{{ $voucher['description'] }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="vourcherBackDetailBox">
+                                            <p class="validDate">Valid Until: {{ $voucher['expire_date'] }}</p>
+
+
+                                            
+                                            <input type="radio" name="voucher" value="{{ $voucher['id'] }}">
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <button type="submit" id="apply_voucher" class="redeemButton">Apply
+                                </button>
+                            </form>
                         </div>
-                        <div class="flex-form">
+                    </div>
+                    <div class="flex-form">
+                        <div class="Total">
+                            <h2>Total</h2>
+                        </div>
+                        <div class="totalPrice">
+                            <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0.00" disabled>
+                            </p>
+                        </div>
+                    </div>
+
+                 
+
+
+                    <div class="flex-form">
                         <a class="check-out" href="/checkout">
                             Check Out
                         </a>
-        </div>
-
-
-
                     </div>
+
+
+
                 </div>
             </div>
-
-
-
-
-
         </div>
 
 
 
 
-        <!-- <script src="../JavaScript/shoppingCart.js"></script>-->
-        <script>
-            let arrow = document.querySelectorAll(".calculateShipping");
-            var incrementButton = document.getElementsByClassName('plus');
-            var decrementButton = document.getElementsByClassName('minus');
-            var overallSubtotal = 0;
-            var subTotal = document.querySelectorAll("input[type='subtotal']");
-            var setSubTotal = document.getElementById('overallSubTotal');
-            var setTotalValue = document.getElementById('overallTotal');
-            var setDelivery = document.getElementById('delivery');
 
-            for (var i = 0; i < arrow.length; i++) {
-                arrow[i].addEventListener("click", (e) => {
-                    let arrowParent = e.target.parentElement; //selecting main parent of arrow
-                    console.log(arrowParent)
-                    arrowParent.classList.toggle("showAddress");
-                });
+    </div>
+
+
+
+
+    <!-- <script src="../JavaScript/shoppingCart.js"></script>-->
+    <script>
+        let arrow = document.querySelectorAll(".calculateShipping");
+        var incrementButton = document.getElementsByClassName('plus');
+        var decrementButton = document.getElementsByClassName('minus');
+        var overallSubtotal = 0;
+        var subTotal = document.querySelectorAll("input[type='subtotal']");
+        var setSubTotal = document.getElementById('overallSubTotal');
+        var setTotalValue = document.getElementById('overallTotal');
+        var setDelivery = document.getElementById('delivery');
+
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e) => {
+                let arrowParent = e.target.parentElement; //selecting main parent of arrow
+                console.log(arrowParent)
+                arrowParent.classList.toggle("showAddress");
+            });
+        }
+
+        function calculateDeliveryFee(obj) {
+            var state = obj.selectedIndex + 1;
+            var westMalaysia = 8.25;
+            var eastMalaysia = 10.20;
+            if (state > 13) {
+
+                setDelivery.value = eastMalaysia.toFixed(2);
+            } else {
+                setDelivery.value = westMalaysia.toFixed(2);
             }
 
-            function calculateDeliveryFee(obj) {
-                var state = obj.selectedIndex + 1;
-                var westMalaysia = 8.25;
-                var eastMalaysia = 10.20;
-                if (state > 13) {
+            setTotalValue.value = (parseFloat(setDelivery.value) + parseFloat(setSubTotal.value)).toFixed(2)
 
-                    setDelivery.value = eastMalaysia.toFixed(2);
+        }
+
+        if (subtotal.length == undefined) {
+            overallSubtotal = parseFloat(subtotal.value);
+            console.log(overallSubtotal);
+
+        } else {
+            for (var i = 0; i < subtotal.length; i++) {
+
+
+
+                overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
+
+            }
+        }
+        setSubTotal.value = overallSubtotal.toFixed(2);
+
+        var totalPrice = parseFloat(setDelivery.value) + parseFloat(setSubTotal.value);
+        setTotalValue.value = totalPrice.toFixed(2);
+
+
+
+        for (var i = 0; i < incrementButton.length; i++) {
+            var button = incrementButton[i];
+            button.addEventListener('click', function(event) {
+                var buttonClicked = event.target;
+                var quantity = buttonClicked.parentElement.children[1];
+                console.log(quantity);
+                var itemPrice = buttonClicked.parentElement.parentElement.parentElement.children[2].children[0];
+                console.log(itemPrice.value);
+                var itemSubPrice = buttonClicked.parentElement.parentElement.parentElement.children[4].children[0];
+                console.log(itemSubPrice);
+                var newIncrementValue = parseInt(quantity.value) + 1;
+                var newinputSubPrice = parseFloat(itemPrice.value) * newIncrementValue;
+                itemSubPrice.value = newinputSubPrice.toFixed(2);
+                quantity.value = newIncrementValue;
+                overallSubtotal = 0;
+
+                if (subtotal.length == undefined) {
+                    overallSubtotal = parseFloat(subtotal.value) + overallSubtotal
                 } else {
-                    setDelivery.value = westMalaysia.toFixed(2);
-                }
+                    for (var i = 0; i < subtotal.length; i++) {
 
+                        overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
+
+                    }
+                }
+                setSubTotal.value = overallSubtotal.toFixed(2);
                 setTotalValue.value = (parseFloat(setDelivery.value) + parseFloat(setSubTotal.value)).toFixed(2)
 
-            }
-
-            if (subtotal.length == undefined) {
-                overallSubtotal = parseFloat(subtotal.value);
-                console.log(overallSubtotal);
-
-            } else {
-                for (var i = 0; i < subtotal.length; i++) {
+            })
 
 
+        }
 
-                    overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
-
+        for (var i = 0; i < decrementButton.length; i++) {
+            var button = decrementButton[i];
+            button.addEventListener('click', function(event) {
+                var buttonClicked = event.target;
+                var quantity = buttonClicked.parentElement.children[1];
+                var itemPrice = buttonClicked.parentElement.parentElement.parentElement.children[2].children[0];
+                console.log(itemPrice.value);
+                var itemSubPrice = buttonClicked.parentElement.parentElement.parentElement.children[4].children[0];
+                var newDecrementValue = parseInt(quantity.value) - 1;
+                if (newDecrementValue == 0) {
+                    return;
                 }
-            }
-            setSubTotal.value = overallSubtotal.toFixed(2);
+                var newinputSubPrice = parseFloat(itemPrice.value) * newDecrementValue;
+                itemSubPrice.value = newinputSubPrice.toFixed(2);
+                quantity.value = newDecrementValue;
+                overallSubtotal = 0;
+                if (subtotal.length == undefined) {
+                    overallSubtotal = parseFloat(subtotal.value) + overallSubtotal
+                } else {
+                    for (var i = 0; i < subtotal.length; i++) {
 
-            var totalPrice = parseFloat(setDelivery.value) + parseFloat(setSubTotal.value);
-            setTotalValue.value = totalPrice.toFixed(2);
+                        overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
 
-
-
-            for (var i = 0; i < incrementButton.length; i++) {
-                var button = incrementButton[i];
-                button.addEventListener('click', function(event) {
-                    var buttonClicked = event.target;
-                    var quantity = buttonClicked.parentElement.children[1];
-                    console.log(quantity);
-                    var itemPrice = buttonClicked.parentElement.parentElement.parentElement.children[2].children[0];
-                    console.log(itemPrice.value);
-                    var itemSubPrice = buttonClicked.parentElement.parentElement.parentElement.children[4].children[0];
-                    console.log(itemSubPrice);
-                    var newIncrementValue = parseInt(quantity.value) + 1;
-                    var newinputSubPrice = parseFloat(itemPrice.value) * newIncrementValue;
-                    itemSubPrice.value = newinputSubPrice.toFixed(2);
-                    quantity.value = newIncrementValue;
-                    overallSubtotal = 0;
-
-                    if (subtotal.length == undefined) {
-                        overallSubtotal = parseFloat(subtotal.value) + overallSubtotal
-                    } else {
-                        for (var i = 0; i < subtotal.length; i++) {
-
-                            overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
-
-                        }
                     }
-                    setSubTotal.value = overallSubtotal.toFixed(2);
-                    setTotalValue.value = (parseFloat(setDelivery.value) + parseFloat(setSubTotal.value)).toFixed(2)
+                }
+                setSubTotal.value = overallSubtotal.toFixed(2);
+                setTotalValue.value = (parseFloat(setDelivery.value) + parseFloat(setSubTotal.value)).toFixed(2)
 
-                })
-
-
-            }
-
-            for (var i = 0; i < decrementButton.length; i++) {
-                var button = decrementButton[i];
-                button.addEventListener('click', function(event) {
-                    var buttonClicked = event.target;
-                    var quantity = buttonClicked.parentElement.children[1];
-                    var itemPrice = buttonClicked.parentElement.parentElement.parentElement.children[2].children[0];
-                    console.log(itemPrice.value);
-                    var itemSubPrice = buttonClicked.parentElement.parentElement.parentElement.children[4].children[0];
-                    var newDecrementValue = parseInt(quantity.value) - 1;
-                    if (newDecrementValue == 0) {
-                        return;
-                    }
-                    var newinputSubPrice = parseFloat(itemPrice.value) * newDecrementValue;
-                    itemSubPrice.value = newinputSubPrice.toFixed(2);
-                    quantity.value = newDecrementValue;
-                    overallSubtotal = 0;
-                    if (subtotal.length == undefined) {
-                        overallSubtotal = parseFloat(subtotal.value) + overallSubtotal
-                    } else {
-                        for (var i = 0; i < subtotal.length; i++) {
-
-                            overallSubtotal = parseFloat(subtotal[i].value) + overallSubtotal;
-
-                        }
-                    }
-                    setSubTotal.value = overallSubtotal.toFixed(2);
-                    setTotalValue.value = (parseFloat(setDelivery.value) + parseFloat(setSubTotal.value)).toFixed(2)
-
-                })
-            }
-        </script>
-    </x-layout-customer>
+            })
+        }
+    </script>
+</x-layout-customer>

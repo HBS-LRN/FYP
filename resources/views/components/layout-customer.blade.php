@@ -31,12 +31,6 @@
         rel="stylesheet">
 
     <style>
-        
-
-      
-
-        
-
         header .navigationBar {
             padding: 0px;
         }
@@ -60,33 +54,36 @@
             -webkit-appearance: none;
 
         }
-        header .navigationBar .nav .div{
+
+        header .navigationBar .nav .div {
             flex-basis: 25%;
-            justify-content:center;
-            display:flex;
-            align-items:center;
+            justify-content: center;
+            display: flex;
+            align-items: center;
             align-content: center;
             text-align: center;
         }
-        header .navigationBar .nav .span{
-            flex-basis:100%;
-    align-content: center;
-    text-align: center;
-    
-}
-header .navigationBar .nav .span a{
-   
-}
-header .navigationBar .nav .span .underlineEffect {
-        content: " ";
-        transition: padding 0.8s;
-        padding 0px;
-        margin: 0pc 10px;
-    }
-    header .navigationBar .nav .span:hover .underlineEffect {
-        background-color: rgb(197, 196, 196);
-        padding: 0px 0px 2px 0px;
-    }
+
+        header .navigationBar .nav .span {
+            flex-basis: 100%;
+            align-content: center;
+            text-align: center;
+
+        }
+
+        header .navigationBar .nav .span a {}
+
+        header .navigationBar .nav .span .underlineEffect {
+            content: " ";
+            transition: padding 0.8s;
+            padding 0px;
+            margin: 0pc 10px;
+        }
+
+        header .navigationBar .nav .span:hover .underlineEffect {
+            background-color: rgb(197, 196, 196);
+            padding: 0px 0px 2px 0px;
+        }
     </style>
 </head>
 
@@ -126,8 +123,7 @@ header .navigationBar .nav .span .underlineEffect {
                 <div>
                     <a href="/shoppingCart" class="a"><i class="fas fa-shopping-cart"></i>
                         <span class="MealOrderQty">
-                            {{ auth()->user()->meals->count()}} </span><span
-                            id="cart"></span>
+                            {{ auth()->user()->meals->count() }} </span><span id="cart"></span>
                     </a>
                 </div>
                 <div class="loginBar" id="loginBar">
@@ -174,14 +170,22 @@ header .navigationBar .nav .span .underlineEffect {
 
         <div class="navigationBar">
             <nav class="nav">
-            <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">Home </a><div class="underlineEffect"></div></span></span> 
+                <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">Home </a>
+                        <div class="underlineEffect"></div>
+                    </span></span>
                 <span class="div">
-                <span class="span"><a  href="../html/contactUs.html">Contact US </a> <div class="underlineEffect"></div></span></span>
+                    <span class="span"><a href="../html/contactUs.html">Contact US </a>
+                        <div class="underlineEffect"></div>
+                    </span></span>
                 <span class="div">
-                <span class="span"><a class="span" href="../html/aboutUs.html">About US </a><div class="underlineEffect"></div></span></span>
-               <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">FAQ </a><div class="underlineEffect"></div></span></span> 
-               
-                
+                    <span class="span"><a class="span" href="../html/aboutUs.html">About US </a>
+                        <div class="underlineEffect"></div>
+                    </span></span>
+                <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">FAQ </a>
+                        <div class="underlineEffect"></div>
+                    </span></span>
+
+
             </nav>
         </div>
     </header>
@@ -268,7 +272,7 @@ header .navigationBar .nav .span .underlineEffect {
 
         load_data();
         $('#search_text').keyup(function() {
-           
+
             var search = $(this).val();
             if (search !== '') {
                 load_data(search);
