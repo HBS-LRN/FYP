@@ -187,4 +187,13 @@ class MealController extends Controller
 
         return redirect('/meal/adshow')->with('successfullyUpdate', true);
     }
+
+    public function delete($id)
+    {
+
+        $meal = Meal::find($id);
+        $meal->delete();
+
+        return redirect()->back()->with('successfullyUpdate', true);
+    }
 }

@@ -55,6 +55,8 @@ Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
  //Update meal
 Route::post('/mealupdate/{id}', [MealController::class, 'update']);
 
+//Delete meal
+Route::get('/deleteMeal/{id}', [MealController::class, 'delete']);
 
 // Show All category Data
 Route::get('/category/show', [CategoryController::class, 'show']);
@@ -63,7 +65,6 @@ Route::get('/accessDenied', [UserController::class, 'accessDenied']);
 
 //search meal
 Route::get('/search', [MealController::class, 'search']);
-
 
 // Store All Meal Data
 Route::get('/meal/{meal}', [MealController::class, 'index']);

@@ -117,7 +117,7 @@
 
                                     <td style="border:1px solid grey;">
                                         <a href="/meal/upshow/{{$meal->id}}" class="edit">Edit</a>
-                                        <a href="../staff/DeleteMeal/{{$meal->id}}" class="delete">Delete</a>
+                                        <a href="/deleteMeal/{{$meal->id}}" class="delete">Delete</a>
                                     </td>
 
 
