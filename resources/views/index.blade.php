@@ -89,8 +89,7 @@
             <pre class="p"> for your picking together we care for your together</pre>
             <pre class="p"> we care for your hungry tummies!</pre>
             <div class="btn">
-                <a href="/category/show" class="button">Delivery</a><a
-                    href="../utilAccessPage/FoodReservation.aspx" class="button">Reservation</a>
+                <a href="/category/show" class="button">Delivery</a>
             </div>
         </div>
 

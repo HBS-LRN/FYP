@@ -107,6 +107,9 @@ class UserController extends Controller
     public function authenticate(LoginRequest $request)
     {
 
+
+
+
         //validation
         $data = $request->validate([
             'email' => ['required', 'email'],
@@ -116,11 +119,26 @@ class UserController extends Controller
         $request->authenticate();
 
 
+        // Check if the user has an active session to prevent concurrent login
+        $user = User::where('email', $request->email)->first();
+        if ($user && $user->session_id && $user->session_id !== session()->getId()) {
+            Auth::logoutOtherDevices($request->password);
+            $user->session_id = session()->getId();
+            $user->save();
+            Session::flash('concurentLogin', true);
+        }
+
+
+
 
         //if user login successfully
         if (User::login($data)) {
             //create the unqiue bearer token as the personal access api token
             $this->userRepositoryInterface->generatePrivateToken(auth()->user());
+            //update session id 
+            $user->session_id = session()->getId();
+            $user->update();
+
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
 
@@ -131,12 +149,16 @@ class UserController extends Controller
     //log out user 
     public function logout()
     {
+
+
+
         User::logout();
+
         return redirect('/')->with('message', 'You have been logged out!');
     }
 
 
- 
+
     //show dashboard Form
     public function dashboard()
     {
@@ -185,7 +207,7 @@ class UserController extends Controller
 
 
         $action_link = route('user.reset.password.form', ['token' => $token, 'email' => $request->email]);
-        $body = "We are received a request to reset the password for Grand Imperial Food Orderingassociated
+        $body = "We are received a request to reset the password for Grand Imperial Food Ordering associated
                 with " . $request->email . ".<b> Below Link Will Expired in 5 minutes</b>.You can reset your password by clicking the link below  ";
         Mail::send('auth.email-forget', ['action_link' => $action_link, 'body' => $body], function ($message) use ($request) {
 
@@ -213,6 +235,9 @@ class UserController extends Controller
         ]);
 
 
+        //set user 
+        $user = User::where('email', $request->email)->first();
+
         $check_token = DB::table('password_resets')
             ->where('email', $request->email)
             ->where('token', $request->token)
@@ -222,24 +247,48 @@ class UserController extends Controller
         $now = Carbon::now();
 
         if ($created_at->diffInSeconds($now) > 60) {
+
+            //the link will be expired if the time taken is too long 
             DB::table('password_resets')->where('token', $request->token)->delete();
+
             return redirect()->route('user.password.form')->with('linkExpired', 'Reset link expired!');
+
+            //compare request password with user password
+        } else if (Hash::check($request->password, $user->password)) {
+
+            //prevent password reused 
+            return redirect()->back()->with('reusedPassword', true);
         } else {
+            //update user password if successfully 
             User::where('email', $request->email)->update([
                 'password' => Hash::make($request->password)
             ]);
             DB::table('password_resets')->where([
                 'email' => $request->email
             ])->delete();
+
+
+            //inform user their password has been changed using email
+            $this->informPasswordChange($request->email);
+
             return redirect()->route('login')->with('passChangeSuccess', true);
         }
     }
 
 
+    public function informPasswordChange($email)
+    {
 
+      
+        $body = " We Are Here To Inform Your Password Has Been Changed Recently Asscociated   
+                with " . $email. "!";
+        Mail::send('auth.inform-passwordChange', [ 'body' => $body], function ($message) use ($email) {
 
-
-
+            $message->from('noreply@gmail.com', 'Grand Imperial');
+            $message->to($email, 'Grand Imperial')
+                ->subject('Password Changed!');
+        });
+    }
     public function show()
     {
         return view('profile.changePassword');
@@ -250,7 +299,7 @@ class UserController extends Controller
         return view('auth.request-login');
     }
 
-    public function  accessDenied()
+    public function accessDenied()
     {
         return view('auth.access-prohibited');
     }

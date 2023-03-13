@@ -170,18 +170,18 @@
 
         <div class="navigationBar">
             <nav class="nav">
-                <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">Home </a>
+                <span class="div"><span class="span"><a class="span" href="/">Home </a>
                         <div class="underlineEffect"></div>
                     </span></span>
                 <span class="div">
-                    <span class="span"><a href="../html/contactUs.html">Contact US </a>
+                    <span class="span"><a href="/contactUs">Contact US </a>
                         <div class="underlineEffect"></div>
                     </span></span>
                 <span class="div">
-                    <span class="span"><a class="span" href="../html/aboutUs.html">About US </a>
+                    <span class="span"><a class="span" href="/aboutUs">About US </a>
                         <div class="underlineEffect"></div>
                     </span></span>
-                <span class="div"><span class="span"><a class="span" href="../html/F&Q.html">FAQ </a>
+                <span class="div"><span class="span"><a class="span" href="/FAQ">FAQ </a>
                         <div class="underlineEffect"></div>
                     </span></span>
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Meal;
 use App\Models\Order;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,10 +52,14 @@ class User extends Authenticatable
     public static function logout()
     {
 
+        $user = User::find(auth()->user()->id);
+        $user->session_id = null;
+        $user->update();
         auth()->logout();
         session()->invalidate();
         //this one can write in the document
         session()->regenerateToken();
+      
         
     }
     // Authenticate User
