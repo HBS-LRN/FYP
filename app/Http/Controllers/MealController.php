@@ -197,4 +197,44 @@ class MealController extends Controller
 
         return redirect()->back()->with('successfullyUpdate', true);
     }
+
+    //return meals and show on inventory page
+    public function inventory()
+    {
+        return view('meals.manageInventory',[
+            'meals' => Meal::all()
+        ]);
+    }
+
+    //show selected meal edit inventory page
+    public function showEditInventory($id)
+    {
+        return view('meals.editMealInventory',[
+            'meal'=> Meal::find($id)
+        ]);
+    }
+
+    //update meal Inventory
+    public function updateInventory(Request $request, $id)
+    {
+
+        $meal = Meal::find($id);
+        $formFields = $request->validate([
+            'meal_qty' => 'required|integer|min:0'
+        ], [
+            'meal_qty.required' => 'Please Provide A Meal Quantity',
+        ]);
+
+        $formFields['meal_id'] = auth()->id();
+
+        $meal->update($formFields);
+
+        return redirect('/showInventory')->with('successfullyUpdate', true);
+    }
+
+    //show meal rating page
+    public function showMealRating()
+    {
+        return view('meals.mealRating');
+    }
 }

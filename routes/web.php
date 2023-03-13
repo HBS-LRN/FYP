@@ -77,6 +77,19 @@ Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popU
 //show pop up meal
 Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
+//show meal inventory page
+Route::get('/showInventory', [MealController::class, 'inventory']);
+
+//show edit meal inventory page
+Route::get('/editInventory/{id}', [MealController::class, 'showEditInventory']);
+
+//update inventory
+Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory']);
+
+//show meal rating page
+Route::get('/mealRating', [MealController::class, 'showMealRating']);
+
+
 // Store shopping cart Data
 Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
 
