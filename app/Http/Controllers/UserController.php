@@ -139,6 +139,7 @@ class UserController extends Controller
             $user->session_id = session()->getId();
             $user->update();
 
+          
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
 

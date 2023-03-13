@@ -219,13 +219,13 @@
             <h3>About</h3>
             <div class="content">
 
-                <a href="../allUserAccessPage/ContactUs.aspx">
+                <a href="/contactUs">
                     <p class="p"><u> Contact US</u></p>
                 </a>
-                <a href="../allUserAccessPage/AboutUs.aspx">
+                <a href="/aboutUs">
                     <p class="p"><u>About US</u> </p>
                 </a>
-                <a href="../allUserAccessPage/FAQ.aspx">
+                <a href="/FAQ">
                     <p class="p"><u>F&Q</u></p>
                 </a>
             </div>
@@ -236,14 +236,14 @@
 
 
 
-                <a href="../allUserAccessPage/TermAndCondition.aspx">
+                <a href="/">
                     <p>Terms & Conditions</p>
                 </a>
 
-                <a href="../allUserAccessPage/DataProtection.aspx">
+                <a href="/">
                     <p>Data Protection Policy</p>
                 </a>
-                <a href="../allUserAccessPage/ReturnPolicy.aspx">
+                <a href="/">
                     <p>Return Policy</p>
                 </a>
             </div>
