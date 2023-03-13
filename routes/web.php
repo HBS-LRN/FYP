@@ -86,7 +86,7 @@ Route::get('/shoppingCart', [ShoppingCartController::class, 'index'])->middlewar
 Route::get('/deleteShoppingCart/{id}', [ShoppingCartController::class, 'delete'])->middleware('auth');
 
 //show customer purchase status
-Route::get('/checkout', [ShoppingCartController::class, 'checkout']);
+Route::get('/checkout', [ShoppingCartController::class, 'checkout'])->middleware('auth');
 Route::post('/redirectToPay', [ShoppingCartController::class, 'redirectToPay']);
 
 // Show Login Form
@@ -151,7 +151,7 @@ Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurren
 
 
 //show customer purchase status
-Route::get('/purchase', [OrderController::class, 'show']);
+Route::get('/purchase', [OrderController::class, 'show'])->middleware('auth');;
 
 //update customer comment 
 Route::post('/comment', [OrderController::class, 'comment']);
@@ -160,7 +160,7 @@ Route::post('/comment', [OrderController::class, 'comment']);
 // web service
 Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('auth');
 //web servcie
-Route::get('/voucher', [VoucherController::class, 'show']);
+Route::get('/voucher', [VoucherController::class, 'show'])->middleware('auth');
 //web servcie
 Route::get('/voucher/{id}', [VoucherController::class, 'store']);
 Route::post('/update/voucher', [VoucherController::class, 'update']);

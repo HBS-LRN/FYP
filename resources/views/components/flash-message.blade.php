@@ -108,6 +108,22 @@
         }
     </script>
 @endif
+@if (session()->has('sessionTimeOut'))
+    <div class="success-meesage" data-successdata={{ session('sessionTimeOut') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'info',
+                title: 'Session Time Out Due To Inactivity!',
+                text: 'You May Need To Log In Again',
+
+            })
+        }
+    </script>
+@endif
+
 @if (session()->has('successfulStoreClient'))
     <div class="success-meesage" data-successdata={{ session('successfulStoreClient') }}></div>
     <script>
@@ -124,7 +140,42 @@
         }
     </script>
 @endif
+@if (session()->has('concurentLogin'))
+    <div class="success-meesage" data-successdata={{ session('concurentLogin') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Your Account Login From Another Device',
+                text: 'Now Being Help To Log Out Account In Another Device ',
+                showConfirmButton: false,
+                timer: 4000
 
+            })
+        }
+    </script>
+@endif
+
+
+@if (session()->has('concurentLoginFromDefault'))
+    <div class="success-meesage" data-successdata={{ session('concurentLoginFromDefault') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Your Account Have Been Login From Another Device!',
+                text: 'Change Your Account Password Since It Might Have Security Risk!',
+                showConfirmButton: false,
+                timer: 4000
+
+            })
+        }
+    </script>
+@endif
 @if (session()->has('successfullyPromoteUpdate'))
     <div class="success-meesage" data-successdata={{ session('successfullyPromoteUpdate') }}></div>
     <script>
@@ -163,6 +214,29 @@
         }
     </script>
 @endif
+
+@if (session()->has('reusedPassword'))
+    <div class="fail-meesage" data-faildata={{ session('reusedPassword') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Opps, Password Reused!',
+                text: 'You Cannot Set Back With The Same Password You Used Before!',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+
 @if (session()->has('noAddressFound'))
     <div class="fail-meesage" data-faildata={{ session('noAddressFound') }}></div>
 
