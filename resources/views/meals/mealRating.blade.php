@@ -55,6 +55,7 @@
                         <!-- <asp:ListView ID="lvOrderDetail" runat="server" ItemType="Assignment.Models.MealOrderDetail" DataKeyNames="order_detail_number" SelectMethod="BindOrderDetailListComment"> -->
 
                             <!-- <ItemTemplate> -->
+                            @foreach($mealsOrderDetail as $mealOrderDetail)
                                 <tr style="border: 1px solid grey;">
                                     <td style="border: 1px solid grey;">
                                         <label for="lblOrderID"  Text='<%# Eval("order_number") %>'></label></td>

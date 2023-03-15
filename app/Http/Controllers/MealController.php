@@ -235,6 +235,8 @@ class MealController extends Controller
     //show meal rating page
     public function showMealRating()
     {
-        return view('meals.mealRating');
+        return view('meals.mealRating',[
+            'mealsOrderDetail' => MealOrderDetail::all()
+        ]);
     }
 }
