@@ -189,4 +189,16 @@ Route::post('/gift/store', [GiftController::class, 'store']);
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
 
+Route::get("/contactUs", function(){
+    return view("static.contactus");
+ });
 
+ Route::get("/aboutUs", function(){
+    return view("static.aboutus");
+ });
+ Route::get("/FAQ", function(){
+    return view("static.FAQ");
+ });
+
+
+ 

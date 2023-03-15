@@ -26,51 +26,53 @@
 
                 <div class="progress-container">
 
-                    
-                        @foreach ($vouchers as $voucher)
-                        @if($voucher['qty']!=0)
-                            <div class="vourcherBOX">
-                                <div class="vourcherInfrontDetailBox">
 
-                                    <img src="../image/grabfood.jpg" class="vourcherImg" />
+                    @foreach ($vouchers as $voucher)
+                        @if ($voucher['qty'] != 0)
+                            @if (!($voucher && now() > $voucher['expire_date']))
+                                <div class="vourcherBOX">
+                                    <div class="vourcherInfrontDetailBox">
 
-                                    <div class="vourcherCenterDetailBox">
-                                        <p class="discount"><b>{{ $voucher['code'] }}</b></p>
+                                        <img src="../image/grabfood.jpg" class="vourcherImg" />
+
+                                        <div class="vourcherCenterDetailBox">
+                                            <p class="discount"><b>{{ $voucher['code'] }}</b></p>
 
 
-                                        <p class="minSpend"> <br>{{ $voucher['description'] }}</p>
+                                            <p class="minSpend"> <br>{{ $voucher['description'] }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="vourcherBackDetailBox">
+                                        <p class="validDate">Valid Until: {{ $voucher['expire_date'] }}</p>
+
+
+                                        @php
+                                            $boolean = false;
+                                            foreach ($claimVouchers as $claimedVoucher) {
+                                                if ($claimedVoucher['user_email'] == auth()->user()->email && $claimedVoucher['voucher_id'] == $voucher['id']) {
+                                                    $boolean = true;
+                                                }
+                                            }
+                                            
+                                        @endphp
+
+                                        @if ($boolean)
+                                            <button class="usedButton" disabled>
+                                                Claimed
+                                            </button>
+                                        @else
+                                            <a href="/voucher/{{ $voucher['id'] }}" class="redeemButton">
+                                                Redeem
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
-
-                                <div class="vourcherBackDetailBox">
-                                    <p class="validDate">Valid Until: {{ $voucher['expire_date'] }}</p>
-
-
-                                    @php
-                                        $boolean = false;
-                                        foreach ($claimVouchers as $claimedVoucher) {
-                                            if ($claimedVoucher['user_email'] == auth()->user()->email && $claimedVoucher['voucher_id'] == $voucher['id']) {
-                                                $boolean = true;
-                                            }
-                                        }
-                                        
-                                    @endphp
-
-                                    @if ($boolean)
-                                        <button class="usedButton" disabled>
-                                            Claimed
-                                        </button>
-                                    @else
-                                        <a href="/voucher/{{ $voucher['id'] }}" class="redeemButton">
-                                            Redeem
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
                             @endif
-                        @endforeach
-                   
-                       
+                        @endif
+                    @endforeach
+
+
                 </div>
 
             </div>

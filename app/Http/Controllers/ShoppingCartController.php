@@ -127,7 +127,7 @@ class ShoppingCartController extends Controller
             foreach ($vouchers as $voucher) {
 
                 if ($voucher['id'] == Session::get('voucherID')) {
-                    $voucherUsed = $voucher;
+                    Session::put('voucherCode', $voucher['code']);
                 }
             }
         }
@@ -146,7 +146,6 @@ class ShoppingCartController extends Controller
             'itemCheckOuts' => $user->meals,
             'subTotal' => $subTotal,
             'totalPrice' => $totalPrice,
-            'voucher' => $voucherUsed,
             'addressFee' => $this->findDeliveryFee()
 
 
@@ -298,7 +297,9 @@ class ShoppingCartController extends Controller
 
             session()->forget('voucherID');
             session()->forget('voucher');
+            session()->forget('voucherCode');
             session()->forget('promoteDeliveryFee');
+           
         }
         return redirect('purchase');
     }

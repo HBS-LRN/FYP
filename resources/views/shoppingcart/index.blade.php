@@ -10,8 +10,6 @@
         <!--   <div id="container">-->
 
         <style>
-            
-        
             .check-out {
                 margin: 30px 20px 54px 40px;
                 border: 1px solid black;
@@ -54,7 +52,7 @@
 
             }
 
-      
+
             /* .redeem{
     margin-top: 70px;
     font-size: 15px;
@@ -120,21 +118,6 @@
                 margin-top: 20px;
                 box-shadow: 0px 0px 5px grey;
             }
-
-
-            
-           
-
-            
-
-           
-
-          
-
-           
-
-          
-            
         </style>
     </head>
 
@@ -265,7 +248,7 @@
                                         disabled /></span>
 
                             </p>
-                        
+
                             <p>Click Below Link To Manage Your Address</p>
                             <!--<p>To: <span class="customerAddress">Jalan 1A/6,47000 Sungai Buloh</span></p>-->
 
@@ -282,7 +265,7 @@
 
 
                     <div class="flex-form">
-                    <div class="shipping">
+                        <div class="shipping">
                             <h2>Voucher</h2>
                         </div>
                         <span class="moreVouchers" id="voucherButton">More Vouchers</span>
@@ -294,28 +277,34 @@
                                 <input type="hidden" id="deliveryFee" name="deliveryFee" value="{{ $addressFee }}">
 
                                 @foreach ($vouchers as $voucher)
-                                    <div class="vourcherBOX">
-                                        <div class="vourcherInfrontDetailBox">
+                                    @if ($voucher['qty'] != 0)
+                                        @if (!($voucher && now() > $voucher['expire_date']))
+                                            <div class="vourcherBOX">
+                                                <div class="vourcherInfrontDetailBox">
 
-                                            <img src="../image/grabfood.jpg" class="vourcherImg" />
+                                                    <img src="../image/grabfood.jpg" class="vourcherImg" />
 
-                                            <div class="vourcherCenterDetailBox">
-                                                <p class="discount"><b>{{ $voucher['code'] }}</b></p>
-                                                <p class="minSpend">{{ $voucher['description'] }}</p>
+                                                    <div class="vourcherCenterDetailBox">
+                                                        <p class="discount"><b>{{ $voucher['code'] }}</b></p>
+                                                        <p class="minSpend">{{ $voucher['description'] }}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="vourcherBackDetailBox">
+                                                    <span class="validDate">Valid Until:
+                                                        {{ $voucher['expire_date'] }}</span>
+
+
+                                                </div>
+                                                <div class="selectButtonBox"><input type="radio" name="voucher"
+                                                        value="{{ $voucher['id'] }}"></div>
                                             </div>
-                                        </div>
-
-                                        <div class="vourcherBackDetailBox">
-                                            <span class="validDate">Valid Until: {{ $voucher['expire_date'] }}</span>
-
-                                            
-                                        </div>
-                                        <div class="selectButtonBox"><input type="radio" name="voucher" value="{{ $voucher['id'] }}"></div>
-                                    </div>
+                                        @endif
+                                    @endif
                                 @endforeach
                                 <div class="redeemButtonBox">
-                                <button type="submit" id="apply_voucher" class="redeemButton">Apply
-                                </button>
+                                    <button type="submit" id="apply_voucher" class="redeemButton">Apply
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -325,12 +314,13 @@
                             <h2>Total</h2>
                         </div>
                         <div class="totalPrice">
-                            <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0.00" disabled>
+                            <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0.00"
+                                    disabled>
                             </p>
                         </div>
                     </div>
 
-                 
+
 
 
                     <div class="flex-form">
@@ -365,10 +355,10 @@
         var setTotalValue = document.getElementById('overallTotal');
         var setDelivery = document.getElementById('delivery');
         var voucherBox = document.getElementById('voucherBox');
-        document.getElementById('voucherButton').addEventListener("click",function(){
-            if(voucherBox.style.display==="none"){
+        document.getElementById('voucherButton').addEventListener("click", function() {
+            if (voucherBox.style.display === "none") {
                 voucherBox.style.display = "initial";
-            }else{
+            } else {
                 voucherBox.style.display = "none";
             }
         });
