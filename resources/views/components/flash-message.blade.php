@@ -167,8 +167,8 @@
             Swal.fire({
                 position: 'top-end',
                 icon: 'warning',
-                title: 'Your Account Have Been Login From Another Device!',
-                text: 'Change Your Account Password Since It Might Have Security Risk!',
+                title: 'System Forced Log Out! Your Account Have Been Login From Another Device!',
+                text: 'Only one account from one device can log in to the system',
                 showConfirmButton: false,
                 timer: 4000
 
@@ -236,6 +236,29 @@
         }
     </script>
 @endif
+@if (session()->has('notActiveMember'))
+    <div class="fail-meesage" data-faildata={{ session('notActiveMember') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Opps,Inactive Member!',
+                text: 'Kindly email To Grand@gmail.com to active your account!',
+                showCloseButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+
+
+
 
 @if (session()->has('noAddressFound'))
     <div class="fail-meesage" data-faildata={{ session('noAddressFound') }}></div>

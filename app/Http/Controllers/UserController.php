@@ -115,21 +115,26 @@ class UserController extends Controller
             'email' => ['required', 'email'],
             'password' => 'required'
         ]);
+
+
+
+        $user = User::where('email', $request->email)->first();
+        //check if the user is the active member
+        if ($user->active_member == 'N') {
+            return back()->with('notActiveMember', true);
+        }
+
+
         //call Enforce account disabling after an established number of invalid login attempts method
         $request->authenticate();
-
-
         // Check if the user has an active session to prevent concurrent login
-        $user = User::where('email', $request->email)->first();
+
         if ($user && $user->session_id && $user->session_id !== session()->getId()) {
             Auth::logoutOtherDevices($request->password);
             $user->session_id = session()->getId();
             $user->save();
             Session::flash('concurentLogin', true);
         }
-
-
-
 
         //if user login successfully
         if (User::login($data)) {
@@ -139,7 +144,7 @@ class UserController extends Controller
             $user->session_id = session()->getId();
             $user->update();
 
-          
+
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
 
@@ -280,10 +285,10 @@ class UserController extends Controller
     public function informPasswordChange($email)
     {
 
-      
+
         $body = " We Are Here To Inform Your Password Has Been Changed Recently Asscociated   
-                with " . $email. "!";
-        Mail::send('auth.inform-passwordChange', [ 'body' => $body], function ($message) use ($email) {
+                with " . $email . "!";
+        Mail::send('auth.inform-passwordChange', ['body' => $body], function ($message) use ($email) {
 
             $message->from('noreply@gmail.com', 'Grand Imperial');
             $message->to($email, 'Grand Imperial')
