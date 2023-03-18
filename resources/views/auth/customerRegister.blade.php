@@ -15,10 +15,11 @@
         }
 
         .error {
+            margin:0px;
             border: none;
             color: red;
             font-size: 13px;
-            margin-bottom: 28px;
+            margin-bottom: 2px;
             width: 97%;
             padding-left: 10px;
         }
