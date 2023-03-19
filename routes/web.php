@@ -35,7 +35,7 @@ Route::get('/', [CategoryController::class, 'index']);
 
 
 
-Route::get('/category/create', [CategoryController::class, 'create']);
+Route::get('/category/create', [CategoryController::class, 'create'])->middleware('isAdmin');;
 
 
 // Store category Data
