@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meal;
+use App\Models\User;
 use App\Models\Category;
+use App\Models\MealOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\URL;
@@ -232,11 +234,36 @@ class MealController extends Controller
         return redirect('/showInventory')->with('successfullyUpdate', true);
     }
 
+
+    public function showRating2Star($rating){
+        if($rating<2){
+            return "display:none;";
+        }
+    }
+
+    public function showRating3Star($rating){
+        if($rating<3){
+            return "display:none;";
+        }
+    }
+
+    public function showRating4Star($rating){
+        if($rating<4){
+            return "display:none;";
+        }
+    }
+
+    public function showRating5Star($rating){
+        if($rating<5){
+            return "display:none;";
+        }
+    }
     //show meal rating page
     public function showMealRating()
     {
         return view('meals.mealRating',[
-            'mealsOrderDetail' => MealOrderDetail::all()
+            'mealsOrderDetail' => MealOrderDetail::all(),
+            'users'=> User::all()
         ]);
     }
 }

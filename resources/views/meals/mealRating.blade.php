@@ -1,6 +1,13 @@
 <head>
+    @inject('MealController','\App\Http\Controllers\MealController')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css ">
+
+    <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+   
+   
+ 
     <style>
         .edit {
             padding: 5px 20px;
@@ -58,11 +65,11 @@
                             @foreach($mealsOrderDetail as $mealOrderDetail)
                                 <tr style="border: 1px solid grey;">
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblOrderID"  Text='<%# Eval("order_number") %>'></label></td>
+                                        <label for="lblOrderID">{{$mealOrderDetail->order_id}}</label></td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblCustomerID" Text='<%# Eval("Order.customer_ID") %>'></label></td>
+                                        <label for="lblCustomerID"></label></td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblItemName" Text='<%# Eval("Meal.meal_Name") %>'></label></td>
+                                        <label for="lblItemName" ></label></td>
                                     <!-- <asp:HiddenField ID="hiddenOrderDetailNumber" runat="server" Value='<%#Eval("order_detail_number") %>' /> -->
 
                                     <td style="border: 1px solid grey;">
@@ -71,30 +78,33 @@
                                             <div>
                                                 <i class="fa fa-star checked" id="fa-star1"></i>
                                             </div>
+                                       
+                                            <div id="rate2" style="{{$MealController->showRating2Star($mealOrderDetail->rating_star)}}">
+                                                <i class="fa fa-star checked"></i>
+                                            </div>
+                                       
+                                            <div id="rate3" style="{{$MealController->showRating3Star($mealOrderDetail->rating_star)}}">
+                                                <i class="fa fa-star checked"></i>
+                                            </div>
 
-                                            <div id="rate2" runat="server" visible='<%# ShowRating2Star(Eval("order_detail_number")) %>'>
+                                            <div id="rate4" style="{{$MealController->showRating4Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
-                                            <div id="rate3" runat="server" visible='<%# ShowRating3Star(Eval("order_detail_number")) %>'>
-                                                <i class="fa fa-star checked"></i>
-                                            </div>
-                                            <div id="rate4" runat="server" visible='<%# ShowRating4Star(Eval("order_detail_number")) %>'>
-                                                <i class="fa fa-star checked"></i>
-                                            </div>
-                                            <div id="rate5" runat="server" visible='<%# ShowRating5Star(Eval("order_detail_number")) %>'>
+
+                                            <div id="rate5" style="{{$MealController->showRating5Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
                                         </div>
                                     </td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblComment" runat="server" Text='<%# Eval("rating_comment") %>'></label></td>
+                                        <label for="lblComment">{{$mealOrderDetail->rating_comment}}</label></td>
 
                                     <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="../staff/MealRatingEdit.aspx?orderDetailNumber=<%#Eval("order_detail_number") %>" class="edit">Reply</a></td>
 
                                 </tr>
                             <!-- </ItemTemplate>
                         </asp:ListView> -->
-
+        @endforeach
                     </tbody>
                 </table>
 
