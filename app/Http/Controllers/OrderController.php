@@ -22,7 +22,13 @@ class OrderController extends Controller
         $prepareOrder = 0;
         $deliverOrder = 0;
         $completeOrder = 0;
+
+        //get all of the orders belong to that particular user 
         $orders = auth()->user()->orders;
+
+
+
+        
         foreach ($orders as $order) {
             foreach ($order->meals as $meal) {
 

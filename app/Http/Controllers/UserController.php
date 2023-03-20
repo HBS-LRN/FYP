@@ -23,16 +23,29 @@ use App\Repository\UserRepositoryInterface;
 
 class UserController extends Controller
 {
-
-
     private $userRepositoryInterface;
-
+    
     public function __construct(UserRepositoryInterface $userRepositoryInterface)
     {
         $this->userRepositoryInterface = $userRepositoryInterface;
     }
 
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'currentPass' => 'required',
+            'password' => ['required', Password::min(8)->letters()->numbers()->mixedCase()->symbols(), 'confirmed'],
+        ]);
 
+        //call repository method to update password
+        $success =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass']);
+
+        if ($success == true) {
+            return back()->with('successfullyUpdate', true);
+        } else {
+            return back()->withErrors(['currentPass' => 'Invalid Current Password'])->onlyInput('currentPass');
+        }
+    }
 
 
     //update customer profile
@@ -76,31 +89,11 @@ class UserController extends Controller
 
         ]);
 
-        //call repository class to create user
+
         $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
         return redirect('/login')->with('resgisterSucessful', $user);
-    }
-
-
-
-
-    public function updatePassword(Request $request)
-    {
-        $data = $request->validate([
-
-            'currentPass' => 'required',
-            'password' => ['required', Password::min(8)->letters()->numbers()->mixedCase()->symbols(), 'confirmed'],
-
-
-        ]);
-
-        //call repository method to update password
-        $passUpdated =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass']);
-        if ($passUpdated == true) {
-            return back()->with('successfullyUpdate', true);
-        } else {
-            return back()->withErrors(['currentPass' => 'Invalid Current Password'])->onlyInput('currentPass');
-        }
     }
 
     // Authenticate User
@@ -138,8 +131,7 @@ class UserController extends Controller
 
         //if user login successfully
         if (User::login($data)) {
-            //create the unqiue bearer token as the personal access api token
-            $this->userRepositoryInterface->generatePrivateToken(auth()->user());
+
             //update session id 
             $user->session_id = session()->getId();
             $user->update();
@@ -273,28 +265,17 @@ class UserController extends Controller
                 'email' => $request->email
             ])->delete();
 
-
             //inform user their password has been changed using email
-            $this->informPasswordChange($request->email);
+            User::informPasswordChange($request->email);
+
+
 
             return redirect()->route('login')->with('passChangeSuccess', true);
         }
     }
 
 
-    public function informPasswordChange($email)
-    {
 
-
-        $body = " We Are Here To Inform Your Password Has Been Changed Recently Asscociated   
-                with " . $email . "!";
-        Mail::send('auth.inform-passwordChange', ['body' => $body], function ($message) use ($email) {
-
-            $message->from('noreply@gmail.com', 'Grand Imperial');
-            $message->to($email, 'Grand Imperial')
-                ->subject('Password Changed!');
-        });
-    }
     public function show()
     {
         return view('profile.changePassword');

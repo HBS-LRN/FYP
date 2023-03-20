@@ -2,22 +2,31 @@
 
 namespace App\Repository;
 
-
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
 use App\Repository\Base\BaseRepository;
 use App\Repository\UserRepositoryInterface;
 
+
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
 
     public function __construct()
     {
-
         parent::__construct(User::class);
     }
 
+    //only specified method base repository doest not support need to be created
+    public function updatePassword(User $user, $password)
+    {
+        if (Hash::check($password, auth()->user()->password)) {
+            $user->password = bcrypt($password);
+            $user->update();
+            return true;
+        }
+        return false;
+    }
 
     //generete a private token via 
     public function generatePrivateToken($user)
@@ -25,7 +34,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         $client = new Client([
             'base_uri' => 'http://localhost:8000/api/',
-            'timeout'  => 2.0,
+            'timeout'  => 6.0,
         ]);
         $response = $client->post('generateToken', [
             'headers' => [
@@ -40,25 +49,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $user->token = $token['token'];
         $user->update();
     }
-
-
-    //manually open a new method that base repository doest not support
-    public function updatePassword(User $user, $password)
-    {
-        //create user
-
-        if (Hash::check($password, auth()->user()->password)) {
-
-            $user->password = bcrypt($password);
-            $user->update();
-
-            return true;
-        }
-
-        return false;
-    }
-
-
 
     public function create($data): User
     {

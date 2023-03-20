@@ -2,15 +2,35 @@
 
 
 namespace App\Repository\Base;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 interface BaseRepositoryInterface
-{
+{  
     /**
-     * @return Builder
+     * Create a resource
+     * @param  $data
+     * @return $model
      */
-    public function queryBuilder() : Builder;
+    public function create($data);
+
+    /**
+     * Update a resource
+     * @param  $model
+     * @param  array $data
+     * @return $model
+     */
+    public function update($model, $data);
+
+    /**
+     * Delete a resource
+     * @param $entity
+     * @return bool
+     */
+    public function delete($entity);
+
+    public function queryBuilder(): Builder;
 
     /**
      * Return a collection of all elements of the resource
@@ -70,27 +90,6 @@ interface BaseRepositoryInterface
      */
     public function paginate($perPage = 15, $orderBy = null, $orderDir = "asc", $columns = ['*'], $pageName = 'page', $page = null);
 
-    /**
-     * Create a resource
-     * @param  $data
-     * @return $model
-     */
-    public function create($data);
-
-    /**
-     * Update a resource
-     * @param  $model
-     * @param  array $data
-     * @return $model
-     */
-    public function update($model, $data);
-
-    /**
-     * Delete a resource
-     * @param $entity
-     * @return bool
-     */
-    public function delete($entity);
 
     /**
      * Hard delete a resource
