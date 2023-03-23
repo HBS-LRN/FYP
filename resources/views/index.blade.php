@@ -41,7 +41,7 @@
             box-shadow: 5px 5px 20px #f17163;
             margin-right: 20px;
             border-radius: 70px;
-            font-weight: bolder;
+            font-weight: bold;
             color: white;
         }
 
@@ -94,6 +94,7 @@
         </div>
 
     </div>
+
     <h3 class="subTitle">Menu Categories</h3>
     <div class="section2">
 
