@@ -67,9 +67,9 @@
                                     <td style="border: 1px solid grey;">
                                         <label for="lblOrderID">{{$mealOrderDetail->order_id}}</label></td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblCustomerID">{{$mealOrderDetail->pivot->user_id}}</label></td>
+                                        <label for="lblCustomerID"></label></td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblItemName" ></label></td>
+                                        <label for="lblItemName" >{{$mealOrderDetail->Order->Meal->meal_name}}</label></td>
                                     <!-- <asp:HiddenField ID="hiddenOrderDetailNumber" runat="server" Value='<%#Eval("order_detail_number") %>' /> -->
 
                                     <td style="border: 1px solid grey;">

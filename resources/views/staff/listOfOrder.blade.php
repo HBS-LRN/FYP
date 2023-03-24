@@ -44,8 +44,6 @@
         <div class="box4">
             <div class="scroll-wrap">
                 <!-- <label for="report" style="margin-left: 70px;">Report Type</label> -->
-
-
                 
                 <table id="example" class="table table-striped">
                     <thead>
@@ -61,7 +59,7 @@
                     </thead>
                     <tbody id="search">
                         <asp:ListView ID="lvCustomerOrder" runat="server" ItemType="Assignment.Models.Order" DataKeyNames="order_number" SelectMethod="BindCustomerOrderList">
-                            
+                        @foreach($orders as $order)
                             <ItemTemplate>
 
                                 <tr>
