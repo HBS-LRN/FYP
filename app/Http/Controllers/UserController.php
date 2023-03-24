@@ -111,6 +111,7 @@ class UserController extends Controller
 
 
 
+        
         $user = User::where('email', $request->email)->first();
         //check if the user is the active member
         if ($user->active_member == 'N') {
@@ -150,6 +151,7 @@ class UserController extends Controller
 
 
 
+        //call log out function 
         User::logout();
 
         return redirect('/')->with('message', 'You have been logged out!');
