@@ -23,6 +23,8 @@ use App\Repository\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+
+    //using user repository 
     private $userRepositoryInterface;
     
     public function __construct(UserRepositoryInterface $userRepositoryInterface)

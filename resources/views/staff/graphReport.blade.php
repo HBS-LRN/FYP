@@ -1,7 +1,3 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/StaffSide.Master" AutoEventWireup="true" CodeBehind="GraphReport.aspx.cs" Inherits="Assignment.admin.GraphReport" %>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
-
     <div class="box">
         <div>
 
