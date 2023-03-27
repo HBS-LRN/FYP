@@ -121,7 +121,7 @@
 
                             <div class="submitButtonaddAddress">
 
-                                <button class="submitaddAddress" type="submit" Text="Add Meal">Submit</button>
+                                <button class="submitaddAddress" type="submit" >Submit</button>
 
                             </div>
 

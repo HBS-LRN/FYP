@@ -199,6 +199,13 @@ Route::get("/contactUs", function(){
  Route::get("/FAQ", function(){
     return view("static.FAQ");
  });
+//Show User List 
+ Route::get('/CustomersList', [UserController::class, 'listOutCustomers']);
+
+ //edit user data
+ Route::get('/CustomerEdit/{id}', [UserController::class, 'EditCustomerData']);
+ Route::put('/CustomerUpdate/{id}', [UserController::class, 'CustomerDataUpdate'])->middleware('auth');
+
 
 
  
