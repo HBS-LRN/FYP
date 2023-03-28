@@ -32,6 +32,8 @@ class UserController extends Controller
         $this->userRepositoryInterface = $userRepositoryInterface;
     }
 
+
+    //update the user password
     public function updatePassword(Request $request)
     {
         $request->validate([
