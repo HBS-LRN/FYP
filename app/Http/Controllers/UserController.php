@@ -32,6 +32,8 @@ class UserController extends Controller
         $this->userRepositoryInterface = $userRepositoryInterface;
     }
 
+
+    //update the user password
     public function updatePassword(Request $request)
     {
         $request->validate([
@@ -113,6 +115,8 @@ class UserController extends Controller
 
 
 
+
+        //get the user email
         $user = User::where('email', $request->email)->first();
         //check if the user is the active member
         if ($user->active_member == 'N') {
