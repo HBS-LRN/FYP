@@ -308,13 +308,27 @@ class UserController extends Controller
         ]);
     }
 
-    public function EditCustomerData($id){
-        $user = User::find($id);
-        return view('user.edit', compact('user'));
+    public function editCustomer($id){
+       
+        return view('user.edit', [
+            'user' => User::find($id)
+        ]);
 
     }
     
-    public function CustomerDataUpdate(){
-        
+    public function updateCustomer(Request $request, $id){
+        $user = User::find($id);
+      
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email'],
+            'gender' => 'required',
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'birthdate' => 'required',
+
+        ]);
+        $data['user_id'] = $id;
+        $this->userRepositoryInterface->updateUser($user, $data);
+        return redirect('/customer')->with('successfullyUpdate', true);
     } 
 }

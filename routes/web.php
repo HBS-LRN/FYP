@@ -200,11 +200,11 @@ Route::get("/contactUs", function(){
     return view("static.FAQ");
  });
 //Show User List 
- Route::get('/CustomersList', [UserController::class, 'listOutCustomers']);
+ Route::get('/customer', [UserController::class, 'listOutCustomers']);
 
  //edit user data
- Route::get('/CustomerEdit/{id}', [UserController::class, 'EditCustomerData']);
- Route::put('/CustomerUpdate/{id}', [UserController::class, 'CustomerDataUpdate'])->middleware('auth');
+ Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
+ Route::PUT('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
 
 
 
