@@ -16,11 +16,11 @@ use App\Factories\Interfaces\MealFactoryInterface;
 
 class MealController extends Controller
 {
-    // protected $mealFactory;
+    protected $mealFactory;
 
-    // public function __construct(MealFactoryInterface $mealFactory) {
-    //     $this->mealFactory = $mealFactory;
-    // }
+    public function __construct(MealFactoryInterface $mealFactory) {
+        $this->mealFactory = $mealFactory;
+    }
 
     public function index($id)
     {
@@ -133,26 +133,26 @@ class MealController extends Controller
         return redirect($url)->withFragment('meals');
     }
 
-    // public function store(Request $request)
-    // {       
-    //     $meal = $this->mealFactory->store($request->all(),$request);
-    //     return back();
+    public function store(Request $request)
+    {       
+        $meal = $this->mealFactory->store($request->all(),$request);
+        return back();
         
-    // }
+    }
 
-    // public function update(Request $request, $id)
-    // {
+    public function update(Request $request, $id)
+    {
 
-    //     $result = $this->mealFactory->update($id, $request->all(),$request);
-    //     return redirect('/meal/adshow')->with('successfullyUpdate', true);
-    // }
+        $result = $this->mealFactory->update($id, $request->all(),$request);
+        return redirect('/meal/adshow')->with('successfullyUpdate', true);
+    }
 
-    // public function delete($id)
-    // {
-    //     $result = $this->mealFactory->delete($id);
-    //     return redirect()->back()->with('successfullyUpdate', true);
+    public function delete($id)
+    {
+        $result = $this->mealFactory->delete($id);
+        return redirect()->back()->with('successfullyUpdate', true);
 
-    // }
+    }
 
     //return meals and show on inventory page
     public function inventory()

@@ -8,6 +8,8 @@ use App\Repository\AddressRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repository\UserRepositoryInterface;
 use App\Repository\AddressRepositoryInterface;
+use App\Factories\Interfaces\MealFactoryInterface;
+use App\Factories\MealFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
+        $this->app->bind(MealFactoryInterface::class, MealFactory::class);
     }
 
     /**
