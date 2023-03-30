@@ -26,7 +26,7 @@ class UserController extends Controller
 
     //using user repository 
     private $userRepositoryInterface;
-    
+
     public function __construct(UserRepositoryInterface $userRepositoryInterface)
     {
         $this->userRepositoryInterface = $userRepositoryInterface;
@@ -58,12 +58,24 @@ class UserController extends Controller
 
         $user = auth()->user();
 
+        //get the user email
+        $user = User::where('email', $request->email)->first();
+        //validate user email
+        if ($user != null) {
+
+            if ($user->email != auth()->user()->email)
+                return back()->withErrors(['email' => 'The email has already been taken'])->onlyInput('email');
+        }
         $data = $request->validate([
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email'],
             'gender' => 'required',
             'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
-            'birthdate' => 'required',
+            'birthdate' => ['required','before:-13 years'], //solution,
+
+        ],
+        [
+            'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
 
         ]);
 
@@ -118,6 +130,11 @@ class UserController extends Controller
 
         //get the user email
         $user = User::where('email', $request->email)->first();
+
+        //if user is equal to null
+        if ($user == null) {
+            return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
+        }
         //check if the user is the active member
         if ($user->active_member == 'N') {
             return back()->with('notActiveMember', true);
@@ -146,7 +163,7 @@ class UserController extends Controller
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
 
-        return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
+        return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
     }
 
 
@@ -306,19 +323,20 @@ class UserController extends Controller
         return view('staff.dashboard');
     }
     //return all user
-    public function listOutCustomers(){
-        return view('user.index',[
+    public function listOutCustomers()
+    {
+        return view('user.index', [
             'users' => User::all()
         ]);
     }
 
-    public function EditCustomerData($id){
+    public function EditCustomerData($id)
+    {
         $user = User::find($id);
         return view('user.edit', compact('user'));
-
     }
-    
-    public function CustomerDataUpdate(){
-        
-    } 
+
+    public function CustomerDataUpdate()
+    {
+    }
 }

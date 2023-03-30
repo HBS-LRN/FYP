@@ -38,17 +38,17 @@
 
                     </div>
                     @error('name')
-                        <p class="error" style="color:red">*{{ $message }}</p>
+                        <span class="error" style="color:red">*{{ $message }}</span><br>
                     @enderror
 
                     <br>
                     <div class="emailLabelInput">
                         <label for="email" class="emailLabel">Email :</label>
-                        <input type="text" class="email" name="email" value="{{ auth()->user()->email }}" disabled />
+                        <input type="text" class="email" name="email" value="{{ auth()->user()->email }}" />
 
                     </div>
                     @error('email')
-                        <p class="error" style="color:red">*{{ $message }}</p>
+                        <span class="error" style="color:red">*{{ $message }}</span><br>
                     @enderror
 
 
@@ -59,7 +59,7 @@
 
                     </div>
                     @error('phone')
-                        <p class="error"style="color:red" >*{{ $message }}</p>
+                        <span class="error"style="color:red" >*{{ $message }}</span><br>
                     @enderror
 
                     <br>
@@ -78,12 +78,16 @@
                             {{ auth()->user()->gender == 'Female' ? 'checked' : '' }}>Female
                     </div>
 
+                    @error('gender')
+                    <span class="error"style="color:red" >*{{ $message }}</span><br>
+                @enderror
+
                     <div class="dateLabelInput">
                         <label for="birthOfDate" class="birthLabel">Birth Of Date</label>
                         <input type="date" name="birthdate" id="birthdate" class="birthInput" value="{{ auth()->user()->birthdate }}">
                     </div>
                     @error('birthdate')
-                        <p class="error"style="color:red" >*{{ $message }}</p>
+                        <span class="error"style="color:red" >*{{ $message }}</span><br>
                     @enderror
 
 

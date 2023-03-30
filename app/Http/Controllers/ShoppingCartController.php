@@ -166,12 +166,14 @@ class ShoppingCartController extends Controller
             foreach ($addresses as $address) {
                 if ($address->active_flag == 'T') {
 
+                  
                     foreach ($states as $state) {
                         if ($address->area == $state->state_name)
                             $addressFee = $state->delivery_fee;
                     }
                 }
             }
+         
             return $addressFee;
         }
     }
