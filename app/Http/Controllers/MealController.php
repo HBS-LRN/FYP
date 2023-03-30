@@ -170,7 +170,7 @@ class MealController extends Controller
         ]);
     }
 
-    //update meal Inventory
+    //update meal Inventories
     public function updateInventory(Request $request, $id)
     {
 

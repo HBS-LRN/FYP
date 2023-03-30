@@ -59,7 +59,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function updateUser(User $user, array $data)
     {
-
         $user->name =  $data['name'];
         $user->email =  $data['email'];
         $user->gender =  $data['gender'];
@@ -67,6 +66,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $user->birthdate =  $data['birthdate'];
      
 
+      
     
 
         $user->update();

@@ -94,8 +94,8 @@
         </div>
 
     </div>
-  
-
+   
+    <x-flash-message />
 <script>
       let arrow = document.querySelectorAll(".arrow");
       

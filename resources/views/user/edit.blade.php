@@ -71,25 +71,26 @@
 </style>
     <div class="box">
       <h2 class="titleEditCustomer">Customer Edit Form</h2>
-          <form class="form" method="post" action="/CustomerUpdate/{$user->id}">
-              <asp:HiddenField ID="HiddenFieldCustomerId" runat="server" />
+          <form class="form" method="post" action="/customer/edit/{{$user->id}}">
                 
+                @csrf
+                @method('PUT')
                 <div class="flex">
                     <label for="custID" class="label">Customer ID :</label>
-                    <input type="text" id="custID" class="input" ReadOnly value="{{$user->id}}">
+                    <input type="text" id="custID" name="user_id" class="input" ReadOnly value="{{$user->id}}">
                    
                    
                 </div>
                 <div class="flex">
                     <label for="custName" class="label">Customer Name :</label>
-                    <input type="text" id="custName" class="input" value="{{$user->name}}">
+                    <input type="text" name="name" id="name" class="input" value="{{$user->name}}">
                     
                 </div>
                 <!-- <asp:RequiredFieldValidator ID="reqCustName" runat="server" ErrorMessage="*Name Cannot Be Empty" CssClass="error" ControlToValidate="custName"  Display="Dynamic">*Name Cannot Be Empty</asp:RequiredFieldValidator> -->
 
                 <div class="flex">
                     <label for="email" class="label">Customer Email :</label>
-                    <input type="email" id="custEmail" class="input" value="{{$user->email}}">
+                    <input type="email" name="email" id="email" class="input" value="{{$user->email}}">
                    
                     
                 </div>
@@ -98,7 +99,7 @@
                 <!-- <asp:RegularExpressionValidator ID="regexEmailValid" runat="server" CssClass="error" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="custEmail" Display="Dynamic" ErrorMessage="*Invalid Email Format"></asp:RegularExpressionValidator> -->
               <div class="flex">
                      <label for="custPhone" class="label">Customer Phone Number With(-) :</label>
-                     <input type="text" id="custPhone" class="input" value="{{$user->phone}}">
+                     <input type="text" id="custPhone" class="input" name="phone" value="{{$user->phone}}">
                     
                     
                       </div>
@@ -106,7 +107,7 @@
                 <!-- <asp:RegularExpressionValidator ID="regexPhoneValid" runat="server" CssClass="error" ValidationExpression="^[0-9]{3}-[0-9]{7}" ControlToValidate="custPhone" Display="Dynamic" ErrorMessage="*Invalid Phone Format"></asp:RegularExpressionValidator> -->
                   <div class="flex">
                         <label for="birthOfDate" class="label">Birth Of Date</label>
-                        <input type="date" id="birthOfDate" class="input" value="<?php echo date_format(date_create($user->birthdate),"Y-m-d"); ?>" >
+                        <input type="date" id="birthOfDate" class="input" name="birthdate" value="<?php echo date_format(date_create($user->birthdate),"Y-m-d"); ?>" >
                         <!-- <?php echo $user->birthdate;?>  -->
                             </div>
                                   <!-- <asp:RequiredFieldValidator ID="reqCustBirthOfDate" runat="server" ErrorMessage="*Birth Date Cannot Be Empty" CssClass="error" ControlToValidate="birthOfDate"  Display="Dynamic">*Birth Date Cannot Be Empty</asp:RequiredFieldValidator> -->
@@ -116,7 +117,7 @@
                      <span class="customerGender" id="GenderRadioButtonList" width="361px">
                         <?php $genders=array('Male','Female'); 
                               foreach($genders as $gender): ?>
-                        <input type="radio" value="<?php echo $gender;?>" 
+                        <input type="radio" name="gender" value="<?php echo $gender;?>" 
                             <?php if($gender == $user->gender){ echo "checked";} ?>
                             ><?php echo $gender;?>
                         
@@ -134,7 +135,7 @@
 
 
                 <div class="editBtnSubmit">
-                <button id="Edit" class="editBtnCustomer" OnClick="EditCustomer_Click" >Edit</button>
+                <button id="Edit"  class="editBtnCustomer">Edit</button>
                  
                 </div>
             

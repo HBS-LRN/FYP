@@ -127,7 +127,7 @@
                                     <td class="custListTd" style="border:1px solid grey;">{{$user->phone}}</td>
                                     <td class="custListTd" style="border:1px solid grey;">{{$user->birthdate}}</td>
                                     <td class="custListTd" style="border:1px solid grey;">
-                                        <p><a class="edit" href="/CustomerEdit/{{$user->id}}">Edit</a></p>
+                                        <p><a class="edit" href="/customer/edit/{{$user->id}}">Edit</a></p>
                                         <p><a class="delete" href="">Delete </a></p>
                                     </td>
                                 </tr>
