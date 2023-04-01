@@ -68,6 +68,22 @@ class MealFactory implements MealFactoryInterface
         $meal = Meal::find($id);
         return $meal->delete();
     }
+
+    public function updateInventory($id,array $data,Request $request)
+    {
+
+        $meal = Meal::find($id);
+        $data = $request->validate([
+            'meal_qty' => 'required|integer|min:0'
+        ], [
+            'meal_qty.required' => 'Please Provide A Meal Quantity',
+        ]);
+
+        $data['meal_id'] = auth()->id();
+        return $meal->update($data);
+        
+    }
+
 }
 
 ?>

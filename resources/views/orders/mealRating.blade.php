@@ -1,5 +1,5 @@
 <head>
-    @inject('MealController','\App\Http\Controllers\MealController')
+    @inject('OrderController','\App\Http\Controllers\OrderController')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css ">
 
@@ -42,8 +42,7 @@
 
         <div class="box4">
             <div class="scroll-wrap">
-                <!-- <label for="report" style="margin-left: 70px;">Report Type</label> -->
-
+              
                 <table id="example" class="table table-striped">
 
                     <thead>
@@ -59,18 +58,16 @@
 
                     </thead>
                     <tbody id="search">
-                        <!-- <asp:ListView ID="lvOrderDetail" runat="server" ItemType="Assignment.Models.MealOrderDetail" DataKeyNames="order_detail_number" SelectMethod="BindOrderDetailListComment"> -->
 
-                            <!-- <ItemTemplate> -->
                             @foreach($mealsOrderDetail as $mealOrderDetail)
                                 <tr style="border: 1px solid grey;">
                                     <td style="border: 1px solid grey;">
                                         <label for="lblOrderID">{{$mealOrderDetail->order_id}}</label></td>
                                     <td style="border: 1px solid grey;">
                                     
-                                        <label for="lblCustomerID"></label></td>
+                                        <label for="lblCustomerID">{{$mealOrderDetail->Order->user_id}}</label></td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblItemName" >{{$mealOrderDetail->Order->Meal->meal_name}}</label></td>
+                                        <label for="lblItemName">{{$mealOrderDetail->Meal->meal_name}}</label></td>
                                     <!-- <asp:HiddenField ID="hiddenOrderDetailNumber" runat="server" Value='<%#Eval("order_detail_number") %>' /> -->
 
                                     <td style="border: 1px solid grey;">
@@ -80,19 +77,19 @@
                                                 <i class="fa fa-star checked" id="fa-star1"></i>
                                             </div>
                                        
-                                            <div id="rate2" style="{{$MealController->showRating2Star($mealOrderDetail->rating_star)}}">
+                                            <div id="rate2" style="{{$OrderController->showRating2Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
                                        
-                                            <div id="rate3" style="{{$MealController->showRating3Star($mealOrderDetail->rating_star)}}">
+                                            <div id="rate3" style="{{$OrderController->showRating3Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
 
-                                            <div id="rate4" style="{{$MealController->showRating4Star($mealOrderDetail->rating_star)}}">
+                                            <div id="rate4" style="{{$OrderController->showRating4Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
 
-                                            <div id="rate5" style="{{$MealController->showRating5Star($mealOrderDetail->rating_star)}}">
+                                            <div id="rate5" style="{{$OrderController->showRating5Star($mealOrderDetail->rating_star)}}">
                                                 <i class="fa fa-star checked"></i>
                                             </div>
                                         </div>
@@ -100,7 +97,7 @@
                                     <td style="border: 1px solid grey;">
                                         <label for="lblComment">{{$mealOrderDetail->rating_comment}}</label></td>
 
-                                    <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="../staff/MealRatingEdit.aspx?orderDetailNumber=<%#Eval("order_detail_number") %>" class="edit">Reply</a></td>
+                                    <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="/editMealRating/{{$mealOrderDetail->id}}" class="edit">Reply</a></td>
 
                                 </tr>
                             <!-- </ItemTemplate>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meal;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\MealOrderDetail;
@@ -142,7 +143,6 @@ class MealController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $result = $this->mealFactory->update($id, $request->all(),$request);
         return redirect('/meal/adshow')->with('successfullyUpdate', true);
     }
@@ -173,51 +173,9 @@ class MealController extends Controller
     //update meal Inventories
     public function updateInventory(Request $request, $id)
     {
-
-        $meal = Meal::find($id);
-        $formFields = $request->validate([
-            'meal_qty' => 'required|integer|min:0'
-        ], [
-            'meal_qty.required' => 'Please Provide A Meal Quantity',
-        ]);
-
-        $formFields['meal_id'] = auth()->id();
-
-        $meal->update($formFields);
-
+        $result = $this->mealFactory->updateInventory($id, $request->all(),$request);
         return redirect('/showInventory')->with('successfullyUpdate', true);
     }
 
-
-    public function showRating2Star($rating){
-        if($rating<2){
-            return "display:none;";
-        }
-    }
-
-    public function showRating3Star($rating){
-        if($rating<3){
-            return "display:none;";
-        }
-    }
-
-    public function showRating4Star($rating){
-        if($rating<4){
-            return "display:none;";
-        }
-    }
-
-    public function showRating5Star($rating){
-        if($rating<5){
-            return "display:none;";
-        }
-    }
-    //show meal rating page
-    public function showMealRating()
-    {
-        return view('meals.mealRating',[
-            'mealsOrderDetail' => MealOrderDetail::all(),
-            'users'=> User::all()
-        ]);
-    }
+   
 }

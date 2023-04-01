@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\MealOrderDetail;
 use App\Models\Order;
+use App\Models\Meal;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
@@ -14,8 +16,6 @@ class OrderController extends Controller
 
     public function show()
     {
-
-
 
 
         //count order 
@@ -62,4 +62,55 @@ class OrderController extends Controller
         $mealOrderDetails->update();
         return redirect('/purchase')->with('successfullyUpdate', true);
     }
+
+      //show meal rating page
+      public function showMealRating()
+      {
+          return view('orders.mealRating',[
+              'mealsOrderDetail' => MealOrderDetail::all(),
+              'orders' => Order::all()
+  
+          ]);
+      }
+
+     //show the rating stars
+    ///////////////////////////
+    public function showRating2Star($rating){
+        if($rating<2){
+            return "display:none;";
+        }
+    }
+
+    public function showRating3Star($rating){
+        if($rating<3){
+            return "display:none;";
+        }
+    }
+
+    public function showRating4Star($rating){
+        if($rating<4){
+            return "display:none;";
+        }
+    }
+
+    public function showRating5Star($rating){
+        if($rating<5){
+            return "display:none;";
+        }
+    }
+    /////////////////////////////
+
+    //show selected meal rating page
+    public function showEditMealRating($id){
+        return view('orders.editMealRating',[
+            'mealOrderDetail' => MealOrderDetail::find($id),
+        ]);
+    }
+
+    public function showRating($id){
+        $mealOrderDetail = MealOrderDetail::find($id);
+        return intval($mealOrderDetail->rating_star);
+    }
+
+  
 }
