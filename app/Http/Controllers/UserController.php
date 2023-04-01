@@ -106,6 +106,7 @@ class UserController extends Controller
         ]);
 
 
+        //uisng the user repository interface to create the data
         $user = $this->userRepositoryInterface->create($data);
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
