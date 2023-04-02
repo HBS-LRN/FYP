@@ -71,9 +71,14 @@
 </head>
     <div class="box">
       <h2 class="titleManageRating">Manage Rating</h2>
+
+     <form action="/mealRating/update" method="POST">
           <div class="form">
-                
-              <!-- <asp:HiddenField ID="mealOrderDetailHidden" runat="server" /> -->
+                @csrf
+                @method('PUT')
+
+                <input type="hidden" id="mealOrderDetailId" name="mealOrderDetailId" value="{{$mealOrderDetail->id}}">
+           
                 <div class="flex">
                     <label for="orderID" class="label">Order Number :</label>
                     <input type="text" id="orderID" name="order_id" class="input" Text="1000" ReadOnly="true" value="{{$mealOrderDetail->order_id}}"/>
@@ -119,7 +124,6 @@
             
 
         </div>
-
+    </form>
     </div>
-  
-</asp:Content>
+

@@ -57,26 +57,24 @@
                             <th width="15%">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="search">
-                        <asp:ListView ID="lvCustomerOrder" runat="server" ItemType="Assignment.Models.Order" DataKeyNames="order_number" SelectMethod="BindCustomerOrderList">
+                    <tbody id="search">          
                         @foreach($orders as $order)
-                            <ItemTemplate>
 
                                 <tr>
-                                    <td style="border:1px solid grey;"><a href="../staff/ListOfOrderDetail.aspx?orderNumber=<%#Eval("order_number") %>"></a><%#Eval("order_number") %></td>
-                                    <td style="border:1px solid grey;"><asp:Label ID="lblCustomerID" runat="server" Text='<%# Eval("customer_ID") %>'></asp:Label></td>
-                                    <td style="border:1px solid grey;"><asp:Label ID="lblOrderDate" runat="server" Text='<%# Eval("order_dateTime") %>'></asp:Label></td>
-                                    <td style="border:1px solid grey;"><asp:Label ID="lblOrderTotal" runat="server" Text='<%# Eval("order_total","{0:F2}") %>'></asp:Label></td>
-                                    <td style="border:1px solid grey;"><asp:Label ID="lblPaymentMethod" runat="server" Text='<%# Eval("payment_method") %>'></asp:Label></td>
-                                    <td id="result" style="color: red; border:1px solid grey;"><asp:Label ID="lblOrderStatus" runat="server" Text='<%# Eval("order_status") %>'></asp:Label></td>
+                                    <td style="border:1px solid grey;"><a href="orderDetails/show/{{$order->id}}"></a><label for="lblOrderNumber">{{$order->id}}</label></td>
+                                    <td style="border:1px solid grey;"><label for="lblCustomerID">{{$order->user_id}}</label></td>
+                                    <td style="border:1px solid grey;"><label for="lblOrderDate">{{$order->order_date}}</label></td>
+                                    <td style="border:1px solid grey;"><label for="lblOrderTotal">{{number_format($order->order_total, 2)}}</label></td>
+                                    <td style="border:1px solid grey;"><label for="lblPaymentMethod">{{$order->payment_method}}</label></td>
+                                    <td id="result" style="color: red; border:1px solid grey;"><label for="lblOrderStatus">{{$order->order_status}}</label></td>
                                     <td class="detailBtnBox" style="border:1px solid grey;">
-                                        <asp:Button ID="btnOrderDetail" runat="server" Text="Order Detail" class="orderDetail" OnClick="OrderDetail_Click" CommandArgument='<%#Eval("order_number") %>'/>
+                                        <button id="btnOrderDetail" class="orderDetail"  OnClick="redirectToOrderController({{$order->id}})">Order Detail</button>
                                         
                                     </td>
 
                                 </tr>
                      
-
+                        @endforeach
 
                     </tbody>
 
@@ -87,9 +85,15 @@
     </div>
 </body>
 
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
-    </script>
+<script>
+    function redirectToUserController(orderID) {
+    var url = '{{ route("OrderController.showOrderDetails", ":orderID") }}';
+    url = url.replace(':orderID', orderID);
+    window.location.href = url;
+    }
+
+    $(document).ready(function () {
+    $('#example').DataTable();
+    });
+</script>
 

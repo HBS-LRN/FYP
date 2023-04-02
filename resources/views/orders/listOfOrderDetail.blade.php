@@ -1,8 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/StaffSide.Master" AutoEventWireup="true" CodeBehind="ListOfOrderDetail.aspx.cs" Inherits="Assignment.staff.listOfOrderDetail" %>
-
-
-<asp:Content ID="Content" ContentPlaceHolderID="ContentPlaceHolder"
-    runat="Server">
+<head>
     <link rel="stylesheet" href="../css/OrderDetail.css">
     <style>
         .scroll-wrap {
@@ -66,9 +62,8 @@
         margin:0px 40px;
         }
     </style>
+</head>
     <div class="Pagebody">
-
-
         <div class="content">
             <div class="title-container">
                 <h1 class="Prodtitle">Product Order Detail</h1>
@@ -76,18 +71,18 @@
                     <div class="cust_cont">
                         <div class="name_cust">
                             <div class="title">
-                                <h1>Order Number : <asp:Label ID="lblOrderNumber" runat="server"></asp:Label></h1>
+                                <h1>Order Number : <label for="lblOrderNumber">{{$order->id}}</label></h1>
                             </div>
                             <div>
-                                <span>Customer ID : <asp:Label ID="lblCustomerID" runat="server"></asp:Label><br />
+                                <span>Customer ID : <label for="lblCustomerID">{{$order->user_id}}</label><br />
                                 </span>
                             </div>
                         </div>
                         
                         <div class="auto-style2">
-                            <asp:HiddenField ID="hiddenOrderNumber" runat="server" />
-                            <asp:Button ID="btnDelivered" runat="server" Text="Click Here If Item Is Ready To Deliver" CssClass="deliveredOrder"   OnClick="OrderDetailDelivery_Click" />
-                             <asp:Button ID="btnComplete" runat="server" Text="Click Here If Item Is Completly Delivered" CssClass="completedOrder"   OnClick="OrderDetailCompleted_Click" />
+                            <input type="hidden" name="hiddenOrderNumber" value="{{$order->id}}" />
+                            <button id="btnDelivered" class="deliveredOrder" OnClick="OrderDetailDelivery_Click">Click Here If Item Is Ready To Deliver</button>
+                            <button id="btnComplete" class="completedOrder" OnClick="OrderDetailCompleted_Click">Click Here If Item Is Completly Delivered</button>
                 
                         </div>
                     </div>
@@ -96,7 +91,7 @@
             <div class="scroll-wrap">
                 <table class="sortable">
                     <tr class="tr">
-                           <th class="th" width="3%">No</th>
+                        <th class="th" width="3%">No</th>
                         <th class="th" width="15%">Image</th>
                         <th class="th" width="15%">Product</th>
                         <th class="th" width="8%">Price</th>
@@ -106,49 +101,40 @@
                     </tr>
                     <tbody class="tbody" id="search">
 
-                        <asp:ListView ID="lvOrderDetail" runat="server" ItemType="Assignment.Models.MealOrderDetail" DataKeyNames="order_detail_number" SelectMethod="BindOrderDetailList">
-
-                            <ItemTemplate>
+                      @foreach($orderDetails as $key => $orderDetail)
                                 <tr class="tr">
 
-                                     <td class="td"> <%# Container.DataItemIndex + 1 %></td>
+                                     <td class="td"> {{$key+1}}</td>
                                     <td class="td">
-                                        <asp:Image ID="Image2" runat="server" CssClass="img" ImageUrl='<%# string.Format("data:Image/png;base64,{0}",Convert.ToBase64String((byte[])Eval("Meal.meal_Image"))) %>' />
-                                    </td>
+                                    <img class="img" src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
+                                alt="" /></td>
+                                       
                                     <td class="td">
-                                        <asp:Label ID="lblItemName" runat="server" Text='<%# Eval("Meal.meal_Name") %>'></asp:Label></td>
+                                        <label for="lblItemName">Text='<%# Eval("Meal.meal_Name")</label></td>
                                     <td class="td">RM
-                                        <asp:Label ID="lblItemPrice" runat="server" Text='<%#Eval("Meal.meal_regular_price","{0:F2}") %>'></asp:Label></td>
+                                        <label for="lblItemPrice">Text='<%#Eval("Meal.meal_regular_price","{0:F2}")</label></td>
                                     <td class="td">
-                                        <asp:Label ID="lblQuantity" runat="server" Text='<%#Eval("order_qty") %>'></asp:Label></td>
+                                        <label for="lblQuantity">Text='<%#Eval("order_qty")</label></td>
                                     <td class="td">RM<%# string.Format("{0:0.00}", Convert.ToDouble(Eval("Meal.meal_regular_price")) * Convert.ToInt32(Eval("order_qty")))%></td>
-                                    <td class="td" id="result"><%# Eval("meal_order_status") %></td>
+                                    <td class="td" id="result">{{$order->order_status}}</td>
                                 </tr>
-                            </ItemTemplate>
-                        </asp:ListView>
-
-
-
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="detail_cont">
                 <div class="details">
                     <span>Ordered Date And Time : <b>
-                        <asp:Label ID="lblOrderDate" runat="server" ></asp:Label></b></span><br>
-
-                    <span>Payment Method :<b> <asp:Label ID="lblPaymentMethod" runat="server" ></asp:Label></b></span>
-
-
-
+                        <label for="lblOrderDate">{{$order->order_date}}</label></b></span><br>
+                    <span>Payment Method :<b><label for="lblPaymentMethod">{{$order->payment_method}}</label></b></span>
 
                 </div>
                 <div class="cal">
-                    <span>Delivery Fee : <b><asp:Label ID="lblDeliveryFee" runat="server" ></asp:Label></b></span><br>
+                    <span>Delivery Fee : <b><label for="lblDeliveryFee">{{$order->delivery_fee}}</label></b></span><br/>
                     
-                    <span>Overall Price : <b><asp:Label ID="lblOverallPrice" runat="server" ></asp:Label></b></span><br />
+                    <span>Overall Price : <b><label for="lblOverallPrice">{{$order->order_total}}</label></b></span><br/>
 
-                     <span>Delivery To : <b><asp:Label ID="lblDeliveryAddress" runat="server" ></asp:Label></b></span>
+                     <span>Delivery To : <b><label for="lblDeliveryAddress">{{$order->payment_method}}</label></b></span>
                 </div>
             </div>
 

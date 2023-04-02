@@ -60,6 +60,7 @@
                     <tbody id="search">
 
                             @foreach($mealsOrderDetail as $mealOrderDetail)
+                            @if($mealOrderDetail -> reply_comment == null)
                                 <tr style="border: 1px solid grey;">
                                     <td style="border: 1px solid grey;">
                                         <label for="lblOrderID">{{$mealOrderDetail->order_id}}</label></td>
@@ -97,11 +98,12 @@
                                     <td style="border: 1px solid grey;">
                                         <label for="lblComment">{{$mealOrderDetail->rating_comment}}</label></td>
 
-                                    <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="/editMealRating/{{$mealOrderDetail->id}}" class="edit">Reply</a></td>
+                                    <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="/mealRating/edit/{{$mealOrderDetail->id}}" class="edit">Reply</a></td>
 
                                 </tr>
                             <!-- </ItemTemplate>
                         </asp:ListView> -->
+                        @endif
         @endforeach
                     </tbody>
                 </table>

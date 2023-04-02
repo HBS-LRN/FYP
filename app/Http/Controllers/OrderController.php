@@ -9,10 +9,17 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
+use App\Factories\OrderFactory;
+use App\Factories\Interfaces\OrderFactoryInterface;
 
 class OrderController extends Controller
 {
 
+    protected $orderFactory;
+
+    public function __construct(OrderFactoryInterface $orderFactory) {
+        $this->orderFactory = $orderFactory;
+    }
 
     public function show()
     {
@@ -72,6 +79,7 @@ class OrderController extends Controller
   
           ]);
       }
+      
 
      //show the rating stars
     ///////////////////////////
@@ -107,10 +115,30 @@ class OrderController extends Controller
         ]);
     }
 
+
     public function showRating($id){
         $mealOrderDetail = MealOrderDetail::find($id);
         return intval($mealOrderDetail->rating_star);
     }
+
+    public function updateMealRating(Request $request){
+        $result = $this->orderFactory->updateMealRating($request);
+        return redirect('/mealRating')->with('successfullyUpdate', true);
+    }
+
+    public function showOrders()  
+    {
+        return view('orders.listOfOrder',[
+            'orders' => Order::all(),
+        ]);
+    }
+
+    public function showOrderDetails($id){
+        return view('orders.listOfOrder',[
+            'orders' => Order::all(),
+        ]);
+    }
+    
 
   
 }

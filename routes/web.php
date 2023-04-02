@@ -90,7 +90,18 @@ Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory'])
 Route::get('/mealRating', [OrderController::class, 'showMealRating']);
 
 //show edit meal rating page 
-Route::get('/editMealRating/{id}', [OrderController::class, 'showEditMealRating']);
+Route::get('/mealRating/edit/{id}', [OrderController::class, 'showEditMealRating']);
+
+//update meal rating (reply comment)
+Route::put('/mealRating/update', [OrderController::class, 'updateMealRating']);
+
+//show list of orders
+Route::get('/showOrders', [OrderController::class, 'showOrders']);
+
+//show order's order details
+Route::get('/orderDetails/show/{id}', [OrderController::class, 'showOrderDetails']);
+
+
 
 // Store shopping cart Data
 Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
