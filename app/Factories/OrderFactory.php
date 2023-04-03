@@ -16,7 +16,33 @@ class OrderFactory implements OrderFactoryInterface
         
     }
   
+    
+    public function updateDeliveryClick($id){
+        $orderDetails = MealOrderDetail::where('order_id', $id)->get();
+        
+        foreach($orderDetails as $orderDetail){
+            $orderDetail->meal_order_status ="delivering";
+            $orderDetail->update();
+        }
 
+        $order= Order::find($id);
+        $order->order_status="delivering";
+        return $order->save();
+        
+    }
+
+    public function updateCompletedClick($id){
+        $orderDetails = MealOrderDetail::where('order_id', $id)->get();
+        
+        foreach($orderDetails as $orderDetail){
+            $orderDetail->meal_order_status ="completed";
+            $orderDetail->update();
+        }
+
+        $order= Order::find($id);
+        $order->order_status="completed";
+        return $order->save();
+    }
 }
 
 ?>

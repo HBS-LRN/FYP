@@ -134,11 +134,20 @@ class OrderController extends Controller
     }
 
     public function showOrderDetails($id){
-        return view('orders.listOfOrder',[
-            'orders' => Order::all(),
+        return view('orders.listOfOrderDetail',[
+            'order' => Order::find($id),
+            'orderDetails' => MealOrderDetail::where('order_id', $id)->get()
         ]);
     }
-    
+  
+    public function updateDeliveryClick($id){
+        $result = $this->orderFactory->updateDeliveryClick($id);
+        return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
+    }
 
+    public function updateCompletedClick($id){
+        $result = $this->orderFactory->updateCompletedClick($id);
+        return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
+    }
   
 }

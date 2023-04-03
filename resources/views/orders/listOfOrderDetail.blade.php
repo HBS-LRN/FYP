@@ -1,5 +1,8 @@
 <head>
-    <link rel="stylesheet" href="../css/OrderDetail.css">
+
+<link rel="stylesheet" href="../../css/OrderDetail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
     <style>
         .scroll-wrap {
             overflow: auto;
@@ -61,6 +64,7 @@
         .scroll-wrap .sortable {
         margin:0px 40px;
         }
+
     </style>
 </head>
     <div class="Pagebody">
@@ -81,9 +85,12 @@
                         
                         <div class="auto-style2">
                             <input type="hidden" name="hiddenOrderNumber" value="{{$order->id}}" />
-                            <button id="btnDelivered" class="deliveredOrder" OnClick="OrderDetailDelivery_Click">Click Here If Item Is Ready To Deliver</button>
-                            <button id="btnComplete" class="completedOrder" OnClick="OrderDetailCompleted_Click">Click Here If Item Is Completly Delivered</button>
-                
+                            @if ($order->order_status == "preparing")
+                            <button id="btnDelivered" class="deliveredOrder" OnClick="redirectToDeliveryClick({{$order->id}})">Click Here If Item Is Ready To Deliver</button>
+                            @endif
+                            @if($order->order_status == "delivering")
+                            <button id="btnComplete" class="completedOrder" OnClick="redirectToCompletedClick({{$order->id}})">Click Here If Item Is Completely Delivered</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -106,17 +113,17 @@
 
                                      <td class="td"> {{$key+1}}</td>
                                     <td class="td">
-                                    <img class="img" src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
+                                    <img class="img" src="{{ $orderDetail->Meal->meal_image ? asset('storage/' . $orderDetail->Meal->meal_image) : asset('/images/no-image.png') }}"
                                 alt="" /></td>
                                        
                                     <td class="td">
-                                        <label for="lblItemName">Text='<%# Eval("Meal.meal_Name")</label></td>
+                                        <label for="lblItemName">{{ $orderDetail->Meal->meal_name}}</label></td>
                                     <td class="td">RM
-                                        <label for="lblItemPrice">Text='<%#Eval("Meal.meal_regular_price","{0:F2}")</label></td>
+                                        <label for="lblItemPrice">{{ number_format($orderDetail->Meal->meal_price,2)}}</label></td>
                                     <td class="td">
-                                        <label for="lblQuantity">Text='<%#Eval("order_qty")</label></td>
-                                    <td class="td">RM<%# string.Format("{0:0.00}", Convert.ToDouble(Eval("Meal.meal_regular_price")) * Convert.ToInt32(Eval("order_qty")))%></td>
-                                    <td class="td" id="result">{{$order->order_status}}</td>
+                                        <label for="lblQuantity">{{ $orderDetail->order_quantity}}</label></td>
+                                    <td class="td">RM{{number_format($orderDetail->Meal->meal_price * $orderDetail->order_quantity,2)}}</td>
+                                    <td class="td" id="result">{{$orderDetail->meal_order_status}}</td>
                                 </tr>
                         @endforeach
                     </tbody>
@@ -134,26 +141,28 @@
                     
                     <span>Overall Price : <b><label for="lblOverallPrice">{{$order->order_total}}</label></b></span><br/>
 
-                     <span>Delivery To : <b><label for="lblDeliveryAddress">{{$order->payment_method}}</label></b></span>
+                     <span>Delivery To : <b><label for="lblDeliveryAddress">{{$order->Delivery->street}}, {{$order->Delivery->postcode}}, {{$order->Delivery->area}}</label></b></span>
                 </div>
             </div>
 
         </div>
 
     </div>
-     
+    <script>
+    function redirectToDeliveryClick(orderID) {
+    var url = '{{ route("order.Delivering", ":id") }}';
+    url = url.replace(':id', orderID);
+    window.location.href = url;
+    }
+    
+    function redirectToCompletedClick(orderID) {
+    var url = '{{ route("order.Completed", ":id") }}';
+    url = url.replace(':id', orderID);
+    window.location.href = url;
+    }
+</script>
 
 
 
-     <!--//prompt the edited suceffuly data using sweertalert -->
-         <%if (Session["successfullyUpdate"] != null)
-                    {%>
-                <div class="update-meesage" data-flashdata='<%=Session["successfullyUpdate"]%>'></div>
-                <%Session.Remove("successfullyUpdate"); %>
-                <%}%>
 
-    <script src="../JavaScript/sweetalert2.all.min.js"></script>
-    <script src="../JavaScript/jquery-3.6.0.min.js"></script>
-     <script src="../JavaScript/popup.js"></script>
-    <script src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-</asp:Content>
+

@@ -100,7 +100,13 @@ Route::get('/showOrders', [OrderController::class, 'showOrders']);
 
 //show order's order details
 Route::get('/orderDetails/show/{id}', [OrderController::class, 'showOrderDetails']);
+Route::get('/orderDetails/show/{id}', [OrderController::class, 'showOrderDetails'])->name('orderDetails.show');
 
+//Change order and order details to delivering status
+Route::get('/order/updateDelivering/{id}', [OrderController::class, 'updateDeliveryClick'])->name('order.Delivering');
+
+//Change order and order details to completed status
+Route::get('/order/updateCompleted/{id}', [OrderController::class, 'updateCompletedClick'])->name('order.Completed');
 
 
 // Store shopping cart Data

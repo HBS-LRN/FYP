@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="../css/listOfOrder.css">
+<link rel="stylesheet" href="../css/listOfOrder.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
     <style>
@@ -61,7 +61,7 @@
                         @foreach($orders as $order)
 
                                 <tr>
-                                    <td style="border:1px solid grey;"><a href="orderDetails/show/{{$order->id}}"></a><label for="lblOrderNumber">{{$order->id}}</label></td>
+                                    <td style="border:1px solid grey;"><a href="orderDetails/show/{{$order->id}}"><label for="lblOrderNumber">{{$order->id}}</a></label></td>
                                     <td style="border:1px solid grey;"><label for="lblCustomerID">{{$order->user_id}}</label></td>
                                     <td style="border:1px solid grey;"><label for="lblOrderDate">{{$order->order_date}}</label></td>
                                     <td style="border:1px solid grey;"><label for="lblOrderTotal">{{number_format($order->order_total, 2)}}</label></td>
@@ -86,9 +86,9 @@
 </body>
 
 <script>
-    function redirectToUserController(orderID) {
-    var url = '{{ route("OrderController.showOrderDetails", ":orderID") }}';
-    url = url.replace(':orderID', orderID);
+    function redirectToOrderController(orderID) {
+    var url = '{{ route("orderDetails.show", ":id") }}';
+    url = url.replace(':id', orderID);
     window.location.href = url;
     }
 
