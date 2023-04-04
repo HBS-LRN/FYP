@@ -174,6 +174,7 @@ class UserController extends Controller
 
 
 
+        //call log out method
         User::logout();
 
         return redirect('/')->with('message', 'You have been logged out!');
