@@ -137,7 +137,7 @@
 
                 </div>
                 <div class="cal">
-                    <span>Delivery Fee : <b><label for="lblDeliveryFee">{{$order->delivery_fee}}</label></b></span><br/>
+                    <span>Delivery Fees : <b><label for="lblDeliveryFee">{{$order->delivery_fee}}</label></b></span><br/>
                     
                     <span>Overall Price : <b><label for="lblOverallPrice">{{$order->order_total}}</label></b></span><br/>
 
