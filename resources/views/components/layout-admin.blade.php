@@ -12,7 +12,7 @@
         <div class="side-navigation">
             <div class="logo-details">
                 <a href="./staff/StaffDashboard.aspx">
-                    <img src="../image/GrandImperialGroupLogo.png"></a>
+                    <img src="../../image/GrandImperialGroupLogo.png"></a>
                 <p>Grand Imperial</p>
 
             </div>

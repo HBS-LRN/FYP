@@ -64,6 +64,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
 </head>
 <body>
+<div class="Pagebody">
+    <x-layout-admin>
+    </x-layout-admin>
     <div class="box">
         <div>
 
@@ -137,6 +140,7 @@
 
             </div>
         </div>
+    </div>
     </body>
 
 

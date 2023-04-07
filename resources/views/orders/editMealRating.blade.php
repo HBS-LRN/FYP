@@ -69,6 +69,9 @@
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
+<div class="Pagebody">
+    <x-layout-admin>
+    </x-layout-admin>
     <div class="box">
       <h2 class="titleManageRating">Manage Rating</h2>
 
@@ -125,5 +128,6 @@
 
         </div>
     </form>
+    </div>
     </div>
 

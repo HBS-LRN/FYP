@@ -42,13 +42,16 @@
         .error {
             color: red;
             font-size: 13px;
-            margin-bottom: 0px;
-            width: 100%;
-            position:relative;
-            right:45px;
+            flex-basis: 50%;
            
          }
-        .error:nth-child(4) {
+         .errBox label{
+    flex-basis: 30%;
+}
+.errBox{
+    display:flex;
+}
+        /* .error:nth-child(4) {
             right:45px;
         }
         .error:nth-child(6) {
@@ -67,8 +70,11 @@
        
         .error:nth-child(12) {
             right:40px;
-        }
+        } */
 </style>
+<div class="Pagebody">
+    <x-layout-admin>
+    </x-layout-admin>
     <div class="box">
       <h2 class="titleEditCustomer">Customer Edit Form</h2>
           <form class="form" method="post" action="/customer/edit/{{$user->id}}">
@@ -86,7 +92,12 @@
                     <input type="text" name="name" id="name" class="input" value="{{$user->name}}">
                     
                 </div>
-                <!-- <asp:RequiredFieldValidator ID="reqCustName" runat="server" ErrorMessage="*Name Cannot Be Empty" CssClass="error" ControlToValidate="custName"  Display="Dynamic">*Name Cannot Be Empty</asp:RequiredFieldValidator> -->
+                <div class="errBox">
+                                <label for=""></label>
+                                @error('name')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
 
                 <div class="flex">
                     <label for="email" class="label">Customer Email :</label>
@@ -94,23 +105,35 @@
                    
                     
                 </div>
-                <!-- <asp:RequiredFieldValidator ID="reqCustEmail" runat="server" ErrorMessage="*Email Cannot Be Empty" CssClass="error" ControlToValidate="custEmail"  Display="Dynamic">*Email Cannot Be Empty</asp:RequiredFieldValidator> -->
-
-                <!-- <asp:RegularExpressionValidator ID="regexEmailValid" runat="server" CssClass="error" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ControlToValidate="custEmail" Display="Dynamic" ErrorMessage="*Invalid Email Format"></asp:RegularExpressionValidator> -->
+                <div class="errBox">
+                                <label for=""></label>
+                                @error('email')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
               <div class="flex">
                      <label for="custPhone" class="label">Customer Phone Number With(-) :</label>
                      <input type="text" id="custPhone" class="input" name="phone" value="{{$user->phone}}">
                     
                     
                       </div>
-               <!-- <asp:RequiredFieldValidator ID="reqCustPhone" runat="server" ErrorMessage="*Phone Number Cannot Be Empty" CssClass="error" ControlToValidate="custPhone"  Display="Dynamic">*Phone Number Cannot Be Empty</asp:RequiredFieldValidator> -->
-                <!-- <asp:RegularExpressionValidator ID="regexPhoneValid" runat="server" CssClass="error" ValidationExpression="^[0-9]{3}-[0-9]{7}" ControlToValidate="custPhone" Display="Dynamic" ErrorMessage="*Invalid Phone Format"></asp:RegularExpressionValidator> -->
+                      <div class="errBox">
+                                <label for=""></label>
+                                @error('phone')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
                   <div class="flex">
                         <label for="birthOfDate" class="label">Birth Of Date</label>
                         <input type="date" id="birthOfDate" class="input" name="birthdate" value="<?php echo date_format(date_create($user->birthdate),"Y-m-d"); ?>" >
                         <!-- <?php echo $user->birthdate;?>  -->
                             </div>
-                                  <!-- <asp:RequiredFieldValidator ID="reqCustBirthOfDate" runat="server" ErrorMessage="*Birth Date Cannot Be Empty" CssClass="error" ControlToValidate="birthOfDate"  Display="Dynamic">*Birth Date Cannot Be Empty</asp:RequiredFieldValidator> -->
+                            <div class="errBox">
+                                <label for=""></label>
+                                @error('birthdate')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
 
               <div class="flex">
                      <label for="custGender" class="label">Customer Gender:</label>
@@ -124,14 +147,14 @@
                         <?php endforeach; ?>
 
                     </span> 
-                     <!-- <asp:RadioButtonList ID="GenderRadioButtonList" runat="server" CssClass="customerGender" RepeatDirection="Horizontal" Width="361px">
-                                    <asp:ListItem style="font-size:13px">Male</asp:ListItem>
-                                    <asp:ListItem style="font-size:13px">Female</asp:ListItem>
-                     </asp:RadioButtonList> -->
 
-                 
                       </div>
-                <!-- <asp:RequiredFieldValidator ID="RequiredCustomerGender" runat="server" ErrorMessage="*Gender Cannot Be Empty" CssClass="error" ControlToValidate="GenderRadioButtonList"  Display="Dynamic">*Gender Cannot Be Empty</asp:RequiredFieldValidator> -->
+                      <div class="errBox">
+                                <label for=""></label>
+                                @error('gender')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
 
 
                 <div class="editBtnSubmit">
@@ -143,6 +166,6 @@
         </form>
 
     </div>
-  
+</div>
 
 
