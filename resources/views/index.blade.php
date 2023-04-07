@@ -176,7 +176,7 @@
                 years, we have grown by leaps and bounds, and is now a household name synonymous with exquisite culinary
                 offerings and excellent ambience and other food related products and services.
                 <div class="adminBtnBox">
-                    <a class="adminBtn" href="../StaffLogin.aspx">
+                    <a class="adminBtn" href="../staffLogin">
                         Admin Login
                     </a>
                 </div>

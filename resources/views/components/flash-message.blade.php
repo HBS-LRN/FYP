@@ -58,7 +58,23 @@
         }
     </script>
 @endif
+@if (session()->has('successUpdate'))
+    <div class="update-meesage" data-flashdata='successfullyUpdate'></div>
+    <script>
+        const flashdata = $('.update-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+          
+                customClass: 'swal-wide',
+              
 
+            })
+        }
+    </script>
+@endif
 
 @if (session()->has('successAddCart'))
     <div class="success-meesage" data-successdata={{ session('successAddCart') }}></div>
@@ -412,7 +428,9 @@
         })
     })
 </script>
-
+<script>
+ 
+</script>
 
 <script>
     $('.redeem').on('click', function(e) {

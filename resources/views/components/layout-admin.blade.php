@@ -70,10 +70,10 @@
                             </a></li>
                     </ul>
                 </li>
-                <li><a href="../admin/ListOfCustomer.aspx"><i class="fas fa-users"></i>
+                <li><a href="/customer"><i class="fas fa-users"></i>
                         <p>Customer</p>
                     </a></li>
-                <li><a href="../admin/ListOfStaff.aspx"><i class="fas fa-user-cog"></i></i>
+                <li><a href="/staff"><i class="fas fa-user-cog"></i></i>
                         <p>List Of Staff</p>
                     </a></li>
                 <br />
@@ -85,7 +85,7 @@
 
                     <div class="profile_name">Tee Fo Yo</div>
 
-                    <div class="job_role">Haha</div>
+                    <div class="job_role">Admin</div>
                 </div>
 
                 <a href="../staff/StaffSignOut.aspx"><i class="fas fa-sign-out-alt" style="padding-left: 45px;"></i></a>

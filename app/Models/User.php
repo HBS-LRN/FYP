@@ -62,16 +62,13 @@ class User extends Authenticatable
 
 
 
-    public function searchUser($query, array $filters)
+    public function scopeFilter($query, array $filters)
     {
-        if ($filters['tag'] ?? false) {
-            $query->where('tags', 'like', '%' . request('tag') . '%');
-        }
-
+      
         if ($filters['search'] ?? false) {
-            $query->where('title', 'like', '%' . request('search') . '%')
-                ->orWhere('description', 'like', '%' . request('search') . '%')
-                ->orWhere('tags', 'like', '%' . request('search') . '%');
+            $query->where('name', 'like', '%' . request('search') . '%')
+                ->orWhere('email', 'like', '%' . request('search') . '%')
+                ->orWhere('phone', 'like', '%' . request('search') . '%');
         }
     }
 

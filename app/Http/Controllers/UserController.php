@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Role;
 use Illuminate\Validation\Rules\Password;
 use App\Repository\UserRepositoryInterface;
 
@@ -66,21 +67,23 @@ class UserController extends Controller
             if ($user->email != auth()->user()->email)
                 return back()->withErrors(['email' => 'The email has already been taken'])->onlyInput('email');
         }
-        $data = $request->validate([
-            'name' => ['required', 'min:3'],
-            'email' => ['required', 'email'],
-            'gender' => 'required',
-            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
-            'birthdate' => ['required','before:-13 years'], //solution,
+        $data = $request->validate(
+            [
+                'name' => ['required', 'min:3'],
+                'email' => ['required', 'email'],
+                'gender' => 'required',
+                'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+                'birthdate' => ['required', 'before:-13 years'], //solution,
 
-        ],
-        [
-            'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
+            ],
+            [
+                'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
 
-        ]);
+            ]
+        );
 
 
-       
+
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('user', 'public');
             $user->image =  $data['image'];
@@ -89,7 +92,7 @@ class UserController extends Controller
         $instance = new User();
         $updatedUser = $instance->updateDetail($user, $data);
 
-        
+
 
         //call repository class to update the class
         //recover this!! 
@@ -158,14 +161,13 @@ class UserController extends Controller
 
         //if user login successfully
 
-        
+
         $instance = new User();
         if ($instance->login($data)) {
 
             //update session id 
             $user->session_id = session()->getId();
             $user->update();
-
 
             return redirect('/dashboard')->with('message', 'You are now logged in!');
         }
@@ -204,7 +206,10 @@ class UserController extends Controller
     {
         return view('auth.customerLogin');
     }
-
+    public function adminLogin()
+    {
+        return view('auth.adminLogin');
+    }
 
     // Show Login Form
     public function profile()
@@ -329,25 +334,80 @@ class UserController extends Controller
     {
         return view('staff.dashboard');
     }
-    //return all user
+    public function createCustomer()
+    {
+        return view('user.create');
+    }
+
+    //return all customer
     public function listOutCustomers()
     {
+        //list out only customer
         return view('user.index', [
-            'users' => User::all()
+            'users' => User::where('role', 0)->filter(request(['search']))->get()
+        ]);
+    }
+    //return all user
+    public function listOutStaff()
+    {
+        //list out for staff and admin
+        return view('staff.index', [
+            'users' => User::where('role', 2)->orWhere('role', '=', 1)->filter(request(['search']))->get(),
+            'roles' => Role::all()
         ]);
     }
 
-    public function editCustomer($id){
-       
+
+    public function editStaff($id)
+    {
+
+        return view('staff.edit', [
+            'user' => User::find($id),
+            'roles' => Role::all()
+        ]);
+    }
+
+    //show out form of edit customer
+    public function editCustomer($id)
+    {
+
         return view('user.edit', [
             'user' => User::find($id)
         ]);
-
     }
-    
-    public function updateCustomer(Request $request, $id){
+
+    public function storeCustomer(Request $request)
+    {
+
+        //validation
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'gender' => 'required',
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'birthdate' => ['required'], //solution,
+            'password' => ['required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', 'confirmed'],
+
+        ], [
+            'password.regex'    => '*Minimum eight characters, at least one letter, one number and one special character',
+
+        ]);
+
+
+
+        //uisng the user repository interface to create the data
+        $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
+        return redirect('/customer')->with('successUpdate', $user);
+    }
+
+
+
+    public function updateCustomer(Request $request, $id)
+    {
         $user = User::find($id);
-      
+
         $data = $request->validate([
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email'],
@@ -357,7 +417,74 @@ class UserController extends Controller
 
         ]);
         $data['user_id'] = $id;
+        //call repository class to update the user
         $this->userRepositoryInterface->updateUser($user, $data);
-        return redirect('/customer')->with('successfullyUpdate', true);
-    } 
+        return redirect('/customer')->with('successUpdate', true);
+    }
+
+    public function updateStaff(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'role' => 'required',
+
+        ]);
+        $data['user_id'] = $id;
+        $data['gender'] = $user->gender;
+        $data['birthdate'] = $user->birthdate;
+        $data['role'] = $request['role'];
+        //call repository class to update the user
+        $this->userRepositoryInterface->updateUser($user, $data);
+        return redirect('/staff')->with('successUpdate', true);
+    }
+    public function deleteCustomer($id)
+    {
+        $user = User::find($id);
+
+        //call repository class to delete the class
+        $this->userRepositoryInterface->delete($user);
+        return redirect('/customer')->with('successUpdate', true);
+    }
+
+    public function deleteStaff($id)
+    {
+        $user = User::find($id);
+
+        //call repository class to delete the class
+        $this->userRepositoryInterface->delete($user);
+        return redirect('/staff')->with('successUpdate', true);
+    }
+    public function createStaff()
+    {
+        return view('staff.create', [
+            'roles' => Role::where('id', 2)->orWhere('id', '=', 1)->get()
+        ]);
+    }
+    public function storeStaff(Request $request)
+    {
+        //validation
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'role' => 'required',
+            'password' => ['required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', 'confirmed'],
+
+        ], [
+            'password.regex'    => '*Minimum eight characters, at least one letter, one number and one special character',
+
+        ]);
+
+
+
+        //uisng the user repository interface to create the data
+        $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
+        return redirect('/staff')->with('successUpdate', $user);
+    }
 }

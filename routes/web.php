@@ -162,7 +162,8 @@ Route::get('/logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth');
 
 // show customer account
-Route::get('/profile', [UserController::class, 'profile'])->middleware('auth');
+
+Route::get('/profile', [UserController::class, 'profile'])->middleware(['RequireLogin']);
 
 // All Address
 Route::get('/address', [AddressController::class, 'index'])->name('address')->middleware('auth');
@@ -219,13 +220,27 @@ Route::get("/contactUs", function(){
  Route::get("/FAQ", function(){
     return view("static.FAQ");
  });
-//Show User List 
- Route::get('/customer', [UserController::class, 'listOutCustomers']);
-
- //edit user data
- Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
- Route::PUT('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
-
-
 
  
+//Show Customer List 
+ Route::get('/customer', [UserController::class, 'listOutCustomers']);
+
+ //Show Customer List 
+ Route::get('/customer/create', [UserController::class, 'createCustomer']);
+ Route::post('/customer/store', [UserController::class, 'storeCustomer']);
+ //edit user data
+ Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
+ Route::put('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
+ Route::get('/customer/delete/{id}', [UserController::class, 'deleteCustomer']);
+
+
+ //Show Staff List 
+ Route::get('/staff', [UserController::class, 'listOutStaff']);
+
+ //Show Staff List 
+ Route::get('/staff/create', [UserController::class, 'createStaff']);
+ Route::post('/staff/store', [UserController::class, 'storeStaff']);
+ //edit user data
+ Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
+ Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
+ Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
