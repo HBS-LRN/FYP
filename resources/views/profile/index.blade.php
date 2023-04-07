@@ -55,7 +55,7 @@
                     <br>
                     <div class="phoneNumberLabelInput">
                         <label for="phoneNumber" class="phoneNumberLabel">Phone Number With(-) :</label>
-                        <input type="text" class="phoneNumber" name="phone" value="{{ auth()->user()->phone }} {{old('phone')}}" />
+                        <input type="text" class="phoneNumber" name="phone" value="{{ auth()->user()->phone }}" />
 
                     </div>
                     @error('phone')

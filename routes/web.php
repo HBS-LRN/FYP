@@ -125,7 +125,7 @@ Route::post('/redirectToPay', [ShoppingCartController::class, 'redirectToPay']);
 // Show Login Form
 Route::get('/login', [UserController::class, 'login'])->name('login');
 
-
+Route::post('/login',[UserController::class, 'authenticate']);
 
 // Show Login Form
 Route::get('/loginRequest', [UserController::class, 'requestLogin'])->name('loginRequest');
@@ -153,6 +153,7 @@ Route::post('/users/changePass', [Usercontroller::class, 'updatePassword'])->mid
 
 // Create New User
 Route::post('/users', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 //edit customer profile
 Route::post('/profile/edit', [UserController::class, 'update'])->middleware('auth');
 // Log User Out

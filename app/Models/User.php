@@ -60,6 +60,8 @@ class User extends Authenticatable
     ];
 
 
+
+
     public function searchUser($query, array $filters)
     {
         if ($filters['tag'] ?? false) {
@@ -71,6 +73,29 @@ class User extends Authenticatable
                 ->orWhere('description', 'like', '%' . request('search') . '%')
                 ->orWhere('tags', 'like', '%' . request('search') . '%');
         }
+    }
+
+    public function updateDetail(User $user, $data)
+    {
+
+        $user->name =  $data['name'];
+        $user->email =  $data['email'];
+        $user->gender =  $data['gender'];
+        $user->phone =  $data['phone'];
+        $user->birthdate =  $data['birthdate'];
+        $user->update();
+        return $user;
+    }
+
+    public function register($data)
+    {
+
+        $user = new User();
+        $user->name =  $data['name'];
+        $user->email =  $data['email'];
+        $user->password = bcrypt($data['password']);;
+        $user->save();
+        return $user;
     }
 
     public function LimitLoginAttempt()
@@ -102,7 +127,7 @@ class User extends Authenticatable
         });
     }
 
-    public static function logout()
+    public  function logout()
     {
 
         $user = User::find(auth()->user()->id);
@@ -113,7 +138,7 @@ class User extends Authenticatable
         session()->regenerateToken();
     }
     // Authenticate User
-    public static function login(array $data)
+    public  function login(array $data)
     {
         if (auth()->attempt($data)) {
             //this one cna write in the document, refer to the lecture slide
@@ -142,7 +167,7 @@ class User extends Authenticatable
     public function meals()
     {
         return $this->belongsToMany(Meal::class, 'shopping_carts', 'user_id', 'meal_id')
-               ->withPivot('shopping_cart_qty', 'id');
+            ->withPivot('shopping_cart_qty', 'id');
     }
 
     //one user has many order, one order has many order details
@@ -158,6 +183,3 @@ class User extends Authenticatable
         );
     }
 }
-
-
-

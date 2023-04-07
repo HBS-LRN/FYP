@@ -80,15 +80,22 @@ class UserController extends Controller
         ]);
 
 
+       
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('user', 'public');
             $user->image =  $data['image'];
         }
 
-        //call repository class to update the class
-        $this->userRepositoryInterface->updateUser($user, $data);
+        $instance = new User();
+        $updatedUser = $instance->updateDetail($user, $data);
 
-        return back()->with('successfullyUpdate', true);
+        
+
+        //call repository class to update the class
+        //recover this!! 
+        //$this->userRepositoryInterface->updateUser($user, $data);
+
+        return back()->with('successfullyUpdate', $updatedUser);
     }
 
     //create new user
@@ -116,10 +123,6 @@ class UserController extends Controller
     // Authenticate User
     public function authenticate(LoginRequest $request)
     {
-
-
-
-
         //validation
         $data = $request->validate([
             'email' => ['required', 'email'],
@@ -154,7 +157,10 @@ class UserController extends Controller
         }
 
         //if user login successfully
-        if (User::login($data)) {
+
+        
+        $instance = new User();
+        if ($instance->login($data)) {
 
             //update session id 
             $user->session_id = session()->getId();
@@ -172,10 +178,9 @@ class UserController extends Controller
     public function logout()
     {
 
-
-
+        $instance = new User();
         //call log out method
-        User::logout();
+        $instance->logout();
 
         return redirect('/')->with('message', 'You have been logged out!');
     }
