@@ -15,18 +15,22 @@ class MealFactory implements MealFactoryInterface
     {
         $data = $request->validate([
 
-            'meal_price' => 'required|numeric|min:0',
-            'meal_qty' => 'required|integer|min:0',
+            'meal_price' => 'required|numeric|min:1',
+            'meal_qty' => 'required|integer|min:1',
             'meal_name' => 'required',
-            'category_id' => 'required'
-
+            'category_id' => 'required',
+            'meal_image' => 'required'
         ], [
             'meal_price.required'    => 'Please Provide A Meal Price',
             'meal_price.numeric'    => 'Please Provide A Number',
             'meal_price.integer'    => 'Please Provide A Number',
+            'meal_price.min' => 'Please Set The Price At Least 1 Ringgit',
+            'meal_qty.min' => 'Please Provide At Least 1 Quanlity Of Food',
             'meal_qty.required'      => 'Please Provide A Meal Quantity ',
             'meal_name.required' => 'Please Provide A Meal Name',
             'category_id.required'      => 'Please Select A Category',
+            'meal_image.required' => 'please Provide A Meal Image'
+
         ]);
 
         if ($request->hasFile('meal_image')) {
