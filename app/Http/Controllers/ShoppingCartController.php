@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use App\Models\Meal;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\State;
@@ -16,7 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Input\Input;
-
+use DOMXPath;
+use DOMDocument;
+use SimpleXMLElement;
 class ShoppingCartController extends Controller
 {
 
@@ -166,14 +169,14 @@ class ShoppingCartController extends Controller
             foreach ($addresses as $address) {
                 if ($address->active_flag == 'T') {
 
-                  
+
                     foreach ($states as $state) {
                         if ($address->area == $state->state_name)
                             $addressFee = $state->delivery_fee;
                     }
                 }
             }
-         
+
             return $addressFee;
         }
     }
@@ -181,6 +184,7 @@ class ShoppingCartController extends Controller
     {
 
 
+        
 
 
         if ($request['paymethod'] == '') {
@@ -193,7 +197,7 @@ class ShoppingCartController extends Controller
         $order = new Order();
         $order->user_id = auth()->id();
         $order->order_total =  $request->input('total');
-        $order->delivery_fee = 4.50;
+        $order->delivery_fee =  $this->findDeliveryFee();
         $order->order_status = "preparing";
         $order->payment_status = "Y";
         //bung seng change to public bank or maybank later
@@ -224,6 +228,50 @@ class ShoppingCartController extends Controller
 
         foreach ($user->meals as $meal) {
 
+            
+  
+         
+            //find the meal 
+            $selectedMeal = Meal::find($meal->id);
+      
+            $quantityOrdered = $meal->pivot->shopping_cart_qty;
+            //update xml file
+            $xml = simplexml_load_file('../app/XML/user/userOrder.xml');
+            // find the customer with xpath
+            $xpathUser = $xml->xpath('/users/user[@id="' . auth()->user()->id . '"]')[0];
+
+            // Check if the customer has placed an order
+            if (!isset($xpathUser->ordered)) {
+                // Create a new <ordered> element
+                $ordered = $xpathUser->addChild('ordered');
+            } else {
+                // Use the existing <ordered> element
+                $ordered = $xpathUser->ordered;
+            }
+            // create a new meal element
+            $newMeal = $xpathUser->ordered->addChild('meal');
+
+            // add child elements to the meal element
+            $newMeal->addChild('name',   $selectedMeal->meal_name);
+            $newMeal->addChild('price', $selectedMeal->meal_price)->addAttribute('currency', 'RM');
+            $newMeal->addChild('quantity',$meal->pivot->shopping_cart_qty)->addAttribute('unit', 'plate');
+            $newMeal->addChild('totalprice',  $selectedMeal->meal_price * $meal->pivot->shopping_cart_qty)->addAttribute('currency', 'RM');
+            $newMeal->addChild('date', now()->format('Y-m-d'));
+
+
+            // save the modified XML file
+            $xml->asXML('../app/XML/user/userOrder.xml');
+
+            //format XML
+            $xmlString = $xml->asXML();
+            $dom = new DOMDocument;
+            $dom->preserveWhiteSpace = false;
+            $dom->loadXML($xmlString);
+            $dom->formatOutput = true;
+            $xmlStringFormatted = $dom->saveXML();
+            file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
+
+
 
             //open a new meal order detail class
 
@@ -232,6 +280,7 @@ class ShoppingCartController extends Controller
             $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
             $newMealOrderDetail['meal_order_status'] = "preparing";
             $memberPoint += $meal->meal_price;
+
             //update the lastest meal quantity 
             DB::table('meals')
                 ->where('id', $meal->id)
@@ -242,8 +291,12 @@ class ShoppingCartController extends Controller
 
             MealOrderDetail::create($newMealOrderDetail);
 
-            //delete the delete cart in the table 
-            DB::table('shopping_carts')->where([
+           
+
+
+            
+             //delete the delete cart in the table 
+             DB::table('shopping_carts')->where([
                 'id' => $meal->pivot->id
             ])->delete();
         }
@@ -252,8 +305,9 @@ class ShoppingCartController extends Controller
 
 
 
+
         //update member point
-       // $memberPoint = $memberPoint / 5;
+        // $memberPoint = $memberPoint / 5;
         $memberPoint = ceil($memberPoint);
         if (auth()->user()->point != null) {
             $memberPoint =  $memberPoint + auth()->user()->point;
@@ -301,7 +355,6 @@ class ShoppingCartController extends Controller
             session()->forget('voucher');
             session()->forget('voucherCode');
             session()->forget('promoteDeliveryFee');
-           
         }
         return redirect('purchase');
     }
@@ -350,7 +403,7 @@ class ShoppingCartController extends Controller
 
 
 
-        if(auth()->id() == null){
+        if (auth()->id() == null) {
             return redirect()->back()->with('registerMeesage', true);
         }
         //create a shopping cart

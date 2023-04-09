@@ -57,7 +57,7 @@
             <div class="customer-form">
                 <div class="text-form">
                     <div class="login-form">
-                        <h1>Customer Register</h1>
+                        <h1>User Registration</h1>
                         <p>Already Login? <a href="/login">Login Here</a></p>
                     </div>
 

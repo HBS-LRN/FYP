@@ -222,6 +222,10 @@ Route::get("/contactUs", function(){
  });
 
  
+ 
+//Show Customer List 
+Route::get('/customerReport', [UserController::class, 'showCustReport']);
+
 //Show Customer List 
  Route::get('/customer', [UserController::class, 'listOutCustomers']);
 
@@ -244,3 +248,8 @@ Route::get("/contactUs", function(){
  Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
  Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
  Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
+//Show user order List 
+Route::get('/userOrderDetail/{id}', [UserController::class, 'showCustOrderDetail']);
+
+//check authorized password
+Route::get('/checkPassword/{id}', [UserController::class, 'checkPassword']);

@@ -1,17 +1,19 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:template name="adminSideBar">
 <head>
-    <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link href="{{ asset('./css/staffSideBar.css') }}" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="../css/staffSideBar.css"/>
+       <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'/>
+ 
 </head>
-
 
     <div class="header">
         <div class="side-navigation">
             <div class="logo-details">
-                <a href="./staff/StaffDashboard.aspx">
-                    <img src="../../image/GrandImperialGroupLogo.png"></a>
+                <a href="./staff/StaffDashboard.aspx"></a>
+                    <img src="../../image/GrandImperialGroupLogo.png"></img>
+                    
                 <p>Grand Imperial</p>
 
             </div>
@@ -72,7 +74,7 @@
                 <li><a href="/customer"><i class="fas fa-users"></i>
                         <p>Customer</p>
                     </a></li>
-                <li><a href="/staff"><i class="fas fa-user-cog"></i></i>
+                <li><a href="/staff"><i class="fas fa-user-cog"></i>
                         <p>List Of Staff</p>
                     </a></li>
                 <br />
@@ -93,16 +95,7 @@
         </div>
 
     </div>
-   
-    <x-flash-message />
-<script>
-      let arrow = document.querySelectorAll(".arrow");
-      
-      for (var i = 0; i < arrow.length; i++) {
-        arrow[i].addEventListener("click", (e)=>{
-       let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
-       console.log(arrowParent)
-       arrowParent.classList.toggle("showSubMenu");
-        });
-      }
-      </script>
+
+
+</xsl:template>
+</xsl:stylesheet>

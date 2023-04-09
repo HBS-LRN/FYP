@@ -231,6 +231,27 @@
     </script>
 @endif
 
+
+@if (session()->has('invalidPassword'))
+    <div class="fail-meesage" data-faildata={{ session('invalidPassword') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Password',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
 @if (session()->has('reusedPassword'))
     <div class="fail-meesage" data-faildata={{ session('reusedPassword') }}></div>
 
@@ -429,7 +450,26 @@
     })
 </script>
 <script>
- 
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href')
+        Swal.fire({
+            title: 'Are u sure?!',
+            text: 'Record will be deletwed',
+            type: 'warning',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete Record',
+             customClass: 'swal-wide',
+
+        }).then((result) => {
+            if (result.value) {
+                document.location.href = href;
+            }
+        })
+    })
 </script>
 
 <script>
