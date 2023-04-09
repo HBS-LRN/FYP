@@ -26,13 +26,13 @@ class MealFactory implements MealFactoryInterface
             'meal_price.integer'    => 'Please Provide A Number',
             'meal_qty.required'      => 'Please Provide A Meal Quantity ',
             'meal_name.required' => 'Please Provide A Meal Name',
-            'category_id.required'      => 'Please Select A Category',
+            'category_id.required'  => 'Please Select A Category',
         ]);
 
         if ($request->hasFile('meal_image')) {
             $data['meal_image'] = $request->file('meal_image')->store('meals', 'public');
         }
-
+        
         return Meal::create($data);
     }
 
