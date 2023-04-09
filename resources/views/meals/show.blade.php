@@ -8,11 +8,6 @@
     @csrf
 
 
-
-
-
-
-
     <input name="meal_id" type="hidden" value="{{ $searchMeal->id }}">
 
     <div class="popup">

@@ -29,7 +29,7 @@ class MealFactory implements MealFactoryInterface
             'meal_qty.required'      => 'Please Provide A Meal Quantity ',
             'meal_name.required' => 'Please Provide A Meal Name',
             'category_id.required'      => 'Please Select A Category',
-            'meal_image.required' => 'please Provide A Meal Image'
+            'meal_image.required' => 'Please Provide A Meal Image'
 
         ]);
 
