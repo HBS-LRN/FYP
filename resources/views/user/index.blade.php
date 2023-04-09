@@ -210,32 +210,49 @@
                     customClass: 'swal-wide',
                 }).then((result) => {
 
-                    // Swal.fire({
-                    //     title: 'Enter Your Password To Delete',
-                    //     input: 'text',
-                    //     inputAttributes: {
-                    //         autocapitalize: 'off'
-                    //     },
-                    //     showCancelButton: true,
-                    //     confirmButtonText: 'Look up',
-                    //     showLoaderOnConfirm: true,
-                    //     customClass: 'swal-wide',
-                    
-                    //     allowOutsideClick: () => !Swal.isLoading()
-                    // }).then((result) => {
-                    //     if (result.isConfirmed) {
-                            
-                       
+                    Swal.fire({
+                        title: 'Provide Again Own Staff ID To Delete For Validation Purposes',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Look up',
+                        showLoaderOnConfirm: true,
+                        customClass: 'swal-wide',
 
-                    //             customClass: 'swal-wide',
-                    //             title: `${result.value}'s avatar`,
-                             
-                          
-                    //     }
-                    // })
-                    if (result.value) {
-                        document.location.href = href;
-                    }
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                       
+                       
+                        if (result.isConfirmed) {
+
+                            console.log(`${result.value}`);
+                            if (`${result.value}` == 'S00'+{{ auth()->user()->id }}) {
+                                document.location.href = href;
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Invalid Action',
+                                    customClass: 'swal-wide',
+                                    showCloseButton: true,
+                                    showCancelButton: true,
+                                    showClass: {
+                                        popup: 'animate__animated animate__fadeInDown'
+                                    }
+                                    
+                                })
+                            }
+
+                            // customClass: 'swal-wide',
+                            // title: `${result.value}'s avatar`,
+
+
+                        }
+                    })
+                    // if (result.value) {
+                    //     document.location.href = href;
+                    // }
                 })
             })
         </script>

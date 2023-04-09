@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreate;
+use DOMXPath;
+use DOMDocument;
 use Carbon\Carbon;
+use XSLTProcessor;
+use App\Models\Role;
 use App\Models\User;
+use SimpleXMLElement;
 use GuzzleHttp\Client;
+use App\Events\UserDelete;
+use App\Events\UserUpdate;
 use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -15,10 +23,8 @@ use App\FactoryPattern\UserFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\Role;
 use Illuminate\Validation\Rules\Password;
 use App\Repository\UserRepositoryInterface;
 
@@ -92,7 +98,8 @@ class UserController extends Controller
         $instance = new User();
         $updatedUser = $instance->updateDetail($user, $data);
 
-
+        // Dispatch an event to update the XML file
+        event(new UserUpdate($user));
 
         //call repository class to update the class
         //recover this!! 
@@ -116,10 +123,15 @@ class UserController extends Controller
         ]);
 
 
+
         //uisng the user repository interface to create the data
         $user = $this->userRepositoryInterface->create($data);
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
+
+        // Fire the UserCreate event to create user in the XML file
+        $user = User::find($user->id);
+        event(new UserCreate($user));
         return redirect('/login')->with('resgisterSucessful', $user);
     }
 
@@ -169,7 +181,13 @@ class UserController extends Controller
             $user->session_id = session()->getId();
             $user->update();
 
-            return redirect('/dashboard')->with('message', 'You are now logged in!');
+            //if user is customer
+            if ($user->role == 0) {
+                return redirect('/dashboard')->with('message', 'You are now logged in!');
+                //return to staff side
+            } else {
+                return redirect('/staffDashboard')->with('message', 'You are now logged in!');
+            }
         }
 
         return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
@@ -187,40 +205,6 @@ class UserController extends Controller
         return redirect('/')->with('message', 'You have been logged out!');
     }
 
-
-
-    //show dashboard Form
-    public function dashboard()
-    {
-
-        return view('profile.dashboard');
-    }
-    //show Regitser/Create Form
-    public function create()
-    {
-
-        return view('auth.customerRegister');
-    }
-    // Show Login Form
-    public function login()
-    {
-        return view('auth.customerLogin');
-    }
-    public function adminLogin()
-    {
-        return view('auth.adminLogin');
-    }
-
-    // Show Login Form
-    public function profile()
-    {
-        return view('profile.index');
-    }
-
-    public function showForgetForm()
-    {
-        return view('auth.verify-email');
-    }
 
 
     public function sendResetLink(Request $request)
@@ -309,55 +293,6 @@ class UserController extends Controller
         }
     }
 
-
-
-    public function show()
-    {
-        return view('profile.changePassword');
-    }
-
-    public function requestLogin()
-    {
-        return view('auth.request-login');
-    }
-
-    public function accessDenied()
-    {
-        return view('auth.access-prohibited');
-    }
-    public function showPoint()
-    {
-        return view('profile.memberPoint');
-    }
-
-    public function showDashboard()
-    {
-        return view('staff.dashboard');
-    }
-    public function createCustomer()
-    {
-        return view('user.create');
-    }
-
-    //return all customer
-    public function listOutCustomers()
-    {
-        //list out only customer
-        return view('user.index', [
-            'users' => User::where('role', 0)->filter(request(['search']))->get()
-        ]);
-    }
-    //return all user
-    public function listOutStaff()
-    {
-        //list out for staff and admin
-        return view('staff.index', [
-            'users' => User::where('role', 2)->orWhere('role', '=', 1)->filter(request(['search']))->get(),
-            'roles' => Role::all()
-        ]);
-    }
-
-
     public function editStaff($id)
     {
 
@@ -419,6 +354,9 @@ class UserController extends Controller
         $data['user_id'] = $id;
         //call repository class to update the user
         $this->userRepositoryInterface->updateUser($user, $data);
+        // Dispatch an event to update the XML file
+        event(new UserUpdate($user));
+
         return redirect('/customer')->with('successUpdate', true);
     }
 
@@ -445,8 +383,12 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
+
+        // Fire the UserDeleted event to delete user in the xml file
+        event(new UserDelete($user));
         //call repository class to delete the class
         $this->userRepositoryInterface->delete($user);
+
         return redirect('/customer')->with('successUpdate', true);
     }
 
@@ -486,5 +428,148 @@ class UserController extends Controller
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
         return redirect('/staff')->with('successUpdate', $user);
+    }
+
+
+    //show out customer report
+    public function showCustReport()
+    {
+
+
+
+
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/user/userOrder.xml'));
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/user/userOrder.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
+        //list out for staff and admin
+
+
+    }
+    //show out customer report
+    public function showCustOrderDetail($user_id)
+    {
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/user/userOrder.xml'));
+
+
+
+        // Create XPath object
+        $xpath = new DOMXPath($xml);
+        // Calculate total quantity ordered and total sell price sold
+        $totalQuantity = $xpath->evaluate('sum(//quantity)');
+        $totalPrice = $xpath->evaluate('sum(//totalprice)');
+
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/user/userOrderDetail.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+        $proc->setParameter('', 'user_id', $user_id); // Set the customer ID parameter here
+        // Set parameters
+        $proc->setParameter('', 'totalQuantity', $totalQuantity);
+        $proc->setParameter('', 'totalPrice', $totalPrice);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
+        //list out for staff and admin
+
+
+    }
+
+    //check user password 
+
+    public function checkPassword($password)
+    {
+     
+        $result = Hash::check($password, auth()->user()->password);
+
+        dd($password);
+        if($result==false){
+            return redirect('/customer')->with('invalidPassword', true);
+        }
+        return response()->json(['result' => $result]);
+    }
+    //show dashboard Form
+    public function dashboard()
+    {
+
+        return view('profile.dashboard');
+    }
+    //show Regitser/Create Form
+    public function create()
+    {
+
+        return view('auth.register');
+    }
+    // Show Login Form
+    public function login()
+    {
+        return view('auth.login');
+    }
+    public function adminLogin()
+    {
+        return view('auth.adminLogin');
+    }
+
+    // Show Login Form
+    public function profile()
+    {
+        return view('profile.index');
+    }
+
+    public function showForgetForm()
+    {
+        return view('auth.verify-email');
+    }
+
+    public function show()
+    {
+        return view('profile.changePassword');
+    }
+
+    public function requestLogin()
+    {
+        return view('auth.request-login');
+    }
+
+    public function accessDenied()
+    {
+        return view('auth.access-prohibited');
+    }
+    public function showPoint()
+    {
+        return view('profile.memberPoint');
+    }
+
+    public function showDashboard()
+    {
+        return view('staff.dashboard');
+    }
+    public function createCustomer()
+    {
+        return view('user.create');
+    }
+
+    //return all customer
+    public function listOutCustomers()
+    {
+        //list out only customer
+        return view('user.index', [
+            'users' => User::where('role', 0)->filter(request(['search']))->get()
+        ]);
+    }
+    //return all user
+    public function listOutStaff()
+    {
+        //list out for staff and admin
+        return view('staff.index', [
+            'users' => User::where('role', 2)->orWhere('role', '=', 1)->filter(request(['search']))->get(),
+            'roles' => Role::all()
+        ]);
     }
 }
