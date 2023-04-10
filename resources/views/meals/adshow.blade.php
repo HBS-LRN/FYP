@@ -113,7 +113,7 @@
                                         <label for="lblCategory"> {{$meal->Category->name}}</label></td>
                                     <td class="mealTd" style="border:1px solid grey;">
                                         <label for="lblProductName">{{$meal->meal_name}}</label></td>
-                                    <td class="mealTd" style="border:1px solid grey;" align="center">RM{{$meal->meal_price}}</td>
+                                    <td class="mealTd" style="border:1px solid grey;" align="center">RM{{number_format($meal->meal_price,2)}}</td>
                                     <td class="mealTd" style="border:1px solid grey;" align="center">
                                         <label for="lblQuantity">{{$meal->meal_qty}}</label></td> 
 
@@ -145,16 +145,7 @@
 
 
         <!--//prompt the edited suceffuly data using sweertalert -->
-        <%if (Session["successfullyUpdate"] != null)
-            {%>
-        <div class="update-meesage" data-flashdata='<%=Session["successfullyUpdate"]%>'></div>
-        <%Session.Remove("successfullyUpdate"); %>
-        <%}%>
-            <%if (Session["UnsuccessfullyDelete"] != null)
-            {%>
-        <div class="delete-message" data-deletedata='<%=Session["UnsuccessfullyDelete"]%>'></div>
-        <%Session.Remove("UnsuccessfullyDelete"); %>
-        <%}%>
+    
 
         <script src="../JavaScript/jquery-3.6.0.min.js"></script>
         <script src="../JavaScript/sweetalert2.all.min.js"></script>

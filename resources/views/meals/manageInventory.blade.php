@@ -73,19 +73,5 @@
                 </div>
             </div>
     </body>
-     <%if (Session["successfullyUpdate"] != null)
-            {%>
-        <div class="update-meesage" data-flashdata='<%=Session["successfullyUpdate"]%>'></div>
-        <%Session.Remove("successfullyUpdate"); %>
-        <%}%>
-
-        <script src="../JavaScript/jquery-3.6.0.min.js"></script>
-        <script src="../JavaScript/sweetalert2.all.min.js"></script>
-        <script src="../JavaScript/popup.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#example').DataTable();
-            });
-
-        </script>
+    
 

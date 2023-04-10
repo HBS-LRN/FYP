@@ -177,5 +177,44 @@ class MealController extends Controller
         return redirect('/showInventory')->with('successfullyUpdate', true);
     }
 
+    public function showInventoryReport()
+    {
+        return view('staff.inventoryReport',[
+            'meals' => Meal::all()
+        ]);
+    }
    
+    public function showQuantitySold($id)
+    {
+        
+        $totalQuantity = 0;
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        $totalQuantity = 0;
+
+        foreach ($meals as $mealOrder) {
+        $totalQuantity +=  $mealOrder->order_quantity;
+        }
+
+        return $totalQuantity;
+    }
+
+    public function showRevenue($id){
+        $totalRevenue = 0; 
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        foreach ($meals as $mealOrder) {
+            $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
+            }
+
+        return $totalRevenue;
+    }
+
+    public function showInventoryReportDetail($id)
+    {
+        return view('staff.inventoryReportDetail',[
+            'mealOrderDetails'=>MealOrderDetail::where('meal_id',$id)->get(),
+            'meal'=>Meal::find($id)
+        ]);
+    }
 }
