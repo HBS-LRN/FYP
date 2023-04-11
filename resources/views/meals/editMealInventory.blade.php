@@ -35,6 +35,8 @@
 
 <body>
     <div class="box">
+    <x-layout-admin>
+    </x-layout-admin>
       <h2 class="editMealInventory">Update Meal Quantity</h2>
       <form action="/updateInventory/{{$meal->id}}" method="POST" enctype="multipart/form-data">
         @csrf

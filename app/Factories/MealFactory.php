@@ -88,6 +88,31 @@ class MealFactory implements MealFactoryInterface
         
     }
 
+    public function showQuantitySold($id)
+    {
+        
+        $totalQuantity = 0;
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        $totalQuantity = 0;
+
+        foreach ($meals as $mealOrder) {
+        $totalQuantity +=  $mealOrder->order_quantity;
+        }
+
+        return $totalQuantity;
+    }
+
+    public function showRevenue($id){
+        $totalRevenue = 0; 
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        foreach ($meals as $mealOrder) {
+            $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
+            }
+
+        return $totalRevenue;
+    }
 }
 
 ?>

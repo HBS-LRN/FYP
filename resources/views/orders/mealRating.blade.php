@@ -2,13 +2,28 @@
     @inject('OrderController','\App\Http\Controllers\OrderController')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css ">
-
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-   
-   
  
     <style>
+          .swal-wide {
+            width: 512px !important;
+            height: 333.98px !important;
+            padding: 0.8em 1em 0 !important;
+            color: #595959 !important;
+            font-size: 1.03em !important;
+            font-weight: 300 !important;
+            text-align: center !important;
+            text-transform: none !important;
+        }
+
         .edit {
             padding: 5px 20px;
             margin: 10px 30px;
@@ -32,7 +47,8 @@
 </head>
 <body>
     <div class="box">
-
+    <x-layout-admin>
+    </x-layout-admin>
         <div>
             <h2>Manage Meal Rating
             </h2>
@@ -115,15 +131,8 @@
     </div>
     </body>
 
-    <%if (Session["successfullyUpdate"] != null)
-        {%>
-    <div class="edit-message" data-editdata='<%=Session["successfullyUpdate"] %>'></div>
-    <%Session.Remove("successfullyUpdate");%>
-    <%}%>
 
-    <script src="../JavaScript/jquery-3.6.0.min.js"></script>
-    <script src="../JavaScript/sweetalert2.all.min.js"></script>
-    <script src="../JavaScript/popup.js"></script>
+
 
 
     <script>
@@ -139,12 +148,5 @@
             })
         }
 
-
-
-
-
-
-
     </script>
 
-</asp:Content>

@@ -4,6 +4,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   
     <div class="box">
+        <x-layout-admin>
+        </x-layout-admin>
         <div>
 
             <h2>Graph Report

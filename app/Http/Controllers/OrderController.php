@@ -123,7 +123,7 @@ class OrderController extends Controller
 
     public function updateMealRating(Request $request){
         $result = $this->orderFactory->updateMealRating($request);
-        return redirect('/mealRating')->with('successfullyUpdate', true);
+        return redirect('/mealRating')->with('successReply', true);
     }
 
     public function showOrders()  

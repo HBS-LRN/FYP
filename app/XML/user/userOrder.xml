@@ -69,6 +69,41 @@
         <totalprice currency="RM">15.9</totalprice>
         <date>2023-04-10</date>
       </meal>
+      <meal>
+        <name>Chicken Wonton Cup</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-04-11</date>
+      </meal>
+      <meal>
+        <name>pau</name>
+        <price currency="RM">11.8</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">11.8</totalprice>
+        <date>2023-04-11</date>
+      </meal>
+      <meal>
+        <name>pau</name>
+        <price currency="RM">11.8</price>
+        <quantity unit="plate">2</quantity>
+        <totalprice currency="RM">23.6</totalprice>
+        <date>2023-04-11</date>
+      </meal>
+      <meal>
+        <name>pau</name>
+        <price currency="RM">11.8</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">11.8</totalprice>
+        <date>2023-04-11</date>
+      </meal>
+      <meal>
+        <name>pau</name>
+        <price currency="RM">11.8</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">11.8</totalprice>
+        <date>2023-04-11</date>
+      </meal>
     </ordered>
   </user>
 </users>

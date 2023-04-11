@@ -19,6 +19,8 @@
     </style>
 </head>
      <div class="box">
+     <x-layout-admin>
+        </x-layout-admin>
             <div>
                
                     <h2>

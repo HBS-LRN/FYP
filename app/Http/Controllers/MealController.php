@@ -137,7 +137,7 @@ class MealController extends Controller
     public function store(Request $request)
     {       
         $meal = $this->mealFactory->store($request->all(),$request);
-        return back();
+        return redirect('/meal/adshow')->with('successfullyUpdate', true);
         
     }
 
@@ -150,7 +150,7 @@ class MealController extends Controller
     public function delete($id)
     {
         $result = $this->mealFactory->delete($id);
-        return redirect()->back()->with('successfullyUpdate', true);
+        return redirect()->back()->with('successDeleteMeal', true);
 
     }
 
@@ -186,27 +186,12 @@ class MealController extends Controller
    
     public function showQuantitySold($id)
     {
-        
-        $totalQuantity = 0;
-        $meals= MealOrderDetail::where('meal_id',$id)->get();
-
-        $totalQuantity = 0;
-
-        foreach ($meals as $mealOrder) {
-        $totalQuantity +=  $mealOrder->order_quantity;
-        }
-
+        $totalQuantity=$this->mealFactory->showQuantitySold($id);
         return $totalQuantity;
     }
 
     public function showRevenue($id){
-        $totalRevenue = 0; 
-        $meals= MealOrderDetail::where('meal_id',$id)->get();
-
-        foreach ($meals as $mealOrder) {
-            $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
-            }
-
+        $totalRevenue=$this->mealFactory->showRevenue($id);
         return $totalRevenue;
     }
 
