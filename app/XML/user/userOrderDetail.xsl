@@ -25,27 +25,23 @@
 
             <h2>Customer Report Detail - Customer ID <xsl:value-of select="$user_id"/>
             </h2>
-
         </div>
         <br/>
         <br/>
 
         <div class="box4">
             <div class="scroll-wrap">
-
                 <table id="example" class="table table-striped">
                     <thead>
                         <tr style="background-color: rgb(165, 200, 245);">
-                          
                             <th width="15%">Product Name</th>
                             <th width="15%">Price</th>
-                            <th width="15%">Quantity</th>
+                            <th width="15%">Quantity</th>co
                             <th width="15%">Total Price</th>
                             <th width="15%">Date</th>
                         </tr>
                     </thead>
                     <tbody id="search">
-
                         <xsl:for-each select="//user[@id=$user_id]/ordered/meal">
                         <tr style="border:1px solid grey;">
                           <td><xsl:value-of select="name"/></td>
@@ -55,13 +51,10 @@
                           <td><xsl:value-of select="date"/></td>
                         </tr>
                       </xsl:for-each>
-                         
-
                     </tbody>
-               
                 </table>
                    Total Quantity  :<xsl:value-of select="$totalQuantity"/>
-                    Total Spend (RM):<xsl:value-of select="$totalPrice"/>
+                   Total Spend (RM):<xsl:value-of select="$totalPrice"/>
             </div>
         </div>
     </div>

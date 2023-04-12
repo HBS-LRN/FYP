@@ -5,7 +5,7 @@
 
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
     <!-- Title  -->
-    <title>Karl - Fashion Ecommerce Template | Shop</title>
+ 
 
 
 
@@ -123,7 +123,7 @@
     <!-- ****** Quick View Modal Area End ****** -->
 
     <section class="shop_grid_area section_padding_100">
-        <p class="companyTitle">Grand Imperial Group Collaborated With KARL AS Third PARTY To Exchange Your item. Since you own <b> {{ auth()->user()->point }} Points</b>, Now Display Item Below <b> {{ auth()->user()->point }} </b> Points</p>
+        <p class="companyTitle">Grand Imperial Group Collaborated With KARL AS Third PARTY To Exchange Your item. Since you own <b> {{ auth()->user()->point }} Points</b>, Now Display Item Below <b> {{ auth()->user()->point }} </b> Points, Click <a href='/memberPoint' style=color:red>Here</a> To Back To Grand Imperial Page</p>
 
         <div class="container">
             <div class="row">

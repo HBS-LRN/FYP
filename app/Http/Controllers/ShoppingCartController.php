@@ -337,7 +337,7 @@ class ShoppingCartController extends Controller
 
 
 
-            //update the quantity of the voucher that has been used by user
+            //update the quantity of the voucher that has been used
             $client->put('vouchers/' . $voucherID, [
 
                 'headers' => [

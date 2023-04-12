@@ -67,7 +67,7 @@ class OrderController extends Controller
         $mealOrderDetails['rating_star'] = $request['rate'];
         $mealOrderDetails['rating_comment'] = $request['txtItemComment'];
         $mealOrderDetails->update();
-        return redirect('/purchase')->with('successfullyUpdate', true);
+        return redirect('/purchase')->with('successfullyComment', true);
     }
 
       //show meal rating page

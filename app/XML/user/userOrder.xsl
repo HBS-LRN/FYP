@@ -35,23 +35,20 @@
                             <th>Item Ordered</th>
                             <th>Overall Sales</th>
                             <th>Action</th>
-                          
-
                         </tr>
                     </thead>
 
 
                     <tbody id="search">
-               
                         <xsl:for-each select="/users/user">
                         <tr style="border:1px solid grey;">
                             <td><xsl:value-of select="@id"/></td>
                             <td><xsl:value-of select="name"/></td>
                             <td><xsl:value-of select="email"/></td>
-                            <td ><xsl:value-of select="sum(ordered/meal/quantity)"/></td>
+                            <td><xsl:value-of select="sum(ordered/meal/quantity)"/></td>
                             <td><xsl:value-of select="ordered/meal/totalprice/@currency"/>
                                 <xsl:value-of select="sum(ordered/meal/totalprice)"/></td>
-                            <td ><a href="/userOrderDetail/{@id}">Overall Detail</a></td>
+                            <td><a href="/userOrderDetail/{@id}">Overall Detail</a></td>
                         </tr>
                     </xsl:for-each>
                     </tbody>

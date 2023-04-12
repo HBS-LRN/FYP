@@ -66,7 +66,7 @@ class VoucherController extends Controller
 
 
 
-            $response = $client->post('voucherDetail', [
+            $response = $client->post('userOwnVoucher', [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . auth()->user()->token,
@@ -76,8 +76,6 @@ class VoucherController extends Controller
                     'voucher_id' => $voucherID,
                 ],
             ]);
-
-            $body = $response->getBody();
             return redirect()->back();
         } else {
 
@@ -94,12 +92,10 @@ class VoucherController extends Controller
 
     public function show()
     {
-
         $client = new Client([
             'base_uri' => 'http://localhost:8000/api/',
             'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
         ]);
-
         try {
             $response = $client->request('GET', 'vouchers');
             $response = $client->get('vouchers', [
@@ -110,23 +106,16 @@ class VoucherController extends Controller
                 ],
             ]);
             $vouchers = json_decode($response->getBody(), true);
-
-
-
             $response = $client->get('voucherDetail', [
 
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . auth()->user()->token,
                 ]
-
-
             ]);
-
             $claimVouchers = json_decode($response->getBody(), true);
-
-
             return view('webservices.voucherRedeem', ['vouchers' => $vouchers, 'claimVouchers' => $claimVouchers]);
+
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
@@ -251,6 +240,8 @@ class VoucherController extends Controller
         }
     }
 
+
+    //store client detail
     public function storeWebServiceClient()
     {
 
@@ -258,11 +249,7 @@ class VoucherController extends Controller
             'base_uri' => 'http://localhost:8000/api/',
             'timeout'  => 2.0,
         ]);
-
-
-
-
-
+        
         $response = $client->post('users', [
             'headers' => [
                 'Accept' => 'application/json',
@@ -274,7 +261,6 @@ class VoucherController extends Controller
                 'password' => auth()->user()->password,
             ],
         ]);
-
 
         return redirect()->back()->with('successfulStoreClient', true);
     }
