@@ -151,19 +151,18 @@
 
  <head>
     @inject('OrderController','\App\Http\Controllers\OrderController')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css ">
+
 
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/sweetalert2.all.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+   
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
-   
+    <link href="{{ asset('./css/listOfCustomer.css') }}" rel="stylesheet">
    
  
     <style>
@@ -197,10 +196,45 @@
         .row .col-md-7 .dataTables_paginate {
             padding-right: 30px;
         }
+        .box div h2{
+            text-align:center;
+        }
+        .box4{
+            padding:0px 20px;
+        }
+        /* .col-sm-12, .col-sm-7{
+            padding:0px;
+        }
+        .col-sm-12{
+            position: relative;
+            left:100px;
+        }
+        .col-sm-12 .table-striped{
+           margin:0px;
+            
+        } */
+        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: center;
+    
+}
+table>tbody>tr>td{
+    line-height: 1.42857143;
+    vertical-align: center;
+}
+table tbody tr td label{
+    display:inherit;
+    max-width:0%;
+}
+.scroll-wrap .table tbody tr th{
+    border:1px solid grey;
+}
     </style>
 </head>
 
 <body>
+    <div class="PageBody">
 <x-layout-admin>
     </x-layout-admin>
     <div class="box">
@@ -218,14 +252,14 @@
                 <table id="example" class="table table-striped">
 
                     <thead>
-                        <tr class="mealRatingTr" style="background-color: rgb(165, 200, 245);">
+                        <tr class="mealRatingTr" style="border:1px solid grey; background-color: rgb(165, 200, 245);">
 
-                            <th width="10%">Order Number</th>
-                            <th width="18%">Customer ID</th>
-                            <th width="20%">Product</th>
-                            <th width="12%">Rating</th>
-                            <th width="25%">Comment</th>
-                            <th width="10%">Action</th>
+                            <th width="10%" style="border:1px solid grey;">Order Number</th>
+                            <th width="18%" style="border:1px solid grey;">Customer ID</th>
+                            <th width="20%" style="border:1px solid grey;">Product</th>
+                            <th width="12%" style="border:1px solid grey;">Rating</th>
+                            <th width="25%" style="border:1px solid grey;">Comment</th>
+                            <th width="10%" style="border:1px solid grey;">Action</th>
                         </tr>
 
                     </thead>
@@ -235,12 +269,12 @@
                             @if($mealOrderDetail -> reply_comment == null)
                                 <tr style="border: 1px solid grey;">
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblOrderID">{{$mealOrderDetail->order_id}}</label></td>
+                                       {{$mealOrderDetail->order_id}}</td>
                                     <td style="border: 1px solid grey;">
                                     
-                                        <label for="lblCustomerID">{{$mealOrderDetail->Order->user_id}}</label></td>
+                                        {{$mealOrderDetail->Order->user_id}}</td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblItemName">{{$mealOrderDetail->Meal->meal_name}}</label></td>
+                                        {{$mealOrderDetail->Meal->meal_name}}</td>
                                     <!-- <asp:HiddenField ID="hiddenOrderDetailNumber" runat="server" Value='<%#Eval("order_detail_number") %>' /> -->
 
                                     <td style="border: 1px solid grey;">
@@ -268,9 +302,9 @@
                                         </div>
                                     </td>
                                     <td style="border: 1px solid grey;">
-                                        <label for="lblComment">{{$mealOrderDetail->rating_comment}}</label></td>
+                                        {{$mealOrderDetail->rating_comment}}</td>
 
-                                    <td style="border: 1px solid grey; display: flex; justify-content: center; align-content: center; justify-items: center;"><a href="/mealRating/edit/{{$mealOrderDetail->id}}" class="edit">Reply</a></td>
+                                    <td ><p><a href="/mealRating/edit/{{$mealOrderDetail->id}}" class="edit">Reply</a></p></td>
 
                                 </tr>
                             <!-- </ItemTemplate>
@@ -283,6 +317,12 @@
 
 
             </div>
+            <script>
+                $(document).ready(function() {
+                $('#example').DataTable();
+            });
+            </script>
         </div>
+    </div>
     </div>
     </body>
