@@ -19,10 +19,12 @@
                         <label for="meal_name" class="label">Meal Name :</label>
                         <input type="text" class="input" name="meal_name" value="{{ old('meal_name') }}" />
                     </div>
-
-                    @error('meal_name')
-                        <p class="error">{{ $message }}</p>
-                    @enderror
+                    <div class="errBox">
+                                <label for=""></label>
+                                @error('meal_name')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
 
 
                     <div class="flex">
@@ -38,10 +40,13 @@
 
                         </select>
                     </div>
-                    @error('category_id')
-                        <p class="error">{{ $message }}</p>
-                    @enderror
 
+                    <div class="errBox">
+                                <label for=""></label>
+                                @error('category_id')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
 
 
 
@@ -49,17 +54,24 @@
                         <label for="mealQuantity" class="label">Meal Quantity :</label>
                         <input class="input" name="meal_qty" value="{{ old('meal_qty') }}" type="number" />
                     </div>
-                    @error('meal_qty')
-                        <p class="error">{{ $message }}</p>
-                    @enderror
 
+                    <div class="errBox">
+                                <label for=""></label>
+                                @error('meal_qty')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
                     <div class="flex">
                         <label for="mealPrice" class="label">Meal Price :</label>
                         <input class="input" name="meal_price" value="{{ old('meal_price') }}" />
                     </div>
-                    @error('meal_price')
-                        <p class="error">{{ $message }}</p>
-                    @enderror
+                    <div class="errBox">
+                                <label for=""></label>
+                                @error('meal_price')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
+
 
                     <div class="flex">
                         <label for="foodImage" class="label">Upload Image:</label>
@@ -67,10 +79,13 @@
                         <input type="file" name="meal_image" accept=".png,.jpg,.jpeg,.gif" />
 
                     </div>
-                    @error('meal_image')
-                        <p class="error">{{ $message }}</p>
-                    @enderror
 
+                    <div class="errBox">
+                                <label for=""></label>
+                                @error('meal_image')
+                                <p class="error" style="color:red">*{{ $message }}</p>
+                            @enderror
+                            </div>
                     <div class="addMeal">
                         <button class="addMealButton" Text="Add Meal">Add Meal </button>
 

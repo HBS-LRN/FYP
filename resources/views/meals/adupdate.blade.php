@@ -82,9 +82,12 @@
 </head>
 <body>
     <div class="box">
+    <x-layout-admin>
+    </x-layout-admin>
       <h2 class="editMeal">Edit Meal</h2>
       <form action="/mealupdate/{{$meal->id}}" method="POST" enctype="multipart/form-data">
         @csrf
+       
 
           <div class="form">
               <!-- <asp:HiddenField ID="hiddenMealID" runat="server" /> -->

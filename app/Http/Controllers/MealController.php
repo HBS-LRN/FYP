@@ -3,16 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meal;
+use App\Models\Order;
+use App\Models\User;
 use App\Models\Category;
+use App\Models\MealOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Session;
+use App\Factories\MealFactory;
+use App\Factories\Interfaces\MealFactoryInterface;
+
 
 class MealController extends Controller
 {
+    protected $mealFactory;
 
-
+    public function __construct(MealFactoryInterface $mealFactory) {
+        $this->mealFactory = $mealFactory;
+    }
 
     public function index($id)
     {
@@ -71,7 +80,6 @@ class MealController extends Controller
     public function mealPopUp($id)
     {
 
-
         $meal = Meal::find($id);
         $category = Category::find($meal->category_id);
 
@@ -96,8 +104,6 @@ class MealController extends Controller
     public function create()
     {
         return view('meals.create', [
-
-
             'categories' => Category::all()
         ]);
     }
@@ -128,64 +134,72 @@ class MealController extends Controller
         return redirect($url)->withFragment('meals');
     }
 
-
-
     public function store(Request $request)
-    {
-        $formFields = $request->validate([
-
-            'meal_price' => 'required|numeric|min:0',
-            'meal_qty' => 'required|integer|min:0',
-            'meal_name' => 'required',
-            'category_id' => 'required'
-
-        ], [
-            'meal_price.required'    => 'Please Provide A Meal Price',
-            'meal_price.numeric'    => 'Please Provide A Number',
-            'meal_price.integer'    => 'Please Provide A Number',
-            'meal_qty.required'      => 'Please Provide A Meal Quantity ',
-            'meal_name.required' => 'Please Provide A Meal Name',
-            'category_id.required'      => 'Please Select A Category',
-        ]);
-
-        if ($request->hasFile('meal_image')) {
-            $formFields['meal_image'] = $request->file('meal_image')->store('meals', 'public');
-        }
-
-
-        Meal::create($formFields);
-
-        return back();
+    {       
+        $meal = $this->mealFactory->store($request->all(),$request);
+        return redirect('/meal/adshow')->with('successfullyUpdate', true);
+        
     }
 
     public function update(Request $request, $id)
     {
-
-        $meal = Meal::find($id);
-        $formFields = $request->validate([
-
-            'meal_price' => 'required|numeric|min:0',
-            'meal_qty' => 'required|integer|min:0',
-            'meal_name' => 'required',
-            'category_id' => 'required'
-
-        ], [
-            'meal_price.required'    => 'Please Provide A Meal Price',
-            'meal_price.numeric'    => 'Please Provide A Number',
-            'meal_price.integer'    => 'Please Provide A Number',
-            'meal_qty.required'      => 'Please Provide A Meal Quantity ',
-            'meal_name.required' => 'Please Provide A Meal Name',
-            'category_id.required'      => 'Please Select A Category',
-        ]);
-
-        if ($request->hasFile('meal_image')) {
-            $formFields['meal_image'] = $request->file('meal_image')->store('meals', 'public');
-        }
-
-        $formFields['meal_id'] = auth()->id();
-
-        $meal->update($formFields);
-
+        $result = $this->mealFactory->update($id, $request->all(),$request);
         return redirect('/meal/adshow')->with('successfullyUpdate', true);
+    }
+
+    public function delete($id)
+    {
+        $result = $this->mealFactory->delete($id);
+        return redirect()->back()->with('successDeleteMeal', true);
+
+    }
+
+    //return meals and show on inventory page
+    public function inventory()
+    {
+        return view('meals.manageInventory',[
+            'meals' => Meal::all()
+        ]);
+    }
+
+    //show selected meal edit inventory page
+    public function showEditInventory($id)
+    {
+        return view('meals.editMealInventory',[
+            'meal'=> Meal::find($id)
+        ]);
+    }
+
+    //update meal Inventories
+    public function updateInventory(Request $request, $id)
+    {
+        $result = $this->mealFactory->updateInventory($id, $request->all(),$request);
+        return redirect('/showInventory')->with('successfullyUpdate', true);
+    }
+
+    public function showInventoryReport()
+    {
+        return view('staff.inventoryReport',[
+            'meals' => Meal::all()
+        ]);
+    }
+   
+    public function showQuantitySold($id)
+    {
+        $totalQuantity=$this->mealFactory->showQuantitySold($id);
+        return $totalQuantity;
+    }
+
+    public function showRevenue($id){
+        $totalRevenue=$this->mealFactory->showRevenue($id);
+        return $totalRevenue;
+    }
+
+    public function showInventoryReportDetail($id)
+    {
+        return view('staff.inventoryReportDetail',[
+            'mealOrderDetails'=>MealOrderDetail::where('meal_id',$id)->get(),
+            'meal'=>Meal::find($id)
+        ]);
     }
 }

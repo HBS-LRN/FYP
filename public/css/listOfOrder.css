@@ -315,3 +315,7 @@ td a {
     td a:hover {
         color: red;
     }
+
+    td{
+        border:1px solid grey;
+    }

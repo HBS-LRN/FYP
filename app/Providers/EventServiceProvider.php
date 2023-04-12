@@ -18,6 +18,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\UserDelete' => [
+            'App\Listeners\DeleteUserXML',
+        ],
+        'App\Events\UserCreate' => [
+            'App\Listeners\CreateUserXML',
+        ],
+        'App\Events\UserUpdate' => [
+            'App\Listeners\UpdateUserXML',
+        ],
     ];
 
     /**

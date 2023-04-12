@@ -59,34 +59,16 @@ padding: 0px;
 border: none;
 }
 .error {
-color: red;
-font-size: 13px;
-
-width: 100%;
-position:relative;
-right:35px;
-
+    color: red;
+    font-size: 13px;
+    flex-basis: 50%;
+   
+ }
+ .errBox label{
+flex-basis: 30%;
 }
-.error:nth-child(4) {
-right:25px;
-
-}
-
-.error:nth-child(10) {
-right:20px;
-
-
-}
-.error1 {
-right:45px;
-}
-.error:nth-child(6) {
-right:24px;
-
-}
-.error:nth-child(12) {
-right:55px;
-
+.errBox{
+display:flex;
 }
 .form .table {
 margin:0px;

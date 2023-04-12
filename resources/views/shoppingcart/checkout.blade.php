@@ -113,11 +113,11 @@
                                     <input type="hidden" id="total" name="total" value="{{ $subTotal }}">
                                 </tr>
 
-                                @if (session()->has('voucherID'))
+                                @if (session()->has('voucherCode'))
                                     <tr class="DelieryFee" style="border-bottom:0.1px solid Silver;">
 
                                         <th class="thItem"><b>Voucher Used</b></th>
-                                        <td class="tdItem"><b>{{ $voucher['code'] }}</b></td>
+                                        <td class="tdItem"><b>{{ Session::get('voucherCode')}}</b></td>
 
                                     </tr>
                                 @endif

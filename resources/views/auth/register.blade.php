@@ -15,10 +15,11 @@
         }
 
         .error {
+            margin:0px;
             border: none;
             color: red;
             font-size: 13px;
-            margin-bottom: 28px;
+            margin-bottom: 2px;
             width: 97%;
             padding-left: 10px;
         }
@@ -56,7 +57,7 @@
             <div class="customer-form">
                 <div class="text-form">
                     <div class="login-form">
-                        <h1>Customer Register</h1>
+                        <h1>User Registration</h1>
                         <p>Already Login? <a href="/login">Login Here</a></p>
                     </div>
 

@@ -1,9 +1,19 @@
 <!-- <link rel="stylesheet" href="../css/listOfMeal.css">-->
 <!-- <x-layout-admin>
 </x-layout-admin> -->
-
 <head>
     <style>
+        .swal-wide {
+            width: 512px !important;
+            height: 333.98px !important;
+            padding: 0.8em 1em 0 !important;
+            color: #595959 !important;
+            font-size: 1.03em !important;
+            font-weight: 300 !important;
+            text-align: center !important;
+            text-transform: none !important;
+        }
+
         .edit {
             border: 1px solid black;
             border-radius: 5px;
@@ -43,12 +53,17 @@
             padding: 0px;
             border: none;
         }
-        .row .col-md-6 .dataTables_filter {
-            padding-left:110px;
+         .dataTables_wrapper .row .col-md-6 .dataTables_filter label {
+            color: red;
+            margin: 0px;
+            position: relative;
+            right: 0px;
         }
+
         .row .col-md-7 .dataTables_paginate {
             padding-right: 30px;
         }
+
         .add {
             position:relative;
             z-index:10;
@@ -60,10 +75,19 @@
     </style>
 
     <link rel="stylesheet" href="../css/listOfMeal.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
-</head>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="../JavaScript/sweetalert2.all.min.js"></script>
+    <script src="../JavaScript/popup.js"></script>
+    </head>
 <body>
+<div class="Pagebody">
+    <x-layout-admin>
+    </x-layout-admin>
     <div class="box">
         <div>
 
@@ -110,14 +134,14 @@
                                         <label for="lblCategory"> {{$meal->Category->name}}</label></td>
                                     <td class="mealTd" style="border:1px solid grey;">
                                         <label for="lblProductName">{{$meal->meal_name}}</label></td>
-                                    <td class="mealTd" style="border:1px solid grey;" align="center">RM{{$meal->meal_price}}</td>
+                                    <td class="mealTd" style="border:1px solid grey;" align="center">RM{{number_format($meal->meal_price,2)}}</td>
                                     <td class="mealTd" style="border:1px solid grey;" align="center">
                                         <label for="lblQuantity">{{$meal->meal_qty}}</label></td> 
 
 
                                     <td style="border:1px solid grey;">
                                         <a href="/meal/upshow/{{$meal->id}}" class="edit">Edit</a>
-                                        <a href="../staff/DeleteMeal/{{$meal->id}}" class="delete">Delete</a>
+                                        <a href="/deleteMeal/{{$meal->id}}" class="delete">Delete</a>
                                     </td>
 
 
@@ -137,30 +161,13 @@
 
             </div>
         </div>
-    </body>
-
-
-        <!--//prompt the edited suceffuly data using sweertalert -->
-        <%if (Session["successfullyUpdate"] != null)
-            {%>
-        <div class="update-meesage" data-flashdata='<%=Session["successfullyUpdate"]%>'></div>
-        <%Session.Remove("successfullyUpdate"); %>
-        <%}%>
-            <%if (Session["UnsuccessfullyDelete"] != null)
-            {%>
-        <div class="delete-message" data-deletedata='<%=Session["UnsuccessfullyDelete"]%>'></div>
-        <%Session.Remove("UnsuccessfullyDelete"); %>
-        <%}%>
-
-        <script src="../JavaScript/jquery-3.6.0.min.js"></script>
-        <script src="../JavaScript/sweetalert2.all.min.js"></script>
-        <script src="../JavaScript/popup.js"></script>
-           
-        <script>
-            $(document).ready(function () {
+    </div>
+  
+  <script>
+            $(document).ready(function() {
                 $('#example').DataTable();
             });
-            const productFound = $('.delete-message').data('deletedata')
+            const productFound = $('.delete').data('deletedata')
             if (productFound) {
                 Swal.fire({
                     title: "Unable to Delete this Meal",
@@ -177,14 +184,14 @@
                 const href = $(this).attr('href')
                 Swal.fire({
                     title: 'Are u sure?!',
-                    text: 'Record will be deleted',
+                    
                     type: 'warning',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Delete Record',
-
+                    customClass:'swal-wide',
                 }).then((result) => {
                     if (result.value) {
                         document.location.href = href;
@@ -192,5 +199,5 @@
                 })
             })
         </script>
-
+</body>
 

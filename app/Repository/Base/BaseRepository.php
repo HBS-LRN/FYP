@@ -1,12 +1,27 @@
 <?php
 
 namespace App\Repository\Base;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 
 class BaseRepository implements BaseRepositoryInterface
 {
+
+    /**
+     * Create a resource (generic method to let other repository to inherit this method)
+     */
+    public function create($data)
+    {
+        return $this->entity::create($data);
+    }
+
+    public function update($entity, $data)
+    {
+
+        return $entity->update($data);
+    }
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -25,7 +40,7 @@ class BaseRepository implements BaseRepositoryInterface
      */
     public function queryBuilder(): Builder
     {
-        
+
         return $this->entity->query();
     }
 
@@ -74,7 +89,7 @@ class BaseRepository implements BaseRepositoryInterface
      */
     public function firstByAttributes(array $attributes)
     {
-        return $this->buildWhereQuery($attributes)->first();
+        return $this->sortBy($attributes)->first();
     }
 
     /**
@@ -88,7 +103,7 @@ class BaseRepository implements BaseRepositoryInterface
      */
     public function allByAttributes(array $attributes, $orderBy = null, $sortOrder = 'asc')
     {
-        return $this->buildWhereQuery($attributes)->get();
+        return $this->sortBy($attributes)->get();
     }
 
     /**
@@ -144,55 +159,25 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $query = $this->queryBuilder();
 
-        if($orderBy){
+        if ($orderBy) {
             $query = $query->orderBy($orderBy, $orderDir);
         }
 
         return $query->paginate($perPage, $columns = ['*'], $pageName = 'page', $page = null);
     }
 
-    /**
-     * Create a resource
-     *
-     * @param  $data
-     *
-     * @return $model
-     */
-    public function create($data)
-    {
-      
-        return $this->entity::create($data);
-    }
+
 
     /**
-     * Update a resource
-     *
-     * @param Model $entity
-     * @param  array $data
-     *
-     * @return bool
-     */
-    public function update($entity, $data)
-    {
-     
-        return $entity->update($data);
-    }
-
-    /**
-     * Delete a resource taking into account soft deletes
-     *
-     * @param Model $entity
-     *
-     * @return bool
-     * @throws \Exception
+     * Delete a resource (generic method to let other repository to inherit this method)
      */
     public function delete($entity)
     {
-        if(is_numeric($entity)){
+        if (is_numeric($entity)) {
             $entity = intval($entity);
         }
 
-        if(is_array($entity) || is_int($entity)){
+        if (is_array($entity) || is_int($entity)) {
             return $this->entity->destroy($entity);
         }
 
@@ -262,7 +247,7 @@ class BaseRepository implements BaseRepositoryInterface
      *
      * @return Builder
      */
-    private function buildWhereQuery(array $attributes, $orderBy = null, $sortOrder = 'asc')
+    private function sortBy(array $attributes, $orderBy = null, $sortOrder = 'asc')
     {
         $query = $this->queryBuilder();
 

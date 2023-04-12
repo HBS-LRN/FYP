@@ -19,7 +19,7 @@
                 <div class="text-form">
 
                     <div class="login-form">
-                        <h1>Customer Login</h1>
+                        <h1>User Login</h1>
                         <p>New User? <a href="/register">Register Here</a></p>
                     </div>
                     

@@ -41,7 +41,7 @@
             box-shadow: 5px 5px 20px #f17163;
             margin-right: 20px;
             border-radius: 70px;
-            font-weight: bolder;
+            font-weight: bold;
             color: white;
         }
 
@@ -89,12 +89,12 @@
             <pre class="p"> for your picking together we care for your together</pre>
             <pre class="p"> we care for your hungry tummies!</pre>
             <div class="btn">
-                <a href="/category/show" class="button">Delivery</a><a
-                    href="../utilAccessPage/FoodReservation.aspx" class="button">Reservation</a>
+                <a href="/category/show" class="button">Start Order</a>
             </div>
         </div>
 
     </div>
+
     <h3 class="subTitle">Menu Categories</h3>
     <div class="section2">
 
@@ -176,7 +176,7 @@
                 years, we have grown by leaps and bounds, and is now a household name synonymous with exquisite culinary
                 offerings and excellent ambience and other food related products and services.
                 <div class="adminBtnBox">
-                    <a class="adminBtn" href="../StaffLogin.aspx">
+                    <a class="adminBtn" href="../staffLogin">
                         Admin Login
                     </a>
                 </div>

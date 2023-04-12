@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreate;
+use DOMXPath;
+use DOMDocument;
 use Carbon\Carbon;
+use XSLTProcessor;
+use App\Models\Role;
 use App\Models\User;
+use SimpleXMLElement;
 use GuzzleHttp\Client;
+use App\Events\UserDelete;
+use App\Events\UserUpdate;
 use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -15,7 +23,6 @@ use App\FactoryPattern\UserFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Validation\Rules\Password;
@@ -24,7 +31,7 @@ use App\Repository\UserRepositoryInterface;
 class UserController extends Controller
 {
 
-
+    //using user repository 
     private $userRepositoryInterface;
 
     public function __construct(UserRepositoryInterface $userRepositoryInterface)
@@ -33,6 +40,23 @@ class UserController extends Controller
     }
 
 
+    //update the user password
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'currentPass' => 'required',
+            'password' => ['required', Password::min(8)->letters()->numbers()->mixedCase()->symbols(), 'confirmed'],
+        ]);
+
+        //call repository method to update password
+        $success =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass']);
+
+        if ($success == true) {
+            return back()->with('successfullyUpdate', true);
+        } else {
+            return back()->withErrors(['currentPass' => 'Invalid Current Password'])->onlyInput('currentPass');
+        }
+    }
 
 
     //update customer profile
@@ -41,14 +65,29 @@ class UserController extends Controller
 
         $user = auth()->user();
 
-        $data = $request->validate([
-            'name' => ['required', 'min:3'],
-            'email' => ['required', 'email'],
-            'gender' => 'required',
-            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
-            'birthdate' => 'required',
+        //get the user email
+        $user = User::where('email', $request->email)->first();
+        //validate user email
+        if ($user != null) {
 
-        ]);
+            if ($user->email != auth()->user()->email)
+                return back()->withErrors(['email' => 'The email has already been taken'])->onlyInput('email');
+        }
+        $data = $request->validate(
+            [
+                'name' => ['required', 'min:3'],
+                'email' => ['required', 'email'],
+                'gender' => 'required',
+                'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+                'birthdate' => ['required', 'before:-13 years'], //solution,
+
+            ],
+            [
+                'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
+
+            ]
+        );
+
 
 
         if ($request->hasFile('image')) {
@@ -56,10 +95,17 @@ class UserController extends Controller
             $user->image =  $data['image'];
         }
 
-        //call repository class to update the class
-        $this->userRepositoryInterface->updateUser($user, $data);
+        $instance = new User();
+        $updatedUser = $instance->updateDetail($user, $data);
 
-        return back()->with('successfullyUpdate', true);
+        // Dispatch an event to update the XML file
+        event(new UserUpdate($user));
+
+        //call repository class to update the class
+        //recover this!! 
+        //$this->userRepositoryInterface->updateUser($user, $data);
+
+        return back()->with('successfullyUpdate', $updatedUser);
     }
 
     //create new user
@@ -76,96 +122,89 @@ class UserController extends Controller
 
         ]);
 
-        //call repository class to create user
+
+
+        //uisng the user repository interface to create the data
         $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
+
+        // Fire the UserCreate event to create user in the XML file
+        $user = User::find($user->id);
+        event(new UserCreate($user));
         return redirect('/login')->with('resgisterSucessful', $user);
-    }
-
-
-
-
-    public function updatePassword(Request $request)
-    {
-        $data = $request->validate([
-
-            'currentPass' => 'required',
-            'password' => ['required', Password::min(8)->letters()->numbers()->mixedCase()->symbols(), 'confirmed'],
-
-
-        ]);
-
-        //call repository method to update password
-        $passUpdated =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass']);
-        if ($passUpdated == true) {
-            return back()->with('successfullyUpdate', true);
-        } else {
-            return back()->withErrors(['currentPass' => 'Invalid Current Password'])->onlyInput('currentPass');
-        }
     }
 
     // Authenticate User
     public function authenticate(LoginRequest $request)
     {
-
         //validation
         $data = $request->validate([
             'email' => ['required', 'email'],
             'password' => 'required'
         ]);
-        //call Enforce account disabling after an established number of invalid login attempts method
-        $request->authenticate();
 
 
 
-        //if user login successfully
-        if (User::login($data)) {
-            //create the unqiue bearer token as the personal access api token
-            $this->userRepositoryInterface->generatePrivateToken(auth()->user());
-            return redirect('/dashboard')->with('message', 'You are now logged in!');
+
+        //get the user email
+        $user = User::where('email', $request->email)->first();
+
+        //if user is equal to null
+        if ($user == null) {
+            return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
+        }
+        //check if the user is the active member
+        if ($user->active_member == 'N') {
+            return back()->with('notActiveMember', true);
         }
 
-        return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
+
+        //call Enforce account disabling after an established number of invalid login attempts method
+        $request->authenticate();
+        // Check if the user has an active session to prevent concurrent login
+
+        if ($user && $user->session_id && $user->session_id !== session()->getId()) {
+            Auth::logoutOtherDevices($request->password);
+            $user->session_id = session()->getId();
+            $user->save();
+            Session::flash('concurentLogin', true);
+        }
+
+        //if user login successfully
+
+
+        $instance = new User();
+        if ($instance->login($data)) {
+
+            //update session id 
+            $user->session_id = session()->getId();
+            $user->update();
+
+            //if user is customer
+            if ($user->role == 0) {
+                return redirect('/dashboard')->with('message', 'You are now logged in!');
+                //return to staff side
+            } else {
+                return redirect('/staffDashboard')->with('message', 'You are now logged in!');
+            }
+        }
+
+        return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
     }
 
 
     //log out user 
     public function logout()
     {
-        User::logout();
+
+        $instance = new User();
+        //call log out method
+        $instance->logout();
+
         return redirect('/')->with('message', 'You have been logged out!');
     }
 
-
- 
-    //show dashboard Form
-    public function dashboard()
-    {
-
-        return view('profile.dashboard');
-    }
-    //show Regitser/Create Form
-    public function create()
-    {
-
-        return view('auth.customerRegister');
-    }
-    // Show Login Form
-    public function login()
-    {
-        return view('auth.customerLogin');
-    }
-
-
-    // Show Login Form
-    public function profile()
-    {
-        return view('profile.index');
-    }
-
-    public function showForgetForm()
-    {
-        return view('auth.verify-email');
-    }
 
 
     public function sendResetLink(Request $request)
@@ -185,7 +224,7 @@ class UserController extends Controller
 
 
         $action_link = route('user.reset.password.form', ['token' => $token, 'email' => $request->email]);
-        $body = "We are received a request to reset the password for Grand Imperial Food Orderingassociated
+        $body = "We are received a request to reset the password for Grand Imperial Food Ordering associated
                 with " . $request->email . ".<b> Below Link Will Expired in 5 minutes</b>.You can reset your password by clicking the link below  ";
         Mail::send('auth.email-forget', ['action_link' => $action_link, 'body' => $body], function ($message) use ($request) {
 
@@ -213,6 +252,9 @@ class UserController extends Controller
         ]);
 
 
+        //set user 
+        $user = User::where('email', $request->email)->first();
+
         $check_token = DB::table('password_resets')
             ->where('email', $request->email)
             ->where('token', $request->token)
@@ -222,23 +264,268 @@ class UserController extends Controller
         $now = Carbon::now();
 
         if ($created_at->diffInSeconds($now) > 60) {
+
+            //the link will be expired if the time taken is too long 
             DB::table('password_resets')->where('token', $request->token)->delete();
+
             return redirect()->route('user.password.form')->with('linkExpired', 'Reset link expired!');
+
+            //compare request password with user password
+        } else if (Hash::check($request->password, $user->password)) {
+
+            //prevent password reused 
+            return redirect()->back()->with('reusedPassword', true);
         } else {
+            //update user password if successfully 
             User::where('email', $request->email)->update([
                 'password' => Hash::make($request->password)
             ]);
             DB::table('password_resets')->where([
                 'email' => $request->email
             ])->delete();
+
+            //inform user their password has been changed using email
+            User::informPasswordChange($request->email);
+
+
+
             return redirect()->route('login')->with('passChangeSuccess', true);
         }
     }
 
+    public function editStaff($id)
+    {
+
+        return view('staff.edit', [
+            'user' => User::find($id),
+            'roles' => Role::all()
+        ]);
+    }
+
+    //show out form of edit customer
+    public function editCustomer($id)
+    {
+
+        return view('user.edit', [
+            'user' => User::find($id)
+        ]);
+    }
+
+    public function storeCustomer(Request $request)
+    {
+
+        //validation
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'gender' => 'required',
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'birthdate' => ['required'], //solution,
+            'password' => ['required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', 'confirmed'],
+
+        ], [
+            'password.regex'    => '*Minimum eight characters, at least one letter, one number and one special character',
+
+        ]);
+
+
+
+        //uisng the user repository interface to create the data
+        $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
+        return redirect('/customer')->with('successUpdate', $user);
+    }
+
+
+
+    public function updateCustomer(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email'],
+            'gender' => 'required',
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'birthdate' => 'required',
+
+        ]);
+        $data['user_id'] = $id;
+        //call repository class to update the user
+        $this->userRepositoryInterface->updateUser($user, $data);
+        // Dispatch an event to update the XML file
+        event(new UserUpdate($user));
+
+        return redirect('/customer')->with('successUpdate', true);
+    }
+
+    public function updateStaff(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'role' => 'required',
+
+        ]);
+        $data['user_id'] = $id;
+        $data['gender'] = $user->gender;
+        $data['birthdate'] = $user->birthdate;
+        $data['role'] = $request['role'];
+        //call repository class to update the user
+        $this->userRepositoryInterface->updateUser($user, $data);
+        return redirect('/staff')->with('successUpdate', true);
+    }
+    public function deleteCustomer($id)
+    {
+        $user = User::find($id);
+
+
+        // Fire the UserDeleted event to delete user in the xml file
+        event(new UserDelete($user));
+        //call repository class to delete the class
+        $this->userRepositoryInterface->delete($user);
+
+        return redirect('/customer')->with('successUpdate', true);
+    }
+
+    public function deleteStaff($id)
+    {
+        $user = User::find($id);
+
+        //call repository class to delete the class
+        $this->userRepositoryInterface->delete($user);
+        return redirect('/staff')->with('successUpdate', true);
+    }
+    public function createStaff()
+    {
+        return view('staff.create', [
+            'roles' => Role::where('id', 2)->orWhere('id', '=', 1)->get()
+        ]);
+    }
+    public function storeStaff(Request $request)
+    {
+        //validation
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
+            'role' => 'required',
+            'password' => ['required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', 'confirmed'],
+
+        ], [
+            'password.regex'    => '*Minimum eight characters, at least one letter, one number and one special character',
+
+        ]);
+
+
+
+        //uisng the user repository interface to create the data
+        $user = $this->userRepositoryInterface->create($data);
+        //create the unqiue bearer token as the personal access api token
+        $this->userRepositoryInterface->generatePrivateToken($user);
+        return redirect('/staff')->with('successUpdate', $user);
+    }
+
+
+    //show out customer report
+    public function showCustReport()
+    {
 
 
 
 
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/user/userOrder.xml'));
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/user/userOrder.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
+        //list out for staff and admin
+
+
+    }
+    //show out customer report
+    public function showCustOrderDetail($user_id)
+    {
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/user/userOrder.xml'));
+
+
+
+        // Create XPath object
+        $xpath = new DOMXPath($xml);
+        // Calculate total quantity ordered and total sell price sold
+        $totalQuantity = $xpath->evaluate('sum(//quantity)');
+        $totalPrice = $xpath->evaluate('sum(//totalprice)');
+
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/user/userOrderDetail.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+        $proc->setParameter('', 'user_id', $user_id); // Set the customer ID parameter here
+        // Set parameters
+        $proc->setParameter('', 'totalQuantity', $totalQuantity);
+        $proc->setParameter('', 'totalPrice', $totalPrice);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
+        //list out for staff and admin
+
+
+    }
+
+    //check user password 
+
+    public function checkPassword($password)
+    {
+     
+        $result = Hash::check($password, auth()->user()->password);
+
+        dd($password);
+        if($result==false){
+            return redirect('/customer')->with('invalidPassword', true);
+        }
+        return response()->json(['result' => $result]);
+    }
+    //show dashboard Form
+    public function dashboard()
+    {
+
+        return view('profile.dashboard');
+    }
+    //show Regitser/Create Form
+    public function create()
+    {
+
+        return view('auth.register');
+    }
+    // Show Login Form
+    public function login()
+    {
+        return view('auth.login');
+    }
+    public function adminLogin()
+    {
+        return view('auth.adminLogin');
+    }
+
+    // Show Login Form
+    public function profile()
+    {
+        return view('profile.index');
+    }
+
+    public function showForgetForm()
+    {
+        return view('auth.verify-email');
+    }
 
     public function show()
     {
@@ -250,7 +537,7 @@ class UserController extends Controller
         return view('auth.request-login');
     }
 
-    public function  accessDenied()
+    public function accessDenied()
     {
         return view('auth.access-prohibited');
     }
@@ -262,5 +549,27 @@ class UserController extends Controller
     public function showDashboard()
     {
         return view('staff.dashboard');
+    }
+    public function createCustomer()
+    {
+        return view('user.create');
+    }
+
+    //return all customer
+    public function listOutCustomers()
+    {
+        //list out only customer
+        return view('user.index', [
+            'users' => User::where('role', 0)->filter(request(['search']))->get()
+        ]);
+    }
+    //return all user
+    public function listOutStaff()
+    {
+        //list out for staff and admin
+        return view('staff.index', [
+            'users' => User::where('role', 2)->orWhere('role', '=', 1)->filter(request(['search']))->get(),
+            'roles' => Role::all()
+        ]);
     }
 }

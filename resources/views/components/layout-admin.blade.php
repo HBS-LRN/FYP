@@ -2,7 +2,6 @@
 <head>
     <script src="https://kit.fontawesome.com/550bf2e8d3.js" crossorigin="anonymous"></script>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-
     <link href="{{ asset('./css/staffSideBar.css') }}" rel="stylesheet">
 
 </head>
@@ -12,7 +11,7 @@
         <div class="side-navigation">
             <div class="logo-details">
                 <a href="./staff/StaffDashboard.aspx">
-                    <img src="../image/GrandImperialGroupLogo.png"></a>
+                    <img src="../../image/GrandImperialGroupLogo.png"></a>
                 <p>Grand Imperial</p>
 
             </div>
@@ -70,10 +69,10 @@
                             </a></li>
                     </ul>
                 </li>
-                <li><a href="../admin/ListOfCustomer.aspx"><i class="fas fa-users"></i>
+                <li><a href="/customer"><i class="fas fa-users"></i>
                         <p>Customer</p>
                     </a></li>
-                <li><a href="../admin/ListOfStaff.aspx"><i class="fas fa-user-cog"></i></i>
+                <li><a href="/staff"><i class="fas fa-user-cog"></i></i>
                         <p>List Of Staff</p>
                     </a></li>
                 <br />
@@ -85,7 +84,7 @@
 
                     <div class="profile_name">Tee Fo Yo</div>
 
-                    <div class="job_role">Haha</div>
+                    <div class="job_role">Admin</div>
                 </div>
 
                 <a href="../staff/StaffSignOut.aspx"><i class="fas fa-sign-out-alt" style="padding-left: 45px;"></i></a>
@@ -94,8 +93,8 @@
         </div>
 
     </div>
-  
-
+   
+    <x-flash-message />
 <script>
       let arrow = document.querySelectorAll(".arrow");
       

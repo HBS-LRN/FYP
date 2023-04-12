@@ -52,7 +52,7 @@
 
             }
 
-      
+
             /* .redeem{
     margin-top: 70px;
     font-size: 15px;
@@ -117,100 +117,6 @@
                 display: flex;
                 margin-top: 20px;
                 box-shadow: 0px 0px 5px grey;
-            }
-
-            .vourcherBOX .vourcherImg {
-                width: 100px;
-                height: 100px;
-                border: 1px dotted grey;
-            }
-
-            .vourcherBOX .vourcherInfrontDetailBox {
-                padding: 10px;
-                display: flex;
-
-                border-radius: 0px 30px 30px 0px;
-                flex-basis: 50%;
-            }
-
-            .vourcherBOX .vourcherInfrontDetailBox .vourcherCenterDetailBox {
-                padding-left: 10px;
-            }
-
-            .vourcherBOX .vourcherInfrontDetailBox .vourcherCenterDetailBox p {
-                color: rgb(0, 0, 0);
-                margin: 0%;
-                padding-bottom: 10px;
-                font-size: 17px;
-            }
-
-            .vourcherBOX .vourcherBackDetailBox {
-                padding: 10px;
-                padding-left: 30px;
-                border-radius: 30px 0px 0px 30px;
-
-            }
-
-            .vourcherBOX .vourcherBackDetailBox p {
-                color: rgb(0, 0, 0);
-                margin: 0%;
-                padding-bottom: 10px;
-                font-size: 19px;
-            }
-
-            .vourcherBOX .vourcherBackDetailBox .usedButton {
-                color: white;
-                background-color: greenyellow;
-                text-decoration: none;
-                padding: 10px 20px;
-                border-radius: 10px;
-                color: #fff;
-                background-color: #c82333;
-                border-color: #bd2130;
-            }
-
-            .vourcherBOX .vourcherBackDetailBox .redeemButton {
-                color: white;
-                background-color: greenyellow;
-                text-decoration: none;
-                padding: 10px 20px;
-                border-radius: 10px;
-                color: #fff;
-                background-color: #28a745;
-                border-color: #28a745;
-            }
-
-            .vourcherBOX .vourcherBackDetailBox .redeemButton:hover {
-                color: #fff;
-                background-color: #c82333;
-                border-color: #bd2130;
-
-                color: #fff;
-                background-color: #28a745;
-                border-color: #28a745;
-                box-shadow: 0 0 0 .2rem rgba(95, 113, 48, 0.5);
-            }
-
-            .redeemButton {
-                color: white;
-                background-color: greenyellow;
-                text-decoration: none;
-                padding: 10px 10px;
-                border-radius: 10px;
-                color: #fff;
-                background-color: #28a745;
-                border-color: #28a745;
-            }
-
-            .redeemButton:hover {
-                color: #fff;
-                background-color: #c82333;
-                border-color: #bd2130;
-
-                color: #fff;
-                background-color: #28a745;
-                border-color: #28a745;
-                box-shadow: 0 0 0 .2rem rgba(95, 113, 48, 0.5);
             }
         </style>
     </head>
@@ -342,7 +248,7 @@
                                         disabled /></span>
 
                             </p>
-                        
+
                             <p>Click Below Link To Manage Your Address</p>
                             <!--<p>To: <span class="customerAddress">Jalan 1A/6,47000 Sungai Buloh</span></p>-->
 
@@ -359,37 +265,47 @@
 
 
                     <div class="flex-form">
+                        <div class="shipping">
+                            <h2>Voucher</h2>
+                        </div>
+                        <span class="moreVouchers" id="voucherButton">More Vouchers</span>
 
-
-                        <div class="progress-container">
+                        <div class="progress-container" id="voucherBox">
 
                             <form action="/update/voucher" method="POST">
                                 @csrf
                                 <input type="hidden" id="deliveryFee" name="deliveryFee" value="{{ $addressFee }}">
 
                                 @foreach ($vouchers as $voucher)
-                                    <div class="vourcherBOX">
-                                        <div class="vourcherInfrontDetailBox">
+                                    @if ($voucher['qty'] != 0)
+                                        @if (!($voucher && now() > $voucher['expire_date']))
+                                            <div class="vourcherBOX">
+                                                <div class="vourcherInfrontDetailBox">
 
-                                            <img src="../image/grabfood.jpg" class="vourcherImg" />
+                                                    <img src="../image/grabfood.jpg" class="vourcherImg" />
 
-                                            <div class="vourcherCenterDetailBox">
-                                                <p class="discount"><b>{{ $voucher['code'] }}</b></p>
-                                                <p class="minSpend">{{ $voucher['description'] }}</p>
+                                                    <div class="vourcherCenterDetailBox">
+                                                        <p class="discount"><b>{{ $voucher['code'] }}</b></p>
+                                                        <p class="minSpend">{{ $voucher['description'] }}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="vourcherBackDetailBox">
+                                                    <span class="validDate">Valid Until:
+                                                        {{ $voucher['expire_date'] }}</span>
+
+
+                                                </div>
+                                                <div class="selectButtonBox"><input type="radio" name="voucher"
+                                                        value="{{ $voucher['id'] }}"></div>
                                             </div>
-                                        </div>
-
-                                        <div class="vourcherBackDetailBox">
-                                            <p class="validDate">Valid Until: {{ $voucher['expire_date'] }}</p>
-
-
-                                            
-                                            <input type="radio" name="voucher" value="{{ $voucher['id'] }}">
-                                        </div>
-                                    </div>
+                                        @endif
+                                    @endif
                                 @endforeach
-                                <button type="submit" id="apply_voucher" class="redeemButton">Apply
-                                </button>
+                                <div class="redeemButtonBox">
+                                    <button type="submit" id="apply_voucher" class="redeemButton">Apply
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -398,12 +314,13 @@
                             <h2>Total</h2>
                         </div>
                         <div class="totalPrice">
-                            <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0.00" disabled>
+                            <p>RM<input type="text" id="overallTotal" name="overallTotal" value="0.00"
+                                    disabled>
                             </p>
                         </div>
                     </div>
 
-                 
+
 
 
                     <div class="flex-form">
@@ -437,6 +354,14 @@
         var setSubTotal = document.getElementById('overallSubTotal');
         var setTotalValue = document.getElementById('overallTotal');
         var setDelivery = document.getElementById('delivery');
+        var voucherBox = document.getElementById('voucherBox');
+        document.getElementById('voucherButton').addEventListener("click", function() {
+            if (voucherBox.style.display === "none") {
+                voucherBox.style.display = "initial";
+            } else {
+                voucherBox.style.display = "none";
+            }
+        });
 
         for (var i = 0; i < arrow.length; i++) {
             arrow[i].addEventListener("click", (e) => {

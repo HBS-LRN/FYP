@@ -11,5 +11,23 @@ class MealOrderDetail extends Model
 
     protected $fillable = ['order_id','meal_id','order_quantity','quantity_star','rating_comment','reply_comment','meal_order_status'];
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
     
+    public function meal()
+    {
+        return $this->belongsTo(Meal::class);
+    }
+
+    //for agile testing only
+    
+    public function updateMealRating(MealOrderDetail $mealOrderDetail,$data){
+
+        $mealOrderDetail->reply_comment = $data['reply_comment'];
+        $mealOrderDetail->update();
+        return $mealOrderDetail;
+        
+    }
 }

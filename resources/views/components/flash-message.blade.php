@@ -1,5 +1,5 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="../js/jquery-3.6.0.min.js"></script>
+
 <script src="../js/sweetalert2.all.min.js"></script>
 
 @if (session()->has('registerMeesage'))
@@ -59,6 +59,57 @@
     </script>
 @endif
 
+@if (session()->has('successDeleteMeal'))
+    <div class="delete-meesage" data-flashdata='succesDeleteMeal'></div>
+    <script>
+        const flashdata = $('.delete-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'Meal has been Successfully Deleted',
+
+            })
+        }
+    </script>
+@endif
+
+@if (session()->has('successUpdate'))
+    <div class="update-meesage" data-flashdata='successfullyUpdate'></div>
+    <script>
+        const flashdata = $('.update-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+          
+                customClass: 'swal-wide',
+              
+
+            })
+        }
+    </script>
+@endif
+
+@if (session()->has('successReply'))
+    <div class="success-meesage" data-flashdata='successReply'></div>
+    <script>
+        const flashdata = $('.success-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'The Comment has been Successfully Replied',
+                customClass: 'swal-wide',
+              
+
+            })
+        }
+    </script>
+@endif
 
 @if (session()->has('successAddCart'))
     <div class="success-meesage" data-successdata={{ session('successAddCart') }}></div>
@@ -108,6 +159,22 @@
         }
     </script>
 @endif
+@if (session()->has('sessionTimeOut'))
+    <div class="success-meesage" data-successdata={{ session('sessionTimeOut') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'info',
+                title: 'Session Time Out Due To Inactivity!',
+                text: 'You May Need To Log In Again',
+
+            })
+        }
+    </script>
+@endif
+
 @if (session()->has('successfulStoreClient'))
     <div class="success-meesage" data-successdata={{ session('successfulStoreClient') }}></div>
     <script>
@@ -124,7 +191,42 @@
         }
     </script>
 @endif
+@if (session()->has('concurentLogin'))
+    <div class="success-meesage" data-successdata={{ session('concurentLogin') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Your Account Login From Another Device',
+                text: 'Now Being Help To Log Out Account In Another Device ',
+                showConfirmButton: false,
+                timer: 4000
 
+            })
+        }
+    </script>
+@endif
+
+
+@if (session()->has('concurentLoginFromDefault'))
+    <div class="success-meesage" data-successdata={{ session('concurentLoginFromDefault') }}></div>
+    <script>
+        const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'System Forced Log Out! Your Account Have Been Login From Another Device!',
+                text: 'Only one account from one device can log in to the system',
+                showConfirmButton: false,
+                timer: 4000
+
+            })
+        }
+    </script>
+@endif
 @if (session()->has('successfullyPromoteUpdate'))
     <div class="success-meesage" data-successdata={{ session('successfullyPromoteUpdate') }}></div>
     <script>
@@ -163,6 +265,73 @@
         }
     </script>
 @endif
+
+
+@if (session()->has('invalidPassword'))
+    <div class="fail-meesage" data-faildata={{ session('invalidPassword') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Password',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+@if (session()->has('reusedPassword'))
+    <div class="fail-meesage" data-faildata={{ session('reusedPassword') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Opps, Password Reused!',
+                text: 'You Cannot Set Back With The Same Password You Used Before!',
+                showCloseButton: true,
+                showCancelButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+@if (session()->has('notActiveMember'))
+    <div class="fail-meesage" data-faildata={{ session('notActiveMember') }}></div>
+
+    <script>
+        const failData = $('.fail-meesage').data('faildata')
+        if (failData) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Opps,Inactive Member!',
+                text: 'Kindly email To Grand@gmail.com to active your account!',
+                showCloseButton: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            })
+
+        }
+    </script>
+@endif
+
+
+
+
 @if (session()->has('noAddressFound'))
     <div class="fail-meesage" data-faildata={{ session('noAddressFound') }}></div>
 
@@ -315,7 +484,28 @@
         })
     })
 </script>
+<script>
+    $('.delete').on('click', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href')
+        Swal.fire({
+            title: 'Are u sure?!',
+            text: 'Record will be deleted',
+            type: 'warning',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete Record',
+             customClass: 'swal-wide',
 
+        }).then((result) => {
+            if (result.value) {
+                document.location.href = href;
+            }
+        })
+    })
+</script>
 
 <script>
     $('.redeem').on('click', function(e) {
@@ -350,7 +540,7 @@
         console.log(href);
         Swal.fire({
             title: 'Are u sure?!',
-            text: 'Record will be deletected',
+            text: 'Record will be deleted',
             type: 'warning',
             icon: 'warning',
             showCancelButton: true,

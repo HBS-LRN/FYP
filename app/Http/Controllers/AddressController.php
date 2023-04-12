@@ -22,16 +22,8 @@ class AddressController extends Controller
 
     public function index()
     {
-
-
-        $user = User::find(auth()->user()->id);
-        return view('address.index', [
-
-
-
-            'addresses' =>  $user->addresses
-
-        ]);
+        //return to the address index page to display all addresses belong to the particular user
+        return view('address.index', ['addresses' =>  auth()->user()->addresses]);
     }
 
     public function create()
