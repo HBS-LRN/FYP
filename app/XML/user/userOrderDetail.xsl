@@ -50,9 +50,10 @@
         <div class="box">
             <div>
 
-                <h2>Customer Report Detail - Customer ID <xsl:value-of select="$user_id"/>
-                </h2>
-                 <br/>
+            <h2>Customer Report Detail - Customer ID <xsl:value-of select="$user_id"/>
+            </h2>
+        </div>
+        <br/>
         <br/>
             </div>
 

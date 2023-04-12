@@ -4,11 +4,11 @@
 
     <script src="../js/sweetalert2.all.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
-    <link href="{{ asset('./css/listOfCustomer.css') }}" rel="stylesheet">
+   
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
-
+    <link href="{{ asset('./css/listOfCustomer.css') }}" rel="stylesheet">
     <style>
         .swal-wide {
             width: 512px !important;

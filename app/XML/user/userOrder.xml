@@ -7,7 +7,7 @@
   </user>
   <user id="2">
     <name>Fo Yoo</name>
-    <email>foyotee@gmail.com</email>
+    <email>foyotee1@gmail.com</email>
     <ordered>
       <meal>
         <name>Taiwanese Fried Chicken</name>
@@ -37,24 +37,8 @@
     <name>bungseng</name>
     <email>bungseng@gmail.com</email>
   </user>
-  <user id="6">
-    <name>beep</name>
-    <email>laicy@gmail.con</email>
-    <ordered>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-04-09</date>
-      </meal>
-      <meal>
-        <name>Chinese Lemon Chicken Salad</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-04-09</date>
-      </meal>
-    </ordered>
+  <user id="8">
+    <name>Fo Yo</name>
+    <email>foyotee@gmail.com</email>
   </user>
 </users>

@@ -35,7 +35,7 @@ Route::get('/', [CategoryController::class, 'index']);
 
 
 
-Route::get('/category/create', [CategoryController::class, 'create'])->middleware('isAdmin');;
+Route::get('/category/create', [CategoryController::class, 'create'])->middleware('isAdmin');
 
 
 // Store category Data
@@ -46,7 +46,7 @@ Route::post('/category/store', [CategoryController::class, 'store']);
 
 
 // Show Meal Create Form
-Route::get('/meal/create', [MealController::class, 'create']);
+Route::get('/meal/create', [MealController::class, 'create'])->middleware('isAdmin');
 
 // Store Meal Data
 Route::post('/meal/store', [MealController::class, 'store']);
@@ -108,6 +108,14 @@ Route::get('/order/updateDelivering/{id}', [OrderController::class, 'updateDeliv
 //Change order and order details to completed status
 Route::get('/order/updateCompleted/{id}', [OrderController::class, 'updateCompletedClick'])->name('order.Completed');
 
+//Show inventory report
+Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
+
+//Show inventory detail report
+Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
+
+//Show graph report
+Route::get('/graphReport', [CategoryController::class, 'showGraphReport']);
 
 // Store shopping cart Data
 Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
@@ -159,7 +167,9 @@ Route::post('/profile/edit', [UserController::class, 'update'])->middleware('aut
 // Log User Out
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth');
 // show customer account
-Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth');
+
+
+Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware(['RequireLogin']);
 
 // show customer account
 
@@ -194,6 +204,8 @@ Route::post('/comment', [OrderController::class, 'comment']);
 
 // web service
 Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('auth');
+
+
 //web servcie
 Route::get('/voucher', [VoucherController::class, 'show'])->middleware('auth');
 //web servcie

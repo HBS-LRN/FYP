@@ -11,10 +11,16 @@ use App\Repository\UserRepositoryInterface;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
-
     public function __construct()
     {
         parent::__construct(User::class);
+    }
+
+    //user repository 
+    public function create($data): User
+    {
+        $data['password'] = bcrypt($data['password']);
+        return User::create($data);
     }
 
     //only specified method base repository doest not support need to be created
@@ -50,12 +56,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $user->update();
     }
 
-    public function create($data): User
-    {
-
-        $data['password'] = bcrypt($data['password']);
-        return User::create($data);
-    }
 
     public function updateUser(User $user, array $data)
     {

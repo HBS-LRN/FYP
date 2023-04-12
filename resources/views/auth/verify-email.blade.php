@@ -34,7 +34,7 @@
                     <div class="customer-form">
                         <div class="text-form">
                             <div class="login-form">
-                                <h1>Reset Password Email Validation</h1>
+                                <h1>Reset Password</h1>
                                  <p>Remember password? <a href="/login">Login Here</a></p>
                             </div>
                             <form method="POST" action="/password/forget" enctype="multipart/form-data">

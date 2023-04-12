@@ -35,7 +35,7 @@ class UserTest extends TestCase
     {
         $data = [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test1@example.com',
             'password' => 'nNneeE445567&a',
             'password_confirmation' => 'nNneeE445567&a',
 
@@ -57,7 +57,7 @@ class UserTest extends TestCase
 
         $data = [
             'email' => 'foyotee@gmail.com',
-            'password' => 'nNneeE445567&a',
+            'password' => 'nNneeE445567&a555',
         ];
 
         $user = new User();
@@ -80,7 +80,7 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
-            'email' => 'test@gmail.com',
+            'email' => 'test1@gmail.com',
             'password' => 'nNneeE445567&a',
         ];
 
@@ -90,7 +90,7 @@ class UserTest extends TestCase
     public function test_new_users_can_update()
     {
         $data = [
-            "id" => 13,
+            "id" => 8,
             "_token" => "GizGVzug6T7tAVXimS8k4pJsKI8blD6EBaLOQPY7",
             "name" => "Update User",
             "email" => "foyotee@gmail.com",

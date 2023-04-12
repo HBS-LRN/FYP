@@ -58,6 +58,23 @@
         }
     </script>
 @endif
+
+@if (session()->has('successDeleteMeal'))
+    <div class="delete-meesage" data-flashdata='succesDeleteMeal'></div>
+    <script>
+        const flashdata = $('.delete-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'Meal has been Successfully Deleted',
+
+            })
+        }
+    </script>
+@endif
+
 @if (session()->has('successUpdate'))
     <div class="update-meesage" data-flashdata='successfullyUpdate'></div>
     <script>
@@ -71,6 +88,23 @@
                 customClass: 'swal-wide',
               
 
+            })
+        }
+    </script>
+@endif
+
+@if (session()->has('successReply'))
+    <div class="success-meesage" data-flashdata='successReply'></div>
+    <script>
+        const flashdata = $('.success-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'The Comment has been Successfully Replied',
+                customClass: 'swal-wide',
+              
             })
         }
     </script>
@@ -150,7 +184,7 @@
                 icon: 'success',
                 title: 'You Can Now Redeem To This Voucher',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 3000
 
             })
         }
@@ -210,6 +244,22 @@
 
 
 
+
+@if (session()->has('successfullyComment'))
+    <div class="success-meesage" data-successdata={{ session('successfullyComment') }}></div>
+    <script>
+        const successData = $('.success-meesage').data('successdata')
+        if (successData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'We Apprciate Your Comment!!',
+                text: 'Thanks For Rating Us!',
+
+            })
+        }
+    </script>
+@endif
 @if (session()->has('pointNotEnough'))
     <div class="fail-meesage" data-faildata={{ session('pointNotEnough') }}></div>
 
@@ -455,7 +505,7 @@
         const href = $(this).attr('href')
         Swal.fire({
             title: 'Are u sure?!',
-            text: 'Record will be deletwed',
+            text: 'Record will be deleted',
             type: 'warning',
             icon: 'warning',
             showCancelButton: true,
@@ -477,8 +527,8 @@
         e.preventDefault();
         const href = $(this).attr('href')
         Swal.fire({
-            title: 'Hold Tight! Redirecting You To Third Party Services',
-            html: '<b></b> milliseconds being Redirect You To Third Party Services!',
+            title: 'Hold Tight! Now Displaying Item In Other Platform That Offered',
+            html: '<b></b> milliseconds being displaying',
             timer: 2000,
             timerProgressBar: true,
             didOpen: () => {
@@ -505,7 +555,7 @@
         console.log(href);
         Swal.fire({
             title: 'Are u sure?!',
-            text: 'Record will be deletected',
+            text: 'Record will be deleted',
             type: 'warning',
             icon: 'warning',
             showCancelButton: true,

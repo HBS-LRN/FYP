@@ -10,7 +10,7 @@
     <div class="all">
         <div class="customerDashboardHeader">
             <div class="customerDashboardBar"></div>
-            <span class="customerDashboard">Membership Point</span>
+            <span class="customerDashboard">Voucher Redeem</span>
         </div>
 
 
@@ -18,8 +18,8 @@
             <x-customer-sidebar />
             <div class="dashboardContent">
                 <div class="dashboardTitle">
-                    <h3 class="profileTitle">Membership Point</h3>
-                    <p class="subTitle">Manage your Membership point, and exchanged some voucher.</p>
+                    <h3 class="profileTitle">Voucher Redeem</h3>
+                    <p class="subTitle">Manage your voucher, and exchanged some voucher.</p>
                     <hr>
                 </div>
 

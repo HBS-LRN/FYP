@@ -45,6 +45,7 @@ class Authenticate extends Middleware
         }
         $this->session->put('lastActivityTime', time());
 
+        
         return $next($request);
     }
 

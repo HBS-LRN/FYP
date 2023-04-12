@@ -63,7 +63,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
-        $user = auth()->user();
 
         //get the user email
         $user = User::where('email', $request->email)->first();
@@ -73,18 +72,18 @@ class UserController extends Controller
             if ($user->email != auth()->user()->email)
                 return back()->withErrors(['email' => 'The email has already been taken'])->onlyInput('email');
         }
+
+        //validation 
         $data = $request->validate(
             [
                 'name' => ['required', 'min:3'],
                 'email' => ['required', 'email'],
                 'gender' => 'required',
                 'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
-                'birthdate' => ['required', 'before:-13 years'], //solution,
-
+                'birthdate' => ['required', 'before:-13 years'],
             ],
             [
                 'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
-
             ]
         );
 
@@ -146,22 +145,15 @@ class UserController extends Controller
 
 
 
-
+        //call Enforce account disabling after an established number of invalid login attempts method
+        $request->authenticate();
         //get the user email
         $user = User::where('email', $request->email)->first();
 
-        //if user is equal to null
-        if ($user == null) {
-            return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
-        }
-        //check if the user is the active member
-        if ($user->active_member == 'N') {
-            return back()->with('notActiveMember', true);
-        }
 
 
-        //call Enforce account disabling after an established number of invalid login attempts method
-        $request->authenticate();
+
+
         // Check if the user has an active session to prevent concurrent login
 
         if ($user && $user->session_id && $user->session_id !== session()->getId()) {
@@ -171,7 +163,7 @@ class UserController extends Controller
             Session::flash('concurentLogin', true);
         }
 
-        //if user login successfully
+
 
 
         $instance = new User();
@@ -190,7 +182,8 @@ class UserController extends Controller
             }
         }
 
-        return back()->withErrors(['email' => 'Invalid User Email and/or Password'])->onlyInput('email');
+
+        return back()->withErrors(['email' => 'Invalid Credential'])->onlyInput('email');
     }
 
 
@@ -456,40 +449,33 @@ class UserController extends Controller
     {
         $xml = new DOMDocument();
         $xml->load(public_path('../app/XML/user/userOrder.xml'));
-
-
-
         // Create XPath object
         $xpath = new DOMXPath($xml);
-        // Calculate total quantity ordered and total sell price sold
+        // Calculate total quantity ordered and total sell price sold for a particular user
         $totalQuantity = $xpath->evaluate('sum(//quantity)');
         $totalPrice = $xpath->evaluate('sum(//totalprice)');
-
+        //open xsl file
         $xsl = new DOMDocument();
         $xsl->load(public_path('../app/XML/user/userOrderDetail.xsl'));
         $proc = new XSLTProcessor();
         $proc->importStylesheet($xsl);
-        $proc->setParameter('', 'user_id', $user_id); // Set the customer ID parameter here
         // Set parameters
+        $proc->setParameter('', 'user_id', $user_id); // 
         $proc->setParameter('', 'totalQuantity', $totalQuantity);
         $proc->setParameter('', 'totalPrice', $totalPrice);
-
         $html = $proc->transformToXML($xml);
         return response($html)->header('Content-Type', 'text/html');
-        //list out for staff and admin
-
-
     }
 
     //check user password 
 
     public function checkPassword($password)
     {
-     
+
         $result = Hash::check($password, auth()->user()->password);
 
         dd($password);
-        if($result==false){
+        if ($result == false) {
             return redirect('/customer')->with('invalidPassword', true);
         }
         return response()->json(['result' => $result]);

@@ -45,7 +45,7 @@
                     </ul>
                 </li>
 
-                <li><a href="../staff/MealRating.aspx"><i class="fas fa-comment"></i>
+                <li><a href="/mealRating"><i class="fas fa-comment"></i>
                         <p>Meal Comment</p>
                     </a></li>
                 <li>
