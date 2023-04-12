@@ -43,13 +43,7 @@
                         <input type="hidden" name="token" value="{{ $token }}">
                         <input type="hidden" name="email" value="{{ $email }}">
 
-                        <p style="margin:20px 0px 0px 0px;">
-                            <label for="password">Email</label>
-                            <br>
-                            <input type="text" class="txtCustPassword" name="email"
-                                value="{{ $email ??  old('password') }}" disabled />
-
-                        </p>
+                
 
                         <p style="margin:20px 0px 0px 0px;">
                             <label for="password">New Password</label>

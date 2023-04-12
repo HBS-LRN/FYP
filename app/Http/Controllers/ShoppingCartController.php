@@ -647,10 +647,6 @@ $this->addressRepositoryInterface->update($address,$data);
         ])->delete();
     }
 
-
-
-
-
     //update member point
    // $memberPoint = $memberPoint / 5;
     $memberPoint = ceil($memberPoint);

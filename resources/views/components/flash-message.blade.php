@@ -184,7 +184,7 @@
                 icon: 'success',
                 title: 'You Can Now Redeem To This Voucher',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 3000
 
             })
         }
@@ -244,6 +244,22 @@
 
 
 
+
+@if (session()->has('successfullyComment'))
+    <div class="success-meesage" data-successdata={{ session('successfullyComment') }}></div>
+    <script>
+        const successData = $('.success-meesage').data('successdata')
+        if (successData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'We Apprciate Your Comment!!',
+                text: 'Thanks For Rating Us!',
+
+            })
+        }
+    </script>
+@endif
 @if (session()->has('pointNotEnough'))
     <div class="fail-meesage" data-faildata={{ session('pointNotEnough') }}></div>
 
@@ -511,8 +527,8 @@
         e.preventDefault();
         const href = $(this).attr('href')
         Swal.fire({
-            title: 'Hold Tight! Redirecting You To Third Party Services',
-            html: '<b></b> milliseconds being Redirect You To Third Party Services!',
+            title: 'Hold Tight! Now Displaying Item In Other Platform That Offered',
+            html: '<b></b> milliseconds being displaying',
             timer: 2000,
             timerProgressBar: true,
             didOpen: () => {

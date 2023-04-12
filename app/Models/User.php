@@ -124,9 +124,8 @@ class User extends Authenticatable
         });
     }
 
-    public  function logout()
+    public function logout()
     {
-
         $user = User::find(auth()->user()->id);
         $user->session_id = null;
         $user->update();
@@ -134,16 +133,18 @@ class User extends Authenticatable
         session()->invalidate();
         session()->regenerateToken();
     }
+
+
+
     // Authenticate User
     public  function login(array $data)
     {
         if (auth()->attempt($data)) {
-            //this one cna write in the document, refer to the lecture slide
+            //SESSION REGENERATE
             session()->regenerate();
 
             return true;
         }
-
         return false;
     }
 
