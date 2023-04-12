@@ -36,7 +36,7 @@
                     </div>
                     <ul class="sub-menu">
 
-                        <li><a href="../staff/ListOfMeal.aspx">
+                        <li><a href="meal/adshow">
                                 <p>List Of Meal</p>
                             </a></li>
                         <li><a href="../staff/ManageInventory.aspx">
