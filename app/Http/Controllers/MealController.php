@@ -137,7 +137,7 @@ class MealController extends Controller
     public function store(Request $request)
     {       
         $meal = $this->mealFactory->store($request->all(),$request);
-        return redirect('/meal/adshow')->with('successfullyUpdate', true);
+        return redirect('/meal/adshow')->with('successfullyAddedMeal', true);
         
     }
 

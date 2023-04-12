@@ -190,6 +190,25 @@
         }
     </script>
 @endif
+
+
+
+@if (session()->has('successfullyAddedMeal'))
+    <div class="success-meesage" data-successdata={{ session('successfullyAddedMeal') }}></div>
+    <script>
+       const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'New Meal Has Been Added',
+                customClass: 'swal-wide',
+
+            })
+        }
+    </script>
+@endif
 @if (session()->has('concurentLogin'))
     <div class="success-meesage" data-successdata={{ session('concurentLogin') }}></div>
     <script>
