@@ -1,19 +1,50 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:include href="../adminSideBar.xsl" />
+<msxsl:script language="JavaScript" src="../js/tableData.js" />
+ <xsl:output method="html"/>
+
+    <!-- Embed JavaScript code in the XSL file -->
+    <msxsl:script language="JavaScript">
+        function tableData() {
+          $(document).ready(function () {
+        $('#example').DataTable();
+    });
+        }
+    </msxsl:script>
 <xsl:template match="/">
+
   <html>
     <head>
       <link rel="stylesheet" type="text/css" href="../css/listOfOrder.css"/>
-      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-      <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-      <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+     
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
+  <script type="text/javascript">
+                     $(document).ready(function () {
+        $('#example').DataTable();
+    });
+                </script>
+        <style>
+        .pagination{
+            margin-top:30px;
+            margin-right:32px;
+        }
+        </style>
     </head>
    
     <body>
 
-    <xsl:call-template name="adminSideBar" />
+   
     <div class="Pagebody">
+    <xsl:call-template name="adminSideBar" />
     <div class="box">
 
         <div>
@@ -26,7 +57,7 @@
         <div class="box4">
             <div class="scroll-wrap">
 
-                <table id="example" class="table table-striped">
+                <table id="example" class="table table-striped table-bordered">
                     <thead>
                         <tr style="background-color: rgb(165, 200, 245);">
                             <th>Customer ID</th>
@@ -60,6 +91,7 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>
 

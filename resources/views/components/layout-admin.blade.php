@@ -12,7 +12,7 @@
             <div class="logo-details">
                 <a href="./staff/StaffDashboard.aspx">
                     <img src="../../image/GrandImperialGroupLogo.png"></a>
-                <p>Grand Imperial</p>
+                    <p>Grand Imperial</p>
 
             </div>
             <ul class="nav-links">

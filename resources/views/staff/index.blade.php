@@ -44,7 +44,11 @@
         }
 
         .staffListTd p {
-            margin: 20px 0px;
+            margin:0px;
+            margin:10px;
+            display:flex;
+            justify-content:center;
+            
         }
 
         .staffListTd .delete {
@@ -83,9 +87,9 @@
         .searchBtn {
             position: relative;
             z-index: 10;
-            right: 125px;
+            right: 235px;
             background: none;
-            top: 82px;
+            top: 105px;
             padding: 5px;
             border: none;
         }
@@ -93,6 +97,17 @@
         .searchBtn i {
             font-weight: bolder;
             font-size: 20px;
+        }
+        .col-sm-6:last-child .input-sm{
+             display:none; 
+            
+        }
+        .input-sm1{
+            position:absolute;
+            width:200px;
+            left:61%;
+            top:20.5%;
+            z-index:2;
         }
     </style>
 </head>
@@ -119,7 +134,7 @@
                     <form action="/staff">
                         <button ID="searchBtn" class="searchBtn"><a href=""><i
                                     class="fas fa-search"></i></a></button>
-                        <input type="search" class="form-control input-sm" placeholder="" name="search"
+                        <input type="search" class="form-control input-sm1" placeholder="" name="search"
                             aria-controls="example">
                     </form>
                     <a href="/staff/create" Class="add">Add</a>
