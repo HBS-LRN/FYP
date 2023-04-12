@@ -20,4 +20,14 @@ class MealOrderDetail extends Model
     {
         return $this->belongsTo(Meal::class);
     }
+
+    //for agile testing only
+    
+    public function updateMealRating(MealOrderDetail $mealOrderDetail,$data){
+
+        $mealOrderDetail->reply_comment = $data['reply_comment'];
+        $mealOrderDetail->update();
+        return $mealOrderDetail;
+        
+    }
 }

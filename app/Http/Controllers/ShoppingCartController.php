@@ -135,13 +135,6 @@ class ShoppingCartController extends Controller
             }
         }
 
-
-
-
-
-
-
-
         return view('shoppingcart.checkout', [
 
             'address' => $address,
@@ -150,8 +143,6 @@ class ShoppingCartController extends Controller
             'subTotal' => $subTotal,
             'totalPrice' => $totalPrice,
             'addressFee' => $this->findDeliveryFee()
-
-
 
         ]);
     }
@@ -183,10 +174,6 @@ class ShoppingCartController extends Controller
     public function redirectToPay(Request $request)
     {
 
-
-        
-
-
         if ($request['paymethod'] == '') {
             return redirect()->back()->with('paymentNotFound', true);
         }
@@ -203,7 +190,6 @@ class ShoppingCartController extends Controller
         //bung seng change to public bank or maybank later
         $order->payment_method = "Public Bank";
         $order->order_date = now()->format('Y-m-d');
-
 
         $order->save();
 
@@ -228,9 +214,6 @@ class ShoppingCartController extends Controller
 
         foreach ($user->meals as $meal) {
 
-            
-  
-         
             //find the meal 
             $selectedMeal = Meal::find($meal->id);
       
@@ -401,8 +384,6 @@ class ShoppingCartController extends Controller
     public function store(Request $request)
     {
 
-
-
         if (auth()->id() == null) {
             return redirect()->back()->with('registerMeesage', true);
         }
@@ -410,8 +391,6 @@ class ShoppingCartController extends Controller
         $shoppingCart = $request->except('price', '_token');
         $shoppingCart['user_id'] = auth()->id();
         ShoppingCart::create($shoppingCart);
-
-
 
         return redirect()->back()->with('successAddCart', true);
     }

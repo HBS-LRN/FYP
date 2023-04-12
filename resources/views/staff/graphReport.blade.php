@@ -1,4 +1,11 @@
+@inject('CategoryController','\App\Http\Controllers\CategoryController')
+    <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-pie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  
     <div class="box">
+        <x-layout-admin>
+        </x-layout-admin>
         <div>
 
             <h2>Graph Report
@@ -21,13 +28,11 @@
                             // set the data
                             //counting for set value into graph
                             var data = [
-                                <asp:ListView ID="ListView1" runat="server" ItemType="Assignment.Models.Category" DataKeyNames="category_ID" SelectMethod="BindCategoryList">
+                                @foreach($categories as $category)
 
-                                    <ItemTemplate>
-
-                                        {x: "<%# Eval("category_name") %>", value:<%#showCategoryTodayQuantitySold(Eval("category_ID")) %>},
-                                    </ItemTemplate>
-                                </asp:ListView>
+                                        {x: "{{$category->name}}", value:{{$CategoryController->showCategoryTodayQuantitySold($category->id)}} },
+                                   
+                                @endforeach
 
                             ];
 
@@ -64,17 +69,18 @@
 
                     <script>
                         var xValues = [
-                            "Appertizer","Beancurd","Beverage","Desert","DimSum","Fish","Meat","Noodle",
+                            @foreach($categories as $category)
+                            "{{$category->name}}",
+                            @endforeach
                         ];
                         var yValues = [
-                            <asp:ListView ID="lvCategoryHistogramChart" runat="server" ItemType="Assignment.Models.Category" DataKeyNames="category_ID" SelectMethod="BindCategoryList">
-
-                            <ItemTemplate>
-                                <%#showCategoryOverallQuantitySold(Eval("category_ID")) %>,
-                                </ItemTemplate>
-                            </asp:ListView>
+                        
+                            @foreach($categories as $category)
+                                {{$CategoryController->showCategoryOverallQuantitySold($category->id)}},
+                      
+                            @endforeach
                         ]
-                        var barColors = ["violet", "red", "blue", "slateblue", "violet", "orange", "lightgray", "red"];
+                        var barColors = ["violet", "red", "blue", "slateblue", "violet", "orange"];
                         width: 20;
 
                         new Chart("myChart", {
@@ -96,11 +102,7 @@
                         });
                     </script>
 
-
-
                 </div>
-
-
 
             </div>
 
@@ -108,4 +110,4 @@
         </div>
 
     </div>
-</asp:Content>
+

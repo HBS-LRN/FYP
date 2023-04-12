@@ -58,6 +58,23 @@
         }
     </script>
 @endif
+
+@if (session()->has('successDeleteMeal'))
+    <div class="delete-meesage" data-flashdata='succesDeleteMeal'></div>
+    <script>
+        const flashdata = $('.delete-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'Meal has been Successfully Deleted',
+
+            })
+        }
+    </script>
+@endif
+
 @if (session()->has('successUpdate'))
     <div class="update-meesage" data-flashdata='successfullyUpdate'></div>
     <script>
@@ -68,6 +85,24 @@
                 icon: 'success',
                 title: 'Success',
           
+                customClass: 'swal-wide',
+              
+
+            })
+        }
+    </script>
+@endif
+
+@if (session()->has('successReply'))
+    <div class="success-meesage" data-flashdata='successReply'></div>
+    <script>
+        const flashdata = $('.success-meesage').data('flashdata')
+        if (flashdata) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'The Comment has been Successfully Replied',
                 customClass: 'swal-wide',
               
 
@@ -471,7 +506,7 @@
         const href = $(this).attr('href')
         Swal.fire({
             title: 'Are u sure?!',
-            text: 'Record will be deletwed',
+            text: 'Record will be deleted',
             type: 'warning',
             icon: 'warning',
             showCancelButton: true,
@@ -521,7 +556,7 @@
         console.log(href);
         Swal.fire({
             title: 'Are u sure?!',
-            text: 'Record will be deletected',
+            text: 'Record will be deleted',
             type: 'warning',
             icon: 'warning',
             showCancelButton: true,

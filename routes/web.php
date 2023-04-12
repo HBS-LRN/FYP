@@ -108,6 +108,14 @@ Route::get('/order/updateDelivering/{id}', [OrderController::class, 'updateDeliv
 //Change order and order details to completed status
 Route::get('/order/updateCompleted/{id}', [OrderController::class, 'updateCompletedClick'])->name('order.Completed');
 
+//Show inventory report
+Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
+
+//Show inventory detail report
+Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
+
+//Show graph report
+Route::get('/graphReport', [CategoryController::class, 'showGraphReport']);
 
 // Store shopping cart Data
 Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);

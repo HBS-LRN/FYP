@@ -23,4 +23,6 @@ class Meal extends Model
     public function users(){
         return $this->belongsToMany(User::class,'shopping_carts','user_id','meal_id')->withPivot('shopping_cart_qty','id');
     }
+
+
 }

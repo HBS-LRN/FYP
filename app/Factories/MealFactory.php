@@ -29,14 +29,14 @@ class MealFactory implements MealFactoryInterface
             'meal_qty.required'      => 'Please Provide A Meal Quantity ',
             'meal_name.required' => 'Please Provide A Meal Name',
             'category_id.required'      => 'Please Select A Category',
-            'meal_image.required' => 'please Provide A Meal Image'
+            'meal_image.required' => 'Please Provide A Meal Image'
 
         ]);
 
         if ($request->hasFile('meal_image')) {
             $data['meal_image'] = $request->file('meal_image')->store('meals', 'public');
         }
-
+        
         return Meal::create($data);
     }
 
@@ -88,6 +88,31 @@ class MealFactory implements MealFactoryInterface
         
     }
 
+    public function showQuantitySold($id)
+    {
+        
+        $totalQuantity = 0;
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        $totalQuantity = 0;
+
+        foreach ($meals as $mealOrder) {
+        $totalQuantity +=  $mealOrder->order_quantity;
+        }
+
+        return $totalQuantity;
+    }
+
+    public function showRevenue($id){
+        $totalRevenue = 0; 
+        $meals= MealOrderDetail::where('meal_id',$id)->get();
+
+        foreach ($meals as $mealOrder) {
+            $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
+            }
+
+        return $totalRevenue;
+    }
 }
 
 ?>
