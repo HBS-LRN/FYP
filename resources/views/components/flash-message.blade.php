@@ -105,7 +105,6 @@
                 text: 'The Comment has been Successfully Replied',
                 customClass: 'swal-wide',
               
-
             })
         }
     </script>

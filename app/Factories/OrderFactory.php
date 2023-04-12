@@ -9,10 +9,20 @@ use App\Models\MealOrderDetail;
 
 class OrderFactory implements OrderFactoryInterface
 {
+    // public function updateMealRating(Request $request){
+    //     $mealOrderDetail = MealOrderDetail::find($request['mealOrderDetailId']);
+    //     $mealOrderDetail['reply_comment'] = $request['reply_comment'];
+    //     return $mealOrderDetail->update();
+        
+    // }
+
     public function updateMealRating(Request $request){
         $mealOrderDetail = MealOrderDetail::find($request['mealOrderDetailId']);
-        $mealOrderDetail['reply_comment'] = $request['reply_comment'];
-        return $mealOrderDetail->update();
+        $data = $request->validate([
+            'reply_comment' => 'max:200',
+        ]);
+
+        return $mealOrderDetail->update($data);
         
     }
   
