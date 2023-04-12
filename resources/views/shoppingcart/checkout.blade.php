@@ -223,6 +223,23 @@
 
     <head>
     <link rel="stylesheet" href="../css/customerCheckOut.css">
+    <style>
+        .error {
+        color: red;
+        font-size: 13px;
+        flex-basis: 50%;
+
+    }
+
+    .errBox label {
+        flex-basis: 30%;
+    }
+
+    .errBox {
+        display: flex;
+    }
+    </style>
+
 </head>
 <!-- entend customer layout component using x- instead of using include -->
 <form method="POST" action="/redirectToPay" enctype="multipart/form-data">
