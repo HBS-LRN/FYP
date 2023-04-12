@@ -13,7 +13,10 @@
             text-align: center !important;
             text-transform: none !important;
         }
-
+        .deleteAndEditButton {
+            padding-top:70px;
+            padding-left:50px;
+        }
         .edit {
             border: 1px solid black;
             border-radius: 5px;
@@ -23,7 +26,9 @@
             font-size: 15px;
             height: 30px;
             cursor: pointer;
+            
             margin-bottom: 65px;
+            margin-top:60px;
         }
 
         .delete {
@@ -74,15 +79,18 @@
         }
     </style>
 
-    <link rel="stylesheet" href="../css/listOfMeal.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="../js/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="../JavaScript/sweetalert2.all.min.js"></script>
     <script src="../JavaScript/popup.js"></script>
+
+    <link href="{{ asset('./css/listOfCustomer.css') }}" rel="stylesheet">
     </head>
 <body>
 <div class="Pagebody">
@@ -131,17 +139,19 @@
                                 alt="" /></td>
 
                                     <td class="mealTd" style="border:1px solid grey;">
-                                        <label for="lblCategory"> {{$meal->Category->name}}</label></td>
+                                        {{$meal->Category->name}}</td>
                                     <td class="mealTd" style="border:1px solid grey;">
-                                        <label for="lblProductName">{{$meal->meal_name}}</label></td>
+                                       {{$meal->meal_name}}</td>
                                     <td class="mealTd" style="border:1px solid grey;" align="center">RM{{number_format($meal->meal_price,2)}}</td>
                                     <td class="mealTd" style="border:1px solid grey;" align="center">
-                                        <label for="lblQuantity">{{$meal->meal_qty}}</label></td> 
+                                        {{$meal->meal_qty}}</td> 
 
 
                                     <td style="border:1px solid grey;">
+                                    <p class="deleteAndEditButton">
                                         <a href="/meal/upshow/{{$meal->id}}" class="edit">Edit</a>
                                         <a href="/deleteMeal/{{$meal->id}}" class="delete">Delete</a>
+                                    </p>
                                     </td>
 
 
