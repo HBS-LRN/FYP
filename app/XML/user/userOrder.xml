@@ -42,11 +42,18 @@
     <email>laicy@gmail.con</email>
     <ordered>
       <meal>
-        <name>Taiwanese Fried Chicken</name>
+        <name>Dumpling</name>
         <price currency="RM">15.9</price>
         <quantity unit="plate">1</quantity>
         <totalprice currency="RM">15.9</totalprice>
-        <date>2023-04-14</date>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Fermented Tofu Chex Mix</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">2</quantity>
+        <totalprice currency="RM">25.8</totalprice>
+        <date>2023-04-16</date>
       </meal>
     </ordered>
   </user>
@@ -55,6 +62,10 @@
     <email>foyotee@gmail.com</email>
   </user>
   <user id="13">
+    <name>HOO BUNG SENG</name>
+    <email>hoobungseng0726@gmail.com</email>
+  </user>
+  <user id="12">
     <name>HOO BUNG SENG</name>
     <email>hoobungseng0726@gmail.com</email>
   </user>

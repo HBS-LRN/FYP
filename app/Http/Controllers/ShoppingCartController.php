@@ -192,15 +192,14 @@ class ShoppingCartController extends Controller
         $order->order_date = now()->format('Y-m-d');
 
         $order->save();
-
+        
+        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //get the current user address to set to delivery
         $address = $user->addresses->where('active_flag', '=', 'T');
 
-
-
         //create new delivery 
-
 
         $delivery['order_id'] = $order->id;
         $delivery['username'] =  $address[0]->address_username;
@@ -220,6 +219,7 @@ class ShoppingCartController extends Controller
             $quantityOrdered = $meal->pivot->shopping_cart_qty;
             //update xml file
             $xml = simplexml_load_file('../app/XML/user/userOrder.xml');
+
             // find the customer with xpath
             $xpathUser = $xml->xpath('/users/user[@id="' . auth()->user()->id . '"]')[0];
 
@@ -241,7 +241,6 @@ class ShoppingCartController extends Controller
             $newMeal->addChild('totalprice',  $selectedMeal->meal_price * $meal->pivot->shopping_cart_qty)->addAttribute('currency', 'RM');
             $newMeal->addChild('date', now()->format('Y-m-d'));
 
-
             // save the modified XML file
             $xml->asXML('../app/XML/user/userOrder.xml');
 
@@ -254,7 +253,31 @@ class ShoppingCartController extends Controller
             $xmlStringFormatted = $dom->saveXML();
             file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
 
+            //update xml file (cy)
+            $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
+            $graphOrder = Order::find($order->id);
+            //new order element
+            $newGraphOrder  =  $xml2->addChild('order');
+            $newGraphOrder->addAttribute('id', $graphOrder->id);
+            $newGraphOrder->addChild('date', $graphOrder->order_date);
 
+            //continue add new meal element (cy)
+            $newGraphMeal=$newGraphOrder->addChild('meal');
+            $newGraphMeal->addChild('name', $selectedMeal->meal_name);
+            $newGraphMeal->addChild('category', $selectedMeal->Category->name);
+            $newGraphMeal->addChild('quantity', $meal->pivot->shopping_cart_qty);
+
+            //save modified xml (cy)
+            $xml2->asXML('../app/XML/meal/graphReport.xml');
+
+            //format XML
+            $xmlString2 = $xml2->asXML();
+            $dom2 = new DOMDocument;
+            $dom2->preserveWhiteSpace = false;
+            $dom2->loadXML($xmlString2);
+            $dom2->formatOutput = true;
+            $xmlStringFormatted2 = $dom2->saveXML();
+            file_put_contents('../app/XML/meal/graphReport.xml', $xmlStringFormatted2);
 
             //open a new meal order detail class
 

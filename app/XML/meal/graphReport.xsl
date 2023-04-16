@@ -24,7 +24,7 @@
        <xsl:call-template name="adminSideBar" />
         <div>
 
-            <h2>Graph Report <xsl:value-of select="$today" />
+            <h2>Graph Report 
             </h2>
 
         </div>
