@@ -37,6 +37,19 @@
     <name>bungseng</name>
     <email>bungseng@gmail.com</email>
   </user>
+  <user id="6">
+    <name>beep</name>
+    <email>laicy@gmail.con</email>
+    <ordered>
+      <meal>
+        <name>Taiwanese Fried Chicken</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-04-14</date>
+      </meal>
+    </ordered>
+  </user>
   <user id="8">
     <name>Fo Yo</name>
     <email>foyotee@gmail.com</email>

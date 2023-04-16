@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!ELEMENT orders (order+)>
+  <!ELEMENT order (date, meal+)>
+  <!ATTLIST order id CDATA #REQUIRED>
+  <!ELEMENT date (#PCDATA)>
+  <!ELEMENT meal (name, category, quantity)> 
+  <!ELEMENT name (#PCDATA)>
+  <!ELEMENT category (#PCDATA)>
+  <!ELEMENT quantity (#PCDATA)>
+ 

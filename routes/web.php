@@ -42,8 +42,10 @@ Route::get('/category/create', [CategoryController::class, 'create'])->middlewar
 Route::post('/category/store', [CategoryController::class, 'store']);
 
  // Show admin meal list 
- Route::get('/meal/adshow', [MealController::class, 'adshow']);
+ Route::get('/meal/adshow', [MealController::class, 'showListOfMeals']); /* adshow */
 
+// Show Meal Create Form
+Route::get('/meal/xml', [MealController::class, 'generateXml']);
 
 // Show Meal Create Form
 Route::get('/meal/create', [MealController::class, 'create'])->middleware('isAdmin');
@@ -114,8 +116,11 @@ Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
 //Show inventory detail report
 Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
 
+//Show graph report(xml)
+Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
+
 //Show graph report
-Route::get('/graphReport', [CategoryController::class, 'showGraphReport']);
+Route::get('/graphReport', [CategoryController::class, 'showGraphReport']); /* showGraphReport  */
 
 // Store shopping cart Data
 Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
