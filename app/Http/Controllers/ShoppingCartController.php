@@ -193,8 +193,13 @@ class ShoppingCartController extends Controller
 
         $order->save();
         
-        
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         //update xml file (cy)
+         $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
+         $graphOrder = Order::find($order->id);
+         //new order element
+         $newGraphOrder  =  $xml2->addChild('order');
+         $newGraphOrder->addAttribute('id', $graphOrder->id);
+         $newGraphOrder->addChild('date', $graphOrder->order_date);
 
         //get the current user address to set to delivery
         $address = $user->addresses->where('active_flag', '=', 'T');
@@ -252,14 +257,6 @@ class ShoppingCartController extends Controller
             $dom->formatOutput = true;
             $xmlStringFormatted = $dom->saveXML();
             file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
-
-            //update xml file (cy)
-            $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
-            $graphOrder = Order::find($order->id);
-            //new order element
-            $newGraphOrder  =  $xml2->addChild('order');
-            $newGraphOrder->addAttribute('id', $graphOrder->id);
-            $newGraphOrder->addChild('date', $graphOrder->order_date);
 
             //continue add new meal element (cy)
             $newGraphMeal=$newGraphOrder->addChild('meal');

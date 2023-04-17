@@ -69,4 +69,27 @@
       <quantity>2</quantity>
     </meal>
   </order>
+  <order id="50">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="51">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  
+  
 </orders>

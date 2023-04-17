@@ -9,9 +9,11 @@ use Carbon\Carbon;
 use XSLTProcessor;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Order;
 use SimpleXMLElement;
 use GuzzleHttp\Client;
 use App\Events\UserDelete;
+use App\Events\UserOrderDelete;
 use App\Events\UserUpdate;
 use App\Mail\ResetPassword;
 use Illuminate\Support\Str;
@@ -376,9 +378,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-
+        // Fire the UserOrderDelet event to delete order in the xml file
+        event(new UserOrderDelete($user));
         // Fire the UserDeleted event to delete user in the xml file
         event(new UserDelete($user));
+   
         //call repository class to delete the class
         $this->userRepositoryInterface->delete($user);
 
