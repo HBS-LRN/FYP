@@ -27,6 +27,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserUpdate' => [
             'App\Listeners\UpdateUserXML',
         ],
+        'App\Events\UserOrderDelete' => [
+            'App\Listeners\DeleteUserOrderXML',
+        ],
+       
     ];
 
     /**

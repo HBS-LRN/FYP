@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!ELEMENT categories (category+)>
+  <!ELEMENT category (name)>
+  <!ATTLIST category id CDATA #REQUIRED>
+  <!ELEMENT name (#PCDATA)>
+ 

@@ -69,7 +69,6 @@
                         </tr>
                     </thead>
 
-
                     <tbody id="search">
                         <xsl:for-each select="/users/user">
                         <tr style="border:1px solid grey;">

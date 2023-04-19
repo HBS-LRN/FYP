@@ -1,0 +1,151 @@
+.containerBorder .bankImgHeader img{
+    width: 200px;
+    height: 50px;
+}
+.containerBorder .bankImgHeader{
+    padding: 10px 20px;
+    background-color: rgb(221, 221, 221);
+    min-width:198.4vh;
+}
+
+.all{
+    min-height: 80vh;
+}
+
+.all .paymentBox{
+    box-shadow: 0px 0px 5px grey;
+    display: flex;
+    width: 40%;
+    margin: 20px auto;
+    
+}
+.all .paymentBox .loginBox{
+    flex-basis: 65%;
+    padding: 15px 15px 0px 30px;
+}
+.all .paymentBox .otherFunctionBox{
+    flex-basis: 35%;
+    background-color: rgb(231, 231, 231);
+}
+.all .paymentBox .loginBox h4{
+    font-size: 30px;
+    margin: 0%;
+    
+}
+.all .paymentBox .loginBox .accountSignBox{
+    background-color: black;
+    text-align: center;
+    padding: 10px 20px;
+}
+.all .paymentBox .loginBox .accountSignBox .accountSign{
+    color:white;
+}
+.all .paymentBox .loginBox .confirmButtonBox{
+    display: flex;
+
+}
+.all .paymentBox .loginBox .confirmButtonBox .YesBox{
+    flex-basis:50%;
+}
+.all .paymentBox .loginBox .confirmButtonBox .NoBox{
+    flex-basis:50%;
+}
+.all .paymentBox .loginBox .todayTime{
+    text-align: right;
+}
+ .loginForm .inputBox { 
+    position: relative;
+}
+.loginForm .inputBox #user_id{ 
+    width: 100%;
+    padding: 5px 0px;
+    font-weight: bolder;
+    border: 1px solid grey;
+    padding-left: 20px;
+    outline: none;
+}
+ .loginForm .inputBox i{
+    position: absolute;
+    top: 25%;
+    left: 5;
+    font-size: 15px;
+  /* transform: translateY(-50%); */
+}
+.loginForm .LoginButtonBox{
+    padding-top: 10px;
+    display: flex;
+    justify-content: right;
+}
+.loginForm .LoginButtonBox input{
+    
+    padding: 5px 20px;
+    border: none;
+    background-color: rgb(238, 77, 77);
+    color: white;
+}
+.loginForm .LoginButtonBox input:hover{
+    cursor: pointer;
+}
+.paymentBox .otherFunctionBox{
+    padding: 10px 15px;
+}
+.paymentBox .otherFunctionBox .infoTitle{
+    margin: 0px;
+    font-weight: bold;
+}
+.paymentBox .otherFunctionBox ul{
+   padding-left:10px ;
+    
+}
+.paymentBox .otherFunctionBox ul li{
+    padding: 0px;
+    list-style: none;
+    color: rgb(0, 119, 255);
+}
+.paymentBox .otherFunctionBox ul li:visited{
+    color: rgb(0, 119, 255);
+}
+.paymentBox .otherFunctionBox ul li::before{
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url("../image/redArrow.png");;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.YesCondition{
+    display:none;
+}
+.YesCondition .infor{
+    margin: 0%;
+}
+
+.YesCondition #user_name, .YesCondition #password{
+    width: 100%;
+    position: relative;
+    padding: 5px 25px;
+}
+.YesCondition #user_name{
+    margin-bottom: 5px;
+}
+.YesCondition i{
+    position: absolute;
+    
+    color: grey;
+}
+.YesCondition .passwordBox i{
+    top:82.7%;
+    left:27.5%;
+}
+.YesCondition .userNameBox i{
+    top:78.2%;
+    left:27.5%;
+}
+.LoginButtonBox input:first-child{
+    background-color: rgb(221, 221, 221);
+    color: black;
+    margin-right: 5px;
+}

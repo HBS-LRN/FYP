@@ -102,7 +102,7 @@
                 type: 'success',
                 icon: 'success',
                 title: 'Success',
-                text: 'The Comment has been Successfully Replied',
+                text: 'Comment has been Replied to Customer',
                 customClass: 'swal-wide',
               
             })

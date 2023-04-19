@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DOMXPath;
+use DOMDocument;
+use XSLTProcessor;
+use SimpleXMLElement;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Meal;
 use App\Models\Order;
 use App\Models\User;
@@ -201,5 +207,48 @@ class MealController extends Controller
             'mealOrderDetails'=>MealOrderDetail::where('meal_id',$id)->get(),
             'meal'=>Meal::find($id)
         ]);
+    }
+
+    public function generateXml()
+    {
+        // Retrieve data from MySQL database
+        $categories = Category::with('categorymeals')->get();
+
+        // Generate XML file
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><categories></categories>');
+        foreach ($categories as $category) {
+        $xmlCategory = $xml->addChild('category');
+        $xmlCategory->addChild('id', $category->id);
+        $xmlCategory->addChild('name', $category->name);
+        $xmlMeals =$xmlCategory->addChild('meals');
+        foreach($category->categorymeals as $meal){
+            $xmlMeal=$xmlMeals->addChild('meal');
+            $xmlMeal->addChild('id',$meal->id);  
+            $xmlMeal->addChild('name',$meal->meal_name);  
+            $xmlMeal->addChild('image',$meal->meal_image);  
+            $xmlMeal->addChild('price',$meal->meal_price);  
+            $xmlMeal->addChild('quantity',$meal->meal_qty);
+        }
+        }
+
+        $xmlString=$xml->asXML();
+        // Save XML file to disk
+        $file = '../app/XML/meal/mealAdShow.xml';
+        file_put_contents($file, $xmlString);
+
+    }
+
+    public function showListOfMeals()
+    {
+
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/meal/mealAdShow.xml'));
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/meal/mealAdShow.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
     }
 }

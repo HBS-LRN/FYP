@@ -73,6 +73,54 @@
     <name>bungseng</name>
     <email>bungseng@gmail.com</email>
   </user>
+  <user id="6">
+    <name>beep</name>
+    <email>laicy@gmail.con</email>
+    <ordered>
+      <meal>
+        <name>Dumpling</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Fermented Tofu Chex Mix</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">2</quantity>
+        <totalprice currency="RM">25.8</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Chinese Lemon Chicken Salad</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Hua-Juan-Scallion-Buns</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Dumpling</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+      <meal>
+        <name>Fermented Tofu Chex Mix</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-04-16</date>
+      </meal>
+    </ordered>
+  </user>
   <user id="8">
     <name>Fo Yo</name>
     <email>foyotee@gmail.com</email>

@@ -68,6 +68,11 @@
         .error:nth-child(12) {
             right:40px;
         } */
+        .box .titleAddStaff{
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
 </style>
 <div class="Pagebody">
     <x-layout-admin>
