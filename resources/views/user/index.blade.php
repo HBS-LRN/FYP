@@ -228,7 +228,7 @@
                             autocapitalize: 'off'
                         },
                         showCancelButton: true,
-                        confirmButtonText: 'Look up',
+                        confirmButtonText: 'Delete',
                         showLoaderOnConfirm: true,
                         customClass: 'swal-wide',
 

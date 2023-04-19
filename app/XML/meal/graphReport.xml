@@ -90,6 +90,28 @@
       <quantity>1</quantity>
     </meal>
   </order>
-  
-  
+  <order id="2">
+    <date>2023-04-19</date>
+    <meal>
+      <name>Chicken Wonton Cup</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="3">
+    <date>2023-04-19</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="4">
+    <date>2023-04-19</date>
+    <meal>
+      <name>Chicken Wonton Cup</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>

@@ -23,15 +23,6 @@ use SimpleXMLElement;
 class ShoppingCartController extends Controller
 {
 
-<<<<<<< HEAD
-    public function __construct(AddressRepositoryInterface $addressRepositoryInterface)
-    {
-        $this->addressRepositoryInterface = $addressRepositoryInterface;
-    }
-    
-=======
-
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
     public function index()
     {
 
@@ -347,7 +338,11 @@ class ShoppingCartController extends Controller
 
             ]);
 
-
+            
+            $client = new Client([
+                'base_uri' => 'http://localhost:8000/api/',
+                'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+            ]);
 
             //update the quantity of the voucher that has been used by user
             $client->put('vouchers/' . $voucherID, [
@@ -371,91 +366,10 @@ class ShoppingCartController extends Controller
         return redirect('purchase');
     }
 
-<<<<<<< HEAD
-    $voucherID = Session::get('voucherID');
-    //find user
-    $user = User::find(auth()->user()->id);
-    $order = new Order();
-    $order->user_id = auth()->id();
-    $order->order_total =  $request->input('total');
-    $order->delivery_fee = $this->findDeliveryFee();
-    $order->order_status = "preparing";
-
-    if($request['paymethod'] == 'PayOnDelivery'){
-        $order->payment_status = "Y";
-    }else
-    {
-        $order->payment_status = "N";
-    }
-    //bung seng change to public bank or maybank later
-    $order->payment_method = $request['paymethod'];
-    $order->order_date = now()->format('Y-m-d');
-
-   
-    $order->save();
-//call address repository interface to update data 
-$this->addressRepositoryInterface->update($address,$data);
-
-    //get the current user address to set to delivery
-    $address = $user->addresses->where('active_flag', '=', 'T');
-
-    //create new delivery 
-    $delivery['order_id'] = $order->id;
-    $delivery['username'] =  $address[0]->address_username;
-    $delivery['userphone'] = $address[0]->address_userphone;
-    $delivery['street'] = $address[0]->street;
-    $delivery['area'] = $address[0]->area;
-    $delivery['postcode'] = $address[0]->postcode;
-
-    $memberPoint = 0;
-    Delivery::create($delivery);
-    
-
-    foreach ($user->meals as $meal) {
-
-
-        //open a new meal order detail class
-
-        $newMealOrderDetail['order_id'] = $order->id;
-        $newMealOrderDetail['meal_id'] = $meal->id;
-        $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
-        $newMealOrderDetail['meal_order_status'] = "preparing";
-        $memberPoint += $meal->meal_price;
-        //update the lastest meal quantity 
-        DB::table('meals')
-            ->where('id', $meal->id)
-            ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
-
-
-
-
-        MealOrderDetail::create($newMealOrderDetail);
-
-        //delete the delete cart in the table 
-        DB::table('shopping_carts')->where([
-            'id' => $meal->pivot->id
-        ])->delete();
-    }
-
-    //update member point
-   // $memberPoint = $memberPoint / 5;
-    $memberPoint = ceil($memberPoint);
-    if (auth()->user()->point != null) {
-        $memberPoint =  $memberPoint + auth()->user()->point;
-    }
-    $user->point =  $memberPoint;
-    $user->update();
-
-
-    //if User has use the voucher 
-    if (Session::has('voucher')) {
-
-=======
 
 
     public function quantityVoucher($voucherID)
     {
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
         $client = new Client([
             'base_uri' => 'http://localhost:8000/api/',
             'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
@@ -476,22 +390,6 @@ $this->addressRepositoryInterface->update($address,$data);
         $voucher = json_decode($response->getBody(), true);
         return $voucher['qty'];
     }
-<<<<<<< HEAD
-    if($request['paymethod'] == 'PayOnDelivery'){
-        
-        return redirect('purchase');
-    }else if($request['paymethod'] == 'PublicBank'){
-        
-        
-        return redirect('purchase/publicBankLogin');
-    }else if($request['paymethod'] == 'PayOnDeMayBanklivery'){
-       
-        return redirect('purchase/maybank');
-    }
-    return redirect('purchase');
-}
-=======
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
 
     public function delete($id)
     {

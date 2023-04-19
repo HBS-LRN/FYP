@@ -13,10 +13,6 @@ use Illuminate\Foundation\Auth\User;
 use App\Factories\OrderFactory;
 use Illuminate\Validation\Rule;
 use App\Factories\Interfaces\OrderFactoryInterface;
-<<<<<<< HEAD
-use Illuminate\Support\Facades\Validator;
-=======
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
 
 class OrderController extends Controller
 {

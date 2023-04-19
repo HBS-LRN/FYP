@@ -216,7 +216,7 @@ Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('au
 
 
 //web servcie
-Route::get('/voucher', [VoucherController::class, 'show'])->middleware('auth');
+Route::get('/voucher', [VoucherController::class, 'showAllVouchers'])->middleware('auth');
 //web servcie
 Route::get('/voucher/{id}', [VoucherController::class, 'store']);
 Route::post('/update/voucher', [VoucherController::class, 'update']);

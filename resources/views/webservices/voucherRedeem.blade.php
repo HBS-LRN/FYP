@@ -27,26 +27,19 @@
                 <div class="progress-container">
 
 
-                    @foreach ($vouchers as $voucher)
+                    @foreach($vouchers["data"] as $voucher)
                         @if ($voucher['qty'] != 0)
                             @if (!($voucher && now() > $voucher['expire_date']))
                                 <div class="vourcherBOX">
                                     <div class="vourcherInfrontDetailBox">
-
                                         <img src="../image/grabfood.jpg" class="vourcherImg" />
-
                                         <div class="vourcherCenterDetailBox">
                                             <p class="discount"><b>{{ $voucher['code'] }}</b></p>
-
-
                                             <p class="minSpend"> <br>{{ $voucher['description'] }}</p>
                                         </div>
                                     </div>
-
                                     <div class="vourcherBackDetailBox">
                                         <p class="validDate">Valid Until: {{ $voucher['expire_date'] }}</p>
-
-
                                         @php
                                             $boolean = false;
                                             foreach ($claimVouchers as $claimedVoucher) {

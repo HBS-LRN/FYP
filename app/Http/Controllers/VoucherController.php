@@ -90,32 +90,31 @@ class VoucherController extends Controller
      */
 
 
-    public function show()
+    public function showAllVouchers()
     {
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/api/',
-            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-        ]);
+        //Client Side
+        //API address to get resource from Server
+        $url = "http://127.0.0.1:8000/api/voucher";
+
         try {
-            $response = $client->request('GET', 'vouchers');
-            $response = $client->get('vouchers', [
+            //if the service is avalaible
+            if ($this->isDomainAvailable($url)) {
 
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ' . auth()->user()->token,
-                ],
-            ]);
-            $vouchers = json_decode($response->getBody(), true);
-            $response = $client->get('voucherDetail', [
 
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ' . auth()->user()->token,
-                ]
-            ]);
-            $claimVouchers = json_decode($response->getBody(), true);
-            return view('webservices.voucherRedeem', ['vouchers' => $vouchers, 'claimVouchers' => $claimVouchers]);
+                //sending request
+                $client = curl_init($url);
 
+                curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
+
+                //get response from the server
+                $response = curl_exec($client);
+
+
+                //decode using json
+                $vouchers = json_decode($response, true);
+
+                return view('webservices.voucherRedeem', ['vouchers' => $vouchers, 'claimVouchers' => $this->claimVoucher()]);
+            }
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
@@ -124,6 +123,53 @@ class VoucherController extends Controller
             }
         }
     }
+
+    public function claimVoucher()
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+        $response = $client->get('voucherDetail', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+        ]);
+        $claimVouchers = json_decode($response->getBody(), true);
+        return $claimVouchers;
+    }
+
+
+    function isDomainAvailable($domain)
+    {
+
+
+        //Check if the url is valid
+
+
+        // Initialize curI
+        $curlInit = curl_init($domain);
+        curl_setopt($curlInit, CURLOPT_CONNECTTIMEOUT, 10);
+
+        curl_setopt($curlInit, CURLOPT_HEADER, true);
+        curl_setopt($curlInit, CURLOPT_NOBODY, true);
+        curl_setopt($curlInit, CURLOPT_RETURNTRANSFER, true);
+        //Get answer
+        $response = curl_exec($curlInit);
+        curl_close($curlInit);
+        if (filter_var($domain, FILTER_VALIDATE_URL)) {
+            return true;
+        }
+        if ($response) {
+            return true;
+        }
+        return false;
+    }
+
+
 
 
 
@@ -182,6 +228,7 @@ class VoucherController extends Controller
         Session::put('promoteDeliveryFee',  number_format((float)$promoteDeliveryFee, 2, '.', ''));
         return redirect()->back()->with('successfullyPromoteUpdate', true);
     }
+
 
 
     public function updateUserVoucherDetail($voucherID)
@@ -249,7 +296,7 @@ class VoucherController extends Controller
             'base_uri' => 'http://localhost:8000/api/',
             'timeout'  => 2.0,
         ]);
-        
+
         $response = $client->post('users', [
             'headers' => [
                 'Accept' => 'application/json',

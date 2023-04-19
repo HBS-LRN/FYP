@@ -147,7 +147,7 @@
                         <thead class="staffListThead">
                             <tr class="staffListTr"
                                 style="background-color: rgb(165, 200, 245); border:1px solid grey;">
-                                <th class="staffListTh" style="border:1px solid grey;" width="5%">Staff ID</th>
+                                <th class="staffListTh" style="border:1px solid grey;" width="5%">Staff No</th>
                                 <th class="staffListTh" style="border:1px solid grey;" width="20%">Staff Name</th>
 
                                 <th class="staffListTh" style="border:1px solid grey;" width="10%">Staff Email</th>
@@ -231,7 +231,7 @@
                             autocapitalize: 'off'
                         },
                         showCancelButton: true,
-                        confirmButtonText: 'Look up',
+                        confirmButtonText: 'Delete',
                         showLoaderOnConfirm: true,
                         customClass: 'swal-wide',
 
