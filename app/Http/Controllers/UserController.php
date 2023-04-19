@@ -73,7 +73,7 @@ class UserController extends Controller
                 return back()->withErrors(['email' => 'The email has already been taken'])->onlyInput('email');
         }
 
-        //validation 
+        //validation condition
         $data = $request->validate(
             [
                 'name' => ['required', 'min:3'],
@@ -81,9 +81,11 @@ class UserController extends Controller
                 'gender' => 'required',
                 'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
                 'birthdate' => ['required', 'before:-13 years'],
+                'image' => ['required', 'file', 'mimes:jpg,png,jpeg', 'max:2084'],
             ],
             [
                 'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
+                'image.mimes'    => 'Only allow for jpg,png,jpeg!',
             ]
         );
 
@@ -327,6 +329,9 @@ class UserController extends Controller
         $user = $this->userRepositoryInterface->create($data);
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
+        // Fire the UserCreate event to create user in the XML file
+        $user = User::find($user->id);
+        event(new UserCreate($user));
         return redirect('/customer')->with('successUpdate', $user);
     }
 
@@ -341,7 +346,7 @@ class UserController extends Controller
             'email' => ['required', 'email'],
             'gender' => 'required',
             'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
-            'birthdate' => 'required',
+            'birthdate' => ['required', 'before:-13 years'],
 
         ]);
         $data['user_id'] = $id;

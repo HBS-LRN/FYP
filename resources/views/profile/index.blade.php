@@ -3,135 +3,145 @@
 <x-layout-customer>
 
 
-<head>
-    <link rel="stylesheet" href="../css/customerAccount.css">
-</head>
+    <head>
+        <link rel="stylesheet" href="../css/customerAccount.css">
+    </head>
 
-<form method="POST" action="/profile/edit" enctype="multipart/form-data">
-    @csrf
-<div class="all">
-    <div class="customerAccHeader">
-        <div class="customerAccBar"></div>
-        <span class="customerAcc">My Account</span>
-    </div>
-
-    <div class="customerAccContent">
-        <x-customer-sidebar/>
-        <div class="accountContent">
-            <div class="accountTitle">
-                <h3 class="profileTitle">My Profile</h3>
-                <p class="subTitle">Manage and protect your account</p>
-                <hr>
+    <form method="POST" action="/profile/edit" enctype="multipart/form-data">
+        @csrf
+        <div class="all">
+            <div class="customerAccHeader">
+                <div class="customerAccBar"></div>
+                <span class="customerAcc">My Account</span>
             </div>
-          
-                
-            <div class="userProfile">
-                <div class="text">
 
-
-                    <br>
-                    <div class="nameLabelInput">
-                        <label for="name" class="nameLabel">Name :</label>
-                        <input type="text" class="name" name="name" value="{{ auth()->user()->name }}" />
-
-
-
+            <div class="customerAccContent">
+                <x-customer-sidebar />
+                <div class="accountContent">
+                    <div class="accountTitle">
+                        <h3 class="profileTitle">My Profile</h3>
+                        <p class="subTitle">Manage and protect your account</p>
+                        <hr>
                     </div>
-                    @error('name')
-                        <span class="error" style="color:red">*{{ $message }}</span><br>
-                    @enderror
-
-                    <br>
-                    <div class="emailLabelInput">
-                        <label for="email" class="emailLabel">Email :</label>
-                        <input type="text" class="email" name="email" value="{{ auth()->user()->email }}" />
-
-                    </div>
-                    @error('email')
-                        <span class="error" style="color:red">*{{ $message }}</span><br>
-                    @enderror
 
 
-                    <br>
-                    <div class="phoneNumberLabelInput">
-                        <label for="phoneNumber" class="phoneNumberLabel">Phone Number With(-) :</label>
-                        <input type="text" class="phoneNumber" name="phone" value="{{ auth()->user()->phone }}" />
+                    <div class="userProfile">
+                        <div class="text">
 
-                    </div>
-                    @error('phone')
-                        <span class="error"style="color:red" >*{{ $message }}</span><br>
-                    @enderror
 
-                    <br>
+                            <br>
+                            <div class="nameLabelInput">
+                                <label for="name" class="nameLabel">Name :</label>
+                                <input type="text" class="name" name="name"
+                                    value="{{ auth()->user()->name }}" />
 
-                    <div class="genderLabelInput">
-                        <label for="gender" class="genderLabel">Gender</label>
-                        {{-- <div ID="GenderRadioButtonList" runat="server" CssClass="auto-style1"
+
+
+                            </div>
+                            @error('name')
+                                <span class="error" style="color:red">*{{ $message }}</span><br>
+                            @enderror
+
+                            <br>
+                            <div class="emailLabelInput">
+                                <label for="email" class="emailLabel">Email :</label>
+                                <input type="text" class="email" name="email"
+                                    value="{{ auth()->user()->email }}" />
+
+                            </div>
+                            @error('email')
+                                <span class="error" style="color:red">*{{ $message }}</span><br>
+                            @enderror
+
+
+                            <br>
+                            <div class="phoneNumberLabelInput">
+                                <label for="phoneNumber" class="phoneNumberLabel">Phone Number With(-) :</label>
+                                <input type="text" class="phoneNumber" name="phone"
+                                    value="{{ auth()->user()->phone }}" />
+
+                            </div>
+                            @error('phone')
+                                <span class="error"style="color:red">*{{ $message }}</span><br>
+                            @enderror
+
+                            <br>
+
+                            <div class="genderLabelInput">
+                                <label for="gender" class="genderLabel">Gender</label>
+                                {{-- <div ID="GenderRadioButtonList" runat="server" CssClass="auto-style1"
                             RepeatDirection="Horizontal" Width="361px">
                             <asp:ListItem style="font-size: 13px" Selected="True">Male</asp:ListItem>
                             <asp:ListItem style="font-size: 13px">Female</asp:ListItem>
                         </div> --}}
 
-                        <input type="radio" style="font-size: 13px" name="gender" value="Male"
-                            {{ auth()->user()->gender == 'Male' ? 'checked' : '' }}>Male
-                        <input type="radio" style="font-size: 13px" name="gender" value="Female"
-                            {{ auth()->user()->gender == 'Female' ? 'checked' : '' }}>Female
+                                <input type="radio" style="font-size: 13px" name="gender" value="Male"
+                                    {{ auth()->user()->gender == 'Male' ? 'checked' : '' }}>Male
+                                <input type="radio" style="font-size: 13px" name="gender" value="Female"
+                                    {{ auth()->user()->gender == 'Female' ? 'checked' : '' }}>Female
+                            </div>
+
+                            @error('gender')
+                                <span class="error"style="color:red">*{{ $message }}</span><br>
+                            @enderror
+
+                            <div class="dateLabelInput">
+                                <label for="birthOfDate" class="birthLabel">Birth Of Date</label>
+                                <input type="date" name="birthdate" id="birthdate" class="birthInput"
+                                    value="{{ auth()->user()->birthdate }}">
+                            </div>
+                            @error('birthdate')
+                                <span class="error"style="color:red">*{{ $message }}</span><br>
+                            @enderror
+
+
+
+                            <br>
+
+
+                            <div class="saveButton">
+
+                                <button class="save" type="submit">Save </button>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="selectImage">
+                            @if (auth()->user()->image != null)
+                                <div class="image">
+
+
+
+                                    <img Width="180" Height="180"
+                                        src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('/images/no-image.png') }}"
+                                        alt="" />
+                                </div>
+                            @endif
+
+                            <input type="file" name="image" class="submitButton" accept=".png,.jpg,.jpeg,.gif" />
+                            <div class="fileSize">
+                                @error('image')
+                                    <span style="color:red">*{{ $message }}</span><br><br>
+                                @enderror
+                            </div>
+
+                            <div class="fileSize">
+                                File size: maximum 5 MB
+                            </div>
+                            <div class="fileExtension">File extension: .JPEG, .PNG</div>
+
+                        </div>
+
                     </div>
-
-                    @error('gender')
-                    <span class="error"style="color:red" >*{{ $message }}</span><br>
-                @enderror
-
-                    <div class="dateLabelInput">
-                        <label for="birthOfDate" class="birthLabel">Birth Of Date</label>
-                        <input type="date" name="birthdate" id="birthdate" class="birthInput" value="{{ auth()->user()->birthdate }}">
-                    </div>
-                    @error('birthdate')
-                        <span class="error"style="color:red" >*{{ $message }}</span><br>
-                    @enderror
-
-
-
-                    <br>
-
-
-                    <div class="saveButton">
-                     
-                            <button class="save" type="submit">Save </button>
-                    </div>
-
-
 
 
                 </div>
-                <div class="selectImage">
-                    @if( auth()->user()->image != null)
-                    <div class="image">
-
-                       
-                    
-                        <img Width="180" Height="180" src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('/images/no-image.png') }}"
-                        alt="" />
-                    </div>
-                    @endif
-                   
-                        <input type="file" name="image" class="submitButton" accept=".png,.jpg,.jpeg,.gif" />
-
-                    <div class="fileSize">
-                        File size: maximum 5 MB
-                    </div>
-                    <div class="fileExtension">File extension: .JPEG, .PNG</div>
-
-                </div>
-           
             </div>
 
 
-            </div>
+
         </div>
-
-
-
-    </div>
-</form>
+    </form>
 </x-layout-customer>

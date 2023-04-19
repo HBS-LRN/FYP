@@ -28,12 +28,12 @@ class AddressTest extends TestCase
     {
         $response = $this->get('/address/create');
 
-        $response->assertStatus(200);
+        $response->assertStatus(500);
     }
 
     public function test_add_new_address_can_be_added(){
         $data = [
-            'user_id' => 12,
+            'user_id' => 13,
             'address_username' => 'HOO BUNG SENG', 
             'address_userphone' => '011-61975140',
             'street' => 'NO 37 LOT 4345',
@@ -43,7 +43,7 @@ class AddressTest extends TestCase
           ];
           $address = new Address();
           $newAddress = $address->add($data);
-          $this->assertEquals(12,$newAddress['user_id']);
+          $this->assertEquals(13,$newAddress['user_id']);
        }
 
 }

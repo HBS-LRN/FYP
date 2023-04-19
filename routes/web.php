@@ -46,7 +46,7 @@ Route::post('/category/store', [CategoryController::class, 'store']);
 
 
 // Show Meal Create Form
-Route::get('/meal/create', [MealController::class, 'create'])->middleware('isAdmin');
+Route::get('/meal/create', [MealController::class, 'create']);
 
 // Store Meal Data
 Route::post('/meal/store', [MealController::class, 'store']);
@@ -180,7 +180,7 @@ Route::get('/address', [AddressController::class, 'index'])->name('address')->mi
 // Create New adress
 Route::post('/address/store', [AddressController::class, 'store'])->middleware('auth');
 // Show Create Form
-Route::get('/address/create', [AddressController::class, 'create'])->middleware('auth');
+Route::get('/address/create', [AddressController::class, 'create']);
 
 // Show Create Form
 Route::get('/addresseEdit/{id}', [AddressController::class, 'edit'])->middleware('auth');

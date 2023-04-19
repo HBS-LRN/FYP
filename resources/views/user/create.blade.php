@@ -116,7 +116,7 @@
             </div>
 
             <div class="flex">
-                <label for="password" class="label">Customer Password :</label>
+                <label for="password" class="label">Password :</label>
                 <input type="password" name="password" id="password" class="input" value="{{ old('password') }}">
 
 
@@ -128,7 +128,7 @@
                 @enderror
             </div>
             <div class="flex">
-                <label for="password" class="label">Customer Confirmation Password :</label>
+                <label for="password" class="label">Confirmation Password:</label>
                 <input type="password" name="password_confirmation" class="input"
                     value="{{ old('password_confirmation') }}">
 
