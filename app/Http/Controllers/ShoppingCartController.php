@@ -405,7 +405,7 @@ class ShoppingCartController extends Controller
     {
         $this->addressRepositoryInterface = $addressRepositoryInterface;
     }
-
+    
     public function index()
     {
 
@@ -458,6 +458,7 @@ class ShoppingCartController extends Controller
             'vouchers' => $userVouchers
         ]);
     }
+    
     public function checkout()
     {
         $user = User::find(auth()->user()->id);
@@ -596,12 +597,18 @@ public function redirectToPay(Request $request)
     $order->order_total =  $request->input('total');
     $order->delivery_fee = $this->findDeliveryFee();
     $order->order_status = "preparing";
-    $order->payment_status = "Y";
+
+    if($request['paymethod'] == 'PayOnDelivery'){
+        $order->payment_status = "Y";
+    }else
+    {
+        $order->payment_status = "N";
+    }
     //bung seng change to public bank or maybank later
     $order->payment_method = $request['paymethod'];
     $order->order_date = now()->format('Y-m-d');
 
-
+   
     $order->save();
 //call address repository interface to update data 
 $this->addressRepositoryInterface->update($address,$data);
@@ -697,6 +704,17 @@ $this->addressRepositoryInterface->update($address,$data);
         session()->forget('voucherCode');
         session()->forget('promoteDeliveryFee');
        
+    }
+    if($request['paymethod'] == 'PayOnDelivery'){
+        
+        return redirect('purchase');
+    }else if($request['paymethod'] == 'PublicBank'){
+        
+        
+        return redirect('purchase/publicBankLogin');
+    }else if($request['paymethod'] == 'PayOnDeMayBanklivery'){
+       
+        return redirect('purchase/maybank');
     }
     return redirect('purchase');
 }

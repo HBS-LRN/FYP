@@ -198,6 +198,10 @@ Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurren
 //show customer purchase status
 Route::get('/purchase', [OrderController::class, 'show'])->middleware('auth');;
 
+//show customer publicBank login page
+Route::get('/purchase/publicBankLogin', [OrderController::class, 'publicBankLogin']);
+Route::post('/purchase/publicBankLogin/password', [OrderController::class, 'publicBankCheckUserID']);
+
 //update customer comment 
 Route::post('/comment', [OrderController::class, 'comment']);
 
@@ -218,7 +222,6 @@ Route::get('/gift', [GiftController::class, 'index']);
 Route::post('/gift/store', [GiftController::class, 'store']);
 
    
-
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
 

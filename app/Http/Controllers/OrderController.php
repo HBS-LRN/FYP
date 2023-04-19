@@ -152,12 +152,14 @@ use App\Models\MealOrderDetail;
 use App\Models\Order;
 use App\Models\Meal;
 use App\Models\Category;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use App\Factories\OrderFactory;
+use Illuminate\Validation\Rule;
 use App\Factories\Interfaces\OrderFactoryInterface;
-
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -205,7 +207,81 @@ class OrderController extends Controller
             'completeOrder' => $completeOrder
         ]);
     }
+    public function publicBankLogin(){
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]); 
 
+        //get vouchers details api through webservices through the bearer token 
+        $response = $client->get('publicBank', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+
+            ]
+
+
+        ]);
+        $publicBank = json_decode($response->getBody(), true);
+        $userID=array();
+        foreach($publicBank as $PBuserID){
+            $userID[]=$PBuserID['user_id'];
+        }
+        
+        return view('payment.publicBankLogin',['userID'=>$userID]);
+    }
+
+    public function publicBankCheckUserID(Request $request){
+
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]); 
+
+        //get vouchers details api through webservices through the bearer token 
+        $response = $client->get('publicBank', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+
+            ]
+
+
+        ]);
+        $publicBank = json_decode($response->getBody(), true);
+       
+        $validateUserID=false;
+        foreach($publicBank as $PBuserID){
+            if($request['user_id'] == $PBuserID['user_id']){
+                $validateUserID = true;
+            }
+        }
+        $data = $request->validate(
+            ['user_id' => 'required'],
+            ['user_id.required' => 'The user id is required']
+        );
+
+        // $validator = Validator::make($request->all(),[
+        //     'user_id' => [
+        //         'required' => 'The ID field is required.',
+        //         Rule::notIn($userID) => 'The selected ID is invalid or undefined.',
+        //     ],
+        // ],[
+        //     'user_id.required' => 'The ID field is required.',
+        //     'user_id.in' => 'The selected ID is invalid or undefined.',
+        // ]);
+        
+        // if ($validator->fails()) {
+        //     return redirect('/purchase/publicBankLogin')->back()->withErrors($validator)->withInput();
+            
+        // }
+        if(!$validateUserID){
+            return back()->withErrors(['user_id' => 'Undefine User ID'])->onlyInput('user_id');
+        }
+        return view('payment.publicBankPaySession',['user_id'=>$request['user_id'],'publicBankAccount'=>$publicBank]);
+
+    }
 
     public function comment(Request $request)
     {

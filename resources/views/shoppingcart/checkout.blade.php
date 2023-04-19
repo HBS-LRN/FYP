@@ -495,3 +495,4 @@
         </script>
 
     </x-layout-customer>
+</form>
