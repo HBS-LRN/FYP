@@ -102,7 +102,7 @@
                 type: 'success',
                 icon: 'success',
                 title: 'Success',
-                text: 'The Comment has been Successfully Replied',
+                text: 'Comment has been Replied to Customer',
                 customClass: 'swal-wide',
               
             })
@@ -185,6 +185,25 @@
                 title: 'You Can Now Redeem To This Voucher',
                 showConfirmButton: false,
                 timer: 3000
+
+            })
+        }
+    </script>
+@endif
+
+
+
+@if (session()->has('successfullyAddedMeal'))
+    <div class="success-meesage" data-successdata={{ session('successfullyAddedMeal') }}></div>
+    <script>
+       const successpassData = $('.success-meesage').data('successdata')
+        if (successpassData) {
+            Swal.fire({
+                type: 'success',
+                icon: 'success',
+                title: 'Success',
+                text: 'New Meal Has Been Added',
+                customClass: 'swal-wide',
 
             })
         }

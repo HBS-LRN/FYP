@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE orders SYSTEM "graphReport.dtd">
+<orders>
+  <order id="1">
+    <date>2023-04-09</date>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>2</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="2">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Rice</name>
+      <category>Rice</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>3</quantity>
+    </meal>
+  </order>
+  <order id="3">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Fish Salad</name>
+      <category>Seafood</category>
+      <quantity>2</quantity>
+    </meal>
+  </order>
+  <order id="4">
+    <date>2023-04-09</date>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>2</quantity>
+    </meal>
+  </order>
+  <order id="48">
+    <date>2023-04-16</date>
+    <meal>
+      <name>pau</name>
+      <category>Beverage</category>
+      <quantity>2</quantity>
+    </meal>
+  </order>
+  <order id="49">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>2</quantity>
+    </meal>
+  </order>
+  <order id="50">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="51">
+    <date>2023-04-16</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  
+  
+</orders>

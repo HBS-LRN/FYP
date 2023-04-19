@@ -87,7 +87,7 @@
                     <div class="job_role">Admin</div>
                 </div>
 
-                <a href="../staff/StaffSignOut.aspx"><i class="fas fa-sign-out-alt" style="padding-left: 45px;"></i></a>
+                <a href="../logout"><i class="fas fa-sign-out-alt" style="padding-left: 45px;"></i></a>
             </div>
 
         </div>

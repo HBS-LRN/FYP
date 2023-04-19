@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE categories SYSTEM "category.dtd">
+<categories>
+    <category id="1">
+    <name>Appertizer</name>
+    </category>
+    <category id="3">
+    <name>Beverage</name>
+    </category>
+    <category id="4">
+    <name>Dessert</name>
+    </category>
+    <category id="11">
+    <name>Rice</name>
+    </category>
+    <category id="12">
+    <name>Noodle</name>
+    </category>
+    <category id="14">
+    <name>Seafood</name>
+    </category>
+</categories>
