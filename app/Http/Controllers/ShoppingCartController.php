@@ -40,7 +40,6 @@ class ShoppingCartController extends Controller
                 'Authorization' => 'Bearer ' . auth()->user()->token,
             ]
 
-
         ]);
         $claimVouchers = json_decode($response->getBody(), true);
         //get vouchers api through webservices through the bearer token 
@@ -56,7 +55,6 @@ class ShoppingCartController extends Controller
 
         $vouchers = json_decode($response->getBody(), true);
 
-
         //declare a new user voucher that only store the voucher that claimed by the user
         $userVouchers = array();
         foreach ($vouchers as $voucher) {
@@ -67,19 +65,77 @@ class ShoppingCartController extends Controller
             }
         }
 
+        //retrieve the free gifts based on selected meal
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get meal free gifts api through webservices through the bearer token 
+        $response = $client->get('mealfreegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $mealFreeGifts = json_decode($response->getBody(), true);
+
+         $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get all free gifts and details api through webservices through the bearer token 
+        $response = $client->get('freegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $freeGifts = json_decode($response->getBody(), true);
         $user = auth()->user();
+
+        //for retrieve the free gifts id from the selected meal use
+        $mealsInCart = $user->meals;
+        
+        if($mealsInCart !=null){
+        $mealGifts= array();
+        foreach($mealsInCart as $mealInCart){
+            foreach($mealFreeGifts as $mealFreeGift){
+                if($mealInCart->id == $mealFreeGift['meal_id']){
+                    array_push($mealGifts, $mealFreeGift['freegift_id']);
+                }
+            }
+        }
+       
+        $getGifts=array();
+        //retrieve the gift associated with selected meal
+        foreach($mealGifts as $mealGift){
+            foreach($freeGifts as $freeGift){
+                if($mealGift == $freeGift['id']){
+                    array_push($getGifts,$freeGift);
+                }
+            }
+        }
+        }
 
         return view('shoppingcart.index', [
             'shoppingCarts' => $user->meals,
             'addressFee' => $this->findDeliveryFee(),
-            'vouchers' => $userVouchers
+            'vouchers' => $userVouchers,
+            'gifts' => $getGifts
         ]);
     }
     
     public function checkout()
     {
         $user = User::find(auth()->user()->id);
-
 
         //customer cannot check out if the item in cart is empty
         if ($user->meals->count() == 0) {
@@ -293,10 +349,6 @@ class ShoppingCartController extends Controller
 
 
             MealOrderDetail::create($newMealOrderDetail);
-
-           
-
-
             
              //delete the delete cart in the table 
              DB::table('shopping_carts')->where([

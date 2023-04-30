@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FreeGiftController;
 use App\Http\Controllers\ShoppingCartController;
 
 /*
@@ -226,7 +227,9 @@ Route::get('/webServiceRegister', [VoucherController::class, 'storeWebServiceCli
 Route::get('/gift', [GiftController::class, 'index']);
 Route::post('/gift/store', [GiftController::class, 'store']);
 
-   
+//web service (free gift)
+Route::get('/freeGiftInfo',[FreeGiftController::class,'index']);
+
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
 
