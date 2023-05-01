@@ -272,6 +272,91 @@ class ShoppingCartController extends Controller
         $memberPoint = 0;
         Delivery::create($delivery);
 
+         //retrieve the free gifts based on selected meal
+         $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get meal free gifts api through webservices through the bearer token 
+        $response = $client->get('mealfreegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $mealFreeGifts = json_decode($response->getBody(), true);
+
+         $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get all free gifts and details api through webservices through the bearer token 
+        $response = $client->get('freegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $freeGifts = json_decode($response->getBody(), true);
+        $user = auth()->user();
+
+        //for retrieve the free gifts id from the selected meal use
+        $mealsInCart = $user->meals;
+        
+        if($mealsInCart !=null){
+        $mealGifts= array();
+        foreach($mealsInCart as $mealInCart){
+            foreach($mealFreeGifts as $mealFreeGift){
+                if($mealInCart->id == $mealFreeGift['meal_id']){
+                    array_push($mealGifts, $mealFreeGift['freegift_id']);
+                }
+            }
+        }
+       
+        $getGifts=array();
+        //retrieve the gift associated with selected meal
+        foreach($mealGifts as $mealGift){
+            foreach($freeGifts as $freeGift){
+                if($mealGift == $freeGift['id']){
+                    array_push($getGifts,$freeGift);
+                }
+            }
+        }
+
+        //reduce and update the quantity of gift retreived
+        foreach($getGifts as $getGift){
+            $getGiftQty = $this->quantityGifts($getGift['id']);
+        
+            if($getGiftQty!=0 && $getGift['status']=='Y'){
+                $client = new Client([
+                    'base_uri' => 'http://localhost:8000/api/',
+                    'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+                ]);
+                
+        
+                $client->put('freegifts/' . $getGift['id'], [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer ' . auth()->user()->token,
+                    ],
+                    'json' => [
+                        'qty' => $getGiftQty - 1
+                    ],
+    
+                ]);         
+            }
+        }
+        }
+
+
         foreach ($user->meals as $meal) {
 
             //find the meal 
@@ -345,21 +430,14 @@ class ShoppingCartController extends Controller
                 ->where('id', $meal->id)
                 ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
 
-
-
-
             MealOrderDetail::create($newMealOrderDetail);
             
+
              //delete the delete cart in the table 
              DB::table('shopping_carts')->where([
                 'id' => $meal->pivot->id
             ])->delete();
         }
-
-
-
-
-
 
         //update member point
         // $memberPoint = $memberPoint / 5;
@@ -415,10 +493,29 @@ class ShoppingCartController extends Controller
             session()->forget('voucherCode');
             session()->forget('promoteDeliveryFee');
         }
+        
         return redirect('purchase');
     }
 
+    public function quantityGifts($giftID){
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
 
+        //get vouchers api through webservices through the bearer token 
+        $response = $client->get('freegifts/' . $giftID, [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+
+        $freeGift = json_decode($response->getBody(), true);
+        return $freeGift['qty'];
+    }
 
     public function quantityVoucher($voucherID)
     {

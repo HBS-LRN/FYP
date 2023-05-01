@@ -86,7 +86,6 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-
                 background-color: #FF9900;
                 border-radius: 50%;
                 transform: rotate(360deg);
@@ -171,11 +170,27 @@
                 font-style:italic;
                 font-weight:bold;
                 font-family:Verdana, sans-serif;
+
             }
 
             h2.gifts-heading{
                 text-align:center;
             }
+
+            img.no-gift{
+                display:table;
+                margin:auto;
+                width:260px;
+                height:220px;
+            }
+
+            p#no-gift{
+                font-weight:bold;
+                text-align:center;
+                font-style:italic;
+                color:grey;
+            }
+           
 
             p#supply{
                 text-align:center;
@@ -196,6 +211,7 @@
                 color:black;
                 background-color:lightgrey;
             }
+
 
             /* .redeem{
     margin-top: 70px;
@@ -411,22 +427,30 @@
                         <div id="giftList" class="giftList">
                             <div class="gifts-content">
                             <span class="close">&times;</span>
-
+                            @unless(count($gifts)==0)
                             <h2 class="gifts-heading">Your Free Gifts : </h2>
 
-                            @unless(count($gifts)==0)
+                           
                             
                             @foreach ($gifts as $gift)
+                             @if($gift['qty']!=0 && $gift['status']=='Y')
                             <div class="gift">
                             <img src="../{{$gift['image']}}" class="giftimg" alt="" />
                             <p class="giftcontent"><span>{{$gift['name']}}</span></p>
                             
                             </div>
+                            @else
+                            <div class="gift">
+                            <img src="../{{$gift['image']}}" class="giftimg" alt="" />
+                            <p class="giftcontent"><span style="color:red;"> **Temporarily Unavailable </span></p>
+                            
+                            </div>
+                            @endif
                             @endforeach
                             @else
                             <div id="no-gift">
-                            <img src="no-gift" class="no-gift" alt="no-gift">
-                            <p id="no-gift"> You haven't order meal with gift yet. </p>
+                            <img src="../image/emptygift.png" class="no-gift" alt="no-gift">
+                            <p id="no-gift"> **You haven't order meal with gift yet... </p>
                             </div>
                             @endunless
                             <a href="/freeGiftInfo" id="more-gifts">View all gifts details</a>

@@ -26,6 +26,18 @@
 	        height: 150px;
         }
 
+        div.desc{  
+            font-size: 16px;
+            font-weight: bold;
+            font-family: Rockwell, serif;
+            color: #333;
+            text-align: center;
+            padding: 30px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
         .gallery {
            display:flex;
             text-align:center;
@@ -37,7 +49,10 @@
         }
 
         body{
-            background-color:#FFFFD8;
+            background-image:url("../image/wallbg.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         .gallery-item {
@@ -86,11 +101,18 @@
             max-width: 300px;
             text-align: center;
             margin:10px;
+            font-family: Arial, sans-serif;
+        }
+
+        p.giftname{
+            font-weight:bold;
+            font-family: "Bodoni MT", serif;
+            font-size:22px;
         }
 
         footer {
             margin-top:50px;
-	        background-color: lightgrey;
+	        background-color: black;
 	        text-align: center;
 	        padding: 20px;
            
@@ -98,7 +120,7 @@
 
         footer p {
 	        font-size: 14px;
-	        color: #333333;
+	        color: white;
 	        margin: 0;
         }
     </style>
@@ -110,8 +132,12 @@
 	<img src="../image/franchisheader.jpg" alt="Header Image">
 </header>
 
+<div class="content">
 <h1 class="franchish1">Franchis Gifts</h1>
 
+<div class="desc">
+Franchis Gifts is a leading free gift supplier that provides high-quality and unique gift items to businesses, including restaurants. We specialize in providing free gifts to restaurants, helping them to increase customer satisfaction and loyalty. Our gift items are carefully selected to match the style and personality of your restaurant, and we ensure that they are of the highest quality. Our team of experts is dedicated to delivering outstanding customer service and support to our clients, making the entire process of ordering and receiving your free gifts as seamless as possible. Whether you're looking for branded merchandise or custom-made items, Franchis Gifts is your go-to supplier for all your free gift needs.
+</div>
 
 <div class="gallery">
   @foreach($freeGifts as $freeGift)
@@ -127,9 +153,8 @@
   </div>
   @endforeach
 </div>
-  
 
-
+</div>
 </body>
 
 <footer>

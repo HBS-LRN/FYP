@@ -107,10 +107,18 @@
                         });
                     </script>
                     @if($freeGift!=null)
+                        @if($freeGift['qty']!=0 && $freeGift['status']=='Y')
                         <p class="freegift">
                         <label for="freegift" class="label">Free Gift : </label>
-                        <a><img class="freegifts" src="../{{$freeGift['image']}}" alt="Free Gift"></a>
+                        <img class="freegifts" src="../{{$freeGift['image']}}" alt="Free Gift">
                         </p>
+                        @else
+                        <p class="freegift">
+                        <label for="freegift" class="label" style="color:red;font-size:16px;font-style:italic;">**Temporarily<br/> Unavailable : </label>  
+                        <img class="freegifts" src="../{{$freeGift['image']}}" alt="Free Gift">
+                        
+                        </p>
+                        @endif
                     @endif
                 </div>
 
