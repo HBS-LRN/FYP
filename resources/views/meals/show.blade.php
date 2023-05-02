@@ -1,6 +1,28 @@
 <head>
     <link rel="stylesheet" href="../css/itemStyle.css">
+<style>   
+    p.freegift {
+        font-family: 'Poppins', sans-serif;
+        position:relative;
+        text-align: center;
+        font-size: 25px;
+        margin: 10px 10px 10px 0%;
+    }
 
+    p.freegift label{
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align:center;
+        color: black;
+        font-size: 20px;
+    }
+
+    img.freegifts{
+        width:110px;
+        height:120px;
+    }
+    </style>
 
 </head>
 
@@ -84,8 +106,20 @@
                             document.getElementById("qty").value = qtyValue;
                         });
                     </script>
-
-
+                    @if($freeGift!=null)
+                        @if($freeGift['qty']!=0 && $freeGift['status']=='Y')
+                        <p class="freegift">
+                        <label for="freegift" class="label">Free Gift : </label>
+                        <img class="freegifts" src="../{{$freeGift['image']}}" alt="Free Gift">
+                        </p>
+                        @else
+                        <p class="freegift">
+                        <label for="freegift" class="label" style="color:red;font-size:16px;font-style:italic;">**Temporarily<br/> Unavailable : </label>  
+                        <img class="freegifts" src="../{{$freeGift['image']}}" alt="Free Gift">
+                        
+                        </p>
+                        @endif
+                    @endif
                 </div>
 
                 <div class="submitBtnBox">
@@ -147,7 +181,6 @@
 
     });
 </script>
-
 
 
 

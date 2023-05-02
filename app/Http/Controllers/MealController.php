@@ -6,6 +6,7 @@ use DOMXPath;
 use DOMDocument;
 use XSLTProcessor;
 use SimpleXMLElement;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Meal;
@@ -34,7 +35,22 @@ class MealController extends Controller
 
         $category = Category::find($id);
 
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
 
+
+        //get meal free gifts api through webservices through the bearer token 
+        $response = $client->get('mealfreegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $mealFreeGifts = json_decode($response->getBody(), true);
 
 
         return view('meals.index', [
@@ -43,8 +59,8 @@ class MealController extends Controller
             'meals' => $category->categorymeals->where('meal_qty', '!=', '0'),
 
             //'meals' => Meal::where('category_id', '=', $category->id),
-            'categories' => Category::all()
-
+            'categories' => Category::all(),
+            'mealFreeGifts'=> $mealFreeGifts
 
 
         ]);
@@ -89,12 +105,60 @@ class MealController extends Controller
         $meal = Meal::find($id);
         $category = Category::find($meal->category_id);
 
-        return view('meals.index', [
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
 
+        //get meal free gifts api through webservices through the bearer token 
+        $response = $client->get('mealfreegifts', [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+        $mealFreeGifts = json_decode($response->getBody(), true);
+
+        
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+        $giftid=null;
+        foreach($mealFreeGifts as $mealFreeGift){
+            if($mealFreeGift['meal_id']==$id){
+                $giftid=$mealFreeGift['freegift_id'];
+            }
+
+        }
+        
+
+        if($giftid!=null){
+        //get a meal free gift (retrieve the free gift id) api through webservices through the bearer token 
+        $response = $client->get('freegifts/'. $giftid ,[
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+        ]);
+
+        $freeGift = json_decode($response->getBody(), true);
+        }else{
+            $freeGift=null;
+        }
+
+        return view('meals.index', [
 
             'meals' => $category->categorymeals->where('meal_qty', '!=', '0'),
             'categories' => Category::all(),
             'searchMeal' => $meal,
+            'mealFreeGifts'=>$mealFreeGifts,
+            'freeGift'=>$freeGift,
             'popup' => true
 
         ]);
@@ -114,7 +178,7 @@ class MealController extends Controller
         ]);
     }
 
-    //for retreive/show meal list
+    //for retrieve/show meal list
     public function adshow()
     {
         return view('meals.adshow',[
