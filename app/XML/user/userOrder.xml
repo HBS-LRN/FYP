@@ -95,6 +95,20 @@
         <totalprice currency="RM">12.9</totalprice>
         <date>2023-05-02</date>
       </meal>
+      <meal>
+        <name>Chrysanthemum Tea</name>
+        <price currency="RM">6.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">6.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Golden Rice</name>
+        <price currency="RM">18.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">18.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="3">

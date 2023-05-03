@@ -246,11 +246,19 @@
       <quantity>1</quantity>
     </meal>
   </order>
-  <order id="88">
+  <order id="9">
     <date>2023-05-03</date>
     <meal>
-      <name>Chicken Wonton Cup</name>
-      <category>Appertizer</category>
+      <name>Chrysanthemum Tea</name>
+      <category>Beverage</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="10">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Golden Rice</name>
+      <category>Rice</category>
       <quantity>1</quantity>
     </meal>
   </order>
