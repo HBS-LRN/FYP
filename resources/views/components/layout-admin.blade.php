@@ -10,24 +10,21 @@
     <div class="header">
         <div class="side-navigation">
             <div class="logo-details">
-                <a href="./staff/StaffDashboard.aspx">
+                <a href="/staffDashboard">
                     <img src="../../image/GrandImperialGroupLogo.png"></a>
                     <p>Grand Imperial</p>
 
             </div>
             <ul class="nav-links">
-                <li><a href="../staff/StaffDashboard.aspx"><i class="fas fa-home"></i>
+                <li><a href="/staffDashboard"><i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a></li>
-                <li><a href="../staff/ListOfOrder.aspx"><i class="fas fa-box-open"></i>
+                <li><a href="/listOfOrder"><i class="fas fa-box-open"></i>
                         <p>Orders</p>
                     </a></li>
-                <li><a href="../staff/ManageReservation.aspx"><i class="fa fa-ticket"></i>
-                        <p>Reservation</p>
-                    </a></li>
-                <li>
+               
                     <div class="iconLink">
-                        <a href="../staff/ListOfMeal.aspx"><i class="fas fa-boxes"></i>
+                        <a href="/meal/adshow"><i class="fas fa-boxes"></i>
                             <p>
                                 Product
                             </p>
@@ -50,7 +47,7 @@
                     </a></li>
                 <li>
                     <div class="iconLink">
-                        <a href="../admin/InventoryReport.aspx"><i class="fas fa-chart-pie"></i>
+                        <a href="/showInventory"><i class="fas fa-chart-pie"></i>
                             <p>
                                 Report
                             </p>
@@ -58,13 +55,13 @@
                         <i class="fas fa-chevron-down arrow"></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a href="../admin/InventoryReport.aspx">
+                        <li><a href="/inventoryReport">
                                 <p>Inventory Report</p>
                             </a></li>
-                        <li><a href="../admin/CustomerReport.aspx">
+                        <li><a href="/customerReport">
                                 <p>Customer Report</p>
                             </a></li>
-                        <li><a href="../admin/GraphReport.aspx">
+                        <li><a href="/graphReport">
                                 <p>Graph Report</p>
                             </a></li>
                     </ul>
