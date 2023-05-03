@@ -30,13 +30,22 @@
            right:40px;           
         }
 
+        .editMealInventory{
+            font-size: 60px; 
+            margin-left: 10px;
+            margin-top:20px;
+            margin-bottom:20px;
+            text-align:center;
+        }
     </style>
 </head>
 
 <body>
-    <div class="box">
+    <div class="Pagebody">
+
     <x-layout-admin>
     </x-layout-admin>
+    <div class="box">
       <h2 class="editMealInventory">Update Meal Quantity</h2>
       <form action="/updateInventory/{{$meal->id}}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -65,6 +74,7 @@
             
         </div>
         </form>
+    </div>
     </div>
 </body>
 
