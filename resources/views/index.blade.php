@@ -110,7 +110,7 @@
            
                 @foreach ($categories as $category)
                 <div class="img">
-                <a href="">
+                <a href="/meal/{{ $category->id }}">
 
                     <img src="{{ $category->image ? asset ('storage/'.$category->image) : asset('/images/no-image.png')}}" alt="" />
                    
