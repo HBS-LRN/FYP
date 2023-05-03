@@ -49,7 +49,7 @@ class CategoryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $formFields['image'] = $request->file('image')->store('categories', 'public');
+            $formFields['image'] = $request->file('image')->store('meals', 'public');
         }
         if ($request->hasFile('subImage')) {
             $formFields['subImage'] = $request->file('subImage')->store('categories', 'public');

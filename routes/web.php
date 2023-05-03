@@ -85,10 +85,12 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
 
 Route::group(['middleware' => 'isStaff'], function () {
-   Route::get('/category/create', [CategoryController::class, 'create']);
-   // Store category Data
-   Route::post('/category/store', [CategoryController::class, 'store']);
+ 
+   //protected route!!!!
+   //only staff able to access 
 
+
+   
    // Show admin meal list 
    Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
@@ -136,6 +138,7 @@ Route::group(['middleware' => 'isStaff'], function () {
    Route::get('/checkPassword/{id}', [UserController::class, 'checkPassword']);
 });
 //proctected route
+
 Route::group(['middleware' => 'RequireLogin'], function () {
 
 
@@ -203,6 +206,10 @@ Route::group(['middleware' => 'RequireLogin'], function () {
 });
 
 
+
+Route::get('/category/create', [CategoryController::class, 'create']);
+// Store category Data
+Route::post('/category/store', [CategoryController::class, 'store']);
 // Show All category Data
 Route::get('/category/show', [CategoryController::class, 'show']);
 
