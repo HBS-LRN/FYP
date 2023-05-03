@@ -57,22 +57,23 @@
             padding: 5px 10px;
         }
         .detail_cont {
-            width: 80%;
-            display: grid;
-            grid-template-columns: 30% 100%;
+            width: 90%;
+            display: flex;
+            
             text-align: justify;
-            margin-left: 40px;
-            margin-top: 20px;
+            
+            margin:0px auto;
             
         }
 
-        .details {
+        .detail_cont .details {
+            flex-basis:60%;
             float: left;
         }
 
-        .cal {
-            text-align: left;
-            padding-left:300px;
+        .detail_cont .cal {
+            flex-basis:40%;
+            padding:0px;
         }
         .name_cust div:nth-child(2) {
             padding-right:10px;
@@ -100,7 +101,7 @@
     <div class="Pagebody">
     <x-layout-admin>
     </x-layout-admin>
-        <div class="content">
+        <div class="box">
             <div class="title-container">
                 <h1 class="Prodtitle">Product Order Detail</h1>
                 <div class="add_content">
@@ -160,8 +161,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="detail_cont">
+                <div class="detail_cont">
                 <div class="details">
                     <span>Ordered Date And Time : <b>
                         <label for="lblOrderDate">{{$order->order_date}}</label></b></span><br>
@@ -176,6 +176,8 @@
                      <span>Delivery To : <b><label for="lblDeliveryAddress">{{$order->Delivery->street}}, {{$order->Delivery->postcode}}, {{$order->Delivery->area}}</label></b></span>
                 </div>
             </div>
+            </div>
+           
 
         </div>
 

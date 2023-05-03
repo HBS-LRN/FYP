@@ -293,4 +293,20 @@
       <quantity>1</quantity>
     </meal>
   </order>
+  <order id="2">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="3">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>
