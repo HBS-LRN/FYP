@@ -139,7 +139,7 @@ Route::group(['middleware' => 'isStaff'], function () {
 });
 //proctected route
 
-Route::group(['middleware' => 'RequireLogin'], function () {
+Route::middleware(['middleware' => 'RequireLogin'])->middleware(['middleware' => 'auth'])->group(function () {
 
 
 

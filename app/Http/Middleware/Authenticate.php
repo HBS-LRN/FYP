@@ -22,7 +22,7 @@ class Authenticate extends Middleware
         }
     }
     protected $session;
-    protected $timeout = 1200;
+    protected $timeout = 60;
 
     public function __construct(Store $session)
     {
@@ -32,11 +32,14 @@ class Authenticate extends Middleware
     public function handle($request, Closure $next, ...$guards)
     {
         if (Auth::check()) {
-            if (!session('lastActivityTime'))
+            if (!session('lastActivityTime')){
                 $this->session->put('lastActivityTime', time());
+               
+            }
             elseif (time() - $this->session->get('lastActivityTime') > $this->timeout) {
                 $this->session->forget('lastActivityTime');
 
+                
                 auth()->logout();
                 session()->invalidate();
                 session()->regenerateToken();
@@ -44,7 +47,7 @@ class Authenticate extends Middleware
             }
         }
         $this->session->put('lastActivityTime', time());
-
+        
         
         return $next($request);
     }

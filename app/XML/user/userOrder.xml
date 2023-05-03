@@ -262,4 +262,8 @@
       </meal>
     </ordered>
   </user>
+  <user id="7">
+    <name>Tee Fo Yo</name>
+    <email>teefy-wm20@student.tarc.edu.my</email>
+  </user>
 </users>
