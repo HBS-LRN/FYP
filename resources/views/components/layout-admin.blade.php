@@ -19,7 +19,7 @@
                 <li><a href="/staffDashboard"><i class="fas fa-home"></i>
                         <p>Dashboard</p>
                     </a></li>
-                <li><a href="/showOrders"><i class="fas fa-box-open"></i>
+                <li><a href="/listOfOrder"><i class="fas fa-box-open"></i>
                         <p>Orders</p>
                     </a></li>
                 <li>

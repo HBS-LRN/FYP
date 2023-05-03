@@ -73,6 +73,33 @@ class Handler extends ExceptionHandler
         ],$code);
     }
 
+    if ($exception instanceof ValidationException) {
+        return new JsonResponse([
+            'message' => 'The given data was invalid',
+            'errors' => $exception->errors(),
+        ], 422);
+    }
+
+    if ($exception instanceof MethodNotAllowedHttpException) {
+        return new JsonResponse([
+            'message' => 'The requested method is not supported for this resource',
+        ], 405);
+    }
+
+    //authorization exception ( when user try to access resources they are not authorized to access)
+    if ($exception instanceof AuthorizationException) {
+        return response()->json(['error' => 'Forbidden'], 403);
+    }
+
+    //when database query fails
+    if ($exception instanceof QueryException) {
+        return response()->json(['error' => 'Database error'], 500);
+    }
+
+    //when database error occur
+    if ($exception instanceof PDOException) {
+        return response()->json(['error' => 'Database error'], 500);
+    }
     return parent::render($request, $exception);
     }
 }
