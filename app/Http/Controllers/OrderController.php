@@ -177,6 +177,7 @@ class OrderController extends Controller
                     ]
             );
             if($PACno == $request['pac']){
+                $voucherID = Session::get('voucherID');
                 $user = User::find(auth()->user()->id);
                 $order = Session::get('order');
                 $order->save();
@@ -409,8 +410,7 @@ class OrderController extends Controller
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><orders></orders>');
         foreach ($orders as $order) {
         $xmlOrder = $xml->addChild('order');
-        $xmlOrder->addChild('id', $order->id);
-        $xmlOrder->addChild('order_id', $order->order_id);
+        $xmlOrder->addAttribute('id', $order->id);
         $xmlOrder->addChild('user_id', $order->user_id);
         $xmlOrder->addChild('order_total', ($order->order_total + $order->delivery_fee));
         $xmlOrder->addChild('delivery_fee', $order->delivery_fee);

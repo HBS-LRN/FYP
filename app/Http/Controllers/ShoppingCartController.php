@@ -263,7 +263,6 @@ class ShoppingCartController extends Controller
          //new order element
          $newlistOfOrder  =  $xml3->addChild('order');
          $newlistOfOrder->addAttribute('id', $listOfOrder->id);
-         $newlistOfOrder->addAttribute('order_id', $listOfOrder->order_id);
          $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
          $newlistOfOrder->addChild('order_total', $totalAmount);
          $newlistOfOrder->addChild('delivery_fee', $listOfOrder->delivery_fee);
