@@ -1,23 +1,21 @@
-
-
 <head>
     <link rel="stylesheet" href="../css/staffDashBoard.css">
 
 </head>
 
-    <style>
-        .scroll-wrap {
-            overflow: auto;
-            height: 500px;
-        }
+<style>
+    .scroll-wrap {
+        overflow: auto;
+        height: 500px;
+    }
 
-        .job_role {
-            color: white;
-        }
-    </style>
-    <div class="Pagebody">
+    .job_role {
+        color: white;
+    }
+</style>
+<div class="Pagebody">
     <x-layout-admin>
-    </x-layout-admin> 
+    </x-layout-admin>
     <div class="box">
         <div class="topBox">
             <div class="box1">
@@ -28,8 +26,8 @@
 
                 <div>
                     <h1>
-                        {{$customerCount}}
-                    
+                        {{ $customerCount }}
+
                     </h1>
 
                     <p>
@@ -47,11 +45,11 @@
                 <div>
                     <h1>
 
-                      {{$customerOrderCount}}
+                        {{ $customerOrderCount }}
                     </h1>
 
                     <p>
-                       Orders
+                        Orders
                     </p>
                 </div>
 
@@ -67,8 +65,8 @@
 
                 <div>
                     <h1>
-                    
-            {{$commentCount}}
+
+                        {{ $commentCount }}
 
                     </h1>
 
@@ -87,10 +85,10 @@
 
                 <div>
                     <h1>RM
-                    {{number_format($earning,2)}}
+                        {{ number_format($earning, 2) }}
                     </h1>
                     <p>
-                       Total Earning
+                        Total Earning
                     </p>
                 </div>
 
@@ -102,12 +100,12 @@
         <div class="box2">
             <div class="scroll-wrap">
                 <h1>Today Orders
-                            <!-- <button type="button">View All</button> -->
+                    <!-- <button type="button">View All</button> -->
                     <input id="Search" type="text" placeholder="Search Here"
                         style="width: 200px; height: 40px; margin-left: 350px; border-radius: 5px;">
                 </h1>
                 <br>
-                
+
                 <table class="sortable">
                     <thead>
                         <tr>
@@ -118,21 +116,24 @@
                         </tr>
                     </thead>
                     <tbody id="search">
-                   @foreach($customerOrders as $customerOrder)
-                                <tr>
+                        @foreach ($customerOrders as $customerOrder)
+                            <tr>
 
-                                    <td>
-                                    {{$customerOrder->order->user_id}}
-                                    <td>
-                                    {{$customerOrder->meal->meal_name}}  <!-- dynamic value -->
-                                    <td>
-                                    {{number_format($customerOrder->meal->meal_price,2)}}  X  {{$customerOrder->order_quantity}}<!-- dynamic value -->
-                                    <td>
-                                    {{$customerOrder->meal_order_status}}<!-- dynamic value -->
+                                <td>
+                                    {{ $customerOrder->order->user_id }}
+                                <td>
+                                    {{ $customerOrder->meal->meal_name }}
+                                    <!-- dynamic value -->
+                                <td>
+                                    {{ number_format($customerOrder->meal->meal_price, 2) }} X
+                                    {{ $customerOrder->order_quantity }}
+                                    <!-- dynamic value -->
+                                <td>
+                                    {{ $customerOrder->meal_order_status }}
+                                    <!-- dynamic value -->
 
-                                </tr>
-                     
-                    @endforeach
+                            </tr>
+                        @endforeach
 
 
 
@@ -143,45 +144,46 @@
             </div>
         </div>
 
+
         <div class="box3">
             <div class="scroll-wrap">
                 <h1>Recent Customers
                 </h1>
-              @foreach($customers as $customer)
-                        <div>
-                            
-                            <img id="Image1"
-                            src="{{ $customer->image ? asset('storage/' . $customer->image) : asset('/images/no-image.png') }}"
-                            alt="" />
-                            <br>
-                            <h3>
-                                <label id="lblCustomerName">{{$customer->name}}</label></h3>
-                            <p>
-                                <label id="lblCustomerEmail">{{$customer->email}}</label></p>
-                        </div>
-               @endforeach
+                @foreach ($customers as $customer)
+                    <div>
+                        @if (auth()->user()->image != null)
+                            <img id="Image1" src="{{ asset('storage/' . $customer->image) }}" alt="" />
+                        @else
+                            <i class="fas fa-user"></i>
+                        @endif
+                        <br>
+                        <h3>
+                            <label id="lblCustomerName">{{ $customer->name }}</label>
+                        </h3>
+                        <p>
+                            <label id="lblCustomerEmail">{{ $customer->email }}</label>
+                        </p>
+                    </div>
+                @endforeach
 
             </div>
 
         </div>
 
     </div>
-    </div>
-      
+</div>
 
-    <script src="../JavaScript/jquery-3.6.0.min.js"></script>
-    <script src="../JavaScript/sweetalert2.all.min.js"></script>
-    <script>
 
-        $(document).ready(function () {
-            $("#Search").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#search tr").filter(function () {
-                    $(this).toggle($(this).text()
-                        .toLowerCase().indexOf(value) > -1)
-                });
+<script src="../JavaScript/jquery-3.6.0.min.js"></script>
+<script src="../JavaScript/sweetalert2.all.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#Search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#search tr").filter(function() {
+                $(this).toggle($(this).text()
+                    .toLowerCase().indexOf(value) > -1)
             });
         });
-    </script>
-
-
+    });
+</script>

@@ -261,7 +261,7 @@ class ShoppingCartController extends Controller
          $xml3 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
          $listOfOrder = Order::find($order->id);
          //new order element
-         $newlistOfOrder  =  $xml2->addChild('order');
+         $newlistOfOrder  =  $xml3->addChild('order');
          $newlistOfOrder->addAttribute('id', $listOfOrder->id);
          $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
          $newlistOfOrder->addChild('order_total', $listOfOrder->order_total);
