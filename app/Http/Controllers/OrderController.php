@@ -187,7 +187,7 @@ class OrderController extends Controller
          $newlistOfOrder  =  $xml2->addChild('order');
          $newlistOfOrder->addAttribute('id', $listOfOrder->id);
          $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
-         $newlistOfOrder->addChild('order_total', $listOfOrder->order_total);
+         $newlistOfOrder->addChild('order_total', $totalAmount);
          $newlistOfOrder->addChild('delivery_fee', $listOfOrder->delivery_fee);
          $newlistOfOrder->addChild('order_status', $listOfOrder->order_status);
 
@@ -410,8 +410,9 @@ class OrderController extends Controller
         foreach ($orders as $order) {
         $xmlOrder = $xml->addChild('order');
         $xmlOrder->addChild('id', $order->id);
+        $xmlOrder->addChild('order_id', $order->order_id);
         $xmlOrder->addChild('user_id', $order->user_id);
-        $xmlOrder->addChild('order_total', $order->order_total);
+        $xmlOrder->addChild('order_total', ($order->order_total + $order->delivery_fee));
         $xmlOrder->addChild('delivery_fee', $order->delivery_fee);
         $xmlOrder->addChild('order_status', $order->order_status);
         $xmlOrder->addChild('payment_status', $order->payment_status);
