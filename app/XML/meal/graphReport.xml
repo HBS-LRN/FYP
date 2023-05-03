@@ -217,4 +217,33 @@
       <quantity>1</quantity>
     </meal>
   </order>
+  <order id="6">
+    <date>2023-05-02</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="7">
+    <date>2023-05-02</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="8">
+    <date>2023-05-02</date>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>

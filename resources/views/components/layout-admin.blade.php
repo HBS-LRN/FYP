@@ -22,9 +22,9 @@
                 <li><a href="/listOfOrder"><i class="fas fa-box-open"></i>
                         <p>Orders</p>
                     </a></li>
-                <li>
+               
                     <div class="iconLink">
-                        <a href="meal/adshow"><i class="fas fa-boxes"></i>
+                        <a href="/meal/adshow"><i class="fas fa-boxes"></i>
                             <p>
                                 Product
                             </p>
@@ -47,7 +47,7 @@
                     </a></li>
                 <li>
                     <div class="iconLink">
-                        <a href="/inventoryReport"><i class="fas fa-chart-pie"></i>
+                        <a href="/showInventory"><i class="fas fa-chart-pie"></i>
                             <p>
                                 Report
                             </p>

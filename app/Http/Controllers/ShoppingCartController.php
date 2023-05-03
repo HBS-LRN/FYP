@@ -255,17 +255,7 @@ class ShoppingCartController extends Controller
 
         
         if($request['paymethod'] == 'PayOnDelivery'){
-            $order->save(); 
-
-            //update xml file (hbs)
-         $xml2 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
-         $listOfOrder = Order::find($order->id);
-         //new order element
-         $newlistOfOrder  =  $xml2->addChild('order');
-         $newlistOfOrder->addAttribute('id', $listOfOrder->id);
-         $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
-         $newlistOfOrder->addChild('order_total', $listOfOrder->order_total);
-            //get the current user address to set to delivery
+            $order->save();
             $address = $user->addresses->where('active_flag', '=', 'T');
 
             //create new delivery 
