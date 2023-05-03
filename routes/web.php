@@ -90,7 +90,7 @@ Route::group(['middleware' => 'isStaff'], function () {
    //only staff able to access 
 
 
-   
+
    // Show admin meal list 
    Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
@@ -165,9 +165,6 @@ Route::group(['middleware' => 'RequireLogin'], function () {
    // Chnage User password
    Route::post('/users/changePass', [Usercontroller::class, 'updatePassword']);
 
-   // Create New User
-   Route::post('/users', [UserController::class, 'store']);
-   Route::post('/register', [UserController::class, 'store']);
    //edit customer profile
    Route::post('/profile/edit', [UserController::class, 'update']);
    // Log User Out
@@ -206,7 +203,9 @@ Route::group(['middleware' => 'RequireLogin'], function () {
 });
 
 
-
+  // Create New User
+  Route::post('/users', [UserController::class, 'store']);
+  Route::post('/register', [UserController::class, 'store']);
 Route::get('/category/create', [CategoryController::class, 'create']);
 // Store category Data
 Route::post('/category/store', [CategoryController::class, 'store']);
