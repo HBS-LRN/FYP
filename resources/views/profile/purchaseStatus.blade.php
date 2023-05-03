@@ -119,7 +119,7 @@
                     <div class="scroll-wrap">
                         @foreach ($orders as $order)
                             @foreach ($order->meals as $meal)
-                                @if ($meal->pivot->meal_order_status == 'complete')
+                                @if ($meal->pivot->meal_order_status == 'completed')
                                     <div class="product-items">
 
                                         <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"

@@ -56,6 +56,7 @@ class OrderController extends Controller
                 }
             }
         }
+        
 
 
         return view('profile.purchaseStatus', [
@@ -184,7 +185,7 @@ class OrderController extends Controller
          $xml3 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
          $listOfOrder = Order::find($order->id);
          //new order element
-         $newlistOfOrder  =  $xml2->addChild('order');
+         $newlistOfOrder  =  $xml3->addChild('order');
          $newlistOfOrder->addAttribute('id', $listOfOrder->id);
          $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
          $newlistOfOrder->addChild('order_total', $totalAmount);
@@ -409,7 +410,7 @@ class OrderController extends Controller
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><orders></orders>');
         foreach ($orders as $order) {
         $xmlOrder = $xml->addChild('order');
-        $xmlOrder->addChild('id', $order->id);
+        $xmlOrder->addAttribute('id', $order->id);
         $xmlOrder->addChild('order_id', $order->order_id);
         $xmlOrder->addChild('user_id', $order->user_id);
         $xmlOrder->addChild('order_total', ($order->order_total + $order->delivery_fee));

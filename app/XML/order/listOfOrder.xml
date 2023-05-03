@@ -1,35 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE orders SYSTEM "listOfOrder.dtd">
-<orders>
-  <order>
-    <id>9</id>
-    <order_id/>
-    <user_id>12</user_id>
-    <order_total>17.4</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PublicBank</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order>
-    <id>8</id>
-    <order_id/>
-    <user_id>12</user_id>
-    <order_total>33.3</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PublicBank</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order id="10" order_id="">
-    <user_id>2</user_id>
-    <order_total>23.49</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-</orders>
+<orders><order id="1"><order_id/><user_id>2</user_id><order_total>49.2</order_total><delivery_fee>4.5</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>Public Bank</payment_method><order_date>2023-04-09</order_date></order><order id="2"><order_id/><user_id>2</user_id><order_total>14.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-04-19</order_date></order><order id="3"><order_id/><user_id>2</user_id><order_total>17.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-04-19</order_date></order><order id="4"><order_id/><user_id>2</user_id><order_total>14.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-04-19</order_date></order><order id="5"><order_id/><user_id>2</user_id><order_total>17.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-02</order_date></order><order id="6"><order_id/><user_id>2</user_id><order_total>17.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-02</order_date></order><order id="7"><order_id/><user_id>2</user_id><order_total>33.15</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-02</order_date></order><order id="8"><order_id/><user_id>2</user_id><order_total>14.25</order_total><delivery_fee>1.35</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-02</order_date></order><order id="9"><order_id/><user_id>2</user_id><order_total>8.34</order_total><delivery_fee>1.35</delivery_fee><order_status>completed</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-03</order_date></order><order id="10"><order_id/><user_id>2</user_id><order_total>23.49</order_total><delivery_fee>4.5</delivery_fee><order_status>preparing</order_status><payment_status>Y</payment_status><payment_method>PayOnDelivery</payment_method><order_date>2023-05-03</order_date></order></orders>
