@@ -254,4 +254,12 @@
       <quantity>1</quantity>
     </meal>
   </order>
+  <order id="10">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Golden Rice</name>
+      <category>Rice</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>
