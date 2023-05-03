@@ -101,7 +101,7 @@ Route::group(['middleware' => 'isStaff'], function () {
    Route::get('/meal/create', [MealController::class, 'create']);
 
    // Store Meal Data
-   Route::post('/meal/store', [MealController::class, 'store'])->middleware('log.admin.actions');
+   Route::post('/meal/store', [MealController::class, 'store']);
 
    // Show update meal form
    Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);

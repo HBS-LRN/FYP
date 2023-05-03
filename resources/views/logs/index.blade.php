@@ -1,5 +1,9 @@
+<!DOCTYPE html>
+
 <head>
+    <body>
     @foreach ($logs as $log)
-{{$log}}
+<p>{{$log->}}</p>
 @endforeach
+</body>
 </head>

@@ -13,7 +13,7 @@ use App\Models\Meal;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\AdminLog;
+use App\Models\Log;
 use App\Models\MealOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -315,7 +315,7 @@ class MealController extends Controller
 
     public function log()
     {
-    $logs = DB::table('admin__logs')
+    $logs = DB::table('logs')
         ->orderBy('created_at', 'desc')
         ->paginate(20);
 
