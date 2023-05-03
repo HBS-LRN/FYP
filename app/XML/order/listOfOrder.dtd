@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!ELEMENT orders (order+)>
+  <!ELEMENT order (user_id, order_total, delivery_fee, order_status, payment_status, payment_method, order_date)>
+  <!ATTLIST order id CDATA #REQUIRED> 
+  <!ELEMENT user_id (#PCDATA)>
+  <!ELEMENT order_total (#PCDATA)>
+  <!ELEMENT delivery_fee (#PCDATA)>
+  <!ELEMENT payment_method (#PCDATA)>
+  <!ELEMENT order_date (#PCDATA)>

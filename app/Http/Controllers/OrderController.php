@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use DOMXPath;
 use DOMDocument;
 use SimpleXMLElement;
+use XSLTProcessor;
 
 class OrderController extends Controller
 {
@@ -179,6 +180,32 @@ class OrderController extends Controller
                 $user = User::find(auth()->user()->id);
                 $order = Session::get('order');
                 $order->save();
+                   //update xml file (hbs)
+         $xml3 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
+         $listOfOrder = Order::find($order->id);
+         //new order element
+         $newlistOfOrder  =  $xml2->addChild('order');
+         $newlistOfOrder->addAttribute('id', $listOfOrder->id);
+         $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
+         $newlistOfOrder->addChild('order_total', $listOfOrder->order_total);
+         $newlistOfOrder->addChild('delivery_fee', $listOfOrder->delivery_fee);
+         $newlistOfOrder->addChild('order_status', $listOfOrder->order_status);
+
+         $newlistOfOrder->addChild('payment_status', $listOfOrder->payment_status);
+         $newlistOfOrder->addChild('payment_method', $listOfOrder->payment_method);
+         $newlistOfOrder->addChild('order_date', $listOfOrder->order_date);
+
+          //save modified xml (hbs)
+          $xml3->asXML('../app/XML/order/listOfOrder.xml');
+    
+          //format XML
+          $xmlString3 = $xml3->asXML();
+          $dom3 = new DOMDocument;
+          $dom3->preserveWhiteSpace = false;
+          $dom3->loadXML($xmlString3);
+          $dom3->formatOutput = true;
+          $xmlStringFormatted3 = $dom3->saveXML();
+          file_put_contents('../app/XML/order/listOfOrder.xml', $xmlStringFormatted3);
             $address = $user->addresses->where('active_flag', '=', 'T');
 
             //create new delivery 
@@ -379,7 +406,7 @@ class OrderController extends Controller
         $orders = Order::with('mealOrderDetails')->get();
 
         // Generate XML file
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><categories></categories>');
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><orders></orders>');
         foreach ($orders as $order) {
         $xmlOrder = $xml->addChild('order');
         $xmlOrder->addChild('id', $order->id);
@@ -390,15 +417,6 @@ class OrderController extends Controller
         $xmlOrder->addChild('payment_status', $order->payment_status);
         $xmlOrder->addChild('payment_method', $order->payment_method);
         $xmlOrder->addChild('order_date', $order->order_date);
-
-        $xmlMealOrderDetails =$xmlOrder->addChild('MealOrderDetails');
-        foreach($order->mealOrderDetails as $orderDetail){
-            $xmlOrderDetail=$xmlMealOrderDetails->addChild('OrderDetail');
-            $xmlOrderDetail->addChild('id',$orderDetail->id);  
-            $xmlOrderDetail->addChild('order_id',$orderDetail->meal_name);  
-            $xmlOrderDetail->addChild('meal_id',$orderDetail->meal_image);  
-            $xmlOrderDetail->addChild('order_quantity',$orderDetail->order_quantity);  
-        }
         }
 
         $xmlString=$xml->asXML();
@@ -409,17 +427,19 @@ class OrderController extends Controller
     }
     public function showListOfOrder()
     {
-
         $xml = new DOMDocument();
-        $xml->load(public_path('../app/XML/meal/listOfOrder.xml'));
+        $xml->load(public_path('../app/XML/order/listOfOrder.xml'));
+
         $xsl = new DOMDocument();
-        $xsl->load(public_path('../app/XML/meal/listOfOrder.xsl'));
+        $xsl->load(public_path('../app/XML/order/listOfOrder.xsl'));
+
         $proc = new XSLTProcessor();
         $proc->importStylesheet($xsl);
 
         $html = $proc->transformToXML($xml);
         return response($html)->header('Content-Type', 'text/html');
     }
+
 
     public function comment(Request $request)
     {
