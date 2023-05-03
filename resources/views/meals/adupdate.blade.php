@@ -77,13 +77,22 @@
            right:35px;
            
         }
-
+        .editMeal {
+    font-size: 40px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
     </style>
 </head>
 <body>
-    <div class="box">
+<div class="Pagebody">
     <x-layout-admin>
     </x-layout-admin>
+
+    <div class="box">
+    
       <h2 class="editMeal">Edit Meal</h2>
       <form action="/mealupdate/{{$meal->id}}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -153,5 +162,5 @@
         </div>
    </form>
     </div>
-    
+    </div>
 </body>

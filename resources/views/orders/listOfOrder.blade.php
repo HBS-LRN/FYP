@@ -38,6 +38,15 @@
             background-color: rgb(165, 200, 245);
         }
 
+          .scroll-wrap {
+            overflow: auto;
+            height: 230px;
+        }
+
+        .box4 {
+            margin-bottom: 400px;
+            min-height: 550px;
+        }
         .delete {
             margin-top:10px;
         }
@@ -47,14 +56,25 @@
         .row .col-md-7 .dataTables_paginate {
             padding-right: 30px;
         }
+        .titleOfOrder{
+            font-size: 60px; 
+            margin-left: 10px;
+            margin-top:20px;
+            margin-bottom:20px;
+            text-align:center;
+        }
+        
     </style>
 </head>
 <body>
-    <div class="box">
-    <x-layout-admin>
+    <div class="Pagebody">
+        <x-layout-admin>
     </x-layout-admin>
+    <div class="box">
+    
+    
         <div>
-            <h2>List Of Orders
+            <h2 class='titleOfOrder'>List Of Orders
             </h2>
         </div>
 
@@ -102,6 +122,7 @@
                
             </div>
         </div>
+    </div>
     </div>
 </body>
 

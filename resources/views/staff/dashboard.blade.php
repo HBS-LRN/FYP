@@ -28,7 +28,7 @@
 
                 <div>
                     <h1>
-                        1<!-- dynamic value -->
+                        {{$customerCount}}
                     
                     </h1>
 
@@ -47,7 +47,7 @@
                 <div>
                     <h1>
 
-                       2<!-- dynamic value -->
+                      {{$customerOrderCount}}
                     </h1>
 
                     <p>
@@ -67,7 +67,8 @@
 
                 <div>
                     <h1>
-                        3<!-- dynamic value -->
+                    
+            {{$commentCount}}
 
                     </h1>
 
@@ -86,7 +87,7 @@
 
                 <div>
                     <h1>RM
-                       4<!-- dynamic value -->
+                    {{number_format($earning,2)}}
                     </h1>
                     <p>
                        Total Earning
@@ -106,7 +107,7 @@
                         style="width: 200px; height: 40px; margin-left: 350px; border-radius: 5px;">
                 </h1>
                 <br>
-
+                
                 <table class="sortable">
                     <thead>
                         <tr>
@@ -117,21 +118,21 @@
                         </tr>
                     </thead>
                     <tbody id="search">
-                   
+                   @foreach($customerOrders as $customerOrder)
                                 <tr>
 
                                     <td>
-                                      1 <!-- dynamic value -->
+                                    {{$customerOrder->order->user_id}}
                                     <td>
-                                      1  <!-- dynamic value -->
+                                    {{$customerOrder->meal->meal_name}}  <!-- dynamic value -->
                                     <td>
-                                      1 <!-- dynamic value -->
+                                    {{number_format($customerOrder->meal->meal_price,2)}}  X  {{$customerOrder->order_quantity}}<!-- dynamic value -->
                                     <td>
-                                      1 <!-- dynamic value -->
+                                    {{$customerOrder->meal_order_status}}<!-- dynamic value -->
 
                                 </tr>
                      
-
+                    @endforeach
 
 
 
@@ -146,21 +147,19 @@
             <div class="scroll-wrap">
                 <h1>Recent Customers
                 </h1>
-              
+              @foreach($customers as $customer)
                         <div>
-                            <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("customer_Image") != null ? string.Format("data:Image/png;base64,{0}",Convert.ToBase64String((byte[])Eval("customer_Image"))) :""%>' Visible='<%#ShowCustomerImage(Eval("customer_ID")) %>' CommandArgument='<%#Eval("customer_ID") %>'/>
-
+                            
+                            <img id="Image1"
+                            src="{{ $customer->image ? asset('storage/' . $customer->image) : asset('/images/no-image.png') }}"
+                            alt="" />
                             <br>
                             <h3>
-                                <asp:Label ID="lblCustomerName" runat="server" Text='<%# Eval("customer_Name") %>'></asp:Label></h3>
+                                <label id="lblCustomerName">{{$customer->name}}</label></h3>
                             <p>
-                                <asp:Label ID="lblCustomerEmail" runat="server" Text='<%# Eval("customer_Email") %>'></asp:Label></p>
+                                <label id="lblCustomerEmail">{{$customer->email}}</label></p>
                         </div>
-               
-
-
-
-
+               @endforeach
 
             </div>
 

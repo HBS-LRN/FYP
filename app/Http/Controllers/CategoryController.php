@@ -7,6 +7,7 @@ use DOMDocument;
 use XSLTProcessor;
 use SimpleXMLElement;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Order;
@@ -24,10 +25,6 @@ class CategoryController extends Controller
     public function index()
     {
 
-      
-
-       
-  
         return view('index', [
 
 

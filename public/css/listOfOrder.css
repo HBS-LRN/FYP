@@ -319,3 +319,12 @@ td a {
     td{
         border:1px solid grey;
     }
+
+    h2.graphreport{
+            font-size: 40px;
+            margin-left: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    

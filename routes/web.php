@@ -43,7 +43,7 @@ Route::get('/category/create', [CategoryController::class, 'create'])->middlewar
 Route::post('/category/store', [CategoryController::class, 'store']);
 
  // Show admin meal list 
- Route::get('/meal/adshow', [MealController::class, 'showListOfMeals']); /* adshow */
+ Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
 // Show Meal Create Form
 Route::get('/meal/xml', [MealController::class, 'generateXml']);
@@ -203,10 +203,26 @@ Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurren
 
 //show customer purchase status
 Route::get('/purchase', [OrderController::class, 'show'])->middleware('auth');;
-
+Route::get('/publicBankLogin', function(){
+   return view('payment.publicBankLogin');
+});
 //show customer publicBank login page
-Route::get('/purchase/publicBankLogin', [OrderController::class, 'publicBankLogin']);
-Route::post('/purchase/publicBankLogin/password', [OrderController::class, 'publicBankCheckUserID']);
+Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID']);
+Route::get('/publicBank/password', function(){
+   return view('payment.publicBankPassword');
+});
+Route::post('/purchase/publicBankLogin/passwordCheck', [OrderController::class, 'publicBankCheckPassword']);
+Route::get('/publicBank/PayConfirmSession', function(){
+   return view('payment.publicBankConfirmSession');
+});
+Route::post('/publicBank/checkPAC',
+[OrderController::class,'publicCheckPAC']);
+
+//show list of order(xml)
+Route::get('/listOfOrder/xml', [OrderController::class, 'generateXml']);
+
+//show list of customer
+Route::get('/listOfOrder', [OrderController::class, 'showListOfOrder']);
 
 //update customer comment 
 Route::post('/comment', [OrderController::class, 'comment']);
@@ -243,6 +259,14 @@ Route::get("/contactUs", function(){
  Route::get("/FAQ", function(){
     return view("static.FAQ");
  });
+
+ //testing custom error page
+//  Route::get("/500", function(){
+//    return view('errors.500', [
+//       'code' => '500',
+//       'message'=> ''
+//   ]);
+// });
 
  
  

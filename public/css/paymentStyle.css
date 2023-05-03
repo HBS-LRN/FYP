@@ -116,9 +116,9 @@
     margin-right: 10px;
     vertical-align: middle;
 }
-.YesCondition{
+/* .YesCondition{
     display:none;
-}
+} */
 .YesCondition .infor{
     margin: 0%;
 }
@@ -148,4 +148,139 @@
     background-color: rgb(221, 221, 221);
     color: black;
     margin-right: 5px;
+}
+
+.noCondition{
+    
+    display: flex;
+}
+.noCondition input{
+    background-color: rgb(221, 221, 221);
+    color: black;
+    padding: 5px 20px;
+    border: none;
+    margin-top:20px;
+}
+.noCondition input:hover{
+    cursor: pointer;
+}
+.confirmationFormBox{
+    padding: 20px 0px;
+}
+.confirmationFormBox .confirmationForm{
+    width: 45%;
+    margin: 0px auto;
+}
+.confirmationFormBox .confirmationForm .turnBackBox{
+    display: flex;
+   align-items: center;
+}
+.confirmationFormBox .confirmationForm .word{
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(218, 69, 69);
+    margin: 0%;
+}
+.confirmationFormBox .confirmationForm .turnBackBox .turnBackB{
+    background: none;
+    border: none;
+    outline: none;
+}
+.confirmationFormBox .confirmationForm .turnBackBox .turnBackB:hover{
+    cursor: pointer;
+}
+.confirmationFormBox .confirmationForm .turnBackBox .turnBackB .fa-arrow-circle-o-left{
+    color: rgb(220, 100, 100);
+    font-size: 30px;
+}
+.confirmationFormBox .confirmationForm .title{
+    font-weight: 550;
+    margin-left: 0px;
+}
+.confirmationFormBox .confirmationForm .flexBox{
+    display: flex;
+}
+.confirmationFormBox .confirmationForm .flexBox .Boxtitle{
+    flex-basis: 50%;
+}
+.confirmationFormBox .confirmationForm .flexBox .result{
+    font-weight: 700;
+    flex-basis: 50%;
+}
+.confirmationFormBox .confirmationForm .flexBox .result #pac{
+    padding: 5px 10px;
+}
+.confirmationFormBox .confirmationForm .flexBox input[name ="submit"]{
+    padding: 5px 10px;
+    margin-right: 5px;
+    color: white;
+    background-color: rgb(218, 68, 68);
+    outline: none;
+    border: none;
+}
+.confirmationFormBox .confirmationForm .flexBox input[name ="submit"]:hover{
+    cursor: pointer;
+    background-color: rgb(238, 66, 66);
+}
+.popUpBox{
+    width: 100vw;
+    height: 100vh;
+    background:rgba(rgb(187, 181, 181),rgb(187, 181, 181),rgb(187, 181, 181), 0.7);
+}
+.popUpBox .overlay{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color:rgba(rgb(187, 181, 181),rgb(187, 181, 181),rgb(187, 181, 181), 0.7);
+    z-index: 1;
+}
+.popUpBox .content{
+    box-shadow: 0px 0px 10px grey;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 10px 15px;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    width: 600px;
+    height: 300px;
+    z-index: 2;
+}
+.popUpBox .content .close-btn{
+    display: flex;
+}
+.popUpBox .content .close-btn img{
+    flex-basis: 10%;
+}
+.popUpBox .content .close-btn .fas{
+    flex-basis: 90%;
+    text-align: right;
+}
+.popUpBox .content .close-btn .fas:hover{
+    cursor: pointer;
+}
+.popUpBox .content h1{
+    margin: 0px;
+    font-size: 20px;
+    color: white;
+    background-color: rgb(212, 65, 65);
+    padding: 0px 5px;
+}
+.popUpBox .content p{
+    margin: 0%;
+    margin: 5px 0px;
+}
+.popUpBox .content .buttonBox{
+    padding-top: 40px;
+}
+.popUpBox .content .buttonBox button{
+    border: none;
+    color: white;
+    background-color: rgb(218, 68, 68);
+    padding: 5px 10px;
+}
+.popUpBox .content .buttonBox button:hover{
+    cursor: pointer;
 }
