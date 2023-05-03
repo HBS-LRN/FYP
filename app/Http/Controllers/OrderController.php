@@ -138,7 +138,7 @@ class OrderController extends Controller
     
     public function publicCheckPAC(Request $request){
         
-        $SerialNo;
+      
         $PACno = session('PACno');
         $GLOBALS['PACno']=null;
         foreach ( Session::get('publicBank') as $publicBank) {
@@ -178,6 +178,7 @@ class OrderController extends Controller
                     ]
             );
             if($PACno == $request['pac']){
+                $voucherID = Session::get('voucherID');
                 $user = User::find(auth()->user()->id);
                 $order = Session::get('order');
                 $order->save();

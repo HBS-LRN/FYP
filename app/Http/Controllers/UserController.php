@@ -462,8 +462,9 @@ class UserController extends Controller
         // Create XPath object
         $xpath = new DOMXPath($xml);
         // Calculate total quantity ordered and total sell price sold for a particular user
-        $totalQuantity = $xpath->evaluate('sum(//quantity)');
-        $totalPrice = $xpath->evaluate('sum(//totalprice)');
+        $totalQuantity = $xpath->evaluate('sum(//user[@id='.$user_id.']/ordered/meal/quantity)');
+            
+        $totalPrice = $xpath->evaluate('sum(//user[@id='.$user_id.']/ordered/meal/totalprice)');
         //open xsl file
         $xsl = new DOMDocument();
         $xsl->load(public_path('../app/XML/user/userOrderDetail.xsl'));
