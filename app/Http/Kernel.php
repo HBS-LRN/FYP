@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'isAdmin'=>\App\Http\Middleware\AdminMiddleware::class,
         'isStaff'=>\App\Http\Middleware\StaffMiddleware::class,
         'RequireLogin'=>\App\Http\Middleware\RequireLoginMiddleware::class,
+        'log.admin.actions' => \App\Http\Middleware\LogAdminActions::class,
     ];
 }

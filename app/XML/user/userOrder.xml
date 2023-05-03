@@ -219,6 +219,13 @@
         <totalprice currency="RM">12.9</totalprice>
         <date>2023-05-03</date>
       </meal>
+      <meal>
+        <name>Chicken Wonton Cup</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="27">

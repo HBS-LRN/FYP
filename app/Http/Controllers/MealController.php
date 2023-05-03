@@ -13,6 +13,7 @@ use App\Models\Meal;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\AdminLog;
 use App\Models\MealOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -310,5 +311,14 @@ class MealController extends Controller
 
         $html = $proc->transformToXML($xml);
         return response($html)->header('Content-Type', 'text/html');
+    }
+
+    public function log()
+    {
+    $logs = DB::table('admin__logs')
+        ->orderBy('created_at', 'desc')
+        ->paginate(20);
+
+    return view('logs.index', ['logs' => $logs]);
     }
 }

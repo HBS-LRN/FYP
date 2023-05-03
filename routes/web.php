@@ -101,7 +101,7 @@ Route::group(['middleware' => 'isStaff'], function () {
    Route::get('/meal/create', [MealController::class, 'create']);
 
    // Store Meal Data
-   Route::post('/meal/store', [MealController::class, 'store']);
+   Route::post('/meal/store', [MealController::class, 'store'])->middleware('log.admin.actions');
 
    // Show update meal form
    Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
@@ -229,6 +229,8 @@ Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popU
 //show pop up meal
 Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
+//log
+Route::get('/log',[MealController::class, 'log']);
 
 
 //show list of orders
