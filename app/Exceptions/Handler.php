@@ -3,6 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +41,38 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {  
+    if ($exception instanceof ModelNotFoundException) {
+
+        return response()->view('errors.404', [
+            'code'=>404,
+            'message'=>'The requested resource was not found.'
+        ], 404);
+    }
+
+    if ($exception instanceof NotFoundHttpException) {
+        $code = $exception->getStatusCode();
+        $message = Response::$statusTexts[$code];
+
+        return response()->view('errors.404', [
+            'code'=>$code,
+            'message'=>$message
+        ], $code);
+    }
+
+    if ($this->isHttpException($exception) && $exception->getStatusCode() === Response::HTTP_INTERNAL_SERVER_ERROR) {
+        $code = $exception -> getStatusCode();
+        $message = Response::$statusTexts[$code];
+
+        return response()->view('errors.500', [
+            '$code'=>$code,
+            'message'=>$message
+        ],$code);
+    }
+
+    return parent::render($request, $exception);
     }
 }

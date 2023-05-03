@@ -10,18 +10,13 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
-use App\Factories\OrderFactory;
 use Illuminate\Validation\Rule;
-use App\Factories\Interfaces\OrderFactoryInterface;
+
 
 class OrderController extends Controller
 {
 
-    protected $orderFactory;
 
-    public function __construct(OrderFactoryInterface $orderFactory) {
-        $this->orderFactory = $orderFactory;
-    }
 
     public function show()
     {
@@ -198,7 +193,12 @@ class OrderController extends Controller
     }
 
     public function updateMealRating(Request $request){
-        $result = $this->orderFactory->updateMealRating($request);
+        $mealOrderDetail = MealOrderDetail::find($request['mealOrderDetailId']);
+        $data = $request->validate([
+            'reply_comment' => 'max:200',
+        ]);
+
+        $mealOrderDetail->update($data);
         return redirect('/mealRating')->with('successReply', true);
     }
 
@@ -217,13 +217,33 @@ class OrderController extends Controller
     }
   
     public function updateDeliveryClick($id){
-        $result = $this->orderFactory->updateDeliveryClick($id);
+        $orderDetails = MealOrderDetail::where('order_id', $id)->get();
+        
+        foreach($orderDetails as $orderDetail){
+            $orderDetail->meal_order_status ="delivering";
+            $orderDetail->update();
+        }
+
+        $order= Order::find($id);
+        $order->order_status="delivering";
+        $order->save();
+
         return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
     }
 
+
     public function updateCompletedClick($id){
-        $result = $this->orderFactory->updateCompletedClick($id);
+        $orderDetails = MealOrderDetail::where('order_id', $id)->get();
+        
+        foreach($orderDetails as $orderDetail){
+            $orderDetail->meal_order_status ="completed";
+            $orderDetail->update();
+        }
+
+        $order= Order::find($id);
+        $order->order_status="completed";
+        $order->save();
         return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
     }
-  
+    
 }

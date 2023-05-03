@@ -43,7 +43,7 @@ Route::get('/category/create', [CategoryController::class, 'create'])->middlewar
 Route::post('/category/store', [CategoryController::class, 'store']);
 
  // Show admin meal list 
- Route::get('/meal/adshow', [MealController::class, 'showListOfMeals']); /* adshow */
+ Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
 // Show Meal Create Form
 Route::get('/meal/xml', [MealController::class, 'generateXml']);
@@ -243,6 +243,14 @@ Route::get("/contactUs", function(){
  Route::get("/FAQ", function(){
     return view("static.FAQ");
  });
+
+ //testing custom error page
+//  Route::get("/500", function(){
+//    return view('errors.500', [
+//       'code' => '500',
+//       'message'=> ''
+//   ]);
+// });
 
  
  
