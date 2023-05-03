@@ -537,6 +537,12 @@ class UserController extends Controller
     {
         return view('auth.access-prohibited');
     }
+    public function nonAuthenticate()
+    {
+        return view('auth.nonAuthenticate');
+    }
+
+    
     public function showPoint()
     {
         return view('profile.memberPoint');

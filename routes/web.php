@@ -43,6 +43,48 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
 
 
+
+   //Show inventory report
+   Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
+
+   //Show inventory detail report
+   Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
+
+   //Show graph report(xml)
+   Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
+
+   //Show graph report
+   Route::get('/graphReport', [CategoryController::class, 'showGraphReport']); /* showGraphReport  */
+
+   //Show Customer List 
+   Route::get('/customerReport', [UserController::class, 'showCustReport']);
+
+   //Show Customer List 
+   Route::get('/customer', [UserController::class, 'listOutCustomers']);
+
+   //Show Customer List 
+   Route::get('/customer/create', [UserController::class, 'createCustomer']);
+   Route::post('/customer/store', [UserController::class, 'storeCustomer']);
+   //edit user data
+   Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
+   Route::put('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
+   Route::get('/customer/delete/{id}', [UserController::class, 'deleteCustomer']);
+
+
+   //Show Staff List 
+   Route::get('/staff', [UserController::class, 'listOutStaff']);
+
+   //Show Staff List 
+   Route::get('/staff/create', [UserController::class, 'createStaff']);
+   Route::post('/staff/store', [UserController::class, 'storeStaff']);
+   //edit user data
+   Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
+   Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
+   Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
+});
+
+
+Route::group(['middleware' => 'isStaff'], function () {
    Route::get('/category/create', [CategoryController::class, 'create']);
    // Store category Data
    Route::post('/category/store', [CategoryController::class, 'store']);
@@ -86,51 +128,13 @@ Route::group(['middleware' => 'isAdmin'], function () {
    //update meal rating (reply comment)
    Route::put('/mealRating/update', [OrderController::class, 'updateMealRating']);
 
-   //Show inventory report
-   Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
 
-   //Show inventory detail report
-   Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
-
-   //Show graph report(xml)
-   Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
-
-   //Show graph report
-   Route::get('/graphReport', [CategoryController::class, 'showGraphReport']); /* showGraphReport  */
-
-   //Show Customer List 
-   Route::get('/customerReport', [UserController::class, 'showCustReport']);
-
-   //Show Customer List 
-   Route::get('/customer', [UserController::class, 'listOutCustomers']);
-
-   //Show Customer List 
-   Route::get('/customer/create', [UserController::class, 'createCustomer']);
-   Route::post('/customer/store', [UserController::class, 'storeCustomer']);
-   //edit user data
-   Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
-   Route::put('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
-   Route::get('/customer/delete/{id}', [UserController::class, 'deleteCustomer']);
-
-
-   //Show Staff List 
-   Route::get('/staff', [UserController::class, 'listOutStaff']);
-
-   //Show Staff List 
-   Route::get('/staff/create', [UserController::class, 'createStaff']);
-   Route::post('/staff/store', [UserController::class, 'storeStaff']);
-   //edit user data
-   Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
-   Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
-   Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
    //Show user order List 
    Route::get('/userOrderDetail/{id}', [UserController::class, 'showCustOrderDetail']);
 
    //check authorized password
    Route::get('/checkPassword/{id}', [UserController::class, 'checkPassword']);
 });
-
-
 //proctected route
 Route::group(['middleware' => 'RequireLogin'], function () {
 
@@ -201,8 +205,10 @@ Route::group(['middleware' => 'RequireLogin'], function () {
 
 // Show All category Data
 Route::get('/category/show', [CategoryController::class, 'show']);
-// show category Data
+
 Route::get('/accessDenied', [UserController::class, 'accessDenied']);
+Route::get('/nonAuthenticated', [UserController::class, 'nonAuthenticate']);
+
 
 //search meal
 Route::get('/search', [MealController::class, 'search']);

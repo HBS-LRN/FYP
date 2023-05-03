@@ -89,7 +89,7 @@
             <div class="profile-content" style="padding-left: 30px;">
                 <div class="profile-namejob">
 
-                    <div class="profile_name">Tee Fo Yo</div>
+                    <div class="profile_name">John</div>
 
                     <div class="job_role">Admin</div>
                 </div>

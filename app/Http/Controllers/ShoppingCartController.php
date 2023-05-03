@@ -255,7 +255,35 @@ class ShoppingCartController extends Controller
 
         
         if($request['paymethod'] == 'PayOnDelivery'){
-            $order->save();
+            $order->save(); 
+
+            //update xml file (hbs)
+         $xml3 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
+         $listOfOrder = Order::find($order->id);
+         //new order element
+         $newlistOfOrder  =  $xml3->addChild('order');
+         $newlistOfOrder->addAttribute('id', $listOfOrder->id);
+         $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
+         $newlistOfOrder->addChild('order_total', $listOfOrder->order_total);
+         $newlistOfOrder->addChild('delivery_fee', $listOfOrder->delivery_fee);
+         $newlistOfOrder->addChild('order_status', $listOfOrder->order_status);
+
+         $newlistOfOrder->addChild('payment_status', $listOfOrder->payment_status);
+         $newlistOfOrder->addChild('payment_method', $listOfOrder->payment_method);
+         $newlistOfOrder->addChild('order_date', $listOfOrder->order_date);
+
+          //save modified xml (hbs)
+          $xml3->asXML('../app/XML/order/listOfOrder.xml');
+    
+          //format XML
+          $xmlString3 = $xml3->asXML();
+          $dom3 = new DOMDocument;
+          $dom3->preserveWhiteSpace = false;
+          $dom3->loadXML($xmlString3);
+          $dom3->formatOutput = true;
+          $xmlStringFormatted3 = $dom3->saveXML();
+          file_put_contents('../app/XML/order/listOfOrder.xml', $xmlStringFormatted3);
+            //get the current user address to set to delivery
             $address = $user->addresses->where('active_flag', '=', 'T');
 
             //create new delivery 
