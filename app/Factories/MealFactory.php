@@ -19,7 +19,7 @@ class MealFactory implements MealFactoryInterface
             'meal_qty' => 'required|integer|min:1',
             'meal_name' => 'required',
             'category_id' => 'required',
-            'meal_image' => 'required'
+            'meal_image' => 'required|mimes:jpeg,png,jpg,gif'
         ], [
             'meal_price.required'    => 'Please Provide A Meal Price',
             'meal_price.numeric'    => 'Please Provide A Number',
@@ -48,8 +48,8 @@ class MealFactory implements MealFactoryInterface
             'meal_price' => 'required|numeric|min:0',
             'meal_qty' => 'required|integer|min:0',
             'meal_name' => 'required',
-            'category_id' => 'required'
-
+            'category_id' => 'required',
+            'meal_image' => 'mimes:jpeg,png,jpg,gif'
         ], [
             'meal_price.required'    => 'Please Provide A Meal Price',
             'meal_price.numeric'    => 'Please Provide A Number',
@@ -92,7 +92,7 @@ class MealFactory implements MealFactoryInterface
     {
         
         $totalQuantity = 0;
-        $meals= MealOrderDetail::where('meal_id',$id)->get();
+        $meals = MealOrderDetail::where('meal_id', '=', $id)->get();
 
         $totalQuantity = 0;
 
@@ -105,8 +105,8 @@ class MealFactory implements MealFactoryInterface
 
     public function showRevenue($id){
         $totalRevenue = 0; 
-        $meals= MealOrderDetail::where('meal_id',$id)->get();
-
+        $meals = MealOrderDetail::where('meal_id', '=', $id)->get();
+        
         foreach ($meals as $mealOrder) {
             $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
             }

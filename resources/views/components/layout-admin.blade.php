@@ -36,7 +36,7 @@
                         <li><a href="meal/adshow">
                                 <p>List Of Meal</p>
                             </a></li>
-                        <li><a href="../staff/ManageInventory.aspx">
+                        <li><a href="/showInventory">
                                 <p>Manage Stock</p>
                             </a></li>
                     </ul>

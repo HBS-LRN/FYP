@@ -17,6 +17,7 @@ use App\Models\MealOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use App\Factories\MealFactory;
 use App\Factories\Interfaces\MealFactoryInterface;
@@ -32,7 +33,7 @@ class MealController extends Controller
 
     public function index($id)
     {
-
+       
         $category = Category::find($id);
 
         $client = new Client([
@@ -74,17 +75,12 @@ class MealController extends Controller
             $meals = Meal::where('meal_name', 'like', '%' . $request->search . '%')
                 ->orWhere('meal_price', 'Like', '%' . $request->search . '%')->get();
 
-
-
-
-
             if (count($meals) > 0) {
 
                 foreach ($meals as $meal) {
 
                     $output .= "<p class='srcP'> <a class='productA' href='/mealpopups/" . $meal->id . "'>";
                     $output .= "<img class='imgSrc' src=" . asset('storage/' . $meal->meal_image) . ">" . $meal->meal_name . "</a></p>";
-
 
                     //<img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
                     //  alt="" />
@@ -268,7 +264,7 @@ class MealController extends Controller
     public function showInventoryReportDetail($id)
     {
         return view('staff.inventoryReportDetail',[
-            'mealOrderDetails'=>MealOrderDetail::where('meal_id',$id)->get(),
+            'mealOrderDetails' => MealOrderDetail::where('meal_id', '=', $id)->get(),
             'meal'=>Meal::find($id)
         ]);
     }

@@ -38,6 +38,15 @@
             background-color: rgb(165, 200, 245);
         }
 
+          .scroll-wrap {
+            overflow: auto;
+            height: 230px;
+        }
+
+        .box4 {
+            margin-bottom: 400px;
+            min-height: 550px;
+        }
         .delete {
             margin-top:10px;
         }

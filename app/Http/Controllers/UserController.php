@@ -10,6 +10,7 @@ use XSLTProcessor;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\MealOrderDetail;
 use SimpleXMLElement;
 use GuzzleHttp\Client;
 use App\Events\UserDelete;
@@ -543,8 +544,44 @@ class UserController extends Controller
 
     public function showDashboard()
     {
-        return view('staff.dashboard');
+        $today = Carbon::today();
+        $customerCount = User::where('role', 0)->filter(request(['search']))->count();
+        
+        $customerOrderCount = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
+            $query->whereDate('order_date', $today);
+        })->count();
+
+        $commentCount = MealOrderDetail::whereNotNull('rating_comment')->count();
+       
+        $todayEarnings = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
+            $query->whereDate('order_date', $today);
+        })->get();
+
+        $earning = 0;
+        foreach ($todayEarnings as $mealOrderDetail) {
+            $earning += $mealOrderDetail->meal->meal_price * $mealOrderDetail->order_quantity;
+        }
+
+        $customerOrders = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
+            $query->whereDate('order_date', $today);
+        })->get();
+    
+        $customers = User::where('role', 0)->filter(request(['search']))->get();
+
+        return view('staff.dashboard', [
+            'customerCount' => $customerCount,
+            'customerOrderCount' => $customerOrderCount,
+            'commentCount'=> $commentCount,
+            'earning' =>$earning,
+            'customerOrders' => $customerOrders,
+            'customers'=>$customers
+        ]);
+
+        
     }
+
+
+
     public function createCustomer()
     {
         return view('user.create');
