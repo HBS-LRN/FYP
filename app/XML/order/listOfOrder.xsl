@@ -50,7 +50,7 @@
             }
 
             .detailBtnBox .orderDetail {
-                padding:5px 10px;
+                padding:5px 5px;
                 border: 1px solid black;
                 border-radius: 5px;
                 background-color: #95adbe;
@@ -79,6 +79,26 @@
                 text-align:center;
             }
             
+             
+    .scroll-wrap {
+        overflow:auto;
+        height: 530px;
+
+    }
+    .scroll-wrap::-webkit-scrollbar {
+  width: 0;
+  height:0;
+}
+
+.scroll-wrap::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 1em;
+}
+    
         </style>
     </head>
 <body>
@@ -115,7 +135,7 @@
                                 <td style="border:1px solid grey;">
                                     <a href="orderDetails/show/{position()}">
                                     <label for="lblOrderNumber">
-                                    <xsl:value-of select="position()"/>
+                                    <xsl:value-of select="@id"/>
                                     </label>
                                     </a>
                                 </td>
@@ -128,7 +148,7 @@
                                 <td style="border:1px solid grey;"><label for="lblOrderTotal"><xsl:value-of select="format-number(order_total, '0.00')"/></label></td>
                                 <td style="border:1px solid grey;"><label for="lblPaymentMethod"><xsl:value-of select="payment_method"/></label></td>
                                 <td id="result" style="color: red; border:1px solid grey;"><label for="lblOrderStatus"><xsl:value-of select="order_status"/></label></td>
-                                <td class="detailBtnBox" style="border:1px solid grey;"><a id="btnOrderDetail" class="orderDetail" href="orderDetails/show/{position()}">Order Detail</a></td>
+                                <td class="detailBtnBox" style="border:1px solid grey;"><a id="btnOrderDetail" class="orderDetail" href="orderDetails/show/{@id}">Order Detail</a></td>
                             </tr>
                         </xsl:for-each>
 

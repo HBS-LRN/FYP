@@ -110,4 +110,13 @@
     <payment_method>PayOnDelivery</payment_method>
     <order_date>2023-05-03</order_date>
   </order>
+  <order id="1">
+    <user_id>6</user_id>
+    <order_total>62.1</order_total>
+    <delivery_fee>4.5</delivery_fee>
+    <order_status>preparing</order_status>
+    <payment_status>Y</payment_status>
+    <payment_method>PayOnDelivery</payment_method>
+    <order_date>2023-05-03</order_date>
+  </order>
 </orders>

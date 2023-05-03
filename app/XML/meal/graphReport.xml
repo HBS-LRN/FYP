@@ -270,4 +270,27 @@
       <quantity>1</quantity>
     </meal>
   </order>
+  <order id="1">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Spicy Bamboo Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>
