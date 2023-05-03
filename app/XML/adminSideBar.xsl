@@ -89,7 +89,7 @@
             <div class="profile-content" style="padding-left: 30px;">
                 <div class="profile-namejob">
 
-                    <div class="profile_name">Tee Fo Yo</div>
+                    <div class="profile_name">John</div>
 
                     <div class="job_role">Admin</div>
                 </div>
@@ -100,17 +100,17 @@
         </div>
 
     </div>
-<script type="text/javascript">
-      let arrow = document.querySelectorAll(".arrow");
-      
-      for (var i = 0; i < arrow.length; i++) {
-        arrow[i].addEventListener("click", (e)=>{
-       let arrowParent = e.target.parentElement.parentElement;
-       console.log(arrowParent);
-       arrowParent.classList.toggle("showSubMenu");
-        });
-      }
- </script>
-
+    <script type="text/javascript">
+<![CDATA[
+          let arrow = document.querySelectorAll(".arrow");
+          for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+              let arrowParent = e.target.parentElement.parentElement;
+              console.log(arrowParent);
+              arrowParent.classList.toggle("showSubMenu");
+            });
+          }
+        ]]>
+</script>
 </xsl:template>
 </xsl:stylesheet>
