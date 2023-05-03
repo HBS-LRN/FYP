@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FreeGiftController;
 use App\Http\Controllers\ShoppingCartController;
 
 /*
@@ -48,7 +49,7 @@ Route::post('/category/store', [CategoryController::class, 'store']);
 Route::get('/meal/xml', [MealController::class, 'generateXml']);
 
 // Show Meal Create Form
-Route::get('/meal/create', [MealController::class, 'create'])->middleware('isAdmin');
+Route::get('/meal/create', [MealController::class, 'create']);
 
 // Store Meal Data
 Route::post('/meal/store', [MealController::class, 'store']);
@@ -185,7 +186,7 @@ Route::get('/address', [AddressController::class, 'index'])->name('address')->mi
 // Create New adress
 Route::post('/address/store', [AddressController::class, 'store'])->middleware('auth');
 // Show Create Form
-Route::get('/address/create', [AddressController::class, 'create'])->middleware('auth');
+Route::get('/address/create', [AddressController::class, 'create']);
 
 // Show Create Form
 Route::get('/addresseEdit/{id}', [AddressController::class, 'edit'])->middleware('auth');
@@ -232,7 +233,7 @@ Route::get('/memberPoint', [UserController::class, 'showPoint'])->middleware('au
 
 
 //web servcie
-Route::get('/voucher', [VoucherController::class, 'show'])->middleware('auth');
+Route::get('/voucher', [VoucherController::class, 'showAllVouchers'])->middleware('auth');
 //web servcie
 Route::get('/voucher/{id}', [VoucherController::class, 'store']);
 Route::post('/update/voucher', [VoucherController::class, 'update']);
@@ -242,7 +243,9 @@ Route::get('/webServiceRegister', [VoucherController::class, 'storeWebServiceCli
 Route::get('/gift', [GiftController::class, 'index']);
 Route::post('/gift/store', [GiftController::class, 'store']);
 
-   
+//web service (free gift)
+Route::get('/freeGiftInfo',[FreeGiftController::class,'index']);
+
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
 

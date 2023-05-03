@@ -170,7 +170,7 @@
 
 
             <div class="deleteBtnSubmit">
-                <button id="delete" class="deleteBtnStaff">Delete</button>
+                <button id="delete" class="deleteBtnStaff">Create</button>
 
             </div>
 

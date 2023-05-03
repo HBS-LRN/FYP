@@ -16,6 +16,17 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         parent::__construct(User::class);
     }
 
+     //only specified method base repository doest not support need to be created
+     public function updatePassword(User $user, $password)
+     {
+         if (Hash::check($password, auth()->user()->password)) {
+             $user->password = bcrypt($password);
+             $user->update();
+             return true;
+         }
+         return false;
+     }
+
     //user repository 
     public function create($data): User
     {
@@ -23,16 +34,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
-    //only specified method base repository doest not support need to be created
-    public function updatePassword(User $user, $password)
-    {
-        if (Hash::check($password, auth()->user()->password)) {
-            $user->password = bcrypt($password);
-            $user->update();
-            return true;
-        }
-        return false;
-    }
+   
 
     //generete a private token via 
     public function generatePrivateToken($user)

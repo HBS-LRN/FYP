@@ -35,7 +35,7 @@ class UserTest extends TestCase
     {
         $data = [
             'name' => 'Test User',
-            'email' => 'test1@example.com',
+            'email' => 'test9@example.com',
             'password' => 'nNneeE445567&a',
             'password_confirmation' => 'nNneeE445567&a',
 

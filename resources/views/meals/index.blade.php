@@ -88,6 +88,22 @@
                 margin: 10px;
                 text-align: center;
             }
+
+            .itemBar .item  {
+                position: relative;              
+            }
+
+            .gift-icon {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+
+            .gift-icon img {
+                width: 40px;
+                height: 40px;
+                border-radius:25px;
+            }
         </style>
 
 
@@ -125,7 +141,6 @@
 
         <div class="ItemBlock">
 
-
             <div class="itemBar" > 
 
                 @forelse($meals as $meal)
@@ -143,6 +158,13 @@
                             </div>
                             <p class="price">RM{{ $meal->meal_price }}</p>
                         </a>
+                        @foreach($mealFreeGifts as $mealFreeGift)
+                        @if($meal->id == $mealFreeGift['meal_id'])
+                        <div class="gift-icon">
+                            <img src="../image/freegift.jpg" alt="Free Gift">
+                        </div>
+                        @endif
+                        @endforeach
                     </button>
 
                     </div>

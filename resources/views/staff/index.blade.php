@@ -44,11 +44,11 @@
         }
 
         .staffListTd p {
-            margin:0px;
-            margin:10px;
-            display:flex;
-            justify-content:center;
-            
+            margin: 0px;
+            margin: 10px;
+            display: flex;
+            justify-content: center;
+
         }
 
         .staffListTd .delete {
@@ -98,16 +98,18 @@
             font-weight: bolder;
             font-size: 20px;
         }
-        .col-sm-6:last-child .input-sm{
-             display:none; 
-            
+
+        .col-sm-6:last-child .input-sm {
+            display: none;
+
         }
-        .input-sm1{
-            position:absolute;
-            width:200px;
-            left:61%;
-            top:20.5%;
-            z-index:2;
+
+        .input-sm1 {
+            position: absolute;
+            width: 200px;
+            left: 61%;
+            top: 20.5%;
+            z-index: 2;
         }
     </style>
 </head>
@@ -143,14 +145,16 @@
 
                     <table id="example" class="table table-striped">
                         <thead class="staffListThead">
-                            <tr class="staffListTr" style="background-color: rgb(165, 200, 245);">
-                                <th class="staffListTh" width="5%">Staff ID</th>
-                                <th class="staffListTh" width="20%">Staff Name</th>
+                            <tr class="staffListTr"
+                                style="background-color: rgb(165, 200, 245); border:1px solid grey;">
+                                <th class="staffListTh" style="border:1px solid grey;" width="5%">Staff No</th>
+                                <th class="staffListTh" style="border:1px solid grey;" width="20%">Staff Name</th>
 
-                                <th class="staffListTh" width="10%">Staff Email</th>
-                                <th class="staffListTh" width="15%">Staff Telephone</th>
-                                <th class="staffListTh" width="10%">Staff Role</th>
-                                <th class="staffListTh" width="10%">Action</th>
+                                <th class="staffListTh" style="border:1px solid grey;" width="10%">Staff Email</th>
+                                <th class="staffListTh" style="border:1px solid grey;" width="15%">Staff Telephone
+                                </th>
+                                <th class="staffListTh" style="border:1px solid grey;" width="10%">Staff Role</th>
+                                <th class="staffListTh" style="border:1px solid grey;"width="10%">Action</th>
                             </tr>
                         </thead>
                         <tbody id="search">
@@ -164,13 +168,11 @@
 
                                     <td class="staffListTd" style="border:1px solid grey;">
                                         @foreach ($roles as $role)
-                                        @if($role->id == $user->role)
+                                            @if ($role->id == $user->role)
+                                                {{ $role->name }}
+                                            @endif
+                                        @endforeach
 
-                                        {{ $role->name }}
-                                        @endif
-                                       
-                                    @endforeach
-                
                                     <td class="staffListTd" style="border:1px solid grey;">
                                         <p><a class="edit" href="/staff/edit/{{ $user->id }}">Edit</a></p>
                                         <p><a class="delete" href="/staff/delete/{{ $user->id }}">Delete </a></p>
@@ -200,13 +202,13 @@
         <%Session.Remove("successfullyUpdate"); %>
         <%}%> -->
 
-    
-       
+
+
         <script>
-               $(document).ready(function() {
+            $(document).ready(function() {
                 $('#example').DataTable();
             });
-           
+
             $('.delete').on('click', function(e) {
                 e.preventDefault();
                 const href = $(this).attr('href')
@@ -229,18 +231,18 @@
                             autocapitalize: 'off'
                         },
                         showCancelButton: true,
-                        confirmButtonText: 'Look up',
+                        confirmButtonText: 'Delete',
                         showLoaderOnConfirm: true,
                         customClass: 'swal-wide',
 
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
-                       
-                       
+
+
                         if (result.isConfirmed) {
 
                             console.log(`${result.value}`);
-                            if (`${result.value}` == 'S00'+{{ auth()->user()->id }}) {
+                            if (`${result.value}` == 'S00' + {{ auth()->user()->id }}) {
                                 document.location.href = href;
                             } else {
                                 Swal.fire({
@@ -252,7 +254,7 @@
                                     showClass: {
                                         popup: 'animate__animated animate__fadeInDown'
                                     }
-                                    
+
                                 })
                             }
 

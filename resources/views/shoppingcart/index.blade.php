@@ -86,7 +86,6 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-
                 background-color: #FF9900;
                 border-radius: 50%;
                 transform: rotate(360deg);
@@ -101,6 +100,118 @@
                 font-weight: bold;
                 color: #444;
             }
+
+            .giftList {
+                display: none; 
+                position: fixed; 
+                z-index: 1; 
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.6); 
+            }
+
+            .gifts-content {
+                background-color: #dbc9b6;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 40%;
+                max-height: 70%;
+                overflow-y: scroll;
+                overflow-x:hidden;
+                justify-content:space-between;
+
+            }
+
+            #giftButton{
+                white-space: nowrap;
+                padding-right:55px;
+            }
+
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }   
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+           div.gift {
+            width: 97%;
+            margin-bottom: 20px;
+            background-color: lightgray;
+            padding: 10px;
+            border-radius: 5px;
+            
+            }
+
+            img.giftimg{
+             width:160px;
+             height:140px;
+             margin:10px 30px 10px 20px;
+             border:2px solid lightgrey;
+            }
+
+            img.giftimg,p.giftcontent{
+                display:inline-block;
+                vertical-align:middle;
+            }
+
+            p.giftcontent{
+                font-style:italic;
+                font-weight:bold;
+                font-family:Verdana, sans-serif;
+
+            }
+
+            h2.gifts-heading{
+                text-align:center;
+            }
+
+            img.no-gift{
+                display:table;
+                margin:auto;
+                width:260px;
+                height:220px;
+            }
+
+            p#no-gift{
+                font-weight:bold;
+                text-align:center;
+                font-style:italic;
+                color:grey;
+            }
+           
+
+            p#supply{
+                text-align:center;
+                margin-bottom:0;
+                color:black;
+                font-size:8px;  
+            }
+
+            a#more-gifts{
+                display:table;
+                margin:auto;
+                text-align:center;
+                text-decoration:none;
+                color:grey;
+            }
+
+            a#more-gifts:hover{
+                color:black;
+                background-color:lightgrey;
+            }
+
 
             /* .redeem{
     margin-top: 70px;
@@ -160,8 +271,6 @@
                 </div>
                 @unless(count($shoppingCarts) == 0)
                     <div class="scroll-wrap" id="itemFound" runat="server">
-
-
 
                         @foreach ($shoppingCarts as $shoppingCart)
                             <div class="product-items">
@@ -309,6 +418,49 @@
                             </form>
                         </div>
                     </div>
+
+                    <div class="flex-form">
+                        <div class="shipping">
+                            <h2>Free Gifts</h2>
+                        </div>
+                        <span class="moreVouchers" id="giftButton">View Your Free Gifts</span>
+                        <div id="giftList" class="giftList">
+                            <div class="gifts-content">
+                            <span class="close">&times;</span>
+                            @unless(count($gifts)==0)
+                            <h2 class="gifts-heading">Your Free Gifts : </h2>
+
+                           
+                            
+                            @foreach ($gifts as $gift)
+                             @if($gift['qty']!=0 && $gift['status']=='Y')
+                            <div class="gift">
+                            <img src="../{{$gift['image']}}" class="giftimg" alt="" />
+                            <p class="giftcontent"><span>{{$gift['name']}}</span></p>
+                            
+                            </div>
+                            @else
+                            <div class="gift">
+                            <img src="../{{$gift['image']}}" class="giftimg" alt="" />
+                            <p class="giftcontent"><span style="color:red;"> **Temporarily Unavailable </span></p>
+                            
+                            </div>
+                            @endif
+                            @endforeach
+                            @else
+                            <div id="no-gift">
+                            <img src="../image/emptygift.png" class="no-gift" alt="no-gift">
+                            <p id="no-gift"> **You haven't order meal with gift yet... </p>
+                            </div>
+                            @endunless
+                            <a href="/freeGiftInfo" id="more-gifts">View all gifts details</a>
+                            <p id="supply"> &#169 2023 Supply by Frachis&#8482</p>
+                        </div>
+                    </div>
+                      
+                    </div>
+
+
                     <div class="flex-form">
                         <div class="Total">
                             <h2>Total</h2>
@@ -320,23 +472,15 @@
                         </div>
                     </div>
 
-
-
-
                     <div class="flex-form">
                         <a class="check-out" href="/checkout">
                             Check Out
                         </a>
                     </div>
 
-
-
                 </div>
             </div>
         </div>
-
-
-
 
 
     </div>
@@ -469,5 +613,25 @@
 
             })
         }
-    </script>
+
+        var modal = document.getElementById("giftList");
+        var giftBtn = document.getElementById("giftButton");
+        var span = document.getElementsByClassName("close")[0];
+
+        giftBtn.onclick = function() {
+        modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+            modal.style.display = "none";
+            }
+        }
+        </script>
+
+
 </x-layout-customer>

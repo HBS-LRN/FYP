@@ -141,7 +141,7 @@
                     <table id="example" class="table table-striped">
                         <thead class="custListThead">
                             <tr class="custListTr" style="background-color: rgb(165, 200, 245);">
-                                <th class="custListTh" width="5%">Cusomer ID</th>
+                                <th class="custListTh" width="5%">Cusomer No</th>
                                 <th class="custListTh" width="20%">Customer Name</th>
 
                                 <th class="custListTh" width="10%">Customer Email</th>
@@ -228,7 +228,7 @@
                             autocapitalize: 'off'
                         },
                         showCancelButton: true,
-                        confirmButtonText: 'Look up',
+                        confirmButtonText: 'Delete',
                         showLoaderOnConfirm: true,
                         customClass: 'swal-wide',
 
