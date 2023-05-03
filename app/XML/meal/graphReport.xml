@@ -90,6 +90,160 @@
       <quantity>1</quantity>
     </meal>
   </order>
-  
-  
+  <order id="17">
+    <date>2023-04-27</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="18">
+    <date>2023-04-27</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="19">
+    <date>2023-04-27</date>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="20">
+    <date>2023-04-27</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="21">
+    <date>2023-04-28</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="22">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="24">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="25">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="26">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="28">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Spicy Bamboo Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="29">
+    <date>2023-04-29</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="36">
+    <date>2023-04-30</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="37">
+    <date>2023-04-30</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="39">
+    <date>2023-04-30</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="42">
+    <date>2023-04-30</date>
+    <meal>
+      <name>Hua-Juan-Scallion-Buns</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="57">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Chicken Wonton Cup</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="58">
+    <date>2023-05-03</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chinese Lemon Chicken Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>

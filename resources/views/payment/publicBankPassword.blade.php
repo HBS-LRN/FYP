@@ -43,7 +43,14 @@
                 <div class="bankImgHeader"><img src="../../image/publicBankLogo.png" alt="" srcset=""></div>
             </div>
               <?php 
-                foreach ($publicBankAccount as $account) {
+            //   $publicBankAccount[] = Session::get('publicBank');
+            // //   dd($publicBankAccount);
+            //   dd(Session::get('publicBank'));
+              $user_id = Session::get('publicBank_ID');
+              
+            // print(Session::get('publicBank'));
+            
+                foreach (Session::get('publicBank') as $account) {
                     if($account['user_id']==$user_id){
                         $accountSign= $account['account_sign'];
                         $userName = $account['user_name'];
@@ -51,18 +58,19 @@
                 }
               
               ?>
-               
+              
                 <div class="paymentBox">
                     <div class="loginBox">
-                        <form class="loginForm" action="/purchase/publicBankLogin/password" method="post">
+                        <form class="loginForm" action="/purchase/publicBankLogin/passwordCheck" method="POST">
                             @csrf 
+                           
                             <div class="accountSignBox">
                                 <span class="accountSign">{{$accountSign}}</span>
                             </div>
                             <p class="confirmInfo">
                                 Is your Personal Login Phrase correct?
                             </p>
- 
+                            <input type="hidden" name="user_id" value="{{$user_id}}">
                             <div class="confirmButtonBox">
                                 <div class="YesBox">
                                     <input type="radio" name="radBox" id="radBox1" value="yes"> Yes
@@ -76,7 +84,7 @@
                                     If this is not your Personal Login Phrase, do not proceed to login.
                                 </p>
                                 <p class="infor">
-                                    Conact PBe Customer Support at 03-2179 5000 for assistance.
+                                    Contact PBe Customer Support at 03-2179 5000 for assistance.
                                 </p>
                                 <div class="userNameBox">
                                     <input type="text" name="user_name" id="user_name" value="{{$userName}}" disabled>
@@ -86,14 +94,20 @@
                             <input type="password" name="password" id="password" placeholder="User Password">
                             <i class="fas fa-lock"></i>
                         </div>
+                        @if($errors->has('password'))
+                                <div class="error">{{ $errors->first('password') }}</div>
+                            @endif
                         <div class="LoginButtonBox">
-                                <input type="submit" name="" value="Back"><input type="submit" value="Login">
+                                <input type="submit" name="submit" value="Back"><input name="submit" type="submit" value="Login">
                             </div>
                             </div>
                             
-                            
+                            <div class="noCondition" id="noCondition">
+                            <input type="submit" name="submit" value="Back">
+                    </div>
                         </form>
                     </div>
+                    
                     <div class="otherFunctionBox">
                             <p class="infoTitle">New to PBe?</p>
                             <ul>
@@ -110,21 +124,35 @@
                     </div>
                 </div>
 </div>
-<!-- <p id="showshow"></p> -->
+<script>
+        const yesCond = document.getElementById("YesCondition");
+    </script>
+@if($errors->has('password'))
+    <script>
+        yesCond.style.display="inherit";
+    </script>
+    @else 
+    <script>
+        yesCond.style.display="none";
+    </script>      
+@endif
             <script>
                 
-                var yesCond = document.getElementById("YesCondition");
+               
+                const noCond = document.getElementById("noCondition");
                 const radioSelection1 = document.getElementById("radBox1");
                 const radioSelection2 = document.getElementById("radBox2");
-                yesCond.style.display="none";
+                
+                noCond.style.display="none";
                 radioSelection1.addEventListener("click",getRadioValueFunction);
 
                 function getRadioValueFunction(){
                     if(radioSelection1.checked===true){
-                        // document.getElementById("showshow").innerHTML = radioSelection1.value
                         yesCond.style.display="inherit";
+                        noCond.style.display="none";
                     }else{
-                        // document.getElementById("showshow").innerHTML = "No";
+                        yesCond.style.display="none";
+                        noCond.style.display="flex";
                     }
                     
                 }
@@ -133,10 +161,11 @@
 
                 function getRadioValueFunction(){
                     if(radioSelection2.checked===true){
-                        // document.getElementById("showshow").innerHTML = radioSelection2.value
                         yesCond.style.display="none";
+                        noCond.style.display="flex";
                     }else{
-                        // document.getElementById("showshow").innerHTML = "Yes";
+                        yesCond.style.display="inherit";
+                        noCond.style.display="none";
                     }
                     
                 }

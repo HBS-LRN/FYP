@@ -6,17 +6,21 @@ use App\Models\MealOrderDetail;
 use App\Models\Order;
 use App\Models\Meal;
 use App\Models\Category;
+use App\Models\ShoppingCart;
+use App\Models\Delivery;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use App\Factories\OrderFactory;
 use Illuminate\Validation\Rule;
 use App\Factories\Interfaces\OrderFactoryInterface;
-<<<<<<< HEAD
-use Illuminate\Support\Facades\Validator;
-=======
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use DOMXPath;
+use DOMDocument;
+use SimpleXMLElement;
 
 class OrderController extends Controller
 {
@@ -64,30 +68,6 @@ class OrderController extends Controller
             'completeOrder' => $completeOrder
         ]);
     }
-    public function publicBankLogin(){
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/api/',
-            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-        ]); 
-
-        //get vouchers details api through webservices through the bearer token 
-        $response = $client->get('publicBank', [
-
-            'headers' => [
-                'Accept' => 'application/json',
-
-            ]
-
-
-        ]);
-        $publicBank = json_decode($response->getBody(), true);
-        $userID=array();
-        foreach($publicBank as $PBuserID){
-            $userID[]=$PBuserID['user_id'];
-        }
-        
-        return view('payment.publicBankLogin',['userID'=>$userID]);
-    }
 
     public function publicBankCheckUserID(Request $request){
 
@@ -114,30 +94,335 @@ class OrderController extends Controller
                 $validateUserID = true;
             }
         }
+        
         $data = $request->validate(
             ['user_id' => 'required'],
             ['user_id.required' => 'The user id is required']
         );
 
-        // $validator = Validator::make($request->all(),[
-        //     'user_id' => [
-        //         'required' => 'The ID field is required.',
-        //         Rule::notIn($userID) => 'The selected ID is invalid or undefined.',
-        //     ],
-        // ],[
-        //     'user_id.required' => 'The ID field is required.',
-        //     'user_id.in' => 'The selected ID is invalid or undefined.',
-        // ]);
-        
-        // if ($validator->fails()) {
-        //     return redirect('/purchase/publicBankLogin')->back()->withErrors($validator)->withInput();
-            
-        // }
         if(!$validateUserID){
+           
             return back()->withErrors(['user_id' => 'Undefine User ID'])->onlyInput('user_id');
         }
-        return view('payment.publicBankPaySession',['user_id'=>$request['user_id'],'publicBankAccount'=>$publicBank]);
+        Session::put('publicBank_ID',$request['user_id']);
+        Session::put('publicBank',$publicBank);
+        return redirect('/publicBank/password');
 
+
+    }
+
+    public function publicBankCheckPassword(Request $request){
+        if($request['submit'] == "Back"){
+            return redirect('/publicBankLogin');
+        }
+        
+        $data = $request->validate(
+            ['password' => 'required'],
+            ['password.required' => 'The password is required']
+        );
+        
+        $passwordValidate = true;
+        foreach (Session::get('publicBank') as $publicBankUser) {
+            if($publicBankUser['user_id'] == $request['user_id']){
+                if($publicBankUser['password'] == $request['password']){
+                    $passwordValidate = false;
+                }
+            }
+        }
+        if($passwordValidate){
+            return back()->withErrors(['password' => 'Incorrect Password'])->onlyInput('password');
+        }
+        
+        return redirect('publicBank/PayConfirmSession');
+            
+
+    }
+    
+    public function publicCheckPAC(Request $request){
+        
+        $SerialNo;
+        $PACno = session('PACno');
+        $GLOBALS['PACno']=null;
+        foreach ( Session::get('publicBank') as $publicBank) {
+            if($publicBank['user_id'] == Session::get('publicBank_ID')){
+                $user_email = $publicBank['user_email'];
+                $user_name = $publicBank['user_name'];
+            }
+        }
+        date_default_timezone_set("Asia/Kuala_Lumpur"); 
+        $date=date_create(date(DATE_RFC822));
+        $todate = date_format($date,"d M y H:i:s");
+        $order = Session::get('order');
+        $totalAmount = $order->order_total + $order->delivery_fee;
+        if($request['submit']=="Request PAC Now"){
+            $PACno = rand(100000,999999);
+            $SerialNo = rand(100000,999999);
+            $data = array(
+                'PAC_No' => $PACno,
+                'SerialNo' => $SerialNo, 
+                'totalAmount'=> $totalAmount,
+                'date' => $todate
+            );
+        Mail::send('payment.MailPAC', $data, function ($message) use ($user_email, $user_name) {
+            $message->from('noreply@gmail.com', 'Public Bank');
+            $message->to($user_email, $user_name)
+                ->subject('PAC No');
+                
+        });
+        session(['PACno' => $PACno]);
+        return back()->with('SendSuccessful', true);
+        }else if($request['submit']=="Confirm"){
+            $data = $request->validate(
+                [
+                    'pac' => 'required'
+                ],[
+                    'pac.required' => 'Pls Click the button of "Request PAC Now" for getting PAC'
+                    ]
+            );
+            if($PACno == $request['pac']){
+                $user = User::find(auth()->user()->id);
+                $order = Session::get('order');
+                $order->save();
+            $address = $user->addresses->where('active_flag', '=', 'T');
+
+            //create new delivery 
+    
+            $delivery['order_id'] = $order->id;
+            $delivery['username'] =  $address[0]->address_username;
+            $delivery['userphone'] = $address[0]->address_userphone;
+            $delivery['street'] = $address[0]->street;
+            $delivery['area'] = $address[0]->area;
+            $delivery['postcode'] = $address[0]->postcode;
+    
+            $memberPoint = 0;
+            Delivery::create($delivery);
+         //update xml file (cy)
+         $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
+         $graphOrder = Order::find($order->id);
+         //new order element
+         $newGraphOrder  =  $xml2->addChild('order');
+         $newGraphOrder->addAttribute('id', $graphOrder->id);
+         $newGraphOrder->addChild('date', $graphOrder->order_date);
+            foreach ($user->meals as $meal) {
+
+                //find the meal 
+                $selectedMeal = Meal::find($meal->id);
+          
+                $quantityOrdered = $meal->pivot->shopping_cart_qty;
+                //update xml file
+                $xml = simplexml_load_file('../app/XML/user/userOrder.xml');
+    
+                // find the customer with xpath
+                $xpathUser = $xml->xpath('/users/user[@id="' . auth()->user()->id . '"]')[0];
+    
+                // Check if the customer has placed an order
+                if (!isset($xpathUser->ordered)) {
+                    // Create a new <ordered> element
+                    $ordered = $xpathUser->addChild('ordered');
+                } else {
+                    // Use the existing <ordered> element
+                    $ordered = $xpathUser->ordered;
+                }
+                // create a new meal element
+                $newMeal = $xpathUser->ordered->addChild('meal');
+    
+                // add child elements to the meal element
+                $newMeal->addChild('name',   $selectedMeal->meal_name);
+                $newMeal->addChild('price', $selectedMeal->meal_price)->addAttribute('currency', 'RM');
+                $newMeal->addChild('quantity',$meal->pivot->shopping_cart_qty)->addAttribute('unit', 'plate');
+                $newMeal->addChild('totalprice',  $selectedMeal->meal_price * $meal->pivot->shopping_cart_qty)->addAttribute('currency', 'RM');
+                $newMeal->addChild('date', now()->format('Y-m-d'));
+    
+                // save the modified XML file
+                $xml->asXML('../app/XML/user/userOrder.xml');
+    
+                //format XML
+                $xmlString = $xml->asXML();
+                $dom = new DOMDocument;
+                $dom->preserveWhiteSpace = false;
+                $dom->loadXML($xmlString);
+                $dom->formatOutput = true;
+                $xmlStringFormatted = $dom->saveXML();
+                file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
+    
+                //continue add new meal element (cy)
+                $newGraphMeal=$newGraphOrder->addChild('meal');
+                $newGraphMeal->addChild('name', $selectedMeal->meal_name);
+                $newGraphMeal->addChild('category', $selectedMeal->Category->name);
+                $newGraphMeal->addChild('quantity', $meal->pivot->shopping_cart_qty);
+    
+                //save modified xml (cy)
+                $xml2->asXML('../app/XML/meal/graphReport.xml');
+    
+                //format XML
+                $xmlString2 = $xml2->asXML();
+                $dom2 = new DOMDocument;
+                $dom2->preserveWhiteSpace = false;
+                $dom2->loadXML($xmlString2);
+                $dom2->formatOutput = true;
+                $xmlStringFormatted2 = $dom2->saveXML();
+                file_put_contents('../app/XML/meal/graphReport.xml', $xmlStringFormatted2);
+    
+                //open a new meal order detail class
+    
+                $newMealOrderDetail['order_id'] = $order->id;
+                $newMealOrderDetail['meal_id'] = $meal->id;
+                $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
+                $newMealOrderDetail['meal_order_status'] = "preparing";
+                $memberPoint += $meal->meal_price;
+    
+                //update the lastest meal quantity 
+                DB::table('meals')
+                    ->where('id', $meal->id)
+                    ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
+    
+                
+    
+    
+                MealOrderDetail::create($newMealOrderDetail);
+    
+               
+    
+    
+                
+                 //delete the delete cart in the table 
+                 DB::table('shopping_carts')->where([
+                    'id' => $meal->pivot->id
+                ])->delete();
+            }
+            //update member point
+        // $memberPoint = $memberPoint / 5;
+        $memberPoint = ceil($memberPoint);
+        if (auth()->user()->point != null) {
+            $memberPoint =  $memberPoint + auth()->user()->point;
+        }
+        $user->point =  $memberPoint;
+        $user->update();
+
+
+        //if User has use the voucher 
+        if (Session::has('voucher')) {
+
+            $client = new Client([
+                'base_uri' => 'http://localhost:8000/api/',
+                'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+            ]);
+
+            //delete the voucher that user own it since it has been used by the particular user 
+            $client->delete('userUsedVoucher/' . Session::get('voucher'), [
+
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . auth()->user()->token,
+                ]
+
+
+            ]);
+
+
+
+            //update the quantity of the voucher that has been used by user
+            $client->put('vouchers/' . $voucherID, [
+
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . auth()->user()->token,
+                ],
+                'json' => [
+                    'qty' => $this->quantityVoucher($voucherID) - 1
+                ],
+
+
+            ]);
+
+            session()->forget('voucherID');
+            session()->forget('voucher');
+            session()->forget('voucherCode');
+            session()->forget('promoteDeliveryFee');
+        }
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]); 
+
+        //get vouchers details api through webservices through the bearer token 
+        
+        $user_id = Session::get('publicBank_ID');
+        foreach (Session::get('publicBank') as $publicBank) {
+            if($publicBank['user_id']==$user_id){
+                $totalAsset = $publicBank['total_asset'];
+                $id = $publicBank['id'];
+            }
+        }
+        $client->put('publicBank/'. $id, [
+
+            'headers' => [
+                'Accept' => 'application/json',
+
+            ],
+            'json' => [
+                'total_asset' => $totalAsset - $totalAmount
+            ],
+
+
+        ]);
+            return redirect('purchase');
+            }else{
+                return back()->withErrors(['pac' => 'Invalid PAC'])->onlyInput('pac');
+            }
+        }else if($request['submit']=="Cancel"){
+            return redirect("/shoppingCart");
+        }
+
+        return redirect("/publicBank/password");
+    }
+
+    public function generateXml()
+    {
+        // Retrieve data from MySQL database
+        $orders = Order::with('mealOrderDetails')->get();
+
+        // Generate XML file
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><categories></categories>');
+        foreach ($orders as $order) {
+        $xmlOrder = $xml->addChild('order');
+        $xmlOrder->addChild('id', $order->id);
+        $xmlOrder->addChild('user_id', $order->user_id);
+        $xmlOrder->addChild('order_total', $order->order_total);
+        $xmlOrder->addChild('delivery_fee', $order->delivery_fee);
+        $xmlOrder->addChild('order_status', $order->order_status);
+        $xmlOrder->addChild('payment_status', $order->payment_status);
+        $xmlOrder->addChild('payment_method', $order->payment_method);
+        $xmlOrder->addChild('order_date', $order->order_date);
+
+        $xmlMealOrderDetails =$xmlOrder->addChild('MealOrderDetails');
+        foreach($order->mealOrderDetails as $orderDetail){
+            $xmlOrderDetail=$xmlMealOrderDetails->addChild('OrderDetail');
+            $xmlOrderDetail->addChild('id',$orderDetail->id);  
+            $xmlOrderDetail->addChild('order_id',$orderDetail->meal_name);  
+            $xmlOrderDetail->addChild('meal_id',$orderDetail->meal_image);  
+            $xmlOrderDetail->addChild('order_quantity',$orderDetail->order_quantity);  
+        }
+        }
+
+        $xmlString=$xml->asXML();
+        // Save XML file to disk
+        $file = '../app/XML/order/listOfOrder.xml';
+        file_put_contents($file, $xmlString);
+
+    }
+    public function showListOfOrder()
+    {
+
+        $xml = new DOMDocument();
+        $xml->load(public_path('../app/XML/meal/listOfOrder.xml'));
+        $xsl = new DOMDocument();
+        $xsl->load(public_path('../app/XML/meal/listOfOrder.xsl'));
+        $proc = new XSLTProcessor();
+        $proc->importStylesheet($xsl);
+
+        $html = $proc->transformToXML($xml);
+        return response($html)->header('Content-Type', 'text/html');
     }
 
     public function comment(Request $request)

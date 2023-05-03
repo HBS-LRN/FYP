@@ -23,15 +23,6 @@ use SimpleXMLElement;
 class ShoppingCartController extends Controller
 {
 
-<<<<<<< HEAD
-    public function __construct(AddressRepositoryInterface $addressRepositoryInterface)
-    {
-        $this->addressRepositoryInterface = $addressRepositoryInterface;
-    }
-    
-=======
-
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
     public function index()
     {
 
@@ -196,12 +187,40 @@ class ShoppingCartController extends Controller
         $order->delivery_fee =  $this->findDeliveryFee();
         $order->order_status = "preparing";
         $order->payment_status = "Y";
+        
+        
         //bung seng change to public bank or maybank later
         $order->payment_method = $request['paymethod'];
         $order->order_date = now()->format('Y-m-d');
-
-        $order->save();
+        Session::put('order',$order);
         
+
+        //get the current user address to set to delivery
+       
+
+       
+
+        
+
+
+
+
+        
+        if($request['paymethod'] == 'PayOnDelivery'){
+            $order->save();
+            $address = $user->addresses->where('active_flag', '=', 'T');
+
+            //create new delivery 
+    
+            $delivery['order_id'] = $order->id;
+            $delivery['username'] =  $address[0]->address_username;
+            $delivery['userphone'] = $address[0]->address_userphone;
+            $delivery['street'] = $address[0]->street;
+            $delivery['area'] = $address[0]->area;
+            $delivery['postcode'] = $address[0]->postcode;
+    
+            $memberPoint = 0;
+            Delivery::create($delivery);
          //update xml file (cy)
          $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
          $graphOrder = Order::find($order->id);
@@ -209,116 +228,94 @@ class ShoppingCartController extends Controller
          $newGraphOrder  =  $xml2->addChild('order');
          $newGraphOrder->addAttribute('id', $graphOrder->id);
          $newGraphOrder->addChild('date', $graphOrder->order_date);
+            foreach ($user->meals as $meal) {
 
-        //get the current user address to set to delivery
-        $address = $user->addresses->where('active_flag', '=', 'T');
-
-        //create new delivery 
-
-        $delivery['order_id'] = $order->id;
-        $delivery['username'] =  $address[0]->address_username;
-        $delivery['userphone'] = $address[0]->address_userphone;
-        $delivery['street'] = $address[0]->street;
-        $delivery['area'] = $address[0]->area;
-        $delivery['postcode'] = $address[0]->postcode;
-
-        $memberPoint = 0;
-        Delivery::create($delivery);
-
-        foreach ($user->meals as $meal) {
-
-            //find the meal 
-            $selectedMeal = Meal::find($meal->id);
-      
-            $quantityOrdered = $meal->pivot->shopping_cart_qty;
-            //update xml file
-            $xml = simplexml_load_file('../app/XML/user/userOrder.xml');
-
-            // find the customer with xpath
-            $xpathUser = $xml->xpath('/users/user[@id="' . auth()->user()->id . '"]')[0];
-
-            // Check if the customer has placed an order
-            if (!isset($xpathUser->ordered)) {
-                // Create a new <ordered> element
-                $ordered = $xpathUser->addChild('ordered');
-            } else {
-                // Use the existing <ordered> element
-                $ordered = $xpathUser->ordered;
+                //find the meal 
+                $selectedMeal = Meal::find($meal->id);
+          
+                $quantityOrdered = $meal->pivot->shopping_cart_qty;
+                //update xml file
+                $xml = simplexml_load_file('../app/XML/user/userOrder.xml');
+    
+                // find the customer with xpath
+                $xpathUser = $xml->xpath('/users/user[@id="' . auth()->user()->id . '"]')[0];
+    
+                // Check if the customer has placed an order
+                if (!isset($xpathUser->ordered)) {
+                    // Create a new <ordered> element
+                    $ordered = $xpathUser->addChild('ordered');
+                } else {
+                    // Use the existing <ordered> element
+                    $ordered = $xpathUser->ordered;
+                }
+                // create a new meal element
+                $newMeal = $xpathUser->ordered->addChild('meal');
+    
+                // add child elements to the meal element
+                $newMeal->addChild('name',   $selectedMeal->meal_name);
+                $newMeal->addChild('price', $selectedMeal->meal_price)->addAttribute('currency', 'RM');
+                $newMeal->addChild('quantity',$meal->pivot->shopping_cart_qty)->addAttribute('unit', 'plate');
+                $newMeal->addChild('totalprice',  $selectedMeal->meal_price * $meal->pivot->shopping_cart_qty)->addAttribute('currency', 'RM');
+                $newMeal->addChild('date', now()->format('Y-m-d'));
+    
+                // save the modified XML file
+                $xml->asXML('../app/XML/user/userOrder.xml');
+    
+                //format XML
+                $xmlString = $xml->asXML();
+                $dom = new DOMDocument;
+                $dom->preserveWhiteSpace = false;
+                $dom->loadXML($xmlString);
+                $dom->formatOutput = true;
+                $xmlStringFormatted = $dom->saveXML();
+                file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
+    
+                //continue add new meal element (cy)
+                $newGraphMeal=$newGraphOrder->addChild('meal');
+                $newGraphMeal->addChild('name', $selectedMeal->meal_name);
+                $newGraphMeal->addChild('category', $selectedMeal->Category->name);
+                $newGraphMeal->addChild('quantity', $meal->pivot->shopping_cart_qty);
+    
+                //save modified xml (cy)
+                $xml2->asXML('../app/XML/meal/graphReport.xml');
+    
+                //format XML
+                $xmlString2 = $xml2->asXML();
+                $dom2 = new DOMDocument;
+                $dom2->preserveWhiteSpace = false;
+                $dom2->loadXML($xmlString2);
+                $dom2->formatOutput = true;
+                $xmlStringFormatted2 = $dom2->saveXML();
+                file_put_contents('../app/XML/meal/graphReport.xml', $xmlStringFormatted2);
+    
+                //open a new meal order detail class
+    
+                $newMealOrderDetail['order_id'] = $order->id;
+                $newMealOrderDetail['meal_id'] = $meal->id;
+                $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
+                $newMealOrderDetail['meal_order_status'] = "preparing";
+                $memberPoint += $meal->meal_price;
+    
+                //update the lastest meal quantity 
+                DB::table('meals')
+                    ->where('id', $meal->id)
+                    ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
+    
+                
+    
+    
+                MealOrderDetail::create($newMealOrderDetail);
+    
+               
+    
+    
+                
+                 //delete the delete cart in the table 
+                 DB::table('shopping_carts')->where([
+                    'id' => $meal->pivot->id
+                ])->delete();
             }
-            // create a new meal element
-            $newMeal = $xpathUser->ordered->addChild('meal');
-
-            // add child elements to the meal element
-            $newMeal->addChild('name',   $selectedMeal->meal_name);
-            $newMeal->addChild('price', $selectedMeal->meal_price)->addAttribute('currency', 'RM');
-            $newMeal->addChild('quantity',$meal->pivot->shopping_cart_qty)->addAttribute('unit', 'plate');
-            $newMeal->addChild('totalprice',  $selectedMeal->meal_price * $meal->pivot->shopping_cart_qty)->addAttribute('currency', 'RM');
-            $newMeal->addChild('date', now()->format('Y-m-d'));
-
-            // save the modified XML file
-            $xml->asXML('../app/XML/user/userOrder.xml');
-
-            //format XML
-            $xmlString = $xml->asXML();
-            $dom = new DOMDocument;
-            $dom->preserveWhiteSpace = false;
-            $dom->loadXML($xmlString);
-            $dom->formatOutput = true;
-            $xmlStringFormatted = $dom->saveXML();
-            file_put_contents('../app/XML/user/userOrder.xml', $xmlStringFormatted);
-
-            //continue add new meal element (cy)
-            $newGraphMeal=$newGraphOrder->addChild('meal');
-            $newGraphMeal->addChild('name', $selectedMeal->meal_name);
-            $newGraphMeal->addChild('category', $selectedMeal->Category->name);
-            $newGraphMeal->addChild('quantity', $meal->pivot->shopping_cart_qty);
-
-            //save modified xml (cy)
-            $xml2->asXML('../app/XML/meal/graphReport.xml');
-
-            //format XML
-            $xmlString2 = $xml2->asXML();
-            $dom2 = new DOMDocument;
-            $dom2->preserveWhiteSpace = false;
-            $dom2->loadXML($xmlString2);
-            $dom2->formatOutput = true;
-            $xmlStringFormatted2 = $dom2->saveXML();
-            file_put_contents('../app/XML/meal/graphReport.xml', $xmlStringFormatted2);
-
-            //open a new meal order detail class
-
-            $newMealOrderDetail['order_id'] = $order->id;
-            $newMealOrderDetail['meal_id'] = $meal->id;
-            $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
-            $newMealOrderDetail['meal_order_status'] = "preparing";
-            $memberPoint += $meal->meal_price;
-
-            //update the lastest meal quantity 
-            DB::table('meals')
-                ->where('id', $meal->id)
-                ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
-
-
-
-
-            MealOrderDetail::create($newMealOrderDetail);
-
-           
-
-
-            
-             //delete the delete cart in the table 
-             DB::table('shopping_carts')->where([
-                'id' => $meal->pivot->id
-            ])->delete();
-        }
-
-
-
-
-
-
-        //update member point
+            //update member point
         // $memberPoint = $memberPoint / 5;
         $memberPoint = ceil($memberPoint);
         if (auth()->user()->point != null) {
@@ -368,94 +365,20 @@ class ShoppingCartController extends Controller
             session()->forget('voucherCode');
             session()->forget('promoteDeliveryFee');
         }
+            return redirect('purchase');
+        }else if($request['paymethod'] == 'PublicBank'){
+            
+            return redirect('publicBankLogin');
+
+        }
+        
         return redirect('purchase');
     }
 
-<<<<<<< HEAD
-    $voucherID = Session::get('voucherID');
-    //find user
-    $user = User::find(auth()->user()->id);
-    $order = new Order();
-    $order->user_id = auth()->id();
-    $order->order_total =  $request->input('total');
-    $order->delivery_fee = $this->findDeliveryFee();
-    $order->order_status = "preparing";
-
-    if($request['paymethod'] == 'PayOnDelivery'){
-        $order->payment_status = "Y";
-    }else
-    {
-        $order->payment_status = "N";
-    }
-    //bung seng change to public bank or maybank later
-    $order->payment_method = $request['paymethod'];
-    $order->order_date = now()->format('Y-m-d');
-
-   
-    $order->save();
-//call address repository interface to update data 
-$this->addressRepositoryInterface->update($address,$data);
-
-    //get the current user address to set to delivery
-    $address = $user->addresses->where('active_flag', '=', 'T');
-
-    //create new delivery 
-    $delivery['order_id'] = $order->id;
-    $delivery['username'] =  $address[0]->address_username;
-    $delivery['userphone'] = $address[0]->address_userphone;
-    $delivery['street'] = $address[0]->street;
-    $delivery['area'] = $address[0]->area;
-    $delivery['postcode'] = $address[0]->postcode;
-
-    $memberPoint = 0;
-    Delivery::create($delivery);
-    
-
-    foreach ($user->meals as $meal) {
-
-
-        //open a new meal order detail class
-
-        $newMealOrderDetail['order_id'] = $order->id;
-        $newMealOrderDetail['meal_id'] = $meal->id;
-        $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
-        $newMealOrderDetail['meal_order_status'] = "preparing";
-        $memberPoint += $meal->meal_price;
-        //update the lastest meal quantity 
-        DB::table('meals')
-            ->where('id', $meal->id)
-            ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
-
-
-
-
-        MealOrderDetail::create($newMealOrderDetail);
-
-        //delete the delete cart in the table 
-        DB::table('shopping_carts')->where([
-            'id' => $meal->pivot->id
-        ])->delete();
-    }
-
-    //update member point
-   // $memberPoint = $memberPoint / 5;
-    $memberPoint = ceil($memberPoint);
-    if (auth()->user()->point != null) {
-        $memberPoint =  $memberPoint + auth()->user()->point;
-    }
-    $user->point =  $memberPoint;
-    $user->update();
-
-
-    //if User has use the voucher 
-    if (Session::has('voucher')) {
-
-=======
 
 
     public function quantityVoucher($voucherID)
     {
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
         $client = new Client([
             'base_uri' => 'http://localhost:8000/api/',
             'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
@@ -476,22 +399,7 @@ $this->addressRepositoryInterface->update($address,$data);
         $voucher = json_decode($response->getBody(), true);
         return $voucher['qty'];
     }
-<<<<<<< HEAD
-    if($request['paymethod'] == 'PayOnDelivery'){
-        
-        return redirect('purchase');
-    }else if($request['paymethod'] == 'PublicBank'){
-        
-        
-        return redirect('purchase/publicBankLogin');
-    }else if($request['paymethod'] == 'PayOnDeMayBanklivery'){
-       
-        return redirect('purchase/maybank');
-    }
-    return redirect('purchase');
-}
-=======
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
+   
 
     public function delete($id)
     {

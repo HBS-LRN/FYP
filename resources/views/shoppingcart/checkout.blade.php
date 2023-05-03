@@ -221,7 +221,3 @@
 
     </x-layout-customer>
 </form>
-<<<<<<< HEAD
-=======
-    
->>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
