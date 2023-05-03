@@ -45,14 +45,14 @@
                         <li><a href="meal/adshow">
                                 <p>List Of Meal</p>
                             </a></li>
-                        <li><a href="../staff/ManageInventory.aspx">
+                        <li><a href="/showInventory">
                                 <p>Manage Stock</p>
                             </a></li>
                     </ul>
                 </li>
                 
 
-                <li><a href="../staff/MealRating.aspx"><i class="fas fa-comment"></i>
+                <li><a href="/mealRating"><i class="fas fa-comment"></i>
                         <p>Meal Comment</p>
                     </a></li>
                 <li>
@@ -89,7 +89,7 @@
             <div class="profile-content" style="padding-left: 30px;">
                 <div class="profile-namejob">
 
-                    <div class="profile_name">John</div>
+                    <div class="profile_name">Tee Fo Yo</div>
 
                     <div class="job_role">Admin</div>
                 </div>

@@ -1,12 +1,12 @@
 <head>
 @inject('MealController','\App\Http\Controllers\MealController')
-    <link rel="stylesheet" href="../css/listOfOrder.css">
+<link href="{{ asset('../css/listOfOrder.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css " >
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css"></script>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
@@ -24,13 +24,36 @@
         padding-right: 30px;
     }
 
+   
+    .scroll-wrap {
+        overflow:auto;
+        height: 530px;
+
+    }
+    .scroll-wrap::-webkit-scrollbar {
+  width: 0;
+  height:0;
+}
+
+.scroll-wrap::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 1em;
+}
+    
+
     .prodsalesreport{
-        font-size: 40px;
+    font-size: 40px;
     margin-left: 10px;
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
     }
+
+    
     </style>
 </head>
 <div class="Pagebody">
@@ -39,7 +62,6 @@
         </x-layout-admin>
         <div class="box">
             <div>
-               
                     <h2 class="prodsalesreport">
                         Product Sales Report
                     </h2>
@@ -50,15 +72,7 @@
 
             <div class="box4">
                 <div class="scroll-wrap">
-                    <!-- <label for="report" style="margin-left: 70px;">Report Type</label> -->
-                  
-                    <!-- <select name="report" id="report" style="margin-left: 70px; width: 200px; height: 40px;"
-                onchange="window.location.href=this.value;">
-                <option value="salesReport.html" selected>Sales Report</option>
-                <option value="inventoryReport.html">Inventory Report</option>
-                <option value="customerReport.html">Customer Report</option>
-              </select> -->
-
+                    
 
                     <table id="example" class="table table-striped sortable">
                         <thead>
@@ -75,11 +89,9 @@
                         </thead>
                         <tbody id="search">
                         @foreach($meals as $meal)
-                           <!-- <asp:ListView ID="lvMealList" runat="server" ItemType="Assignment.Models.Meal" DataKeyNames="meal_ID" SelectMethod="BindMealList"> -->
-<!-- 
-                            <ItemTemplate> -->
+                        
                                <tr style="border:1px solid grey;">
-                                    <!-- <asp:HiddenField ID="hiddenMealID" runat="server" Value='<%#Eval("meal_ID") %>' /> -->
+                                   
                                     <input type="hidden" id="hiddenMealID" name="meal_id" value="{{$meal->id}}"/>
 
                                     <td style="border:1px solid grey;"><label for="lblId">{{$meal->id}}</label></td>
@@ -96,8 +108,7 @@
                                     <td style="border:1px solid grey;"><a class="edit" href="/inventoryReportDetail/{{$meal->id}}">More</a>   
                                         </td>
                                </tr>
-                                  <!-- </ItemTemplate>
-                        </asp:ListView> -->
+                                 
                         @endforeach
                         </tbody>
                      

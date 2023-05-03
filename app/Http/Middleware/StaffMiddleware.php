@@ -29,11 +29,13 @@ class StaffMiddleware
                 return $next($request);
             }else{
 
+               
                 return redirect('/nonAuthenticated')-> with('message','Access Denied as you are not Staff');
             }
         }else{
             return redirect('/loginRequest')-> with('message','Login to access the website info');
         }
+        
         return $next($request);
       
     }

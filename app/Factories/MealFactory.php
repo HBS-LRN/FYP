@@ -3,8 +3,10 @@ namespace App\Factories;
 
 use App\Factories\Interfaces\MealFactoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Meal;
 use App\Models\User;
+use App\Models\Log;
 use App\Models\Category;
 use App\Models\MealOrderDetail;
 
@@ -37,7 +39,19 @@ class MealFactory implements MealFactoryInterface
             $data['meal_image'] = $request->file('meal_image')->store('meals', 'public');
         }
         
-        return Meal::create($data);
+        
+        $meal = Meal::create($data);
+        //create a log
+        $adminLog = new Log([
+            'user_id' => auth()->user()->id,
+            'action' => 'create',
+            'table_name' => 'users',
+            'row_id' => $meal->id,
+            'new_data' => $meal->toJson(),
+        ]);
+
+        $adminLog->save();
+        return $meal;
     }
 
     public function update($id, array $data,Request $request)

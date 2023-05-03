@@ -95,6 +95,27 @@
         <totalprice currency="RM">12.9</totalprice>
         <date>2023-05-02</date>
       </meal>
+      <meal>
+        <name>Chrysanthemum Tea</name>
+        <price currency="RM">6.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">6.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Golden Rice</name>
+        <price currency="RM">18.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">18.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Hokkien Mee</name>
+        <price currency="RM">20.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">20.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="3">
@@ -173,6 +194,34 @@
         <totalprice currency="RM">12.9</totalprice>
         <date>2023-04-16</date>
       </meal>
+      <meal>
+        <name>Taiwanese Fried Chicken</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Chinese Lemon Chicken Salad</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Fermented Tofu Chex Mix</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Spicy Bamboo Salad</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="8">
@@ -235,6 +284,13 @@
         <totalprice currency="RM">12.9</totalprice>
         <date>2023-05-03</date>
       </meal>
+      <meal>
+        <name>Chicken Wonton Cup</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="27">
@@ -249,5 +305,9 @@
         <date>2023-05-03</date>
       </meal>
     </ordered>
+  </user>
+  <user id="6">
+    <name>deede</name>
+    <email>dede@gmail.com</email>
   </user>
 </users>

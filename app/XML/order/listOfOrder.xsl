@@ -50,7 +50,7 @@
             }
 
             .detailBtnBox .orderDetail {
-                padding:5px 10px;
+                padding:5px 5px;
                 border: 1px solid black;
                 border-radius: 5px;
                 background-color: #95adbe;
@@ -79,6 +79,26 @@
                 text-align:center;
             }
             
+             
+    .scroll-wrap {
+        overflow:auto;
+        height: 530px;
+
+    }
+    .scroll-wrap::-webkit-scrollbar {
+  width: 0;
+  height:0;
+}
+
+.scroll-wrap::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 1em;
+}
+    
         </style>
     </head>
 <body>

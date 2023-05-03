@@ -53,7 +53,7 @@
                 icon: 'success',
                 title: 'Success',
                 text: 'Detail has been Successfully Updated',
-
+                customClass: 'swal-wide',
             })
         }
     </script>
@@ -69,7 +69,7 @@
                 icon: 'success',
                 title: 'Success',
                 text: 'Meal has been Successfully Deleted',
-
+                customClass: 'swal-wide',
             })
         }
     </script>
@@ -84,7 +84,6 @@
                 type: 'success',
                 icon: 'success',
                 title: 'Success',
-          
                 customClass: 'swal-wide',
               
 

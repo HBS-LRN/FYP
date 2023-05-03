@@ -109,7 +109,7 @@
                 <table class="sortable">
                     <thead>
                         <tr>
-                            <th>Customer ID</th>
+                            <th>Customer Number</th>
                             <th>Product Name</th>
                             <th>Price & Order Quantity</th>
                             <th>Status</th>

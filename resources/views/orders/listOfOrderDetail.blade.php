@@ -41,8 +41,13 @@
             padding: 5px 10px;
         }
 
+        .td, .th{
+         padding:10px;  
+         border:1px solid lightgrey; 
+        }
+
         .deliveredOrder {
-        
+
             color: white;
             font-weight: bold;
             border: 1px solid black;
@@ -52,12 +57,12 @@
             padding: 5px 10px;
         }
         .detail_cont {
-            width: 655px;
+            width: 80%;
             display: grid;
-            grid-template-columns: 60% 100%;
+            grid-template-columns: 30% 100%;
             text-align: justify;
-            margin-left: 50px;
-            margin-top: 0px;
+            margin-left: 40px;
+            margin-top: 20px;
             
         }
 
@@ -77,11 +82,19 @@
         .scroll-wrap {
             overflow:auto;
             height:530px;
+            margin-left:20px;
+           
         }
         .scroll-wrap .sortable {
         margin:0px 40px;
+        
         }
 
+        .lblCustomerID{
+            font-size:20px;
+            font-weight:bold;
+            
+        }
     </style>
 </head>
     <div class="Pagebody">
@@ -97,7 +110,7 @@
                                 <h1>Order Number : <label for="lblOrderNumber">{{$order->id}}</label></h1>
                             </div>
                             <div>
-                                <span>Customer ID : <label for="lblCustomerID">{{$order->user_id}}</label><br />
+                                <span class="lblCustomerID">Customer ID : <label for="lblCustomerID">{{$order->user_id}}</label><br />
                                 </span>
                             </div>
                         </div>
@@ -114,7 +127,7 @@
                     </div>
                 </div>
             </div>
-            <div class="scroll-wrap">
+            <div class="scroll-wrap" >
                 <table class="sortable">
                     <tr class="tr">
                         <th class="th" width="3%">No</th>
@@ -156,9 +169,9 @@
 
                 </div>
                 <div class="cal">
-                    <span>Delivery Fees : <b><label for="lblDeliveryFee">{{$order->delivery_fee}}</label></b></span><br/>
+                    <span>Delivery Fees : <b><label for="lblDeliveryFee">RM {{number_format($order->delivery_fee,2)}}</label></b></span><br/>
                     
-                    <span>Overall Price : <b><label for="lblOverallPrice">{{$order->order_total}}</label></b></span><br/>
+                    <span>Overall Price : <b><label for="lblOverallPrice">RM {{number_format($order->order_total,2)}}</label></b></span><br/>
 
                      <span>Delivery To : <b><label for="lblDeliveryAddress">{{$order->Delivery->street}}, {{$order->Delivery->postcode}}, {{$order->Delivery->area}}</label></b></span>
                 </div>

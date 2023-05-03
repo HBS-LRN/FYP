@@ -56,6 +56,7 @@ class OrderController extends Controller
                 }
             }
         }
+        
 
 
         return view('profile.purchaseStatus', [
@@ -137,7 +138,7 @@ class OrderController extends Controller
     
     public function publicCheckPAC(Request $request){
         
-        $SerialNo;
+      
         $PACno = session('PACno');
         $GLOBALS['PACno']=null;
         foreach ( Session::get('publicBank') as $publicBank) {
@@ -185,7 +186,7 @@ class OrderController extends Controller
          $xml3 = simplexml_load_file('../app/XML/order/listOfOrder.xml');
          $listOfOrder = Order::find($order->id);
          //new order element
-         $newlistOfOrder  =  $xml2->addChild('order');
+         $newlistOfOrder  =  $xml3->addChild('order');
          $newlistOfOrder->addAttribute('id', $listOfOrder->id);
          $newlistOfOrder->addChild('user_id', $listOfOrder->user_id);
          $newlistOfOrder->addChild('order_total', $totalAmount);

@@ -23,6 +23,25 @@
          padding-right: 30px;
      }
 
+     .scroll-wrap {
+        overflow:auto;
+        height: 530px;
+
+    }
+    .scroll-wrap::-webkit-scrollbar {
+  width: 0;
+  height:0;
+}
+
+.scroll-wrap::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-wrap::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 1em;
+}
+
      .inventorydetail{
         font-size: 40px;
     margin-left: 10px;
