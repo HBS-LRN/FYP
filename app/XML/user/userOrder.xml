@@ -67,6 +67,34 @@
         <totalprice currency="RM">15.9</totalprice>
         <date>2023-05-02</date>
       </meal>
+      <meal>
+        <name>Taiwanese Fried Chicken</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-02</date>
+      </meal>
+      <meal>
+        <name>Dumpling</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-02</date>
+      </meal>
+      <meal>
+        <name>Taiwanese Fried Chicken</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-02</date>
+      </meal>
+      <meal>
+        <name>Chinese Lemon Chicken Salad</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-02</date>
+      </meal>
     </ordered>
   </user>
   <user id="3">
