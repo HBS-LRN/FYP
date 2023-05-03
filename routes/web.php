@@ -36,32 +36,168 @@ Route::get('/', [CategoryController::class, 'index']);
 
 
 
-Route::get('/category/create', [CategoryController::class, 'create'])->middleware('isAdmin');
+Route::group(['middleware' => 'isAdmin'], function () {
+
+   //protected route!!!!!!!!!!!
+   //only admin access path!!!!!!!!!
 
 
-// Store category Data
-Route::post('/category/store', [CategoryController::class, 'store']);
 
- // Show admin meal list 
- Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
+   Route::get('/category/create', [CategoryController::class, 'create']);
+   // Store category Data
+   Route::post('/category/store', [CategoryController::class, 'store']);
 
-// Show Meal Create Form
-Route::get('/meal/xml', [MealController::class, 'generateXml']);
+   // Show admin meal list 
+   Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
-// Show Meal Create Form
-Route::get('/meal/create', [MealController::class, 'create']);
+   // Show Meal Create Form
+   Route::get('/meal/xml', [MealController::class, 'generateXml']);
 
-// Store Meal Data
-Route::post('/meal/store', [MealController::class, 'store']);
+   // Show Meal Create Form
+   Route::get('/meal/create', [MealController::class, 'create']);
 
- // Show update meal form
-Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
+   // Store Meal Data
+   Route::post('/meal/store', [MealController::class, 'store']);
 
- //Update meal
-Route::post('/mealupdate/{id}', [MealController::class, 'update']);
+   // Show update meal form
+   Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
 
-//Delete meal
-Route::get('/deleteMeal/{id}', [MealController::class, 'delete']);
+   //Update meal
+   Route::post('/mealupdate/{id}', [MealController::class, 'update']);
+
+   //Delete meal
+   Route::get('/deleteMeal/{id}', [MealController::class, 'delete']);
+
+   //show meal inventory page
+   Route::get('/showInventory', [MealController::class, 'inventory']);
+
+   //show edit meal inventory page
+   Route::get('/editInventory/{id}', [MealController::class, 'showEditInventory']);
+
+   //update inventory
+   Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory']);
+
+   //show meal rating page
+   Route::get('/mealRating', [OrderController::class, 'showMealRating']);
+
+   //show edit meal rating page 
+   Route::get('/mealRating/edit/{id}', [OrderController::class, 'showEditMealRating']);
+
+   //update meal rating (reply comment)
+   Route::put('/mealRating/update', [OrderController::class, 'updateMealRating']);
+
+   //Show inventory report
+   Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
+
+   //Show inventory detail report
+   Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
+
+   //Show graph report(xml)
+   Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
+
+   //Show graph report
+   Route::get('/graphReport', [CategoryController::class, 'showGraphReport']); /* showGraphReport  */
+
+   //Show Customer List 
+   Route::get('/customerReport', [UserController::class, 'showCustReport']);
+
+   //Show Customer List 
+   Route::get('/customer', [UserController::class, 'listOutCustomers']);
+
+   //Show Customer List 
+   Route::get('/customer/create', [UserController::class, 'createCustomer']);
+   Route::post('/customer/store', [UserController::class, 'storeCustomer']);
+   //edit user data
+   Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
+   Route::put('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
+   Route::get('/customer/delete/{id}', [UserController::class, 'deleteCustomer']);
+
+
+   //Show Staff List 
+   Route::get('/staff', [UserController::class, 'listOutStaff']);
+
+   //Show Staff List 
+   Route::get('/staff/create', [UserController::class, 'createStaff']);
+   Route::post('/staff/store', [UserController::class, 'storeStaff']);
+   //edit user data
+   Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
+   Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
+   Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
+   //Show user order List 
+   Route::get('/userOrderDetail/{id}', [UserController::class, 'showCustOrderDetail']);
+
+   //check authorized password
+   Route::get('/checkPassword/{id}', [UserController::class, 'checkPassword']);
+});
+
+
+//proctected route
+Route::group(['middleware' => 'RequireLogin'], function () {
+
+
+
+
+   //protected route!!!!!!!!!!!
+   //only authenticated access path!!!!!!!!!
+
+   // Store shopping cart Data
+   Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
+
+   //show shopping cart
+   Route::get('/shoppingCart', [ShoppingCartController::class, 'index']);
+
+   //delete shopping cart
+   Route::get('/deleteShoppingCart/{id}', [ShoppingCartController::class, 'delete']);
+
+   //show customer purchase status
+   Route::get('/checkout', [ShoppingCartController::class, 'checkout']);
+   Route::post('/redirectToPay', [ShoppingCartController::class, 'redirectToPay']);
+   // Update User password
+   Route::get('/usersPass', [Usercontroller::class, 'show']);
+
+   // Chnage User password
+   Route::post('/users/changePass', [Usercontroller::class, 'updatePassword']);
+
+   // Create New User
+   Route::post('/users', [UserController::class, 'store']);
+   Route::post('/register', [UserController::class, 'store']);
+   //edit customer profile
+   Route::post('/profile/edit', [UserController::class, 'update']);
+   // Log User Out
+   Route::get('/logout', [UserController::class, 'logout']);
+   // show customer account
+
+
+   Route::get('/dashboard', [UserController::class, 'dashboard']);
+
+   // show customer account
+
+   Route::get('/profile', [UserController::class, 'profile']);
+
+   // All Address
+   Route::get('/address', [AddressController::class, 'index'])->name('address');
+   // Create New adress
+   Route::post('/address/store', [AddressController::class, 'store']);
+   // Show Create Form
+   Route::get('/address/create', [AddressController::class, 'create']);
+
+   // Show Create Form
+   Route::get('/addresseEdit/{id}', [AddressController::class, 'edit']);
+
+   // Update address
+   Route::put('/address/{id}', [AddressController::class, 'update']);
+   // delete address
+   Route::get('/address/{id}/delete', [AddressController::class, 'delete']);
+   // Update address as set as current address
+   Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurrent']);
+
+
+
+
+   //show customer purchase status
+   Route::get('/purchase', [OrderController::class, 'show']);
+});
+
 
 // Show All category Data
 Route::get('/category/show', [CategoryController::class, 'show']);
@@ -80,23 +216,7 @@ Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popU
 //show pop up meal
 Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
-//show meal inventory page
-Route::get('/showInventory', [MealController::class, 'inventory']);
 
-//show edit meal inventory page
-Route::get('/editInventory/{id}', [MealController::class, 'showEditInventory']);
-
-//update inventory
-Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory']);
-
-//show meal rating page
-Route::get('/mealRating', [OrderController::class, 'showMealRating']);
-
-//show edit meal rating page 
-Route::get('/mealRating/edit/{id}', [OrderController::class, 'showEditMealRating']);
-
-//update meal rating (reply comment)
-Route::put('/mealRating/update', [OrderController::class, 'updateMealRating']);
 
 //show list of orders
 Route::get('/showOrders', [OrderController::class, 'showOrders']);
@@ -111,35 +231,10 @@ Route::get('/order/updateDelivering/{id}', [OrderController::class, 'updateDeliv
 //Change order and order details to completed status
 Route::get('/order/updateCompleted/{id}', [OrderController::class, 'updateCompletedClick'])->name('order.Completed');
 
-//Show inventory report
-Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
-
-//Show inventory detail report
-Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
-
-//Show graph report(xml)
-Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
-
-//Show graph report
-Route::get('/graphReport', [CategoryController::class, 'showGraphReport']); /* showGraphReport  */
-
-// Store shopping cart Data
-Route::post('/shoppingCart', [ShoppingCartController::class, 'store']);
-
-//show shopping cart
-Route::get('/shoppingCart', [ShoppingCartController::class, 'index'])->middleware('auth');
-
-//delete shopping cart
-Route::get('/deleteShoppingCart/{id}', [ShoppingCartController::class, 'delete'])->middleware('auth');
-
-//show customer purchase status
-Route::get('/checkout', [ShoppingCartController::class, 'checkout'])->middleware('auth');
-Route::post('/redirectToPay', [ShoppingCartController::class, 'redirectToPay']);
-
 // Show Login Form
 Route::get('/login', [UserController::class, 'login'])->name('login');
 
-Route::post('/login',[UserController::class, 'authenticate']);
+Route::post('/login', [UserController::class, 'authenticate']);
 
 // Show Login Form
 Route::get('/loginRequest', [UserController::class, 'requestLogin'])->name('loginRequest');
@@ -159,64 +254,30 @@ Route::get('/register', [UserController::class, 'create']);
 
 
 
-// Update User password
-Route::get('/usersPass', [Usercontroller::class, 'show'])->middleware('auth');
-
-// Chnage User password
-Route::post('/users/changePass', [Usercontroller::class, 'updatePassword'])->middleware('auth');
-
-// Create New User
-Route::post('/users', [UserController::class, 'store']);
-Route::post('/register', [UserController::class, 'store']);
-//edit customer profile
-Route::post('/profile/edit', [UserController::class, 'update'])->middleware('auth');
-// Log User Out
-Route::get('/logout', [UserController::class, 'logout'])->middleware('auth');
-// show customer account
-
-
-Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware(['RequireLogin']);
-
-// show customer account
-
-Route::get('/profile', [UserController::class, 'profile'])->middleware(['RequireLogin']);
-
-// All Address
-Route::get('/address', [AddressController::class, 'index'])->name('address')->middleware('auth');
-// Create New adress
-Route::post('/address/store', [AddressController::class, 'store'])->middleware('auth');
-// Show Create Form
-Route::get('/address/create', [AddressController::class, 'create']);
-
-// Show Create Form
-Route::get('/addresseEdit/{id}', [AddressController::class, 'edit'])->middleware('auth');
-
-// Update address
-Route::put('/address/{id}', [AddressController::class, 'update'])->middleware('auth');
-// delete address
-Route::get('/address/{id}/delete', [AddressController::class, 'delete'])->middleware('auth');
-// Update address as set as current address
-Route::put('/address/{id}/update', [AddressController::class, 'updateSetAsCurrent'])->middleware('auth');
 
 
 
 
-//show customer purchase status
-Route::get('/purchase', [OrderController::class, 'show'])->middleware('auth');;
-Route::get('/publicBankLogin', function(){
+
+
+
+
+Route::get('/publicBankLogin', function () {
    return view('payment.publicBankLogin');
 });
 //show customer publicBank login page
 Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID']);
-Route::get('/publicBank/password', function(){
+Route::get('/publicBank/password', function () {
    return view('payment.publicBankPassword');
 });
 Route::post('/purchase/publicBankLogin/passwordCheck', [OrderController::class, 'publicBankCheckPassword']);
-Route::get('/publicBank/PayConfirmSession', function(){
+Route::get('/publicBank/PayConfirmSession', function () {
    return view('payment.publicBankConfirmSession');
 });
-Route::post('/publicBank/checkPAC',
-[OrderController::class,'publicCheckPAC']);
+Route::post(
+   '/publicBank/checkPAC',
+   [OrderController::class, 'publicCheckPAC']
+);
 
 //show list of order(xml)
 Route::get('/listOfOrder/xml', [OrderController::class, 'generateXml']);
@@ -244,21 +305,21 @@ Route::get('/gift', [GiftController::class, 'index']);
 Route::post('/gift/store', [GiftController::class, 'store']);
 
 //web service (free gift)
-Route::get('/freeGiftInfo',[FreeGiftController::class,'index']);
+Route::get('/freeGiftInfo', [FreeGiftController::class, 'index']);
 
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
 
-Route::get("/contactUs", function(){
-    return view("static.contactus");
- });
+Route::get("/contactUs", function () {
+   return view("static.contactus");
+});
 
- Route::get("/aboutUs", function(){
-    return view("static.aboutus");
- });
- Route::get("/FAQ", function(){
-    return view("static.FAQ");
- });
+Route::get("/aboutUs", function () {
+   return view("static.aboutus");
+});
+Route::get("/FAQ", function () {
+   return view("static.FAQ");
+});
 
  //testing custom error page
 //  Route::get("/500", function(){
@@ -267,36 +328,3 @@ Route::get("/contactUs", function(){
 //       'message'=> ''
 //   ]);
 // });
-
- 
- 
-//Show Customer List 
-Route::get('/customerReport', [UserController::class, 'showCustReport']);
-
-//Show Customer List 
- Route::get('/customer', [UserController::class, 'listOutCustomers']);
-
- //Show Customer List 
- Route::get('/customer/create', [UserController::class, 'createCustomer']);
- Route::post('/customer/store', [UserController::class, 'storeCustomer']);
- //edit user data
- Route::get('/customer/edit/{id}', [UserController::class, 'editCustomer']);
- Route::put('/customer/edit/{id}', [UserController::class, 'updateCustomer']);
- Route::get('/customer/delete/{id}', [UserController::class, 'deleteCustomer']);
-
-
- //Show Staff List 
- Route::get('/staff', [UserController::class, 'listOutStaff']);
-
- //Show Staff List 
- Route::get('/staff/create', [UserController::class, 'createStaff']);
- Route::post('/staff/store', [UserController::class, 'storeStaff']);
- //edit user data
- Route::get('/staff/edit/{id}', [UserController::class, 'editStaff']);
- Route::put('/staff/edit/{id}', [UserController::class, 'updateStaff']);
- Route::get('/staff/delete/{id}', [UserController::class, 'deleteStaff']);
-//Show user order List 
-Route::get('/userOrderDetail/{id}', [UserController::class, 'showCustOrderDetail']);
-
-//check authorized password
-Route::get('/checkPassword/{id}', [UserController::class, 'checkPassword']);
