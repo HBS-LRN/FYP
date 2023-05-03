@@ -56,24 +56,25 @@
         .row .col-md-7 .dataTables_paginate {
             padding-right: 30px;
         }
-
-        .titleorders{
-    font-size: 40px;
-    margin-left: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-}
+        .titleOfOrder{
+            font-size: 60px; 
+            margin-left: 10px;
+            margin-top:20px;
+            margin-bottom:20px;
+            text-align:center;
+        }
+        
     </style>
 </head>
 <body>
-<div class="Pagebody">
-    
-    <x-layout-admin>
+    <div class="Pagebody">
+        <x-layout-admin>
     </x-layout-admin>
     <div class="box">
+    
+    
         <div>
-            <h2 class="titleorders">List Of Orders
+            <h2 class='titleOfOrder'>List Of Orders
             </h2>
         </div>
 

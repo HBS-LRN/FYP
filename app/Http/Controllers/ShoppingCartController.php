@@ -243,22 +243,28 @@ class ShoppingCartController extends Controller
         $order->delivery_fee =  $this->findDeliveryFee();
         $order->order_status = "preparing";
         $order->payment_status = "Y";
+        
+        
         //bung seng change to public bank or maybank later
         $order->payment_method = $request['paymethod'];
         $order->order_date = now()->format('Y-m-d');
-
-        $order->save();
+        Session::put('order',$order);
         
-         //update xml file (cy)
-         $xml2 = simplexml_load_file('../app/XML/meal/graphReport.xml');
-         $graphOrder = Order::find($order->id);
-         //new order element
-         $newGraphOrder  =  $xml2->addChild('order');
-         $newGraphOrder->addAttribute('id', $graphOrder->id);
-         $newGraphOrder->addChild('date', $graphOrder->order_date);
 
         //get the current user address to set to delivery
-        $address = $user->addresses->where('active_flag', '=', 'T');
+       
+
+       
+
+        
+
+
+
+
+        
+        if($request['paymethod'] == 'PayOnDelivery'){
+            $order->save();
+            $address = $user->addresses->where('active_flag', '=', 'T');
 
         //create new delivery 
 
@@ -271,91 +277,6 @@ class ShoppingCartController extends Controller
 
         $memberPoint = 0;
         Delivery::create($delivery);
-
-         //retrieve the free gifts based on selected meal
-         $client = new Client([
-            'base_uri' => 'http://localhost:8000/api/',
-            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-        ]);
-
-
-        //get meal free gifts api through webservices through the bearer token 
-        $response = $client->get('mealfreegifts', [
-
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . auth()->user()->token,
-            ]
-
-        ]);
-        $mealFreeGifts = json_decode($response->getBody(), true);
-
-         $client = new Client([
-            'base_uri' => 'http://localhost:8000/api/',
-            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-        ]);
-
-
-        //get all free gifts and details api through webservices through the bearer token 
-        $response = $client->get('freegifts', [
-
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . auth()->user()->token,
-            ]
-
-        ]);
-        $freeGifts = json_decode($response->getBody(), true);
-        $user = auth()->user();
-
-        //for retrieve the free gifts id from the selected meal use
-        $mealsInCart = $user->meals;
-        
-        if($mealsInCart !=null){
-        $mealGifts= array();
-        foreach($mealsInCart as $mealInCart){
-            foreach($mealFreeGifts as $mealFreeGift){
-                if($mealInCart->id == $mealFreeGift['meal_id']){
-                    array_push($mealGifts, $mealFreeGift['freegift_id']);
-                }
-            }
-        }
-       
-        $getGifts=array();
-        //retrieve the gift associated with selected meal
-        foreach($mealGifts as $mealGift){
-            foreach($freeGifts as $freeGift){
-                if($mealGift == $freeGift['id']){
-                    array_push($getGifts,$freeGift);
-                }
-            }
-        }
-
-        //reduce and update the quantity of gift retreived
-        foreach($getGifts as $getGift){
-            $getGiftQty = $this->quantityGifts($getGift['id']);
-        
-            if($getGiftQty!=0 && $getGift['status']=='Y'){
-                $client = new Client([
-                    'base_uri' => 'http://localhost:8000/api/',
-                    'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-                ]);
-                
-        
-                $client->put('freegifts/' . $getGift['id'], [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Authorization' => 'Bearer ' . auth()->user()->token,
-                    ],
-                    'json' => [
-                        'qty' => $getGiftQty - 1
-                    ],
-    
-                ]);         
-            }
-        }
-        }
-
 
         foreach ($user->meals as $meal) {
 
@@ -430,14 +351,25 @@ class ShoppingCartController extends Controller
                 ->where('id', $meal->id)
                 ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
 
-            MealOrderDetail::create($newMealOrderDetail);
-            
 
+
+
+            MealOrderDetail::create($newMealOrderDetail);
+
+           
+
+
+            
              //delete the delete cart in the table 
              DB::table('shopping_carts')->where([
                 'id' => $meal->pivot->id
             ])->delete();
         }
+
+
+
+
+
 
         //update member point
         // $memberPoint = $memberPoint / 5;
@@ -493,29 +425,90 @@ class ShoppingCartController extends Controller
             session()->forget('voucherCode');
             session()->forget('promoteDeliveryFee');
         }
-        
         return redirect('purchase');
     }
 
-    public function quantityGifts($giftID){
-        $client = new Client([
-            'base_uri' => 'http://localhost:8000/api/',
-            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
-        ]);
+<<<<<<< HEAD
+    $voucherID = Session::get('voucherID');
+    //find user
+    $user = User::find(auth()->user()->id);
+    $order = new Order();
+    $order->user_id = auth()->id();
+    $order->order_total =  $request->input('total');
+    $order->delivery_fee = $this->findDeliveryFee();
+    $order->order_status = "preparing";
 
-        //get vouchers api through webservices through the bearer token 
-        $response = $client->get('freegifts/' . $giftID, [
-
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . auth()->user()->token,
-            ]
-
-        ]);
-
-        $freeGift = json_decode($response->getBody(), true);
-        return $freeGift['qty'];
+    if($request['paymethod'] == 'PayOnDelivery'){
+        $order->payment_status = "Y";
+    }else
+    {
+        $order->payment_status = "N";
     }
+    //bung seng change to public bank or maybank later
+    $order->payment_method = $request['paymethod'];
+    $order->order_date = now()->format('Y-m-d');
+
+   
+    $order->save();
+//call address repository interface to update data 
+$this->addressRepositoryInterface->update($address,$data);
+
+    //get the current user address to set to delivery
+    $address = $user->addresses->where('active_flag', '=', 'T');
+
+    //create new delivery 
+    $delivery['order_id'] = $order->id;
+    $delivery['username'] =  $address[0]->address_username;
+    $delivery['userphone'] = $address[0]->address_userphone;
+    $delivery['street'] = $address[0]->street;
+    $delivery['area'] = $address[0]->area;
+    $delivery['postcode'] = $address[0]->postcode;
+
+    $memberPoint = 0;
+    Delivery::create($delivery);
+    
+
+    foreach ($user->meals as $meal) {
+
+
+        //open a new meal order detail class
+
+        $newMealOrderDetail['order_id'] = $order->id;
+        $newMealOrderDetail['meal_id'] = $meal->id;
+        $newMealOrderDetail['order_quantity'] = $meal->pivot->shopping_cart_qty;
+        $newMealOrderDetail['meal_order_status'] = "preparing";
+        $memberPoint += $meal->meal_price;
+        //update the lastest meal quantity 
+        DB::table('meals')
+            ->where('id', $meal->id)
+            ->update(['meal_qty' =>  $meal->meal_qty -= $meal->pivot->shopping_cart_qty]);
+
+
+
+
+        MealOrderDetail::create($newMealOrderDetail);
+
+        //delete the delete cart in the table 
+        DB::table('shopping_carts')->where([
+            'id' => $meal->pivot->id
+        ])->delete();
+    }
+
+    //update member point
+   // $memberPoint = $memberPoint / 5;
+    $memberPoint = ceil($memberPoint);
+    if (auth()->user()->point != null) {
+        $memberPoint =  $memberPoint + auth()->user()->point;
+    }
+    $user->point =  $memberPoint;
+    $user->update();
+
+
+    //if User has use the voucher 
+    if (Session::has('voucher')) {
+
+=======
+
 
     public function quantityVoucher($voucherID)
     {
@@ -539,6 +532,22 @@ class ShoppingCartController extends Controller
         $voucher = json_decode($response->getBody(), true);
         return $voucher['qty'];
     }
+<<<<<<< HEAD
+    if($request['paymethod'] == 'PayOnDelivery'){
+        
+        return redirect('purchase');
+    }else if($request['paymethod'] == 'PublicBank'){
+        
+        
+        return redirect('purchase/publicBankLogin');
+    }else if($request['paymethod'] == 'PayOnDeMayBanklivery'){
+       
+        return redirect('purchase/maybank');
+    }
+    return redirect('purchase');
+}
+=======
+>>>>>>> 0e74f6c5675350a2bfe677cc1b20db4bc895b744
 
     public function delete($id)
     {

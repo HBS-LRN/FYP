@@ -217,38 +217,4 @@
       <quantity>1</quantity>
     </meal>
   </order>
-  <order id="85">
-    <date>2023-05-03</date>
-    <meal>
-      <name>Chicken Wonton Cup</name>
-      <category>Appertizer</category>
-      <quantity>1</quantity>
-    </meal>
-    <meal>
-      <name>Fermented Tofu Chex Mix</name>
-      <category>Appertizer</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
-  <order id="86">
-    <date>2023-05-03</date>
-    <meal>
-      <name>Taiwanese Fried Chicken</name>
-      <category>Appertizer</category>
-      <quantity>2</quantity>
-    </meal>
-    <meal>
-      <name>Chinese Lemon Chicken Salad</name>
-      <category>Appertizer</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
-  <order id="87">
-    <date>2023-05-03</date>
-    <meal>
-      <name>pau</name>
-      <category>Dessert</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
 </orders>

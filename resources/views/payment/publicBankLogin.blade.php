@@ -34,15 +34,16 @@
             <div class="containerBorder">
                 <div class="bankImgHeader"><img src="../image/publicBankLogo.png" alt="" srcset=""></div>
             </div>
-                
+
                 <div class="paymentBox">
                     <div class="loginBox">
-                        <form class="loginForm" action="/purchase/publicBankLogin/password" method="post">
+                        <form class="loginForm" action="/purchase/publicBankLogin/checkID" method="post">
                             @csrf 
                            
                             <h4>Login to PBe</h4>
                             <p class="todayTime" id="todayTime"></p>
                             <div class="inputBox">
+                            
                             <input type="text" name="user_id" id="user_id" placeholder=" User ID">
                             <i class="fas fa-user"></i>
                             </div>
