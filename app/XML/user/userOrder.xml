@@ -51,20 +51,12 @@
         <totalprice currency="RM">15.9</totalprice>
         <date>2023-05-04</date>
       </meal>
-      <meal>
-        <name>Chinese Lemon Chicken Salad</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
+    </ordered>
+  </user>
+  <user id="6">
+    <name>Chun Yappp</name>
+    <email>teefy-wm20@student.tarc.edu.my</email>
+    <ordered>
       <meal>
         <name>Chicken Wonton Cup</name>
         <price currency="RM">12.9</price>
@@ -73,101 +65,24 @@
         <date>2023-05-04</date>
       </meal>
       <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
+        <name>Shrimp</name>
+        <price currency="RM">79.99</price>
         <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
+        <totalprice currency="RM">79.99</totalprice>
         <date>2023-05-04</date>
       </meal>
       <meal>
-        <name>Dumpling</name>
-        <price currency="RM">15.9</price>
+        <name>Grass Jelly</name>
+        <price currency="RM">10.99</price>
         <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
+        <totalprice currency="RM">10.99</totalprice>
         <date>2023-05-04</date>
       </meal>
       <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
+        <name>Gong Zai Mian</name>
+        <price currency="RM">12.99</price>
         <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Chicken Wonton Cup</name>
-        <price currency="RM">12.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">12.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
-        <date>2023-05-04</date>
-      </meal>
-      <meal>
-        <name>Taiwanese Fried Chicken</name>
-        <price currency="RM">15.9</price>
-        <quantity unit="plate">1</quantity>
-        <totalprice currency="RM">15.9</totalprice>
+        <totalprice currency="RM">12.99</totalprice>
         <date>2023-05-04</date>
       </meal>
     </ordered>

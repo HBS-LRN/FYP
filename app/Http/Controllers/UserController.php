@@ -672,7 +672,7 @@ class UserController extends Controller
     {
         //list out for staff and admin
         return view('staff.index', [
-            'users' => User::where('role', 2)->orWhere('role', '=', 1)->filter(request(['search']))->get(),
+            'users' => User::whereIn('role', [1, 2])->where('id', '!=', auth()->user()->id)->filter(request(['search']))->get(),
             'roles' => Role::all()
         ]);
     }

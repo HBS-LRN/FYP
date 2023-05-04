@@ -428,6 +428,30 @@ class OrderController extends Controller
         file_put_contents($file, $xmlString);
 
     }
+
+
+    public function quantityVoucher($voucherID)
+    {
+        $client = new Client([
+            'base_uri' => 'http://localhost:8000/api/',
+            'timeout' => 30, // Increase the timeout value to 30 seconds (default is 5 seconds)
+        ]);
+
+
+        //get vouchers api through webservices through the bearer token 
+        $response = $client->get('vouchers/' . $voucherID, [
+
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . auth()->user()->token,
+            ]
+
+
+        ]);
+
+        $voucher = json_decode($response->getBody(), true);
+        return $voucher['qty'];
+    }
     public function showListOfOrder()
     {
         $xml = new DOMDocument();

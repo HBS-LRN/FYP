@@ -85,7 +85,7 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
 
 Route::group(['middleware' => 'isStaff'], function () {
- 
+
    //protected route!!!!
    //only staff able to access 
 
@@ -200,12 +200,39 @@ Route::middleware(['middleware' => 'RequireLogin'])->middleware(['middleware' =>
 
    //show customer purchase status
    Route::get('/purchase', [OrderController::class, 'show']);
+
+   Route::get('/publicBankLogin', function () {
+      return view('payment.publicBankLogin');
+   });
+
+
+
+   Route::get('/publicBank/password', function () {
+      return view('payment.publicBankPassword');
+   });
+   Route::post('/purchase/publicBankLogin/passwordCheck', [OrderController::class, 'publicBankCheckPassword']);
+   Route::get('/publicBank/PayConfirmSession', function () {
+      return view('payment.publicBankConfirmSession');
+   });
+   Route::get("/publicBank/PaySuccess", function () {
+      return view('payment.publicBankPaySuccessful');
+   });
+   Route::post(
+      '/publicBank/checkPAC',
+      [OrderController::class, 'publicCheckPAC']
+   );
+   Route::post(
+      '/publicBank/continue',
+      function () {
+         return redirect('purchase');
+      }
+   );
 });
 
 
-  // Create New User
-  Route::post('/users', [UserController::class, 'store']);
-  Route::post('/register', [UserController::class, 'store']);
+// Create New User
+Route::post('/users', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 Route::get('/category/create', [CategoryController::class, 'create']);
 // Store category Data
 Route::post('/category/store', [CategoryController::class, 'store']);
@@ -214,7 +241,8 @@ Route::get('/category/show', [CategoryController::class, 'show']);
 
 Route::get('/accessDenied', [UserController::class, 'accessDenied']);
 Route::get('/nonAuthenticated', [UserController::class, 'nonAuthenticate']);
-
+//show customer publicBank login page
+Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID'])->middleware('transaction.limit');
 
 //search meal
 Route::get('/search', [MealController::class, 'search']);
@@ -229,10 +257,10 @@ Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popU
 Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
 //log
-Route::get('/log',[MealController::class, 'showLog']);
+Route::get('/log', [MealController::class, 'showLog']);
 
 //log detail
-Route::get('/logDetails/{id}',[MealController::class, 'showLogDetails']);
+Route::get('/logDetails/{id}', [MealController::class, 'showLogDetails']);
 
 //show list of orders
 Route::get('/showOrders', [OrderController::class, 'showOrders']);
@@ -278,34 +306,8 @@ Route::get('/register', [UserController::class, 'create']);
 
 
 // Route::group(['middleware' => ['transaction.limit']], function () {
-   
+
 // });
-Route::get('/publicBankLogin', function () {
-   return view('payment.publicBankLogin');
-});
-//show customer publicBank login page
-Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID'])->middleware('transaction.limit');
-
-
-Route::get('/publicBank/password', function () {
-   return view('payment.publicBankPassword');
-});
-Route::post('/purchase/publicBankLogin/passwordCheck', [OrderController::class, 'publicBankCheckPassword']);
-Route::get('/publicBank/PayConfirmSession', function () {
-   return view('payment.publicBankConfirmSession');
-});
-Route::get("/publicBank/PaySuccess",function(){
-   return view('payment.publicBankPaySuccessful');
-});
-Route::post(
-   '/publicBank/checkPAC',
-   [OrderController::class, 'publicCheckPAC']
-);
-Route::post(
-   '/publicBank/continue',function(){
-      return redirect('purchase');
-   }
-);
 //show list of order(xml)
 Route::get('/listOfOrder/xml', [OrderController::class, 'generateXml']);
 
