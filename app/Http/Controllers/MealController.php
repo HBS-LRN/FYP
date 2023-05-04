@@ -313,12 +313,40 @@ class MealController extends Controller
         return response($html)->header('Content-Type', 'text/html');
     }
 
-    public function log()
+    public function showLog()
     {
     $logs = DB::table('logs')
         ->orderBy('created_at', 'desc')
         ->paginate(20);
 
     return view('logs.index', ['logs' => $logs]);
+    }
+
+    public function showLogDetails($id)
+    {
+    $log = Log::find($id);
+    $oldData=[];
+    $newData=[];
+    
+    if($log->old_data !=null){
+    foreach(json_decode($log->old_data,true)as $key => $value){
+        $oldData[$key]=$value;
+    }
+    }else{
+        $oldData=null;
+    }
+
+    if($log->new_data !=null){
+    foreach(json_decode($log->new_data,true)as $key => $value){
+        $newData[$key]=$value;
+    }
+    }else{
+        $newData=null;
+    }
+
+    
+    return view('logs.details', ['log' => $log
+    , 'oldData'=>$oldData,
+      'newData'=>$newData]);
     }
 }

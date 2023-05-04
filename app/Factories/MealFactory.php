@@ -44,8 +44,9 @@ class MealFactory implements MealFactoryInterface
         //create a log
         $adminLog = new Log([
             'user_id' => auth()->user()->id,
-            'action' => 'create',
-            'table_name' => 'users',
+            'user_name' => auth()->user()->name,
+            'action' => 'Created',
+            'table_name' => 'Meals',
             'row_id' => $meal->id,
             'new_data' => $meal->toJson(),
         ]);
@@ -78,13 +79,39 @@ class MealFactory implements MealFactoryInterface
         }
 
         $data['meal_id'] = auth()->id();
-        return $meal->update($data);
+
+         //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $meal->toJson();
+        $meal->update($data);
+        $newmeal=$meal->fresh();
+
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated';
+        $adminLog->table_name ='Meals';
+        $adminLog->row_id = $meal->id;
+        $adminLog->new_data=$newmeal->toJson();
+
+        $adminLog->save();
+        return $newmeal;
     }
 
     public function delete($id)
     { 
         $meal = Meal::find($id);
-        return $meal->delete();
+         //create a log
+         $adminLog = new Log();
+         $adminLog->old_data = $meal->toJson();
+         $adminLog->row_id = $meal->id;
+
+        $boolean=$meal->delete();
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Deleted';
+        $adminLog->table_name ='Meals';
+        $adminLog->save();
+        return $boolean;
     }
 
     public function updateInventory($id,array $data,Request $request)
@@ -98,7 +125,21 @@ class MealFactory implements MealFactoryInterface
         ]);
 
         $data['meal_id'] = auth()->id();
-        return $meal->update($data);
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $meal->toJson();
+        $meal->update($data);
+        $newmeal=$meal->fresh();
+
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated the Meal Quantity of ';
+        $adminLog->table_name ='Meals';
+        $adminLog->row_id = $meal->id;
+        $adminLog->new_data=$newmeal->toJson();
+
+        $adminLog->save();
+        return $newmeal;
         
     }
 

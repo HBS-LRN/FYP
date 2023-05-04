@@ -149,8 +149,8 @@
     <email>bungseng@gmail.com</email>
   </user>
   <user id="6">
-    <name>beep</name>
-    <email>laicy@gmail.con</email>
+    <name>deede</name>
+    <email>dede@gmail.com</email>
     <ordered>
       <meal>
         <name>Dumpling</name>
@@ -308,4 +308,5 @@
     <name>deede</name>
     <email>dede@gmail.com</email>
   </user>
+  
 </users>

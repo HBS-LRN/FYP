@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\ShoppingCart;
 use App\Models\Delivery;
 use App\Models\User;
+use App\Models\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -510,8 +511,21 @@ class OrderController extends Controller
         $data = $request->validate([
             'reply_comment' => 'max:200',
         ]);
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $mealOrderDetail->toJson();
 
         $mealOrderDetail->update($data);
+        $newDetail=$mealOrderDetail->fresh();
+ 
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Reply comment of the ';
+        $adminLog->table_name ='Order Details';
+        $adminLog->row_id = $mealOrderDetail->id;
+        $adminLog->new_data=$newDetail->toJson();
+ 
+        $adminLog->save();
         return redirect('/mealRating')->with('successReply', true);
     }
 
@@ -538,8 +552,23 @@ class OrderController extends Controller
         }
 
         $order= Order::find($id);
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $order->toJson();
+
         $order->order_status="delivering";
         $order->save();
+       
+        $neworder=$order->fresh();
+
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated the order status to Delivering of the';
+        $adminLog->table_name ='Orders and Order Details';
+        $adminLog->row_id = $order->id;
+        $adminLog->new_data=$neworder->toJson();
+
+        $adminLog->save();
 
         return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
     }
@@ -554,8 +583,22 @@ class OrderController extends Controller
         }
 
         $order= Order::find($id);
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $order->toJson();
+
         $order->order_status="completed";
-        $order->save();
+        $order->save(); 
+        $neworder=$order->fresh();
+ 
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated the order status to Completed of the ';
+        $adminLog->table_name ='Orders and Order Details';
+        $adminLog->row_id = $order->id;
+        $adminLog->new_data=$neworder->toJson();
+ 
+        $adminLog->save();
         return redirect('/orderDetails/show/'.$id)->with('successfullyUpdate', true);
     }
     
