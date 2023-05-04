@@ -23,15 +23,14 @@
             text-transform: none !important;
         }
         
+        #example{
+            margin-top:50px;
+        }
         .edit {
             padding: 5px 20px;
             margin: 10px 30px;
         }
 
-        #example{
-            margin-top:50px;
-        }
-        
         .wrapStar {
             display: flex;
         }
@@ -89,12 +88,6 @@ td{
     text-align:left;
 }
 
-.logdetail{
-    padding:5px;
-    text-decoration:none;
-    background-color:lightgrey;
-}
-
     </style>
 </head>
 <body>
@@ -104,7 +97,7 @@ td{
         <div class="box">
         <div>
 
-        <h2>Logs</h2>
+        <h2>Logs {{$log->id}} Details </h2>
 
         </div>
 
@@ -117,37 +110,36 @@ td{
 
         <table id="example" class="table table-striped">
 
-        <thead>
+        <tbody id="search">
             <tr class="mealRatingTr" style="border:1px solid grey; background-color: rgb(165, 200, 245);">
 
-            <th width="15%" style="border:1px solid grey;">Time Happened</th>
-            <th width="8%" style="border:1px solid grey;">User ID</th>
-            <th width="15%" style="border:1px solid grey;">User Name</th>
-            <th width="35%" style="border:1px solid grey;">Action</th>
-            <th width="15%" style="border:1px solid grey;">Check Data</th>
-       
+            <th width="45%" style="border:1px solid grey;">Data Before Action</th>
+            
+            @if($oldData!=null)
+            <td>
+                @foreach($oldData as $key => $value)
+            <p><strong>{{$key}} : </strong> {{$value}} </p>
+            @endforeach
+            </td>
+            @else
+            <td><p>No old data available for this action. </p></td>
+            @endif
             </tr>
+            <tr class="mealRatingTr" style="border:1px solid grey; background-color: rgb(165, 200, 245);">
 
-        </thead>
-        <tbody id="search">
-
-        @foreach($logs as $log)
-            <tr style="border: 1px solid grey;">
-                <td style="border: 1px solid grey;padding:20px;">
-                   {{$log->created_at}}</td>
-                <td style="border: 1px solid grey;padding:20px;">
-                    {{$log->user_id}}</td>
-                <td style="border: 1px solid grey;padding:20px;">
-                    {{$log->user_name}}</td>
-                <td style="border: 1px solid grey;padding:20px;">
-                    <span class="important"> {{$log->action}}</span> data with an id  <span class="important">{{$log->row_id}}</span> in table  <span class="important">{{$log->table_name}} .</span>
-                </td>
-                <td style="border: 1px solid grey;padding:20px;">
-                    <a class="logdetail" href="/logDetails/{{$log->id}}">View Changes</a>
-                </td>
-
+            <th width="45%" style="border:1px solid grey;">Data After Action</th>
+            
+            @if($newData!=null)
+            <td>
+             @foreach($newData as $key => $value)
+            <p><strong>{{$key}} : </strong> {{$value}} </p>
+            @endforeach
+            </td>
+            @else
+            <td><p>No latest data available for this action. </p></td>
+            @endif
             </tr>
-    @endforeach
+            
         </tbody>
         </table>
 
