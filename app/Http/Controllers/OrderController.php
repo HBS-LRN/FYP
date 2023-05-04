@@ -413,7 +413,6 @@ class OrderController extends Controller
         foreach ($orders as $order) {
         $xmlOrder = $xml->addChild('order');
         $xmlOrder->addAttribute('id', $order->id);
-        $xmlOrder->addChild('order_id', $order->order_id);
         $xmlOrder->addChild('user_id', $order->user_id);
         $xmlOrder->addChild('order_total', ($order->order_total + $order->delivery_fee));
         $xmlOrder->addChild('delivery_fee', $order->delivery_fee);

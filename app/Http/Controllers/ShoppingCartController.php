@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Input\Input;
+use App\BuilderPattern\OrderBuilder;
 use DOMXPath;
 use DOMDocument;
 use SimpleXMLElement;
@@ -237,17 +238,16 @@ class ShoppingCartController extends Controller
         $voucherID = Session::get('voucherID');
         //find user
         $user = User::find(auth()->user()->id);
-        $order = new Order();
-        $order->user_id = auth()->id();
-        $order->order_total =  $request->input('total');
-        $order->delivery_fee =  $this->findDeliveryFee();
-        $order->order_status = "preparing";
-        $order->payment_status = "Y";
+        $order = (new OrderBuilder())
+        ->withUserId(auth()->id())
+        ->withOrderTotal($request->input('total'))
+        ->withDeliveryFee($this->findDeliveryFee())
+        ->withOrderStatus("preparing")
+        ->withPaymentStatus("Y")
+        ->withPaymentMethod($request['paymethod'])
+        ->withOrderDate(now()->format('Y-m-d'))
+        ->build();
         
-        
-        //bung seng change to public bank or maybank later
-        $order->payment_method = $request['paymethod'];
-        $order->order_date = now()->format('Y-m-d');
         Session::put('order',$order);
         
 

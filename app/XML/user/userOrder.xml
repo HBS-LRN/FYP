@@ -249,6 +249,36 @@
   <user id="12">
     <name>HOO BUNG SENG</name>
     <email>hoobungseng0726@gmail.com</email>
+    <ordered>
+      <meal>
+        <name>Chicken Wonton Cup</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Chicken Wonton Cup</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-03</date>
+      </meal>
+      <meal>
+        <name>Taiwanese Fried Chicken</name>
+        <price currency="RM">15.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">15.9</totalprice>
+        <date>2023-05-04</date>
+      </meal>
+      <meal>
+        <name>Fermented Tofu Chex Mix</name>
+        <price currency="RM">12.9</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">12.9</totalprice>
+        <date>2023-05-04</date>
+      </meal>
+    </ordered>
   </user>
   <user id="26">
     <name>beep</name>

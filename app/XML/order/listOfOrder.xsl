@@ -133,7 +133,7 @@
                         <xsl:for-each select="/orders/order">
                             <tr>
                                 <td style="border:1px solid grey;">
-                                    <a href="orderDetails/show/{position()}">
+                                    <a href="orderDetails/show/{@id}">
                                     <label for="lblOrderNumber">
                                     <xsl:value-of select="@id"/>
                                     </label>

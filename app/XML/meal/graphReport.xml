@@ -246,49 +246,18 @@
       <quantity>1</quantity>
     </meal>
   </order>
-  <order id="9">
+  <order id="59">
     <date>2023-05-03</date>
     <meal>
-      <name>Chrysanthemum Tea</name>
-      <category>Beverage</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
-  <order id="10">
-    <date>2023-05-03</date>
-    <meal>
-      <name>Golden Rice</name>
-      <category>Rice</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
-  <order id="11">
-    <date>2023-05-03</date>
-    <meal>
-      <name>Hokkien Mee</name>
-      <category>Noodle</category>
-      <quantity>1</quantity>
-    </meal>
-  </order>
-  <order id="1">
-    <date>2023-05-03</date>
-    <meal>
-      <name>Taiwanese Fried Chicken</name>
+      <name>Chicken Wonton Cup</name>
       <category>Appertizer</category>
       <quantity>1</quantity>
     </meal>
+  </order>
+  <order id="60">
+    <date>2023-05-03</date>
     <meal>
-      <name>Chinese Lemon Chicken Salad</name>
-      <category>Appertizer</category>
-      <quantity>1</quantity>
-    </meal>
-    <meal>
-      <name>Fermented Tofu Chex Mix</name>
-      <category>Appertizer</category>
-      <quantity>1</quantity>
-    </meal>
-    <meal>
-      <name>Spicy Bamboo Salad</name>
+      <name>Chicken Wonton Cup</name>
       <category>Appertizer</category>
       <quantity>1</quantity>
     </meal>
@@ -303,6 +272,22 @@
   </order>
   <order id="3">
     <date>2023-05-03</date>
+    <meal>
+      <name>Fermented Tofu Chex Mix</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="61">
+    <date>2023-05-04</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="62">
+    <date>2023-05-04</date>
     <meal>
       <name>Fermented Tofu Chex Mix</name>
       <category>Appertizer</category>
