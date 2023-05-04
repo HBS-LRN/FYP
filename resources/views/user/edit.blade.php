@@ -82,7 +82,7 @@
                 @csrf
                 @method('PUT')
                 <div class="flex">
-                    <label for="custID" class="label">Customer ID :</label>
+                    <label for="custID" class="label">Customer No :</label>
                     <input type="text" id="custID" name="user_id" class="input" ReadOnly value="{{$user->id}}">
                    
                    

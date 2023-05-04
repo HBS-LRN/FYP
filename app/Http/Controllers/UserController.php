@@ -47,15 +47,16 @@ class UserController extends Controller
     //update the user password
     public function updatePassword(Request $request)
     {
+        $success = false;
         $request->validate([
             'currentPass' => 'required',
             'password' => ['required', Password::min(8)->letters()->numbers()->mixedCase()->symbols(), 'confirmed'],
         ]);
 
         //call repository method to update password
-        $success =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass']);
+        $success =  $this->userRepositoryInterface->updatePassword(auth()->user(), $request['currentPass'], $request['password']);
 
-        if ($success == true) {
+        if ($success) {
             return back()->with('successfullyUpdate', true);
         } else {
             return back()->withErrors(['currentPass' => 'Invalid Current Password'])->onlyInput('currentPass');
@@ -85,7 +86,7 @@ class UserController extends Controller
                 'gender' => 'required',
                 'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
                 'birthdate' => ['required', 'before:-13 years'],
-                'image' => ['required', 'file', 'mimes:jpg,png,jpeg', 'max:2084'],
+                'image' => ['file', 'mimes:jpg,png,jpeg', 'max:2084'],
             ],
             [
                 'birthdate.before'    => 'Must be a date before today and at least 13 years before!',
@@ -337,16 +338,16 @@ class UserController extends Controller
         $user = User::find($user->id);
         event(new UserCreate($user));
 
-         //create a log
-         $adminLog = new Log();
-         $adminLog->user_id =auth()->user()->id;
-         $adminLog->user_name =auth()->user()->name;
-         $adminLog->action ='Created Customer ';
-         $adminLog->table_name ='Users';
-         $adminLog->row_id = $user->id;
-         $adminLog->new_data=$user->toJson();
-  
-         $adminLog->save();
+        //create a log
+        $adminLog = new Log();
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Created Customer ';
+        $adminLog->table_name = 'Users';
+        $adminLog->row_id = $user->id;
+        $adminLog->new_data = $user->toJson();
+
+        $adminLog->save();
         return redirect('/customer')->with('successUpdate', $user);
     }
 
@@ -371,17 +372,17 @@ class UserController extends Controller
         $adminLog->old_data = $user->toJson();
 
         //call repository class to update the user
-        $newuser=$this->userRepositoryInterface->updateUser($user, $data);
+        $newuser = $this->userRepositoryInterface->updateUser($user, $data);
         // Dispatch an event to update the XML file
         event(new UserUpdate($user));
 
-         $adminLog->user_id =auth()->user()->id;
-         $adminLog->user_name =auth()->user()->name;
-         $adminLog->action ='Updated Customer ';
-         $adminLog->table_name ='Users';
-         $adminLog->row_id = $user->id;
-         $adminLog->new_data=$newuser->toJson();
-         $adminLog->save();
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Updated Customer ';
+        $adminLog->table_name = 'Users';
+        $adminLog->row_id = $user->id;
+        $adminLog->new_data = $newuser->toJson();
+        $adminLog->save();
         return redirect('/customer')->with('successUpdate', true);
     }
 
@@ -406,14 +407,14 @@ class UserController extends Controller
         $adminLog->old_data = $user->toJson();
 
         //call repository class to update the user
-        $newuser=$this->userRepositoryInterface->updateUser($user, $data);
+        $newuser = $this->userRepositoryInterface->updateUser($user, $data);
 
-        $adminLog->user_id =auth()->user()->id;
-        $adminLog->user_name =auth()->user()->name;
-        $adminLog->action ='Updated Staff/Admin ';
-        $adminLog->table_name ='Users';
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Updated Staff/Admin ';
+        $adminLog->table_name = 'Users';
         $adminLog->row_id = $user->id;
-        $adminLog->new_data=$newuser->toJson();
+        $adminLog->new_data = $newuser->toJson();
         $adminLog->save();
         return redirect('/staff')->with('successUpdate', true);
     }
@@ -425,17 +426,17 @@ class UserController extends Controller
         $adminLog = new Log();
         $adminLog->old_data = $user->toJson();
         $adminLog->row_id = $user->id;
-         $adminLog->user_id =auth()->user()->id;
-         $adminLog->user_name =auth()->user()->name;
-         $adminLog->action ='Deleted Customer ';
-         $adminLog->table_name ='Users';
-         $adminLog->save();
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Deleted Customer ';
+        $adminLog->table_name = 'Users';
+        $adminLog->save();
 
         // Fire the UserOrderDelet event to delete order in the xml file
         event(new UserOrderDelete($user));
         // Fire the UserDeleted event to delete user in the xml file
         event(new UserDelete($user));
-   
+
         //call repository class to delete the class
         $this->userRepositoryInterface->delete($user);
 
@@ -450,10 +451,10 @@ class UserController extends Controller
         $adminLog = new Log();
         $adminLog->old_data = $user->toJson();
         $adminLog->row_id = $user->id;
-        $adminLog->user_id =auth()->user()->id;
-        $adminLog->user_name =auth()->user()->name;
-        $adminLog->action ='Deleted Staff/Admin ';
-        $adminLog->table_name ='Users';
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Deleted Staff/Admin ';
+        $adminLog->table_name = 'Users';
         $adminLog->save();
 
         //call repository class to delete the class
@@ -488,16 +489,16 @@ class UserController extends Controller
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
 
-         //create a log
-         $adminLog = new Log();
-         $adminLog->user_id =auth()->user()->id;
-         $adminLog->user_name =auth()->user()->name;
-         $adminLog->action ='Created Staff/Admin ';
-         $adminLog->table_name ='Users';
-         $adminLog->row_id = $user->id;
-         $adminLog->new_data= $user->toJson();
-  
-         $adminLog->save();
+        //create a log
+        $adminLog = new Log();
+        $adminLog->user_id = auth()->user()->id;
+        $adminLog->user_name = auth()->user()->name;
+        $adminLog->action = 'Created Staff/Admin ';
+        $adminLog->table_name = 'Users';
+        $adminLog->row_id = $user->id;
+        $adminLog->new_data = $user->toJson();
+
+        $adminLog->save();
 
         return redirect('/staff')->with('successUpdate', $user);
     }
@@ -528,9 +529,9 @@ class UserController extends Controller
         // Create XPath object
         $xpath = new DOMXPath($xml);
         // Calculate total quantity ordered and total sell price sold for a particular user
-        $totalQuantity = $xpath->evaluate('sum(//user[@id='.$user_id.']/ordered/meal/quantity)');
-            
-        $totalPrice = $xpath->evaluate('sum(//user[@id='.$user_id.']/ordered/meal/totalprice)');
+        $totalQuantity = $xpath->evaluate('sum(//user[@id=' . $user_id . ']/ordered/meal/quantity)');
+
+        $totalPrice = $xpath->evaluate('sum(//user[@id=' . $user_id . ']/ordered/meal/totalprice)');
         //open xsl file
         $xsl = new DOMDocument();
         $xsl->load(public_path('../app/XML/user/userOrderDetail.xsl'));
@@ -609,7 +610,7 @@ class UserController extends Controller
         return view('auth.nonAuthenticate');
     }
 
-    
+
     public function showPoint()
     {
         return view('profile.memberPoint');
@@ -619,13 +620,13 @@ class UserController extends Controller
     {
         $today = Carbon::today();
         $customerCount = User::where('role', 0)->filter(request(['search']))->count();
-        
+
         $customerOrderCount = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
             $query->whereDate('order_date', $today);
         })->count();
 
         $commentCount = MealOrderDetail::whereNotNull('rating_comment')->count();
-       
+
         $todayEarnings = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
             $query->whereDate('order_date', $today);
         })->get();
@@ -638,19 +639,17 @@ class UserController extends Controller
         $customerOrders = MealOrderDetail::whereHas('Order', function ($query) use ($today) {
             $query->whereDate('order_date', $today);
         })->get();
-    
+
         $customers = User::where('role', 0)->filter(request(['search']))->get();
 
         return view('staff.dashboard', [
             'customerCount' => $customerCount,
             'customerOrderCount' => $customerOrderCount,
-            'commentCount'=> $commentCount,
-            'earning' =>$earning,
+            'commentCount' => $commentCount,
+            'earning' => $earning,
             'customerOrders' => $customerOrders,
-            'customers'=>$customers
+            'customers' => $customers
         ]);
-
-        
     }
 
 

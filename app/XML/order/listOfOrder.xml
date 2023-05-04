@@ -3,137 +3,20 @@
 <orders>
   <order id="1">
     <user_id>2</user_id>
-    <order_total>49.2</order_total>
+    <order_total>52.2</order_total>
     <delivery_fee>4.5</delivery_fee>
     <order_status>preparing</order_status>
     <payment_status>Y</payment_status>
-    <payment_method>Public Bank</payment_method>
-    <order_date>2023-04-09</order_date>
+    <payment_method>PayOnDelivery</payment_method>
+    <order_date>2023-05-04</order_date>
   </order>
   <order id="2">
-    <user_id>2</user_id>
-    <order_total>14.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-04-19</order_date>
-  </order>
-  <order id="3">
-    <user_id>2</user_id>
-    <order_total>17.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-04-19</order_date>
-  </order>
-  <order id="4">
-    <user_id>2</user_id>
-    <order_total>14.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-04-19</order_date>
-  </order>
-  <order id="5">
-    <user_id>2</user_id>
-    <order_total>17.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-02</order_date>
-  </order>
-  <order id="6">
-    <user_id>2</user_id>
-    <order_total>17.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-02</order_date>
-  </order>
-  <order id="7">
-    <user_id>2</user_id>
-    <order_total>33.15</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-02</order_date>
-  </order>
-  <order id="8">
-    <user_id>2</user_id>
-    <order_total>14.25</order_total>
-    <delivery_fee>1.35</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-02</order_date>
-  </order>
-  <order id="57">
-    <user_id>12</user_id>
-    <order_total>17.4</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PublicBank</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order id="58">
-    <user_id>12</user_id>
-    <order_total>33.3</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PublicBank</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order id="59">
-    <user_id>12</user_id>
-    <order_total>17.4</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order id="60">
-    <user_id>12</user_id>
-    <order_total>17.4</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-03</order_date>
-  </order>
-  <order id="61">
-    <user_id>12</user_id>
-    <order_total>20.4</order_total>
+    <user_id>5</user_id>
+    <order_total>36.3</order_total>
     <delivery_fee>4.5</delivery_fee>
     <order_status>preparing</order_status>
     <payment_status>Y</payment_status>
     <payment_method>PayOnDelivery</payment_method>
     <order_date>2023-05-04</order_date>
-  </order>
-  <order id="62">
-    <user_id>12</user_id>
-    <order_total>17.4</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PublicBank</payment_method>
-    <order_date>2023-05-04</order_date>
-  </order>
-  <order id="12">
-    <user_id>2</user_id>
-    <order_total>84.49</order_total>
-    <delivery_fee>4.5</delivery_fee>
-    <order_status>preparing</order_status>
-    <payment_status>Y</payment_status>
-    <payment_method>PayOnDelivery</payment_method>
-    <order_date>2023-05-03</order_date>
   </order>
 </orders>

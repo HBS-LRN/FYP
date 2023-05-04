@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\User;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Session\Store;
 
 class Authenticate extends Middleware
 {
@@ -32,25 +33,26 @@ class Authenticate extends Middleware
     public function handle($request, Closure $next, ...$guards)
     {
         if (Auth::check()) {
-            if (!session('lastActivityTime')){
+            if (!session('lastActivityTime')) {
                 $this->session->put('lastActivityTime', time());
-               
-            }
-            elseif (time() - $this->session->get('lastActivityTime') > $this->timeout) {
+            } elseif (time() - $this->session->get('lastActivityTime') > $this->timeout) {
                 $this->session->forget('lastActivityTime');
 
+                $user = User::find(auth()->user()->id);
+                $user->session_id = null;
+                $user->update();
                 
+
                 auth()->logout();
                 session()->invalidate();
                 session()->regenerateToken();
+               
                 return redirect()->route('login')->with('sessionTimeOut', 'Your session has expired due to inactivity.');;
             }
         }
         $this->session->put('lastActivityTime', time());
-        
-        
+
+
         return $next($request);
     }
-
-   
 }

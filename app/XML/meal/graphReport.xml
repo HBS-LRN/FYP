@@ -302,4 +302,56 @@
       <quantity>1</quantity>
     </meal>
   </order>
+  <order id="1">
+    <date>2023-05-04</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>2</quantity>
+    </meal>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="2">
+    <date>2023-05-04</date>
+    <meal>
+      <name>Dumpling</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Spicy Bamboo Salad</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="3">
+    <date>2023-05-04</date>
+    <meal>
+      <name>Taiwanese Fried Chicken</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Qing Tuan</name>
+      <category>Dessert</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
+  <order id="4">
+    <date>2023-05-04</date>
+    <meal>
+      <name>Frozen Peach</name>
+      <category>Beverage</category>
+      <quantity>1</quantity>
+    </meal>
+    <meal>
+      <name>Chicken Wonton Cup</name>
+      <category>Appertizer</category>
+      <quantity>1</quantity>
+    </meal>
+  </order>
 </orders>

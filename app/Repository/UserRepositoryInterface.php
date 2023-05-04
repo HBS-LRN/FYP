@@ -10,7 +10,7 @@ interface UserRepositoryInterface extends BaseRepositoryInterface{
   
  
     public function generatePrivateToken($user);
-    public function updatePassword(User $user, $password);
+    public function updatePassword(User $user, $currentPassword, $newPassword);
     public function updateUser(User $user, array $data);
     
 }

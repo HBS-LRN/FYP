@@ -154,7 +154,7 @@
                             @foreach ($users as $key => $user)
                                 <tr style="border:1px solid grey;">
                                     <td class="custListTd" style="border:1px solid grey;">
-                                        {{ $user->id }}</td>
+                                        {{ $key+1 }}</td>
                                     <td class="custListTd" style="border:1px solid grey;">{{ $user->name }}</td>
                                     <td class="custListTd" style="border:1px solid grey;">{{ $user->email }}</td>
                                     <td class="custListTd" style="border:1px solid grey;">{{ $user->phone }}</td>

@@ -60,7 +60,7 @@
                 <table id="example" class="table table-striped table-bordered">
                     <thead>
                         <tr style="background-color: rgb(165, 200, 245);">
-                            <th>Customer ID</th>
+                            <th>Customer Number</th>
                             <th>Customer Name</th>
                             <th>Customer Email</th>
                             <th>Item Ordered</th>
