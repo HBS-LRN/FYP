@@ -24,6 +24,31 @@
         outline:none;
         font-weight: 800;
     }
+    @media print {
+        body{
+            width:100%;
+        }
+  header,.checkoutHeader,.footer,button{
+    display:none;
+  }
+  .containerBorder .bankImgHeader{
+    padding-left:27%;
+  }
+  
+}
+button{
+    margin-right:5px;
+    border:none;
+    outline:none;
+    background-color: rgb(218, 68, 68);
+    color:white;
+    padding:5px 10px;
+}
+button:hover{
+    cursor: pointer;
+    background-color: rgb(230, 60, 60);
+    
+}
     </style>
 
 </head>
@@ -50,33 +75,24 @@
         <div class="all">
         <div class="checkoutHeader">
                 <div class="checkoutBar"></div>
-                <span class="checkout">Public Bank Payment Confirmation</span>
+                <span class="checkout">Public Bank Payment Successfully</span>
             </div>
             <div class="containerBorder">
                 <div class="bankImgHeader"><img src="../../image/publicBankLogo.png" alt="" srcset=""></div>
             </div>
         <div class="confirmationFormBox">
             
-            <form action="/publicBank/checkPAC" class="confirmationForm" method="POST">
-                <div class="turnBackBox">
-                    <button type="submit" class="turnBackB"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i></button>
-                    <p class="word">Payment Confirmation Session</p>
-                </div>
-                <h2 class="title">Instant Transfer to Grand Imperial Group</h2>
+            <form action="/publicBank/continue" class="confirmationForm" method="POST">
+               
+                <h2 class="title">Public Bank Payment Receipt</h2>
             @csrf 
                 <div class="flexBox">
                     <p class="Boxtitle">From Account</p><p class="result"><input type="text" name="user_id" id="user_id" value="{{$user_id}}" readonly></p>
                 </div>
                 <div class="flexBox">
-                <p class="Boxtitle">PAC No. </p><p class="result"><input type="text" name="pac" id="pac" placeholder="Enter PAC No..."></p>
+                <p class="Boxtitle">Payment Status </p><p class="result">Successfully</p>
                 </div>
-                @if($errors->has('pac'))
-                <div class="flexBox">
-                    <p class="Boxtitle"></p>
-                    <p class="error">{{ $errors->first('pac') }}</p>
-                </div>
-                                
-                @endif
+               
                 <div class="flexBox">
                 <p class="Boxtitle">Beneficiary Bank</p><p class="result">{{$orders->payment_method}}</p>
                 </div>
@@ -99,54 +115,18 @@
                 <p class="Boxtitle">Transaction Amount</p><p class="result">RM {{$totalAmount}}</p>
                 </div>
               
-                <div class="flexBox">
-                    <input type="submit" id="submit" name = "submit" value="Back">
-                    <input type="submit" id="submit" name = "submit" value="Cancel">
-                    <input type="submit" id="submit" name = "submit" value="Request PAC Now">
-                    <input type="submit" id="submit" name = "submit" value="Confirm">
+                <div class="flexBox buttonBox">
+                    <button onclick="window.print()">Print Receipt</button> 
+                    <button type="submit">Continue</button>
                 </div>
 
             </form>
-            <div class="popUpBox" id="popUpBox">
-            <div class="overlay">
-            <div class="content">
-                <div class="close-btn" ><img src="../../image/PBeLogo.png" alt="" width="80px" height="80px"><i class="fas fa-times" onclick="closepage()"></i></div>
-                <h1>PBe Authentication Code (PAC)</h1>
-                <p><b>PAC Request via SMS</b></p>
-                <p>Your PAC number has been sent via Email to your registered email address <b>{{$acc_email}}</b></p>
-                <p>If you have not received the SMS after 1 minute. please close this window and request for a new PAC</p>
-                <div class="buttonBox">
-                    <button onclick="closepage()">Close</button>
-                </div>
-            </div>
-            </div>
-        </div>
+            
         </div>
         
                 
         </div>
-        <script>
-            const popUpPage = document.getElementById('popUpBox');
-        </script>
-        @if(session('SendSuccessful'))
-            <script>
-                popUpPage.style.display="inherit";
-                
-            </script>
-            @else 
-            <script>
-                popUpPage.style.display="none";
-            </script>      
-        @endif
-            <script>
-                function closepage(){
-                    if(popUpPage.style.display=="inherit"){
-                        popUpPage.style.display="none";
-                    }else{
-                        popUpPage.style.display="inherit";
-                    }
-                }
-            </script>
+        
    
 
     </x-layout-customer>

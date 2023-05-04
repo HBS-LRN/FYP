@@ -4,10 +4,9 @@ namespace App\BuilderPattern;
 
 use App\Models\Order;
 
-class OrderBuilder{
+class OrderBuilder implements OrderBuilderInterface{
 
     protected $order;
-    public $totalPrice;
 
     public function __construct(){
         $this->order = new Order();
