@@ -116,6 +116,13 @@
         <totalprice currency="RM">20.99</totalprice>
         <date>2023-05-03</date>
       </meal>
+      <meal>
+        <name>Shrimp</name>
+        <price currency="RM">79.99</price>
+        <quantity unit="plate">1</quantity>
+        <totalprice currency="RM">79.99</totalprice>
+        <date>2023-05-03</date>
+      </meal>
     </ordered>
   </user>
   <user id="3">
