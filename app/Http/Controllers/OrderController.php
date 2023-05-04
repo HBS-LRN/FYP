@@ -391,7 +391,7 @@ class OrderController extends Controller
 
 
         ]);
-            return redirect('purchase');
+            return redirect('/publicBank/PaySuccess');
             }else{
                 return back()->withErrors(['pac' => 'Invalid PAC'])->onlyInput('pac');
             }

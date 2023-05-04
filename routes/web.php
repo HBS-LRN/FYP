@@ -275,12 +275,16 @@ Route::get('/register', [UserController::class, 'create']);
 
 
 
-
+// Route::group(['middleware' => ['transaction.limit']], function () {
+   
+// });
 Route::get('/publicBankLogin', function () {
    return view('payment.publicBankLogin');
 });
 //show customer publicBank login page
-Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID']);
+Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID'])->middleware('transaction.limit');
+
+
 Route::get('/publicBank/password', function () {
    return view('payment.publicBankPassword');
 });
@@ -288,11 +292,18 @@ Route::post('/purchase/publicBankLogin/passwordCheck', [OrderController::class, 
 Route::get('/publicBank/PayConfirmSession', function () {
    return view('payment.publicBankConfirmSession');
 });
+Route::get("/publicBank/PaySuccess",function(){
+   return view('payment.publicBankPaySuccessful');
+});
 Route::post(
    '/publicBank/checkPAC',
    [OrderController::class, 'publicCheckPAC']
 );
-
+Route::post(
+   '/publicBank/continue',function(){
+      return redirect('purchase');
+   }
+);
 //show list of order(xml)
 Route::get('/listOfOrder/xml', [OrderController::class, 'generateXml']);
 
