@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Log extends Model
 {
    
-    protected $fillable = ['user_id','action','table_name','row_id','old_data','new_data'];
+    protected $fillable = ['user_id','user_name','action','table_name','row_id','old_data','new_data'];
 
     public function user()
     {

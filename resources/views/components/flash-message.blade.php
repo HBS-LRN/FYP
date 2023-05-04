@@ -84,6 +84,7 @@
                 type: 'success',
                 icon: 'success',
                 title: 'Success',
+                
                 customClass: 'swal-wide',
               
 

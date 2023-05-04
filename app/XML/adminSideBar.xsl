@@ -82,6 +82,9 @@
                 <li><a href="/staff"><i class="fas fa-user-cog"></i>
                         <p>List Of Staff</p>
                     </a></li>
+                       <li><a href="/log"><i class="fas fa-book"></i>
+                        <p style="margin-left:8px">Log</p>
+                    </a></li>
                 <br />
 
             </ul>

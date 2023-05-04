@@ -10,6 +10,7 @@ use XSLTProcessor;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Log;
 use App\Models\MealOrderDetail;
 use SimpleXMLElement;
 use GuzzleHttp\Client;
@@ -335,6 +336,17 @@ class UserController extends Controller
         // Fire the UserCreate event to create user in the XML file
         $user = User::find($user->id);
         event(new UserCreate($user));
+
+         //create a log
+         $adminLog = new Log();
+         $adminLog->user_id =auth()->user()->id;
+         $adminLog->user_name =auth()->user()->name;
+         $adminLog->action ='Created Customer ';
+         $adminLog->table_name ='Users';
+         $adminLog->row_id = $user->id;
+         $adminLog->new_data=$user->toJson();
+  
+         $adminLog->save();
         return redirect('/customer')->with('successUpdate', $user);
     }
 
@@ -353,11 +365,23 @@ class UserController extends Controller
 
         ]);
         $data['user_id'] = $id;
+
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $user->toJson();
+
         //call repository class to update the user
-        $this->userRepositoryInterface->updateUser($user, $data);
+        $newuser=$this->userRepositoryInterface->updateUser($user, $data);
         // Dispatch an event to update the XML file
         event(new UserUpdate($user));
 
+         $adminLog->user_id =auth()->user()->id;
+         $adminLog->user_name =auth()->user()->name;
+         $adminLog->action ='Updated Customer ';
+         $adminLog->table_name ='Users';
+         $adminLog->row_id = $user->id;
+         $adminLog->new_data=$newuser->toJson();
+         $adminLog->save();
         return redirect('/customer')->with('successUpdate', true);
     }
 
@@ -376,13 +400,36 @@ class UserController extends Controller
         $data['gender'] = $user->gender;
         $data['birthdate'] = $user->birthdate;
         $data['role'] = $request['role'];
+
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $user->toJson();
+
         //call repository class to update the user
-        $this->userRepositoryInterface->updateUser($user, $data);
+        $newuser=$this->userRepositoryInterface->updateUser($user, $data);
+
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated Staff/Admin ';
+        $adminLog->table_name ='Users';
+        $adminLog->row_id = $user->id;
+        $adminLog->new_data=$newuser->toJson();
+        $adminLog->save();
         return redirect('/staff')->with('successUpdate', true);
     }
     public function deleteCustomer($id)
     {
         $user = User::find($id);
+
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $user->toJson();
+        $adminLog->row_id = $user->id;
+         $adminLog->user_id =auth()->user()->id;
+         $adminLog->user_name =auth()->user()->name;
+         $adminLog->action ='Deleted Customer ';
+         $adminLog->table_name ='Users';
+         $adminLog->save();
 
         // Fire the UserOrderDelet event to delete order in the xml file
         event(new UserOrderDelete($user));
@@ -398,6 +445,16 @@ class UserController extends Controller
     public function deleteStaff($id)
     {
         $user = User::find($id);
+
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $user->toJson();
+        $adminLog->row_id = $user->id;
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Deleted Staff/Admin ';
+        $adminLog->table_name ='Users';
+        $adminLog->save();
 
         //call repository class to delete the class
         $this->userRepositoryInterface->delete($user);
@@ -430,6 +487,18 @@ class UserController extends Controller
         $user = $this->userRepositoryInterface->create($data);
         //create the unqiue bearer token as the personal access api token
         $this->userRepositoryInterface->generatePrivateToken($user);
+
+         //create a log
+         $adminLog = new Log();
+         $adminLog->user_id =auth()->user()->id;
+         $adminLog->user_name =auth()->user()->name;
+         $adminLog->action ='Created Staff/Admin ';
+         $adminLog->table_name ='Users';
+         $adminLog->row_id = $user->id;
+         $adminLog->new_data= $user->toJson();
+  
+         $adminLog->save();
+
         return redirect('/staff')->with('successUpdate', $user);
     }
 
@@ -437,9 +506,6 @@ class UserController extends Controller
     //show out customer report
     public function showCustReport()
     {
-
-
-
 
         $xml = new DOMDocument();
         $xml->load(public_path('../app/XML/user/userOrder.xml'));

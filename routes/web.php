@@ -229,8 +229,10 @@ Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popU
 Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
 //log
-Route::get('/log',[MealController::class, 'log']);
+Route::get('/log',[MealController::class, 'showLog']);
 
+//log detail
+Route::get('/logDetails/{id}',[MealController::class, 'showLogDetails']);
 
 //show list of orders
 Route::get('/showOrders', [OrderController::class, 'showOrders']);
