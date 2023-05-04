@@ -84,8 +84,9 @@ span.important{
     font-weight:bold;
 }
 
-td{
+td,th,table,tr{
     text-align:left;
+    border:2px solid black;
 }
 
     </style>
@@ -111,9 +112,9 @@ td{
         <table id="example" class="table table-striped">
 
         <tbody id="search">
-            <tr class="mealRatingTr" style="border:1px solid grey; background-color: rgb(165, 200, 245);">
+            <tr class="mealRatingTr" style=" background-color: rgb(165, 200, 245);">
 
-            <th width="45%" style="border:1px solid grey;">Data Before Action</th>
+            <th width="45%">Data Before Action</th>
             
             @if($oldData!=null)
             <td>
@@ -122,12 +123,12 @@ td{
             @endforeach
             </td>
             @else
-            <td><p>No old data available for this action. </p></td>
+            <td><p style="font-weight:bold;">No old data available for this action. </p></td>
             @endif
             </tr>
-            <tr class="mealRatingTr" style="border:1px solid grey; background-color: rgb(165, 200, 245);">
+            <tr class="mealRatingTr" style=" background-color: rgb(165, 200, 245);">
 
-            <th width="45%" style="border:1px solid grey;">Data After Action</th>
+            <th width="45%">Data After Action</th>
             
             @if($newData!=null)
             <td>
@@ -136,7 +137,7 @@ td{
             @endforeach
             </td>
             @else
-            <td><p>No latest data available for this action. </p></td>
+            <td><p style="font-weight:bold;">No latest data available for this action. </p></td>
             @endif
             </tr>
             
