@@ -10,6 +10,14 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Meal;
+use App\Factories\Meals;
+use App\Factories\AppertizerFactory;
+use App\Factories\BeverageFactory;
+use App\Factories\DessertFactory;
+use App\Factories\NoodleFactory;
+use App\Factories\RiceFactory;
+use App\Factories\SeafoodFactory;
+use App\Factories\MealFactory;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
@@ -20,18 +28,13 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
-use App\Factories\MealFactory;
+use InvalidArgumentException;
 use App\Factories\Interfaces\MealFactoryInterface;
 
 
 class MealController extends Controller
 {
-    protected $mealFactory;
-
-    public function __construct(MealFactoryInterface $mealFactory) {
-        $this->mealFactory = $mealFactory;
-    }
-
+   
     public function index($id)
     {
        
@@ -202,21 +205,115 @@ class MealController extends Controller
     }
 
     public function store(Request $request)
-    {       
-        $meal = $this->mealFactory->store($request->all(),$request);
-        return redirect('/meal/adshow')->with('successfullyAddedMeal', true);
+    {    
+        $data = $request->validate([
+
+            'meal_price' => 'required|numeric|min:1',
+            'meal_qty' => 'required|integer|min:1',
+            'meal_name' => 'required',
+            'category_id' => 'required',
+            'meal_image' => 'required|mimes:jpeg,png,jpg,gif'
+        ], [
+            'meal_price.required'    => 'Please Provide A Meal Price',
+            'meal_price.numeric'    => 'Please Provide A Number',
+            'meal_price.integer'    => 'Please Provide A Number',
+            'meal_price.min' => 'Please Set The Price At Least 1 Ringgit',
+            'meal_qty.min' => 'Please Provide At Least 1 Quanlity Of Food',
+            'meal_qty.required'      => 'Please Provide A Meal Quantity ',
+            'meal_name.required' => 'Please Provide A Meal Name',
+            'category_id.required'      => 'Please Select A Category',
+            'meal_image.required' => 'Please Provide A Meal Image'
+
+        ]);
+
+        if ($request->hasFile('meal_image')) {
+            $data['meal_image'] = $request->file('meal_image')->store('meals', 'public');
+        }
+        $factory = new MealFactory();
+        $mealFactory = $factory->getFactory($data['category_id']);
         
+        $meal = $mealFactory->createMeal($data,$request);
+
+        $newMeal = new Meal();
+        $newMeal->meal_name = $meal->getMealName();
+        $newMeal->meal_qty = $meal->getMealQty();
+        $newMeal->category_id = $meal->getCategoryId();
+        $newMeal->meal_price = $meal->getMealPrice();
+        $newMeal->meal_image =$meal->getMealImage();
+
+        $newMeal->save();
+        //create a log
+        $adminLog = new Log([
+            'user_id' => auth()->user()->id,
+            'user_name' => auth()->user()->name,
+            'action' => 'Created',
+            'table_name' => 'Meals',
+            'row_id' => $newMeal->id,
+            'new_data' => $newMeal->toJson(),
+        ]);
+
+        $adminLog->save();
+
+        return redirect('/meal/adshow')->with('successfullyAddedMeal', true);
     }
 
     public function update(Request $request, $id)
     {
-        $result = $this->mealFactory->update($id, $request->all(),$request);
-        return redirect('/meal/adshow')->with('successfullyUpdate', true);
+        $meal = Meal::find($id);
+        $data = $request->validate([
+                'meal_price' => 'required|numeric|min:0',
+                'meal_qty' => 'required|integer|min:0',
+                'meal_name' => 'required',
+                'category_id' => 'required',
+                'meal_image' => 'mimes:jpeg,png,jpg,gif'
+            ], [
+                'meal_price.required'    => 'Please Provide A Meal Price',
+                'meal_price.numeric'    => 'Please Provide A Number',
+                'meal_price.integer'    => 'Please Provide A Number',
+                'meal_qty.required'      => 'Please Provide A Meal Quantity ',
+                'meal_name.required' => 'Please Provide A Meal Name',
+                'category_id.required'   => 'Please Select A Category',
+            ]);
+    
+            if ($request->hasFile('meal_image')) {
+                $data['meal_image'] = $request->file('meal_image')->store('meals', 'public');
+            }
+    
+            $data['meal_id'] = auth()->id();
+    
+             //create a log
+            $adminLog = new Log();
+            $adminLog->old_data = $meal->toJson();
+            $meal->update($data);
+            $newmeal = $meal->fresh();
+    
+            $adminLog->user_id =auth()->user()->id;
+            $adminLog->user_name =auth()->user()->name;
+            $adminLog->action ='Updated';
+            $adminLog->table_name ='Meals';
+            $adminLog->row_id = $meal->id;
+            $adminLog->new_data=$newmeal->toJson();
+    
+            $adminLog->save();
+            return redirect('/meal/adshow')->with('successfullyUpdate', true);
+        
     }
 
     public function delete($id)
     {
-        $result = $this->mealFactory->delete($id);
+        $meal = Meal::find($id);
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $meal->toJson();
+        $adminLog->row_id = $meal->id;
+    
+        $meal->delete();
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Deleted';
+        $adminLog->table_name ='Meals';
+        $adminLog->save();
+       
         return redirect()->back()->with('successDeleteMeal', true);
 
     }
@@ -240,7 +337,28 @@ class MealController extends Controller
     //update meal Inventories
     public function updateInventory(Request $request, $id)
     {
-        $result = $this->mealFactory->updateInventory($id, $request->all(),$request);
+        $meal = Meal::find($id);
+        $data = $request->validate([
+            'meal_qty' => 'required|integer|min:0'
+        ], [
+            'meal_qty.required' => 'Please Provide A Meal Quantity',
+        ]);
+
+        $data['meal_id'] = auth()->id();
+        //create a log
+        $adminLog = new Log();
+        $adminLog->old_data = $meal->toJson();
+        $meal->update($data);
+        $newmeal=$meal->fresh();
+
+        $adminLog->user_id =auth()->user()->id;
+        $adminLog->user_name =auth()->user()->name;
+        $adminLog->action ='Updated the Meal Quantity of ';
+        $adminLog->table_name ='Meals';
+        $adminLog->row_id = $meal->id;
+        $adminLog->new_data=$newmeal->toJson();
+
+        $adminLog->save();
         return redirect('/showInventory')->with('successfullyUpdate', true);
     }
 
@@ -253,13 +371,28 @@ class MealController extends Controller
    
     public function showQuantitySold($id)
     {
-        $totalQuantity=$this->mealFactory->showQuantitySold($id);
+        $totalQuantity = 0;
+        $meals = MealOrderDetail::where('meal_id', '=', $id)->get();
+
+        $totalQuantity = 0;
+
+        foreach ($meals as $mealOrder) {
+        $totalQuantity +=  $mealOrder->order_quantity;
+        }
+
         return $totalQuantity;
     }
 
     public function showRevenue($id){
-        $totalRevenue=$this->mealFactory->showRevenue($id);
+        $totalRevenue = 0; 
+        $meals = MealOrderDetail::where('meal_id', '=', $id)->get();
+        
+        foreach ($meals as $mealOrder) {
+            $totalRevenue +=  ($mealOrder->order_quantity) * ($mealOrder->Meal->meal_price);
+            }
+
         return $totalRevenue;
+       
     }
 
     public function showInventoryReportDetail($id)
