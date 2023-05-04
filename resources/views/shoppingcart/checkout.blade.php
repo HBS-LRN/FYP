@@ -153,8 +153,6 @@
                     <label for="payondelivery">Pay On Delivery</label><br><br>
                     <input type="radio" id="paymethod" name="paymethod" value="PublicBank" class="RadioButtonList1">
                     <label for="public bank">Public Bank</label><br><br>
-                    <input type="radio" id="paymethod" name="paymethod" value="MayBank" class="RadioButtonList1">
-                    <label for="Maybank">May Bank</label><br>
                     <br />
                     <br />
                     <br />
