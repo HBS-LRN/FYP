@@ -90,7 +90,8 @@ Route::group(['middleware' => 'isStaff'], function () {
    //only staff able to access 
 
 
-
+// Show Meal Create Form
+Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
    // Show admin meal list 
    Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
 
@@ -139,7 +140,7 @@ Route::group(['middleware' => 'isStaff'], function () {
 });
 //proctected route
 
-Route::middleware(['middleware' => 'RequireLogin'])->middleware(['middleware' => 'auth'])->group(function () {
+Route::middleware(['middleware' => 'RequireLogin'])->group(function () {
 
 
 
@@ -172,7 +173,7 @@ Route::middleware(['middleware' => 'RequireLogin'])->middleware(['middleware' =>
    // show customer account
 
 
-   Route::get('/dashboard', [UserController::class, 'dashboard']);
+   
 
    // show customer account
 
@@ -336,8 +337,7 @@ Route::post('/gift/store', [GiftController::class, 'store']);
 //web service (free gift)
 Route::get('/freeGiftInfo', [FreeGiftController::class, 'index']);
 
-// Show Meal Create Form
-Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
+Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth');
 
 Route::get("/contactUs", function () {
    return view("static.contactus");

@@ -41,14 +41,14 @@ class AddressController extends Controller
             'address_userphone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
             'street' => 'required',
             'area' => 'required',
-            'postcode' => ['required', 'regex:/^[0-9]{5}/']
+            'postcode' => 'required|digits:5'
 
 
         ], [
             'address_username.required'    => 'User name field is required',
             'address_userphone.required'    => 'User phone field is required',
-            'postcode.regax'    => '5 digit for postcode only',
-            'address_userphone.regax'    => 'please follow format xxx-xxxxxxxxx',
+            'postcode.regex'    => '5 digit for postcode only',
+            'address_userphone.regex'    => 'please follow format xxx-xxxxxxxxx',
         ]);
 
 
@@ -63,6 +63,7 @@ class AddressController extends Controller
 
     public function update(Request $request, $id)
     {
+        
 
         $address = Address::find($id);
         $data['user_id'] = auth()->id();
@@ -73,16 +74,17 @@ class AddressController extends Controller
             'address_userphone' => ['required', 'regex:/^[0-9]{3}-[0-9]{7}/'],
             'street' => 'required',
             'area' => 'required',
-            'postcode' => ['required', 'regex:/^[0-9]{5}/']
+            'postcode' => 'required|digits:5'
 
 
         ], [
             'address_username.required'    => 'User name field is required',
             'address_userphone.required'    => 'User phone field is required',
-            'postcode.regax'    => '5 digit for postcode only',
-            'address_userphone.regax'    => 'please follow format xxx-xxxxxxxxx',
+            'postcode.regex'    => '5 digit for postcode only',
+            'address_userphone.regex'    => 'please follow format xxx-xxxxxxxxx',
         ]);
 
+       
 
         //call address repository interface to update data 
         $this->addressRepositoryInterface->update($address,$data);

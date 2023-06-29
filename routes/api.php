@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\VoucherController;
-use App\Models\Voucher;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,35 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-//public route
-//Route::resource('vouchers',VoucherController::class);
-
-
-
-
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/vouchers', [VoucherController::class, 'index']);
-Route::get('/vouchers/{id}', [VoucherController::class, 'show']);
-
-
-
-Route::get('/vouchers/search/{name}', [VoucherController::class, 'search']);
-
-//protected route
-Route::group(['middleware' => ['auth:sanctum']], function () {
-
-    Route::post('/vouchers', [VoucherController::class, 'store']);
-    Route::put('/vouchers/{id}', [VoucherController::class, 'update']);
-    Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
-
-
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/user/{id}', [AuthController::class, 'authenticateUser']);
+
+    
+    Route::get('/shoppingCart/{id}', [AuthController::class, 'shoppingCart']);
+  
 });
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::apiResource('/users', UserController::class);

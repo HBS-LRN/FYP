@@ -11,7 +11,7 @@
     <style>
         .dotBlock {
             position: absolute;
-            top: 180%;
+            top: 185%;
             left: 48%;
         }
 
@@ -175,11 +175,6 @@
                 Established since 2008, we are Malaysia's leading company in the food and beverage industry. Over the
                 years, we have grown by leaps and bounds, and is now a household name synonymous with exquisite culinary
                 offerings and excellent ambience and other food related products and services.
-                <div class="adminBtnBox">
-                    <a class="adminBtn" href="../staffLogin">
-                        Admin Login
-                    </a>
-                </div>
             </div>
 
         </div>

@@ -42,10 +42,10 @@
                             <div class="errBox">
                                 <label for=""></label>
                                 @error('address_username')
-                                <p class="error" style="color:red">*{{ $message }}</p>
-                            @enderror
+                                    <p class="error" style="color:red">*{{ $message }}</p>
+                                @enderror
                             </div>
-                            
+
 
                             <br>
                             <div class="phoneNumberSetting">
@@ -57,10 +57,10 @@
                             </div>
                             <div class="errBox">
                                 <label for=""></label>
-                            @error('address_userphone')
-                                <p class="error" style="color:red">*{{ $message }}</p>
-                            @enderror
-</div>
+                                @error('address_userphone')
+                                    <p class="error" style="color:red">*{{ $message }}</p>
+                                @enderror
+                            </div>
                             <br>
 
                             <div class="streetAddressSetting">
@@ -74,10 +74,10 @@
                             <div class="errBox">
                                 <label for=""></label>
                                 @error('street')
-                                <p class="error" style="color:red">*{{ $message }}</p>
-                            @enderror
+                                    <p class="error" style="color:red">*{{ $message }}</p>
+                                @enderror
                             </div>
-                            
+
                             <br>
 
                             <div class="stateSetting">
@@ -95,33 +95,33 @@
                             </div>
                             <div class="errBox">
                                 <label for=""></label>
-                            @error('area')
-                                <p class="error" style="color:red">*{{ $message }}</p>
-                            @enderror
+                                @error('area')
+                                    <p class="error" style="color:red">*{{ $message }}</p>
+                                @enderror
                             </div>
-                            
+
 
 
                             <br>
                             <div class="postalCodeSetting">
                                 <label for="postalCodeLabel" class="postalCodeLabel">PostCode </label>
                                 <input type="text" class="postalCodeInput" name="postcode"
-                                    value="{{ $address ->postcode }}" />
+                                    value="{{ $address->postcode }}" />
 
                             </div>
                             <div class="errBox">
-                                <label for=""></label> 
-@error('postcode')
-                                <p class="error" style="color:red">*{{ $message }}</p>
-                            @enderror
-</div>
-                            
+                                <label for=""></label>
+                                @error('postcode')
+                                    <p class="error" style="color:red">*{{ $message }}</p>
+                                @enderror
+                            </div>
+
 
 
 
                             <div class="submitButtonaddAddress">
 
-                                <button class="submitaddAddress" type="submit" >Submit</button>
+                                <button class="submitaddAddress" type="submit">Submit</button>
 
                             </div>
 

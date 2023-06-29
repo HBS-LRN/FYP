@@ -440,6 +440,8 @@ class ShoppingCartController extends Controller
 
             ]);
 
+
+            
             session()->forget('voucherID');
             session()->forget('voucher');
             session()->forget('voucherCode');

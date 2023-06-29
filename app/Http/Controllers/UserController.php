@@ -552,7 +552,7 @@ class UserController extends Controller
 
         $result = Hash::check($password, auth()->user()->password);
 
-        dd($password);
+       
         if ($result == false) {
             return redirect('/customer')->with('invalidPassword', true);
         }

@@ -46,4 +46,31 @@
     <payment_method>PublicBank</payment_method>
     <order_date>2023-05-04</order_date>
   </order>
+  <order id="6">
+    <user_id>10</user_id>
+    <order_total>14.25</order_total>
+    <delivery_fee>1.35</delivery_fee>
+    <order_status>preparing</order_status>
+    <payment_status>Y</payment_status>
+    <payment_method>PayOnDelivery</payment_method>
+    <order_date>2023-05-09</order_date>
+  </order>
+  <order id="7">
+    <user_id>11</user_id>
+    <order_total>14.25</order_total>
+    <delivery_fee>1.35</delivery_fee>
+    <order_status>preparing</order_status>
+    <payment_status>Y</payment_status>
+    <payment_method>PublicBank</payment_method>
+    <order_date>2023-05-09</order_date>
+  </order>
+  <order id="8">
+    <user_id>11</user_id>
+    <order_total>20.4</order_total>
+    <delivery_fee>4.5</delivery_fee>
+    <order_status>preparing</order_status>
+    <payment_status>Y</payment_status>
+    <payment_method>PayOnDelivery</payment_method>
+    <order_date>2023-05-09</order_date>
+  </order>
 </orders>

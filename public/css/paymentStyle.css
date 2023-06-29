@@ -137,11 +137,11 @@
     color: grey;
 }
 .YesCondition .passwordBox i{
-    top:82.7%;
+    top:85.7%;
     left:27.5%;
 }
 .YesCondition .userNameBox i{
-    top:78.2%;
+    top:81%;
     left:27.5%;
 }
 .LoginButtonBox input:first-child{
