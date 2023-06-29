@@ -22,7 +22,7 @@
                         <h1>User Login</h1>
                         <p>New User? <a href="/register">Register Here</a></p>
                     </div>
-                    
+            
                     <div class="text email">
                         <label for="email">User Email</label>
                         <input type="text" class="txtCustEmail" name="email"

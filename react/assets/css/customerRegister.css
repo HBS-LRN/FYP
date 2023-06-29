@@ -1,0 +1,268 @@
+﻿.customer-login-container {
+    height: fit-content;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.customer-login {
+    margin: 80px auto;
+    background-color: white;
+    width: 60%;
+    height: 85%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+    align-items: center;
+    padding-bottom: 84px;
+    display: flex;
+}
+
+    .logo img {
+        height: 400px;
+        width: 400px;
+    }
+
+.txtCustTelephone {
+    height: 100px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustName {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustPassword {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustEmail {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.txtCustConfirmPassword {
+    height: 0px;
+    width: 82%;
+    font-size: 18px;
+    margin: 0px 0px 10px 0px;
+    background: none;
+    padding: 25px 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.customer-form {
+    margin: 6px 40px 0px 50px;
+    float: left;
+}
+
+.customer-form {
+    margin-right: 100px;
+    padding-bottom: 3%;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+
+
+
+.submit-btnRegister {
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+
+
+.checkbox {
+    margin-top: 15px;
+    display: flex;
+}
+
+    .checkbox .CheckBox {
+    }
+
+.popUpTeamNCondition .model1 {
+    width: 810px;
+    height: 650px;
+    background-color: white;
+    padding: 0px 20px 0px 20px;
+    margin-top: -350px;
+    position: fixed;
+}
+
+    .popUpTeamNCondition .model1 h1 {
+        margin: 20px 0px 40px 10px;
+        text-decoration: underline;
+        color: rgb(0, 0, 0);
+        font-size: 25px;
+        font-style: italic;
+        text-shadow: 0px 0px 5px white;
+    }
+
+    .popUpTeamNCondition .model1 pre {
+        margin: 20px 0px 40px -90px;
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+        font-style: normal;
+        text-shadow: 0px 0px 5px white;
+    }
+
+    .popUpTeamNCondition .model1 b {
+        margin: 20px 0px 40px 0px;
+        text-decoration: underline;
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-style: normal;
+        text-shadow: 0px 0px 5px white;
+    }
+
+.popUpTeamNCondition {
+    width: 100%;
+    height: 150vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.customer-login {
+    padding-bottom: 14px;
+}
+
+.error {
+    margin:0px;
+    border: none;
+    color: red;
+    font-size: 13px;
+    margin-bottom: 2px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.customer-login .logo {
+    flex-basis: 20%;
+}
+
+.customer-login .customer-form {
+    flex-basis: 80%;
+    margin: 0px;
+    padding: 10px 50px;
+}
+
+.txtCustName,
+.txtCustEmail {
+    margin-right: 20px;
+}
+
+.submit-btnRegister {
+    background: linear-gradient(to right, #ff105f, #ffad06);
+    width: 350px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}

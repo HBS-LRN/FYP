@@ -1,0 +1,209 @@
+.customer-login-container {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(../image/Dessert/qingtuan.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+}
+
+.customer-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.logo {
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+}
+
+    .logo img {
+        height: 400px;
+        width: 350px;
+    }
+
+.text .txtCustEmail {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 30px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+.text .txtCustPassword {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+
+input:hover {
+    border: 2.3px solid rgb(61, 19, 214);
+}
+
+.customer-form {
+    margin: 6px 40px 0px 50px;
+}
+
+.text-form a {
+    text-decoration: none;
+    color: rgb(253, 115, 115);
+}
+
+.login-form {
+    margin-bottom: 40px;
+}
+
+    .login-form h1 {
+        font-size: 28px;
+        color: #353435;
+    }
+
+label {
+    font-size: 13px;
+    color: rgb(71, 71, 71);
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.submit a {
+    color: rgb(41, 40, 40);
+}
+
+.submit {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 330px;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+
+
+.submit-btnLogin {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 98%;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+
+.error {
+    color: red;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+
+.customer-login {
+    margin: 100px auto;
+    background-color: white;
+    width: 60%;
+    height: 80%;
+    display: flex;
+}
+
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    margin: 10px 13px 3px 203px;
+}
+
+.text {
+    margin-top: 20px;
+    margin-left: 0px;
+    margin-right: 10px;
+}
+
+.password {
+    margin-top: 5px
+}
+
+.error {
+    color: red;
+    border: none;
+    font-size: 13px;
+    margin-bottom: 28px;
+    width: 97%;
+    padding-left: 10px;
+}
+.customer-form {
+    margin: 6px 40px 0px 50px;
+    flex-basis:80%;
+}
+.logo {
+    flex-basis:20%;
+    box-shadow: 10px 0px 10px rgba(236, 236, 236, 0.788);
+}
+.text {
+    padding-right:150px;
+}
+.text .txtCustEmail {
+    height: 30px;
+    width: 98%;
+    font-size: 18px;
+    margin: 10px 0px 0px 0px;
+    background: none;
+    padding: 10px;
+    border: 2.3px solid rgb(23, 23, 26);
+    border-radius: 24px;
+    outline: 0px;
+    box-shadow: 6px 7px 5px #bbb9ba;
+}
+.password {
+    margin-top: 10px;
+}
+.submit-btnLogin {
+    background: linear-gradient(to right,#ff105f,#ffad06);
+    width: 70%;
+    height: 38px;
+    border-radius: 25px;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: 30px;
+}
+.forgetPassword a {
+    font-size: 12px;
+    color: rgb(71, 71, 71);
+    text-decoration: none;
+}
+
+.forgetPassword {
+    display:flex;
+    justify-content:right;
+    margin: 15px 139px 3px 0px;
+}
+

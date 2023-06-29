@@ -2,7 +2,7 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import Users from "./views/Users";
 import ShoppingCart from "./views/shoppingCart";
 import Singup from "./views/SignUp";
-import Login from "./views/login";
+
 import NotFound from "./views/NotFound";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
@@ -11,10 +11,13 @@ import UserForm from "./views/UserForm";
 import AccessProhibited from "./views/accessProhibited";
 import Index from "./views/Index";
 import CustomerLayout from "./components/CustomerLayout";
-import AboutUs from "./views/static/aboutus";
+
 import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
+import Login from "./views/auth/login";
+import Aboutus from "./views/static/aboutus";
+import Register from "./views/auth/register";
 
 const router = createBrowserRouter([
     {
@@ -31,7 +34,7 @@ const router = createBrowserRouter([
         },
         {
           path: '/about',
-          element: <AboutUs/>
+          element: <Aboutus/>
         },
         {
           path: '/contact',
@@ -45,6 +48,15 @@ const router = createBrowserRouter([
           path: '/service',
           element: <Service/>
         },
+        {
+          path: '/login',
+          element: <Login/>
+        },
+        {
+          path: '/register',
+          element: <Register/>
+        },
+
         {
           path: '/users/new',
           element: <UserForm key="userCreate" />

@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 
 
-export default function AboutUs() {
+export default function Aboutus() {
 
 
     return (
