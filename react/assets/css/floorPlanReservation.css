@@ -36,7 +36,7 @@ body{
 } */
 .fpmbg .table8{
     
-    background-image: url(./table8.png);
+    background-image: url(../img/table8.png);
     width: 20vh;
     height:20vh;
     background-repeat: no-repeat;
@@ -60,7 +60,7 @@ body{
     
 }
 .fpmbg .table8 .selectedBorder,.fpmbg .table4 .selectedBorder,.fpmbg .table12 .selectedBorder,.fpmbg .table2 .selectedBorder  {
-    background:url(./selectedBorder.png);
+    background:url(../img/selectedBorder.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -114,7 +114,7 @@ body{
     }
 }
 .fpmbg .table4{
-    background-image: url(./table4.png);
+    background-image: url(../img/table4.png);
     width: 15vh;
     height: 13vh;
     background-repeat: no-repeat;
@@ -141,7 +141,7 @@ body{
 }
 .fpmbg .table12{
     
-    background-image: url(./table12.png);
+    background-image: url(../img/table12.png);
     width: 32vh;
     
     height: 14vh;
@@ -167,7 +167,7 @@ body{
 }
 .fpmbg .table2{
     
-    background-image: url(./table2.png);
+    background-image: url(../img/table2.png);
     width: 7vh;
    
     height: 15vh;
