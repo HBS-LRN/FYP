@@ -23,13 +23,8 @@ export default function MealsList() {
                                     <div className="row">
                                         <div className="col-12">
                                             <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                                <h4 className="mb-sm-0">Products</h4>
-                                                <div className="page-title-right">
-                                                    <ol className="breadcrumb m-0">
-                                                        <li className="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                                        <li className="breadcrumb-item active">Products</li>
-                                                    </ol>
-                                                </div>
+                                                <h4 className="mb-sm-0">Meals</h4>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -46,71 +41,66 @@ export default function MealsList() {
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingOne">
                                                                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                                    <i className="mdi mdi-desktop-classic font-size-16 align-middle me-2" /> Electronic
+                                                                    <i className="mdi mdi-desktop-classic font-size-16 align-middle me-2" /> Appetizer
                                                                 </button>
                                                             </h2>
-                                                            <div id="collapseOne" className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                                                <div className="accordion-body">
-                                                                    <ul className="list-unstyled categories-list mb-0">
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Mobile</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Mobile accessories</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Computers</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Laptops</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Speakers</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                           
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingTwo">
                                                                 <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                    <i className="mdi mdi-hanger font-size-16 align-middle me-2" /> Fashion
+                                                                    <i className="mdi mdi-hanger font-size-16 align-middle me-2" /> Meat
                                                                 </button>
                                                             </h2>
-                                                            <div id="collapseTwo" className="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                                                <div className="accordion-body">
-                                                                    <ul className="list-unstyled categories-list mb-0">
-                                                                        <li className="active"><a href="#"><i className="mdi mdi-circle-medium me-1" /> Clothing</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Footwear</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Watches</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Sportswear</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                            
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
                                                                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Baby &amp; Kids
+                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Dessert
                                                                 </button>
                                                             </h2>
-                                                            <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                                                <div className="accordion-body">
-                                                                    <ul className="list-unstyled categories-list mb-0">
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Clothing</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Footwear</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Toys</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Baby care</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div className="accordion-item">
+                                                            <h2 className="accordion-header" id="headingThree">
+                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Seafood
+                                                                </button>
+                                                            </h2>
+                                                            
+                                                        </div>
+                                                        <div className="accordion-item">
+                                                            <h2 className="accordion-header" id="headingThree">
+                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Noodle
+                                                                </button>
+                                                            </h2>
+                                                            
+                                                        </div>
+                                                        <div className="accordion-item">
+                                                            <h2 className="accordion-header" id="headingThree">
+                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Rice
+                                                                </button>
+                                                            </h2>
+                                                            
+                                                        </div>
+                                                        <div className="accordion-item">
+                                                            <h2 className="accordion-header" id="headingThree">
+                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Beverage
+                                                                </button>
+                                                            </h2>
+                                                            
                                                         </div>
                                                         <div className="accordion-item mb-3">
                                                             <h2 className="accordion-header" id="headingFour">
                                                                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                                    <i className="mdi mdi-dumbbell font-size-16 align-middle me-2" /> Fitness
+                                                                    <i className="mdi mdi-dumbbell font-size-16 align-middle me-2" /> DimSum
                                                                 </button>
                                                             </h2>
-                                                            <div id="collapseFour" className="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                                                                <div className="accordion-body">
-                                                                    <ul className="list-unstyled categories-list mb-0">
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Gym equipment</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Yoga mat</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Dumbbells</a></li>
-                                                                        <li><a href="#"><i className="mdi mdi-circle-medium me-1" /> Protein supplements</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>
@@ -216,9 +206,8 @@ export default function MealsList() {
                                                                 <div>
                                                                     <h5>Clothes &amp; Accessories</h5>
                                                                     <ol className="breadcrumb p-0 bg-transparent mb-2">
-                                                                        <li className="breadcrumb-item"><a href="javascript: void(0);">Fashion</a></li>
-                                                                        <li className="breadcrumb-item"><a href="javascript: void(0);">Clothing</a></li>
-                                                                        <li className="breadcrumb-item active">T-shirts</li>
+                                                                        <li className="breadcrumb-item"><a href="javascript: void(0);">Meat</a></li>
+                                                                        
                                                                     </ol>
                                                                 </div>
                                                             </div>
@@ -251,12 +240,12 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart-outline" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-1.png" alt="img-1" className="img-fluid mx-auto d-block" />
+                                                                        
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Blue color, T-shirt</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Full sleeve T-shirt</a></h5>
-                                                                        <h5 className="mt-3 mb-0">$240</h5>
+                                                                    <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -271,12 +260,11 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart-outline" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-2.png" alt="img-2" className="img-fluid mx-auto d-block" />
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Half sleeve, T-shirt</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Half sleeve T-shirt </a></h5>
-                                                                        <h5 className="mt-3 mb-0"><span className="text-muted me-2"><del>$240</del></span>$225</h5>
+                                                                    <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -288,12 +276,11 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart text-danger" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-3.png" alt="img-3" className="img-fluid mx-auto d-block" />
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Green color, Hoodie</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Hoodie (Green)</a></h5>
-                                                                        <h5 className="mt-3 mb-0"><span className="text-muted me-2"><del>$290</del></span>$275</h5>
+                                                                    <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -305,12 +292,11 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart-outline" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-4.png" alt="img-4" className="img-fluid mx-auto d-block" />
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Gray color, Hoodie</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Hoodie (Green)</a></h5>
-                                                                        <h5 className="mt-3 mb-0"><span className="text-muted me-2"><del>$290</del></span>$275</h5>
+                                                                    <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -322,12 +308,12 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart text-danger" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-5.png" alt="img-5" className="img-fluid mx-auto d-block" />
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Blue color, T-shirt</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Full sleeve T-shirt</a></h5>
-                                                                        <h5 className="mt-3 mb-0">$242</h5>
+                                                                        
+                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -342,12 +328,12 @@ export default function MealsList() {
                                                                                 <i className="mdi mdi-heart-outline" />
                                                                             </a>
                                                                         </div>
-                                                                        <img src="../assets/img/product/img-6.png" alt="img-6" className="img-fluid mx-auto d-block" />
+                                                                        <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
                                                                     </div>
                                                                     <div className="text-center">
-                                                                        <p className="font-size-12 mb-1">Black color, T-shirt</p>
-                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Half sleeve T-shirt </a></h5>
-                                                                        <h5 className="mt-3 mb-0"><span className="text-muted me-2"><del>$240</del></span>$225</h5>
+                                                                        
+                                                                        <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
+                                                                        <h5 className="mt-3 mb-0">RM 15.90</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>

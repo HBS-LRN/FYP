@@ -446,6 +446,17 @@ legend {
     font-size: calc(1.275rem + .3vw);
     line-height: inherit
 }
+.navbar-header .d-flex .navbar-brand-box{
+    padding-top:10px ;
+}
+.navbar-header .d-flex .navbar-brand-box .logo{
+    font-weight: bolder;
+    font-size: 16px;
+    color: rgb(207, 162, 111);
+}
+.navbar-header .d-flex .navbar-brand-box .logo img{
+    margin-right: 10px;
+}
 
 @media (min-width:1200px) {
     legend {

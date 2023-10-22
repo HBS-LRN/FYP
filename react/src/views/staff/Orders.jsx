@@ -94,7 +94,7 @@ export default function Orders() {
                                                         </th>
                                                         <th>Order ID</th>
                                                         <th>Date</th>
-                                                        <th>Billing Name</th>
+                                                        
                                                         <th>Total</th>
                                                         <th>Payment Status</th>
                                                         <th>Invoice</th>
@@ -126,9 +126,9 @@ export default function Orders() {
                                                                 #NZ1572
                                                             </a>{" "}
                                                         </td>
-                                                        <td>04 Apr, 2020</td>
-                                                        <td>Walter Brown</td>
-                                                        <td>$172</td>
+                                                        <td>04 Apr, 2023</td>
+                                                        
+                                                        <td>RM 172</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -184,9 +184,9 @@ export default function Orders() {
                                                                 #NZ1571
                                                             </a>{" "}
                                                         </td>
-                                                        <td>03 Apr, 2020</td>
-                                                        <td>Jimmy Barker</td>
-                                                        <td>$165</td>
+                                                        <td>03 Apr, 2023</td>
+                                                        
+                                                        <td>RM 165</td>
                                                         <td>
                                                             <div className="badge badge-soft-warning font-size-12">
                                                                 unpaid
@@ -242,9 +242,9 @@ export default function Orders() {
                                                                 #NZ1570
                                                             </a>{" "}
                                                         </td>
-                                                        <td>03 Apr, 2020</td>
-                                                        <td>Donald Bailey</td>
-                                                        <td>$146</td>
+                                                        <td>03 Apr, 2023</td>
+                                                        
+                                                        <td>RM 146</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -300,9 +300,9 @@ export default function Orders() {
                                                                 #NZ1569
                                                             </a>{" "}
                                                         </td>
-                                                        <td>02 Apr, 2020</td>
-                                                        <td>Paul Jones</td>
-                                                        <td>$183</td>
+                                                        <td>02 Apr, 2023</td>
+                                                        
+                                                        <td>RM 183</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -358,12 +358,12 @@ export default function Orders() {
                                                                 #NZ1568
                                                             </a>{" "}
                                                         </td>
-                                                        <td>01 Apr, 2020</td>
-                                                        <td>Jefferson Allen</td>
-                                                        <td>$160</td>
+                                                        <td>01 Apr, 2023</td>
+                                                        
+                                                        <td>RM 160</td>
                                                         <td>
-                                                            <div className="badge badge-soft-danger font-size-12">
-                                                                Chargeback
+                                                        <div className="badge badge-soft-warning font-size-12">
+                                                                unpaid
                                                             </div>
                                                         </td>
                                                         <td>
@@ -416,9 +416,9 @@ export default function Orders() {
                                                                 #NZ1567
                                                             </a>{" "}
                                                         </td>
-                                                        <td>31 Mar, 2020</td>
-                                                        <td>Jeffrey Waltz</td>
-                                                        <td>$105</td>
+                                                        <td>31 Mar, 2023</td>
+                                                        
+                                                        <td>RM 105</td>
                                                         <td>
                                                             <div className="badge badge-soft-warning font-size-12">
                                                                 unpaid
@@ -474,9 +474,9 @@ export default function Orders() {
                                                                 #NZ1566
                                                             </a>{" "}
                                                         </td>
-                                                        <td>30 Mar, 2020</td>
-                                                        <td>Jewel Buckley</td>
-                                                        <td>$112</td>
+                                                        <td>30 Mar, 2023</td>
+                                                       
+                                                        <td>RM 112</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -532,9 +532,9 @@ export default function Orders() {
                                                                 #NZ1565
                                                             </a>{" "}
                                                         </td>
-                                                        <td>29 Mar, 2020</td>
-                                                        <td>Jamison Clark</td>
-                                                        <td>$123</td>
+                                                        <td>29 Mar, 2023</td>
+                                                        
+                                                        <td>RM 123</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -590,9 +590,9 @@ export default function Orders() {
                                                                 #NZ1564
                                                             </a>{" "}
                                                         </td>
-                                                        <td>28 Mar, 2020</td>
-                                                        <td>Eddy Torres</td>
-                                                        <td>$141</td>
+                                                        <td>28 Mar, 2023</td>
+                                                        
+                                                        <td>RM 141</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid
@@ -648,9 +648,9 @@ export default function Orders() {
                                                                 #NZ1563
                                                             </a>{" "}
                                                         </td>
-                                                        <td>28 Mar, 2020</td>
-                                                        <td>Frank Dean</td>
-                                                        <td>$164</td>
+                                                        <td>28 Mar, 2023</td>
+                                                        
+                                                        <td>RM 164</td>
                                                         <td>
                                                             <div className="badge badge-soft-warning font-size-12">
                                                                 unpaid
@@ -706,9 +706,9 @@ export default function Orders() {
                                                                 #NZ15632
                                                             </a>{" "}
                                                         </td>
-                                                        <td>27 Mar, 2020</td>
-                                                        <td>James Hamilton</td>
-                                                        <td>$154</td>
+                                                        <td>27 Mar, 2023</td>
+                                                        
+                                                        <td>RM 154</td>
                                                         <td>
                                                             <div className="badge badge-soft-success font-size-12">
                                                                 Paid

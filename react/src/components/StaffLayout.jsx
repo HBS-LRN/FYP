@@ -52,6 +52,7 @@ export default function StaffLayout() {
                                         </span>
                                         <span className="logo-lg">
                                             <img src="../assets/img/GrandImperialGroupLogoHeader.png" alt="logo-light" height="70" />
+                                            Grand Imperial HI
                                         </span>
                                     </a>
                                 </div>
@@ -234,6 +235,7 @@ export default function StaffLayout() {
 
                                     <li>
                                         <a href="/staffDashboard" className="waves-effect">
+                                        
                                             <i className="ri-dashboard-line"></i>
                                             <span className="badge rounded-pill bg-success float-end">3</span>
                                             <span>Dashboard</span>
@@ -243,8 +245,9 @@ export default function StaffLayout() {
 
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-store-2-line"></i>
-                                            <span>Ec(按到的link）</span>
+                                        <i class="fas fa-utensils"></i>
+                                            
+                                            <span>Manage Meal</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
                                             <li>
@@ -256,20 +259,46 @@ export default function StaffLayout() {
                                             <li>
                                                 <a href="/addMeal">Add Meal</a>
                                             </li>
+                                         
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                        <i class="fas fa-user-edit"></i>
+                                            
+                                            <span> Manage Customer</span>
+                                        </a>
+                                        <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="/orders">Orders</a>
+                                                <a href="/orders">Customers Orders</a>
                                             </li>
                                             <li>
-                                                <a href="/customers">Customers</a>
+                                                <a href="/orders">Add Reservation</a>
                                             </li>
-                                           
+
                                             <li>
                                                 <a href="/addCustomer">Add Customer</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="calendar.html" className="waves-effect">
+                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                        <i class="fas fa-user-edit"></i>
+                                            
+                                            <span> Manage Staff</span>
+                                        </a>
+                                        <ul className="sub-menu" aria-expanded="false">
+                                            <li>
+                                                <a href="/orders">Add Staff</a>
+                                            </li>
+                                            <li>
+                                                <a href="/customers">Delete Staff</a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="/staffcalendar" className="waves-effect">
                                             <i className="ri-calendar-2-line"></i>
                                             <span>Calendar</span>
                                         </a>
@@ -284,147 +313,34 @@ export default function StaffLayout() {
                                         </a>
                                     </li>
 
-                                   
 
-                                    <li>
-                                        <a href="javascript: void(0);" className="waves-effect">
-                                            <i className="ri-eraser-fill"></i>
-                                            <span className="badge rounded-pill bg-danger float-end">6</span>
-                                            <span>Forms</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="form-elements.html">Form Elements</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-validation.html">Form Validation</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-advanced.html">Form Advanced Plugins</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-editors.html">Form Editors</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-uploads.html">Form File Upload</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-xeditable.html">Form X-editable</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-wizard.html">Form Wizard</a>
-                                            </li>
-                                            <li>
-                                                <a href="form-mask.html">Form Mask</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-table-2"></i>
-                                            <span>Tables</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="tables-basic.html">Basic Tables</a>
-                                            </li>
-                                            <li>
-                                                <a href="tables-datatable.html">Data Tables</a>
-                                            </li>
-                                            <li>
-                                                <a href="tables-responsive.html">Responsive Table</a>
-                                            </li>
-                                            <li>
-                                                <a href="tables-editable.html">Editable Table</a>
-                                            </li>
-                                        </ul>
-                                    </li>
 
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
                                             <i className="ri-bar-chart-line"></i>
-                                            <span>Charts</span>
+                                            <span>Report</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="charts-apex.html">Apex Charts</a>
+                                                <a href="charts-apex.html">Annual Sale Report</a>
                                             </li>
                                             <li>
-                                                <a href="charts-chartjs.html">Chartjs Charts</a>
+                                                <a href="/customers">Customers Report</a>
                                             </li>
                                             <li>
-                                                <a href="charts-flot.html">Flot Charts</a>
+                                                <a href="/addCustomer">Staff Report</a>
                                             </li>
+                                           
                                             <li>
-                                                <a href="charts-knob.html">Jquery Knob Charts</a>
+                                                <a href="charts-knob.html">Menu Report</a>
                                             </li>
-                                            <li>
-                                                <a href="charts-sparkline.html">Sparkline Charts</a>
-                                            </li>
+                                           
                                         </ul>
                                     </li>
 
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-brush-line"></i>
-                                            <span>Icons</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="icons-remix.html">Remix Icons</a>
-                                            </li>
-                                            <li>
-                                                <a href="icons-materialdesign.html">Material Design</a>
-                                            </li>
-                                            <li>
-                                                <a href="icons-dripicons.html">Dripicons</a>
-                                            </li>
-                                            <li>
-                                                <a href="icons-fontawesome.html">Font awesome 5</a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                  
 
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-map-pin-line"></i>
-                                            <span>Maps</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="maps-google.html">Google Maps</a>
-                                            </li>
-                                            <li>
-                                                <a href="maps-vector.html">Vector Maps</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-share-line"></i>
-                                            <span>Multi Level</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="true">
-                                            <li>
-                                                <a href="javascript: void(0);">Level 1.1</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript: void(0);" className="has-arrow">
-                                                    Level 1.2
-                                                </a>
-                                                <ul className="sub-menu" aria-expanded="true">
-                                                    <li>
-                                                        <a href="javascript: void(0);">Level 2.1</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript: void(0);">Level 2.2</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                   
                                 </ul>
                             </div>
                         </div>

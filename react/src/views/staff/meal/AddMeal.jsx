@@ -48,15 +48,8 @@ const AddProduct = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 className="mb-sm-0">Add Product</h4>
-                                    <div className="page-title-right">
-                                        <ol className="breadcrumb m-0">
-                                            <li className="breadcrumb-item">
-                                                <a href="javascript: void(0);">Ecommerce</a>
-                                            </li>
-                                            <li className="breadcrumb-item active">Add Product</li>
-                                        </ol>
-                                    </div>
+                                    <h4 className="mb-sm-0">Add Meal</h4>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -83,19 +76,10 @@ const AddProduct = () => {
                                                         onClick={() => handleTabClick(1)}
                                                     >
                                                         <span className="step-number">02</span>
-                                                        <span className="step-title">Product Img</span>
+                                                        <span className="step-title">Meal Img</span>
                                                     </Nav.Link>
                                                 </Nav.Item>
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        href="#metadata"
-                                                        className={activeTab === 2 ? 'active' : ''}
-                                                        onClick={() => handleTabClick(2)}
-                                                    >
-                                                        <span className="step-number">03</span>
-                                                        <span className="step-title">Meta Data</span>
-                                                    </Nav.Link>
-                                                </Nav.Item>
+                                                
                                             </Nav>
                                             <Tab.Content className="twitter-bs-wizard-tab-content">
                                                 <div className={`tab-pane ${activeTab === 0 ? 'active' : ''}`}>
@@ -104,7 +88,7 @@ const AddProduct = () => {
                                                     <form>
                                                         <div className="mb-3">
                                                             <label className="form-label" htmlFor="productname">
-                                                                Product Name
+                                                                Meal Name
                                                             </label>
                                                             <input
                                                                 id="productname"
@@ -114,33 +98,9 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                         <div className="row">
-                                                            <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label" htmlFor="manufacturername">
-                                                                        Manufacturer Name
-                                                                    </label>
-                                                                    <input
-                                                                        id="manufacturername"
-                                                                        name="manufacturername"
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-4">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label" htmlFor="manufacturerbrand">
-                                                                        Manufacturer Brand
-                                                                    </label>
-                                                                    <input
-                                                                        id="manufacturerbrand"
-                                                                        name="manufacturerbrand"
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-4">
+                                                           
+                                                            
+                                                            <div className="mb-3">
                                                                 <div className="mb-3">
                                                                     <label className="form-label" htmlFor="price">
                                                                         Price
@@ -168,7 +128,7 @@ const AddProduct = () => {
                                                             </div>
                                                             <div className="col-md-6">
                                                                 <div className="mb-3">
-                                                                    <label className="form-label">Features</label>
+                                                                    <label className="form-label">Ingredient</label>
 
                                                                     <Select
                                                                         value={features}
@@ -213,65 +173,7 @@ const AddProduct = () => {
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div className={`tab-pane ${activeTab === 2 ? 'active' : ''}`}>
-                                                    <h4 className="card-title">Meta Data</h4>
-                                                    <p className="card-title-desc">Fill all information below</p>
-                                                    <form>
-                                                        <div className="row">
-                                                            <div className="col-sm-6">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label" htmlFor="metatitle">
-                                                                        Meta title
-                                                                    </label>
-                                                                    <input
-                                                                        id="metatitle"
-                                                                        name="metatitle"
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-sm-6">
-                                                                <div className="mb-3">
-                                                                    <label className="form-label" htmlFor="metakeywords">
-                                                                        Meta Keywords
-                                                                    </label>
-                                                                    <input
-                                                                        id="metakeywords"
-                                                                        name="metakeywords"
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="mb-3">
-                                                            <label className="form-label" htmlFor="metadescription">
-                                                                Meta Description
-                                                            </label>
-                                                            <textarea
-                                                                className="form-control"
-                                                                id="metadescription"
-                                                                rows={5}
-                                                                defaultValue={''}
-                                                            />
-                                                        </div>
-                                                    </form>
-                                                    <div className="text-center mt-4">
-                                                        <button
-                                                            type="submit"
-                                                            className="btn btn-primary me-2 waves-effect waves-light"
-                                                        >
-                                                            Save Changes
-                                                        </button>
-                                                        <button
-                                                            type="submit"
-                                                            className="btn btn-light waves-effect"
-                                                        >
-                                                            Cancel
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                
                                             </Tab.Content>
                                             <div className="mt-4">
                                                 <button

@@ -121,43 +121,7 @@ const AddCustomer = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">Category</label>
-                                                        <Select
-                                                            value={category}
-                                                            onChange={handleCategoryChange}
-                                                            options={options}
-                                                            isMulti
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">Features</label>
-
-                                                        <Select
-                                                            value={features}
-                                                            onChange={handleFeaturesChange}
-                                                            options={options}
-                                                            isMulti
-                                                        />
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="mb-3">
-                                                <label className="form-label" htmlFor="productdesc">
-                                                    Product Description
-                                                </label>
-                                                <textarea
-                                                    className="form-control"
-                                                    id="productdesc"
-                                                    rows={5}
-                                                    defaultValue={''}
-                                                />
-                                            </div>
+                                            
                                         </form>
                                     </div>
 
