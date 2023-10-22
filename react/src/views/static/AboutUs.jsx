@@ -21,13 +21,13 @@ export default function Aboutus() {
 							<li><a href="index.html">Home</a></li>
 							<li class="two"><a href="index.html"><i class="fa-solid fa-right-long"></i> About Us</a></li>
 						</ul>
-						<h2>Nothing to worry about with Quickeat</h2>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+						<h2>Welcome To Grand Imperial Group!</h2>
+						<p>Enjoy The Personalized Nutrition-Based Food Ordering and Floor Plan Mapping Reservation Technique! </p>
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-12 col-sm-12" data-aos="fade-up"  data-aos-delay="400" data-aos-duration="500">
 					<div class="about-img">
-						<img alt="man" src="../assets/img/photo-9.jpg"/>
+						<img alt="man" src="../assets/img/Grand-Imperial-Group.jpg" width="10" height="160"/>
 					</div>
 				</div>
 			</div>
@@ -39,22 +39,21 @@ export default function Aboutus() {
 			<div class="row align-items-center">
 				<div class="col-lg-6 col-md-12 col-sm-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
 					<div class="our-mission-img">
-						<img alt="Illustration" src="../assets/img/illustration-5.png"/>
+						<img alt="Illustration" src="../assets/img/homepageBanner1.png"  width="650" height="400"/>
 					</div>
 				</div>
 				<div class="offset-xl-1 col-lg-5 col-md-12 col-sm-12" data-aos="flip-up"  data-aos-delay="400" data-aos-duration="500">
 					<div class="our-mission-text">
 						<h2>Our mission is
-								to save you time</h2>
-							<p>Viverra vitae congue eu consequat ac felis. Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Velit ut tortor pretium viverra suspendisse potenti nullam ac tortor.<br/><br/>
-							Eget egestas purus viverra accumsan in nisl nisi scelerisque. Tincidunt augue interdum velit euismod in pellentesque.</p>
+								to provide unforgettable Eating Moments</h2>
+							<p>Our mission is to go beyond simply serving delicious food. We are dedicated to crafting extraordinary experiences for our valued guests. Our passion lies in providing a seamless and exceptional dining experience that will leave a lasting impression.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="cards-section gap no-top">
+	<section class="cards-section no-top">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-aos="flip-up"  data-aos-delay="200" data-aos-duration="300">
@@ -62,9 +61,8 @@ export default function Aboutus() {
 						<img class="on" alt="icon" src="../assets/img/service-icon-2.svg"/>
 						<img class="off" alt="icon" src="../assets/img/service-icon-1.svg"/>
 
-						<h3>Free
-								Delivery</h3>
-								<p>Cras fermentum odio eu feugiat pretium nibh ipsum. Ut faucibus pulvinar elementum consequat integer enim neque volutpat.</p>
+						<h3>Best Food Service</h3>
+								<p>We are dedicated to providing a dining experience that transcends the ordinary, leaving a lasting impression on your taste buds and captivating your senses.</p>
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
@@ -74,7 +72,7 @@ export default function Aboutus() {
 
 						<h3>Save
 								Your Time</h3>
-								<p>Vulputate dignissim suspendisse in est ante in nibh mauris. Pretium nibh ipsum consequat nisl vel pretium lectus quam id.</p>
+								<p>Experience the ultimate convenience and save valuable time with our hassle-free online food ordering service. </p>
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-aos="flip-up"  data-aos-delay="400" data-aos-duration="500">
@@ -82,8 +80,8 @@ export default function Aboutus() {
 						<img class="on" alt="icon" src="../assets/img/service-icon-5.svg"/>
 						<img class="off" alt="icon" src="../assets/img/service-icon-6.svg"/>
 
-						<h3>Regular Discounts</h3>
-								<p>Nec tincidunt praesent semper feugiat nibh. Feugiat in ante metus dictum. Sapien nec sagittis aliquam malesuada bibendum arcu.</p>
+						<h3>Valuable Meal</h3>
+								<p>At the heart of commitment to providing a valuable meal with the finest and freshest ingredients.</p>
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-aos="flip-up"  data-aos-delay="500" data-aos-duration="600">
@@ -93,176 +91,14 @@ export default function Aboutus() {
 
 						<h3>Variety
 								Food</h3>
-								<p>Molestie a iaculis at erat pellentesque. Pulvinar neque laoreet suspendisse interdum consectetur libero id faucibus nisl.</p>
+								<p>We have meticulously assembled a tantalizing array of flavors, textures, and aromas that harmonize to create a symphony of taste sensations. </p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="video-section gap">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6" data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
-					<div class="wait-a-minute">
-						<h2>Wait a minute
-								for delicious</h2>
-						<p>Amet massa vitae tortor condimentum lacinia quis. Elit at imperdiet dui accumsan sit amet nulla facilisi. Lacus laoreet non curabitur gravida arcu ac tortor dignissim.</p>
-						<h6>Interdum varius sit amet mattis.</h6>
-						<ul class="paragraph">
-							<li><i class="fa-solid fa-circle-check"></i><h5>Interdum varius sit amet mattis;</h5></li>
-							<li><i class="fa-solid fa-circle-check"></i><h5>Sed elementum tempus egestas sed sed;</h5></li>
-							<li><i class="fa-solid fa-circle-check"></i><h5>Sit amet purus gravida quis blandit;</h5></li>
-							<li><i class="fa-solid fa-circle-check"></i><h5>Feugiat pretium nibh ipsum consequat nisl vel pretium.</h5></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-6" data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400">
-					<div class="video-section-img">
-						<img alt="elements" src="../assets/img/elements-1.jpg"/>
-						<a data-fancybox="" href="https://www.youtube.com/watch?v=CKnGXZxK7zs"><i class="fa-solid fa-play"></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section class="about-counters-section gap" style={{ backgroundImage: 'url(../assets/img/background.png)' }}>
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6 col-md-12 col-sm-12" data-aos="flip-up"  data-aos-delay="200" data-aos-duration="300">
-					<div class="about-counters-img">
-						<img alt="girl" src="../assets/img/photo-10.png"/>
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-12 col-sm-12" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
-					<div class="row">
-					<div class="col-lg-6 col-md-6 col-sm-6">
-						<div class="counter-hading">
-							<h2>Service shows good taste.</h2>
-						</div>
-					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6">
-						<div class="count-time">
-								<h2 class="timer count-title count-number" data-to="976" data-speed="2000">976</h2>
-									<p>Satisfied<br/>
-									Customer</p>
-						</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
-						<div class="count-time">
-								<h2 class="timer count-title count-number" data-to="12" data-speed="2000">12</h2>
-									<p>Best<br/>
-											Restaurants</p>
-						</div>
-				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6">
-						<div class="count-time sp">
-								<h2 class="timer count-title count-number" data-to="1" data-speed="2000">1</h2>
-								<span>k+</span>
-									<p>Food<br/>
-											Delivered</p>
-						</div>
-				</div>
-			</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="our-team-section gap">
-		<div class="container">
-			<div class="hading" data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
-				<h2>Our team</h2>
-				<p>Enim lobortis scelerisque fermentum dui faucibus. Tempor commodo ullamcorper a lacus vestibulum sed arcu non. Magna ac placerat vestibulum lectus mauris.</p>
-			</div>
-			<div class="row">
-				<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
-					<div class="our-team">
-						<img alt="team-img" src="../assets/img/team-1.png"/>
-						<h4><a href="#">Kevin Adamson</a></h4>
-						<p>Pellentesque adipiscing commodo
-							elit at imperdiet dui.</p>
-							<ul class="social-media">
-								<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-							</ul>
-					</div>
-				</div>
-				<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400">
-					<div class="our-team">
-						<img alt="team-img" src="../assets/img/team-2.png"/>
-						<h4><a href="#">Roxie Gilbert</a></h4>
-						<p>Velit dignissim sodales ut eu sem integer vitae. Interdum varius sit amet mattis.</p>
-							<ul class="social-media">
-								<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-							</ul>
-					</div>
-				</div>
-				<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" data-aos="fade-up"  data-aos-delay="400" data-aos-duration="500">
-					<div class="our-team">
-						<img alt="team-img" src="../assets/img/team-3.png"/>
-						<h4><a href="#">Edgar Johnson</a></h4>
-						<p>At erat pellentesque adipiscing
-								commodo elit.</p>
-							<ul class="social-media">
-								<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-								<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-							</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="our-partners-section gap" style={{ background: '#fcfcfc' }} data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
-		<div class="container">
-			<div class="hading">
-				<h2>Our trusted partners</h2>
-			</div>
-			<div class="row align-items-center logodata owl-carousel owl-theme">
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-1.png"/>
-						<h5>Kings Arms</h5>
-					</div>
-				</div>
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-2.png"/>
-						<h5>Wilmington</h5>
-					</div>
-				</div>
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-3.png"/>
-						<h5>Kennington</h5>
-					</div>
-				</div>
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-4.png"/>
-						<h5>The Victoria</h5>
-					</div>
-				</div>
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-5.png"/>
-						<h5>The Andover Arms</h5>
-					</div>
-				</div>
-				<div class="col-xl-12 item">
-					<div class="logo-img">
-						<img alt="logo-img" src="../assets/img/logo-1.png"/>
-						<h5>Kings Arms</h5>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+	
 
 	<section class="service-shows gap" data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
 		<div class="container-fluid">
@@ -270,16 +106,16 @@ export default function Aboutus() {
 				<div class="col-xl-4 col-lg-12">
 					<div class="good-taste">
 						<h2>Service shows good taste.</h2>
-						<p>Enim lobortis scelerisque fermentum dui faucibus. Tempor commodo ullamcorper a lacus vestibulum sed arcu non.</p>
+						<p>This Is Our Overall Customer Reviews! Here are some of the outstanding reviews and testimonials shared by our valued customers: </p>
 					</div>
 				</div>
 				<div class="col-xl-8 col-lg-12">
 					<div class="comment-data comment-slide owl-carousel owl-theme">
 						<div class="author-text item">
 							<p>
-							"Tortor vitae purus faucibus ornare suspendisse. Ut porttitor leo a diam. Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin. Ut tortor pretium viverra suspendisse".</p>
+							Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
 							<div class="thomas">
-								<img alt="girl" src="../assets/img/photo-5.jpg"/>
+								<img src="../assets/img/bungsenggg.jpg"  width="300" height="200"/>
 
 								<div>
 									<h6>Thomas Adamson</h6>
@@ -293,9 +129,9 @@ export default function Aboutus() {
 						</div>
 						<div class="author-text item">
 							<p>
-							"Tortor vitae purus faucibus ornare suspendisse. Ut porttitor leo a diam. Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada proin. Ut tortor pretium viverra suspendisse".</p>
+							Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
 							<div class="thomas">
-								<img alt="girl" src="../assets/img/photo-5.jpg"/>
+							<img src="../assets/img/bungsenggg.jpg"  width="300" height="200"/>
 
 								<div>
 									<h6>Thomas Adamson</h6>
@@ -313,22 +149,7 @@ export default function Aboutus() {
 			</div>
 		</div>
 	</section>
-	<section class="subscribe-section about gap" style={{ backgroundImage: 'url(../assets/img/background-img.jpg)' }}>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="get-the-menu">
-						<h2 data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">Get the menu of your favorite restaurants every day</h2>
-						<form data-aos="fade-up"  data-aos-delay="300" data-aos-duration="400">
-							<i class="fa-regular fa-bell"></i>
-							<input type="text" name="email" placeholder="Enter email address"/>
-							<button class="button button-2">Subscribe</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+	
         </div>
 
 

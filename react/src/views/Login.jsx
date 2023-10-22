@@ -4,7 +4,7 @@ import {createRef} from "react";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
 import { useState } from "react";
 
-export default function Login() {
+export default function LoginSample() {
   const emailRef = createRef()
   const passwordRef = createRef()
   const { setUser, setToken,setAuthUser } = useStateContext()

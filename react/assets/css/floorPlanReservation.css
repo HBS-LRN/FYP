@@ -1,0 +1,369 @@
+body{
+    margin: 0%;
+    padding: 0%;
+    
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(212, 212, 212);
+}
+.scollBoxReservation{
+    background-color: rgb(212, 212, 212);
+    margin: 0px auto;
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+}
+
+.fpmbg{
+    margin: auto;
+    float: left;
+    background-image: url(./FPMbg.png);
+    width:130vh;
+    height: 100vh;
+    position: relative;
+    z-index: 3;
+    /* width:150%;
+    height: 90vh; */
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+.fpmbg .table8:hover,.fpmbg .table4:hover,.fpmbg .table12:hover,.fpmbg .table2:hover{
+    
+    cursor: pointer;
+}
+/* .fpmbg:hover{
+    transform: scale(1.5);
+} */
+.fpmbg .table8{
+    
+    background-image: url(./table8.png);
+    width: 20vh;
+    height:20vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    
+}
+
+.fpmbg .tableBox{
+    float: left;
+    position: relative;
+}
+.fpmbg .table8Box{
+    top: 26%;
+    left: 7%;
+}
+.fpmbg .table8a{
+    /* border-radius: 100px;
+    border: 10px dotted red; */
+    margin-bottom: 35%;
+    
+}
+.fpmbg .table8 .selectedBorder,.fpmbg .table4 .selectedBorder,.fpmbg .table12 .selectedBorder,.fpmbg .table2 .selectedBorder  {
+    background:url(./selectedBorder.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 20vh;
+    height: 20vh;
+    position: relative;
+    bottom: 1px;
+    right: 0px;
+    animation: circle 5s infinite linear;
+    display:none ;
+}
+.fpmbg .table8:hover .selectedBorder,.fpmbg .table4:hover .selectedBorder,.fpmbg .table12:hover .selectedBorder,.fpmbg .table2:hover .selectedBorder   
+{
+    display: block;
+    
+}
+.fpmbg .table4 .selectedBorder{
+    width: 13vh;
+    height: 13vh;
+    bottom: 0px;
+    left: 10px;
+}
+.fpmbg .table12 .selectedBorder{
+    width: 13vh;
+    height: 13vh;
+    top: 0px;
+    left: 70px;
+}
+.fpmbg .table2 .selectedBorder{
+    width: 8vh;
+    height: 8vh;
+    top: 25px;
+    right: 5px;
+}
+
+@keyframes circle{
+    0%{
+        transform:rotate(0);
+    }
+    25%{
+        transform: rotate(45deg);
+    }
+    50%{
+        transform: rotate(90deg);
+    }
+    75%{
+        transform: rotate(135deg);
+    }
+    100%{
+        transform: rotate(350deg);
+    }
+}
+.fpmbg .table4{
+    background-image: url(./table4.png);
+    width: 15vh;
+    height: 13vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+.fpmbg .table4Flex{
+    display: flex;
+    margin-bottom: 5vh;
+}
+
+.fpmbg .table4Flex .table4Right{
+    margin-left: 2vh;
+}
+.fpmbg .table4Box{
+    top: 14%;
+    left: 29%;
+}
+.fpmbg .table12Box{
+    
+    top: 10%;
+    left: 32%;
+    transform: rotate(90deg);
+}
+.fpmbg .table12{
+    
+    background-image: url(./table12.png);
+    width: 32vh;
+    
+    height: 14vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+.fpmbg .table12Left{
+    margin-bottom: 5%;
+}
+.fpmbg .table2Box{
+    transform: rotate(90deg);
+    top: 43%;
+    left: 13%;
+}
+.fpmbg .table2Flex{
+    display: flex;
+    margin-bottom: 2vh;
+
+}
+.fpmbg .table2Left{
+    margin-right: 1vh;
+}
+.fpmbg .table2{
+    
+    background-image: url(./table2.png);
+    width: 7vh;
+   
+    height: 15vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+/* popup box style */
+.popUpBoxLeft,.popUpBoxRight{
+    
+position: fixed;
+background-color:rgb(255, 255, 255) ;
+box-shadow: 0px 0px 20px grey;
+width: 37vh;
+height: 100%;
+z-index: 2;
+padding: 10px;
+
+}
+.popUpBoxLeft legend,.popUpBoxRight legend{
+    color: gray;
+}
+.popUpBoxLeft{
+    left: 0%;
+    animation: left-popUpOpen .6s ease;
+}
+#popUpBoxRight{
+    top: 0%;
+    right: 0%;
+    
+    animation: right-popUpOpen .6s ease;
+    /* animation: right-popUpClose .5s ease; */
+}
+@keyframes right-popUpOpen {
+    0%{
+        transform: translateX(100%);
+      
+    }
+    100%{
+        transform: translateX(50);
+        
+    }
+}
+@keyframes left-popUpOpen {
+    0%{
+        transform: translateX(-100%);
+      
+    }
+    100%{
+        transform: translateX(50);
+        
+    }
+}
+
+.close-btn{
+    top: 1vh;
+    border-radius: 100px;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px 12px;
+    position: relative;
+    font-size: 20px;
+    font-weight: bolder;
+        
+}
+.popUpBoxLeft .close-btn{
+    left: 86%;
+}
+.close-btn:hover{
+    background-color: white;
+    cursor: pointer;
+}
+/* right popup box style */
+.popUpBoxRight .tableInforBox{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.popUpBoxRight .tableInforBox .fa-map-marker-alt{
+    font-size: 40px;
+    color: green;
+    border-radius: 100px;
+    border:10px green solid;
+    padding: 20px 25px;
+}
+.popUpBoxRight .tableInforBox .tableNum{
+    padding-top: 20px;
+    font-weight: bolder;
+    font-size: 25px;
+    margin: 0%;
+}
+.popUpBoxRight .paxBox{
+    margin-top: 10px;
+    text-align: left;
+}
+.popUpBoxRight .paxBox p{
+    padding: 0px;
+}
+
+.popUpBoxRight .dateTimeBox{
+    margin-top: 10px;
+    display: flex;
+}
+.popUpBoxRight .dateTimeBox .currentDateBox .date,.popUpBoxRight .dateTimeBox .currentTimeBox .time{
+    font-size: 125%;
+    margin: 0%;
+    font-weight: bolder;
+}
+.popUpBoxRight .remarkBox{
+    margin-top: 10px;
+    
+}
+.popUpBoxRight .remarkBox #remark{
+    resize: none;
+    outline: none;
+    padding: 10px;
+    width: 90%;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.popUpBoxRight .bookBtnBox{
+    position: fixed;
+    bottom: 3%;
+    /* width: 18.2%; */
+    display: flex;
+    justify-content: center;
+    
+}
+.popUpBoxRight .bookBtnBox .reserveBtn:hover{
+    background-color: rgb(5, 160, 5);
+}
+.popUpBoxRight .bookBtnBox .reserveBtn{
+    flex-basis: 100%;
+    font-size: 20px;
+    font-weight: bolder;
+    background-color: green;
+    text-decoration: none;
+    padding: 10px 12vh;
+    
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+/* left pop up style */
+.popUpBoxLeft .userInforBox{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.popUpBoxLeft .userInforBox .inforBox .fa-user{
+    font-size: 40px;
+    color: green;
+    border-radius: 100px;
+    border:3px green solid;
+    padding: 20px 25px;
+}
+.popUpBoxLeft .userInforBox .inforBox .name{
+    margin-top: 10px;
+   font-size: 25px;
+   font-weight: bolder;
+}
+.popUpBoxLeft .numOfReserveSeatBox{ 
+    margin-top: 10px;
+}
+.popUpBoxLeft .genderBox{
+    margin-top: 10px;
+}
+.popUpBoxLeft .genderBox .gender{
+    margin: 0%;
+    font-weight: bolder;
+
+}
+.popUpBoxLeft .genderBox .gender i{
+    margin-right: 10px;
+}
+.popUpBoxLeft .contactNumbox{
+    margin-top: 10px;
+}
+.popUpBoxLeft .contactNumbox .contact{
+    margin: 0%;
+}
+.popUpBoxLeft .dateTimeBox{
+    margin-top: 10px;
+    /* display: flex; */
+    
+}
+.popUpBoxLeft .dateTimeBox #date, .popUpBoxLeft .dateTimeBox #time{
+    font-weight: bolder;
+    outline: none;
+    padding: 2px;
+}
+.popUpBoxLeft .dateTimeBox .timeBox{
+    margin-top: 10px;
+}
+.popUpBoxLeft .dateTimeBox .timeBox .sessionTime{
+    display: flex;
+    font: 20px;
+    font-weight: bolder;
+}

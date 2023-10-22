@@ -27,12 +27,15 @@ for (var i = 0; i < ratingCloseBtn.length; i++) {
 
 
 var pendPrduct = document.getElementById("pendingProduct");
+console.log(pendPrduct)
 var completedProduct = document.getElementById("completedProduct");
+console.log(completedProduct)
 var shipProduct = document.getElementById("shipProduct");
 pendPrduct.style.display = 'block';
 var btn = document.getElementById("btn");
 function pendingProd() {
 
+    console.log('haha');
     pendPrduct.style.display = 'block';
     completedProduct.style.display = 'none';
     shipProduct.style.display = 'none';
@@ -41,7 +44,7 @@ function pendingProd() {
     btn.style.width = "20.5%";
 }
 function shipProd() {
-
+    console.log('haha');
     pendPrduct.style.display = 'none';
     completedProduct.style.display = 'none';
     shipProduct.style.display = 'block';
@@ -51,7 +54,7 @@ function shipProd() {
 }
 
 function completeProd() {
-
+    console.log('haha');
     pendPrduct.style.display = 'none';
     completedProduct.style.display = 'block';
     shipProduct.style.display = 'none';

@@ -9,6 +9,9 @@
     position: absolute;
     text-align: center;
 }
+.gap{
+    padding-top:1112px;
+}
 
 .contactUsBar {
     margin-top: 0;

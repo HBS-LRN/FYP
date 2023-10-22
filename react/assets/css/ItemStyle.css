@@ -1,0 +1,81 @@
+﻿
+
+
+
+.category {
+      
+    float: left;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    width: 370px;
+    box-shadow: 0px 0px 10px rgb(221, 221, 221);
+    margin-left: 40px;
+    padding-left:37px;
+    padding-bottom:36px;
+ 
+    
+}
+.custom-menu-margin{
+    margin-bottom: 10px;
+}
+.category img {
+   
+ 
+    padding-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    
+
+}
+.category h3 {
+    font-size: 25px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+
+.category:hover{
+    box-shadow: 0px 0px 25px rgb(143, 143, 143);
+}
+
+.category:hover h3{
+    color: rgb(0, 0, 0);
+}
+
+
+
+.comment-slide .owl-item.cloned {
+    margin-right:12000px;
+    opacity: 0.5;
+}
+.comment-slide .owl-item.cloned.active{
+    opacity: 1;
+    margin-right:12000px;
+}
+.comment-slide.owl-carousel .owl-nav.disabled {
+    display: block;
+    position: absolute;
+    left: -33%;
+    top: 81%;
+}
+.comment-slide.owl-carousel .owl-nav button.owl-next,.comment-slide.owl-carousel .owl-nav button.owl-prev,
+ .comment-slide.owl-carousel button.owl-dot {
+    background: 0 0;
+    color: inherit;
+    padding: 0!important;
+    font: inherit;
+    border: 1px solid #363636;
+    height: 40px;
+    width: 40px;
+    border-radius: 21px;
+    color: #363636;
+}
+.comment-slide.owl-carousel button.owl-dot{
+    display:none;
+}
+
+.good-taste{
+    margin-top:180px;
+}

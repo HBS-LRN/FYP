@@ -1,76 +1,112 @@
-import { Link, Navigate, Outlet } from "react-router-dom";
-import { useStateContext } from "../../contexts/ContextProvider";
-import axiosClient from "../../axios-client.js";
-import { useEffect, useState } from "react";
-
-
-
-
-import '../../../assets/css/customerLogin.css';
-
+import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 export default function Login() {
+  const [validated, setValidated] = useState(false);
 
-    return (
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
-        <div>
-            <form method="POST" action="/users/authenticate">
-            
-                <div class="customer-login-container">
-                    <div class="customer-login">
-                        <div class="logo">
-                            <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
-                        </div>
-                        <div class="customer-form">
-                            <div class="text-form">
+    setValidated(true);
+  };
 
-                                <div class="login-form">
-                                    <h1>User Login</h1>
-                                    <p>New User? <a href="/register">Register Here</a></p>
-                                </div>
-
-                                <div class="text email">
-                                    <label for="email">User Email</label>
-                                    <input type="text" class="txtCustEmail" name="email"
-                                    />
-
-
-                                    {/* <p class="error">*{{$message}}</p> */}
-
-
-                                </div>
-                                <div class="text password">
-                                    <label for="passwordText">Password</label><br />
-
-                                    <input type="password" class="txtCustPassword" name="password"
-                                    />
-
-
-                                    {/* <p class="error">*{{$message}}</p> */}
-
-                                </div>
-
-
-                                <div class="forgetPassword">
-                                    <a href="/password/forget">Forget Password?</a>
-                                </div>
-
-                                <button class="submit-btnLogin">
-                                    Log In
-                                </button>
-
-                            </div>
-
-                        </div>
-                    </div>
-
+  return (
+    <div className="custom-gap">
+      <form
+        method="POST"
+        action="/users/authenticate"
+        className={`needs-validation ${validated ? 'was-validated' : ''}`}
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <div className="custom-container">
+          <div className="row align-items-center">
+            <div
+              className="login-content"
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="300"
+            >
+              <div className="col-lg-5 logoBox">
+                <div className="logo">
+                  <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
                 </div>
-
-            </form>
-
+              </div>
+              <div
+                className="col-lg-6 custom-login-margin"
+                data-aos="fade-up"
+                data-aos-delay="300"
+                data-aos-duration="400"
+              >
+                <div className="login-form">
+                  <h3>User Login</h3>
+                  <p>
+                    New User? <a href="/register">Register Here</a>
+                  </p>
+                </div>
+                <div className="text email">
+                  <label htmlFor="email" className="form-label">
+                    User Email
+                  </label>
+                  <div className="custom-form">
+                    <i className="fa-regular fa-envelope" />
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="email"
+                      placeholder="Enter your email"
+                      required
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                    />
+                    <div className="valid-tooltip">Looks good!</div>
+                    <div className="invalid-tooltip">
+                      Please Enter A Valid Email
+                    </div>
+                  </div>
+                  {/* <p className="error">*Invalid User Email And /Or Password.</p> */}
+                </div>
+                <br/>
+                <div className="text password">
+                  <label htmlFor="passwordText">Password</label>
+                  <br />
+                  <div className="custom-form">
+                    <i className="fa fa-key" />
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="password"
+                      placeholder="Enter your password"
+                      required
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      
+                    
+                    />
+                    <div className="valid-tooltip">Looks good!</div>
+                    <div className="invalid-tooltip">
+                      Please Provide A Valid Password
+                    </div>
+                  </div>
+                </div>
+                <div className="forgetPassword">
+                  <a href="/forgetPassword">Forget Password?</a>
+                </div>
+                <button className="button-price login" type="submit">
+                  Log In
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-
-
-    );
+      </form>
+      <Helmet>
+        <link rel="stylesheet" href="../../../assets/css/customerLogin.css" />
+      </Helmet>
+    </div>
+  );
 }

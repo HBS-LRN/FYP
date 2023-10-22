@@ -1,0 +1,156 @@
+
+
+
+
+.category {
+      
+    float: left;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    width: 370px;
+    box-shadow: 0px 0px 10px rgb(221, 221, 221);
+    margin-left: 40px;
+    padding-left:16px;
+    padding-bottom:36px;
+    margin-top:40px;
+ 
+    
+}
+.custom-menu-margin{
+    margin-bottom: 10px;
+}
+.category img {
+   
+ 
+    padding-bottom: 20px;
+   
+    text-align: center;
+    
+
+}
+.category h3 {
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+
+.category:hover{
+    box-shadow: 0px 0px 25px rgb(143, 143, 143);
+}
+
+.category:hover h3{
+    color: rgb(0, 0, 0);
+}
+
+
+
+.comment-slide .owl-item.cloned {
+    margin-right:12000px;
+    opacity: 0.5;
+}
+.comment-slide .owl-item.cloned.active{
+    opacity: 1;
+    margin-right:12000px;
+}
+.comment-slide.owl-carousel .owl-nav.disabled {
+    display: block;
+    position: absolute;
+    left: -33%;
+    top: 81%;
+}
+.comment-slide.owl-carousel .owl-nav button.owl-next,.comment-slide.owl-carousel .owl-nav button.owl-prev,
+ .comment-slide.owl-carousel button.owl-dot {
+    background: 0 0;
+    color: inherit;
+    padding: 0!important;
+    font: inherit;
+    border: 1px solid #363636;
+    height: 40px;
+    width: 40px;
+    border-radius: 21px;
+    color: #363636;
+}
+.comment-slide.owl-carousel button.owl-dot{
+    display:none;
+}
+
+.good-taste{
+    margin-top:180px;
+}
+
+
+/* .dish img{
+    margin-left:30px;
+    width:300px;
+    height:270px;
+} */
+
+
+
+.dish:hover{
+    box-shadow: 0px 0px 25px rgb(143, 143, 143);
+}
+
+.dish .dish-info .rating .rating-review img {
+    
+    padding-right: 0;
+    margin-right: 30px;
+    box-shadow: 0px -7px 6px 4px rgb(161 151 151 / 15%);
+    -webkit-box-shadow: 0px -7px 6px 4px rgb(161 151 151 / 15%);
+    -moz-box-shadow: 0px -7px 6px 4px rgb(161 151 151 / 15%);
+    width:50px;
+    height:50px;
+    border-radius: 60px;
+}
+.rating{
+    margin-bottom:18px;
+    
+
+    border-bottom: 3px solid #F2F2F2;
+}
+.comment{
+    margin-bottom:23px;
+    margin-left:13px;
+  
+}
+.rating p{
+    padding-bottom:12px;
+}
+
+.rating-scroll{
+    height:340px;
+    width: 390px;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+
+}
+
+
+.overallRating{
+    border-bottom: 3px solid #F2F2F2;
+    padding-bottom:12px;
+    margin-bottom:16px;
+    margin-left:-4px;
+}
+.overallRating h3{
+    font-size:32px;
+    padding-bottom:0px;
+}
+
+.overallRating p{
+    color: #c7c7c7;
+    margin-left:3px;
+}
+.dish-info .dropdown{
+    padding-top:32px;
+}
+
+.dropdown-toggle i{
+   color:rgb(71, 70, 70);
+}
+/* .dropdown-toggle span{
+    
+} */

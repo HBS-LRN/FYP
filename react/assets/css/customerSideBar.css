@@ -1,0 +1,127 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.nav-links {
+    list-style: none;
+    padding-left: 0;
+}
+
+.nav-links .sub-menu {
+    list-style: none;
+}
+
+
+.nav-links li {
+    padding: 10px 0px;
+}
+
+.side-navigation .nav-links li:hover {
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(255, 255, 255, 0);
+    background: #1d1b31;
+}
+
+.nav-links li a:hover {
+    color: #0073ff;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+.nav-links li a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 10px 14px;
+    align-items: center;
+}
+
+.nav-links li a i {
+    font-size: 25px;
+    margin-right: 15px;
+}
+
+
+
+.nav-links .sub-menu {
+    padding: 0px 6px 0px 10px;
+    margin: 0px 35px 0px 45px;
+    display: none;
+}
+
+.nav-links li.showSubMenu i.arrow {
+    transform: rotate(-180deg);
+    margin-bottom: 16px;
+}
+
+.nav-links li.showSubMenu .sub-menu {
+    display: block;
+}
+
+.nav-links .showSubMenu {
+    margin-bottom: -10px;
+}
+
+.nav-links .sub-menu a {
+    color: rgb(0, 0, 0);
+    font-size: 13px;
+    padding: 0px 0px;
+    white-space: nowrap;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.nav-links .sub-menu li {
+    padding: 0px;
+}
+
+
+.iconLink .arrow {
+    margin: 15px 0px 0px 3px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.nav-links li:nth-child(3) .purchase {
+    margin-left: 5px;
+}
+
+.nav-links li:nth-child(3) {
+    margin-bottom: 5px;
+}
+
+.nav-links li:nth-child(2) .arrow {
+    margin-left: 8px;
+}
+
+.nav-links li:nth-child(2) .account {
+    margin-left: 4px;
+}
+
+
+.profile-gap {
+    padding-bottom: 0px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+
+    border-bottom: 1px solid #999;
+}
+
+.profile-custom-margin {
+    margin-bottom: 34px;
+    margin-right: 12px;
+}
+.side-bar-margin {
+    flex-basis: 26%;
+    margin-left: 45px;
+}
+
+a {
+    font-size: 13px;
+}
+
+ul li p{
+    font-size:14px;
+    color:black;
+
+}
