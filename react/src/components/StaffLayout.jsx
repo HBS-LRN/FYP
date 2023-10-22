@@ -52,7 +52,7 @@ export default function StaffLayout() {
                                         </span>
                                         <span className="logo-lg">
                                             <img src="../assets/img/GrandImperialGroupLogoHeader.png" alt="logo-light" height="70" />
-                                            Grand Imperial HI
+                                            Grand Imperialsss
                                         </span>
                                     </a>
                                 </div>
