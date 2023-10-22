@@ -3,10 +3,10 @@ body{
     padding: 0%;
     
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(212, 212, 212);
+    background-color: red;
 }
-.scollBoxReservation{
-    background-color: rgb(212, 212, 212);
+.scollBox{
+    background-color: aqua;
     margin: 0px auto;
     width: fit-content;
     height: fit-content;
@@ -19,8 +19,6 @@ body{
     background-image: url(./FPMbg.png);
     width:130vh;
     height: 100vh;
-    position: relative;
-    z-index: 3;
     /* width:150%;
     height: 90vh; */
     background-repeat: no-repeat;
@@ -275,6 +273,15 @@ padding: 10px;
     margin: 0%;
     font-weight: bolder;
 }
+.popUpBoxRight .custNameBox, .popUpBoxRight .custContactBox{
+    margin-top: 10px;
+}
+.popUpBoxRight .custNameBox input, .popUpBoxRight .custContactBox input{
+    padding: 5px;
+    width: 90%;
+    outline: none;
+    
+}
 .popUpBoxRight .remarkBox{
     margin-top: 10px;
     
@@ -284,6 +291,7 @@ padding: 10px;
     outline: none;
     padding: 10px;
     width: 90%;
+    height: 100px;
     font-weight: bold;
     border-radius: 5px;
 }
