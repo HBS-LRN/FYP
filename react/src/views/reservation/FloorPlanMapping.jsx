@@ -60,8 +60,10 @@ export default function FloorPlanMaping() {
         //     });
         // }
         const [currentTime, setCurrentTime] = useState(new Date());
-  const [rightPopUpVisible, setRightPopUpVisible] = useState(false);
-
+        const [rightPopUpVisible, setRightPopUpVisible] = useState(false);
+        const [hoveredTable, setHoveredTable] = useState(null);
+        const selectedIcon = document.querySelectorAll('.selectedBorder');
+        const RightPopUp = document.getElementById('popUpBoxRight');
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -70,20 +72,51 @@ export default function FloorPlanMaping() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleTableClick = () => {
-    setRightPopUpVisible((prevVisible) => !prevVisible);
+  useEffect(() => {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1; // Month is zero-based, so we add 1
+    const year = now.getFullYear();
+
+    // Get the "date" element by its id and update its innerHTML
+    const dateElement = document.getElementById('toDayDate');
+    if (dateElement) {
+      dateElement.innerHTML = `${day}/${month}/${year}`;
+    }
+  }, []); 
+  
+
+    
+     
+      // Update the date elemen
+
+ 
+  const handleTableClick = (i) => {
+    if(RightPopUp.style.display=="none"){
+        RightPopUp.style.display="block";
+        RightPopUp.style.cssText="animation: right-popUpOpen .6s ease;";
+        selectedIcon[i].style.display="block";
+    }else{
+        selectedIcon[i].style.display="none";
+        RightPopUp.style.display="none";  
+    }
+    // setRightPopUpVisible((prevVisible) => !prevVisible);
+    
   };
 
   const handleTableMouseOver = (i) => {
-    if (!rightPopUpVisible) {
-      selectedIcon[i].style.display = 'block';
+    if (RightPopUp.style.display=="none") {
+       selectedIcon[i].style.display = 'block';
+    // setHoveredTable(i);
     }
   };
 
   const handleTableMouseOut = (i) => {
-    if (rightPopUpVisible) {
-      selectedIcon[i].style.display = 'none';
+    if (RightPopUp.style.display=="none") {
+        selectedIcon[i].style.display = 'none';
     }
+//    setHoveredTable(i); 
+    
   };
   return (
 <div>
@@ -133,50 +166,84 @@ export default function FloorPlanMaping() {
             </div>
         </div>
     </div>
-    <div className="scollBoxReservation" id="scollBox">
-       
-        <div>
+    <div className="scollBoxReservation" id="scollBox" >
+    <div class="fpmbg" id="fpmbg">
+        
             <div className="table8Box tableBox">
-                 <div className="table8a table8 table">
+                 <div className={`table8a table8 table ${hoveredTable === 0 ? 'hovered' : ''}`} 
+                 onClick={() => handleTableClick(0)}
+                 onMouseOver={() => handleTableMouseOver(0)}
+                 onMouseOut={() => handleTableMouseOut(0)}
+                 >
                     <div className="selectedBorder"></div>
                   </div>     
                 
-                <div className="table8b table8 table">
+                <div className={`table8b table8 table ${hoveredTable === 1 ? 'hovered' : ''}`} 
+                onClick={() => handleTableClick(1)}
+                onMouseOver={() => handleTableMouseOver(1)}
+                onMouseOut={() => handleTableMouseOut(1)}
+                >
                     <div className="selectedBorder"></div>
                 </div>
                 
             </div>
             
-            <div className="table4Box tableBox">
+            <div className="table4Box tableBox" >
                 <div className="table4Flex">
-                    <div className="table4a table4 table4Left table" >
+                    <div className={`table4a table4 table4Left table ${hoveredTable === 2 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(2)}
+                     onMouseOver={() => handleTableMouseOver(2)}
+                     onMouseOut={() => handleTableMouseOut(2)}
+                     >
                         <div className="selectedBorder"></div>
                         </div>
     
-                    
-                    <div className="table4b table4 table4Right table" >
+                        
+                        <div className={`table4b table4 table4Right table ${hoveredTable === 3 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(3)}
+                     onMouseOver={() => handleTableMouseOver(3)}
+                     onMouseOut={() => handleTableMouseOut(3)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
                         
                     
                 </div>
                 <div className="table4Flex">
-                    <div className="table4c table4 table4Left table" >
+                
+                <div className={`table4c table4 table4Left table ${hoveredTable === 4 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(4)}
+                     onMouseOver={() => handleTableMouseOver(4)}
+                     onMouseOut={() => handleTableMouseOut(4)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
-    
-                    <div className="table4d table4 table4Right table" >
+                   
+                    <div className={`table4d table4 table4Right table ${hoveredTable === 5 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(5)}
+                     onMouseOver={() => handleTableMouseOver(5)}
+                     onMouseOut={() => handleTableMouseOut(5)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
 
                 </div>
                 <div className="table4Flex">
-                    <div className="table4e table4 table4Left table" >
+                
+                <div className={`table4e table4 table4Left table ${hoveredTable === 6 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(6)}
+                     onMouseOver={() => handleTableMouseOver(6)}
+                     onMouseOut={() => handleTableMouseOut(6)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
     
-            
-                    <div className="table4f table4 table4Right table" >
+                    
+                    <div className={`table4f table4 table4Right table ${hoveredTable === 7 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(7)}
+                     onMouseOver={() => handleTableMouseOver(7)}
+                     onMouseOut={() => handleTableMouseOut(7)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
                         
@@ -186,38 +253,66 @@ export default function FloorPlanMaping() {
             </div>
             
             <div className="table12Box tableBox">
-                <div className="table12a table12 table12Left table" >
+            
+            <div className={`table12a table12 table12Left table ${hoveredTable === 8 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(8)}
+                     onMouseOver={() => handleTableMouseOver(8)}
+                     onMouseOut={() => handleTableMouseOut(8)}
+                     >
                     <div className="selectedBorder"></div>
                 </div>
     
-            
-                <div className="table12a table12 table12Right table" >
+                
+                <div className={`table12a table12 table12Right table ${hoveredTable === 9 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(9)}
+                     onMouseOver={() => handleTableMouseOver(9)}
+                     onMouseOut={() => handleTableMouseOut(9)}
+                     >
                     <div className="selectedBorder"></div>
                 </div>
             </div>
             <div className="table2Box tableBox">
                 <div className="table2Flex">
-                    <div className="table2a table2 table2Left table" >
+                
+                <div className={`table2a table2 table2Left table ${hoveredTable === 10 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(10)}
+                     onMouseOver={() => handleTableMouseOver(10)}
+                     onMouseOut={() => handleTableMouseOut(10)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
     
-            
-                    <div className="table2b table2 table2Right table" >
+                    
+                    <div className={`table2b table2 table2Right table ${hoveredTable === 11 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(11)}
+                     onMouseOver={() => handleTableMouseOver(11)}
+                     onMouseOut={() => handleTableMouseOut(11)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
                 </div>
                 <div className="table2Flex">
-                    <div className="table2c table2 table2Left table" >
+                
+                <div className={`table2c table2 table2Left table ${hoveredTable === 12 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(12)}
+                     onMouseOver={() => handleTableMouseOver(12)}
+                     onMouseOut={() => handleTableMouseOut(12)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
     
-            
-                    <div className="table2d table2 table2Right table" >
+                    
+                    <div className={`table2d table2 table2Right table ${hoveredTable === 13 ? 'hovered' : ''}`}
+                     onClick={() => handleTableClick(13)}
+                     onMouseOver={() => handleTableMouseOver(13)}
+                     onMouseOut={() => handleTableMouseOut(13)}
+                     >
                         <div className="selectedBorder"></div>
                     </div>
                 </div>
             </div>
-        </div>
+        
+    </div>
     </div>
     <div className="popUpBoxRight" id="popUpBoxRight" style={{ display: rightPopUpVisible ? 'block' : 'none' }}>
         <div className="popUp-overlay"></div>
@@ -242,7 +337,7 @@ export default function FloorPlanMaping() {
                         <fieldset className="currentDateBox">
                             <legend>Date Making Reservation</legend>
                             
-                            <p className="date">Today</p>
+                            <p className="date" id='toDayDate'>Today</p>
                         </fieldset>
                         <fieldset className="currentTimeBox">
                             <legend>Time Making Reservation</legend>
