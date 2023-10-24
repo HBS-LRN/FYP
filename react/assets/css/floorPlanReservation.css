@@ -16,7 +16,7 @@ body{
 .fpmbg{
     margin: auto;
     float: left;
-    background-image: url(./FPMbg.png);
+    background-image: url(../img/FPMbg.png);
     width:130vh;
     height: 100vh;
     /* width:150%;

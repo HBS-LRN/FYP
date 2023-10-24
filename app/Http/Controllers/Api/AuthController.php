@@ -63,6 +63,7 @@ class AuthController extends Controller
         auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
+       
         return response('', 204);
     }
 }

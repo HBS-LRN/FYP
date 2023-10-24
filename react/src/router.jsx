@@ -3,6 +3,9 @@ import Users from "./views/Users";
 import ShoppingCart from "./views/shoppingCart";
 import Singup from "./views/SignUp";
 
+
+
+
 import NotFound from "./views/NotFound";
 import GuestLayout from "./components/StaffLayout";
 import AccessProhibited from "./views/accessProhibited";
@@ -50,6 +53,16 @@ import ReservationForm from "./views/reservation/ReservationForm";
 import CustomersList from "./views/staff/customer/CustomersList";
 
 import AddCustomer from "./views/staff/customer/AddCustomer";
+
+
+
+
+
+
+import DefaultLayout from "./components/DefaultLayout";
+
+import UserForm from "./views/UserForm";
+import Signup from "./views/SignUp";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -191,12 +204,7 @@ const router = createBrowserRouter([
     element: <FloorPlanMapping />
 
   },
-  {
-    path: '/loginSample',
-    element: <Singup />
-
-  },
-  {
+    {
     path: '/',
     element: <StaffLayout />,
     children: [
@@ -242,9 +250,50 @@ const router = createBrowserRouter([
   {
     path: "/index",
     element: <Index />
-  }
+  },
 
 
+
+  //sample  
+
+
+  {
+    path: "/loginSample",
+    element: <LoginSample />
+  },
+  
+  {
+    path: "/registerSample",
+    element: <Signup />
+  },
+  
+
+  {
+    path: '/',
+    element: <DefaultLayout/>,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/users"/>
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard/>
+      },
+      {
+        path: '/users',
+        element: <Users/>
+      },
+      {
+        path: '/users/new',
+        element: <UserForm key="userCreate" />
+      },
+      {
+        path: '/users/:id',
+        element: <UserForm key="userUpdate" />
+      }
+    ]
+  },
 
 ])
 export default router;

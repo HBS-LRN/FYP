@@ -13,6 +13,10 @@ export default function UserForm({ onUserUpdate }) {
     password: "",
     password_confirmation: "",
   });
+
+  const handleChange = (e) =>{
+    setUser({ ...user, [e.target.name]: e.target.value })
+  }
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setNotification, setRefreshHeader } = useStateContext();
@@ -67,7 +71,7 @@ export default function UserForm({ onUserUpdate }) {
 
   return (
     <>
-      {user.id && <h1>Update User: {user.name}</h1>}
+      {user.id && <h1>Update User: {user.name}, {user.email}</h1>}
       {!user.id && <h1>New User</h1>}
       <div className="card animated fadeInDown">
        
@@ -83,16 +87,14 @@ export default function UserForm({ onUserUpdate }) {
           <form onSubmit={onSubmit}>
             <input
               value={user.name}
-              onChange={(ev) =>
-                setUser({ ...user, name: ev.target.value })
-              }
+              onChange={handleChange}
               placeholder="Name"
+              name="name"
             />
             <input
               value={user.email}
-              onChange={(ev) =>
-                setUser({ ...user, email: ev.target.value })
-              }
+              onChange={handleChange}
+              name="email"
               placeholder="Email"
             />
             <input
