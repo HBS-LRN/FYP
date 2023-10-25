@@ -24,6 +24,12 @@ export const NotificationProvider = ({ children }) => {
             title: 'Success',
             text: message,
             customClass: 'swal-wide',
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              }
         })
 
     }

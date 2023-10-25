@@ -2,11 +2,7 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
-
 import { Helmet } from 'react-helmet';
-
-
-
 import '../../assets/css/style.css';
 import '../../assets/css/owl.carousel.min.css';
 import '../../assets/css/owl.theme.default.min.css';
@@ -14,38 +10,26 @@ import '../../assets/css/nice-select.css';
 import '../../assets/css/aos.css';
 import '../../assets/css/responsive.css';
 import '../../assets/css/color.css';
+
+
+
+
 export default function CustomerLayout() {
+
 
     //this is to handle item cart
     const handleMenuBtnClick = () => {
-
         document.body.classList.add('active');
-
     };
 
     const handleMenuCloseBtnClick = () => {
-
         document.body.classList.remove('active');
 
-    };
-
-// adsadsadasdsadasd
-
+    }
 
 
     return (
-
-
         <body class="menu-layer">
-            {/* <Helmet>
-                <link rel="stylesheet" href="../../assets/css/style.css"/>
-                <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css"/>
-                <link rel="stylesheet" href="../../assets/css/owl.theme.default.min.css"/>
-                <link rel="stylesheet" href="../../assets/css/nice-select.css"/>
-                <link rel="stylesheet" href="../../assets/css/aos.css"/>
-                <link rel="stylesheet" href="../../assets/css/responsive.css"/>
-                <link rel="stylesheet" href="../../assets/css/color.css"/>
-            </Helmet> */}
             <div class="page-loader">
                 <div class="wrapper">
                     <div class="circle"></div>
@@ -121,12 +105,12 @@ export default function CustomerLayout() {
                                 <a href="#" id="desktop-menu" class="menu-btn" onClick={handleMenuBtnClick}>
 
                                     <i class="fa-solid fa-bag-shopping"></i></a>
-                                {/* <a href="/login" class="button button-2"><i class="fas fa-user"></i>Login/Register</a> */}
+                                <a href="/login" class="button button-2"><i class="fas fa-user"></i>Login/Register</a>
 
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 {/* <i class="fa fa-user" aria-hidden="true"></i> */}
-                                <img src="../assets/img/person3.jpg" width="50" height="50" /> 
+                                {/* <img src="../assets/img/person3.jpg" width="50" height="50" /> 
                                 <span class="span">
                                     HI! Tee Fo Yo
                                     <div className="dropdown profileIcon float-end">
@@ -150,7 +134,7 @@ export default function CustomerLayout() {
                                         </div>
                                     </div>
 
-                                </span>
+                                </span> */}
 
                             </div>
                         </div>

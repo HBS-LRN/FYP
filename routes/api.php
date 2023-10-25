@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AllergicController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -22,12 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::get('/user/{id}', [AuthController::class, 'authenticateUser']);
-
-    
     Route::get('/shoppingCart/{id}', [AuthController::class, 'shoppingCart']);
-  
+    Route::apiResource('/users', UserController::class);
 });
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::apiResource('/users', UserController::class);
+Route::apiResource('/allergic', AllergicController::class);
+Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

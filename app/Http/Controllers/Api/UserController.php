@@ -7,7 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
@@ -63,6 +63,25 @@ class UserController extends Controller
 
         return new UserResource($user);
     }
+
+    public function updateBMI(Request $request, $id)
+    {
+
+         /** @var \App\Models\User $user */
+        $user = User::find($id);
+        $data = $request->all();
+        $user->update($data);
+
+        return new UserResource($user);
+    }
+
+    public function shoppingCart(Request $request, $id)
+    {
+        /** @var \App\Models\User $user */
+        $user = User::find($id);
+        return response($user->meals);
+    }
+    
 
     /**
      * Remove the specified resource from storage.

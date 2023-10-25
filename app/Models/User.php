@@ -36,7 +36,9 @@ class User extends Authenticatable
         'role',
         'birthdate',
         'session_id',
-        'token'
+        'token',
+        'height',
+        'weight'
 
     ];
 

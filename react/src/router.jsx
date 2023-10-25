@@ -15,14 +15,12 @@ import CustomerLayout from "./components/CustomerLayout";
 import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
-
-
-
 import Profile from "./views/profile/Profile";
 import ChangePassword from "./views/profile/ChangePassword";
 import Dashboard from "./views/profile/Dashboard";
 import OrderStatus from "./views/profile/OrderStatus";
 import VerifyEmail from "./views/auth/Verify-Email";
+import RequireAuth from "./views/error/require-auth";
 import Login from "./views/auth/login";
 import Register from "./views/auth/register";
 import ResetPassword from "./views/auth/ResetPassword";
@@ -38,6 +36,7 @@ import NuritionMenuCard from "./views/menu/NutritionMenuCard";
 import OrderMenuCard from "./views/menu/OrderMenuCard";
 import CategoryMenuCard from "./views/menu/CategoryMenuCard";
 import StaffLayout from "./components/StaffLayout";
+import AuthCustomer from "./components/AuthCustomer";
 import DashBoard from "./views/staff/DashBoard";
 import MealsList from "./views/staff/meal/MealsList";
 
@@ -96,15 +95,16 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
-      
+
       {
-       path:'/RequestBMI',
-       element: <RequestBMI />
+        path: '/registerDetail',
+        element: <RequestBMI />
       },
       {
         path: '/register',
         element: <Register />
       },
+
 
       {
         path: '/profile',
@@ -122,6 +122,20 @@ const router = createBrowserRouter([
         path: '/orderStatus',
         element: <OrderStatus />
       },
+      {
+        path: '/myReservation',
+        element: <MyReservation />
+      },
+      {
+        path: '/reservationForm',
+        element: <ReservationForm />
+      },
+      {
+        path: '/myOrder',
+        element: <MyOrder />
+
+      },
+
 
       {
         path: '/forgetPassword',
@@ -160,21 +174,9 @@ const router = createBrowserRouter([
 
 
 
-      {
-        path: '/myReservation',
-        element: <MyReservation />
-      },
-      {
-        path: '/reservationForm',
-        element: <ReservationForm />
-      },
-      {
-        path: '/myOrder',
-        element: <MyOrder />
 
-      },
-     
-      
+
+
       // {
       //   path: '/purchaseStatus',
       //   element: <PurchaseStatus/>
@@ -204,7 +206,7 @@ const router = createBrowserRouter([
     element: <FloorPlanMapping />
 
   },
-    {
+  {
     path: '/',
     element: <StaffLayout />,
     children: [
@@ -236,7 +238,7 @@ const router = createBrowserRouter([
         path: '/addCustomer',
         element: <AddCustomer />
       },
-     
+
     ]
   },
   {
@@ -251,6 +253,10 @@ const router = createBrowserRouter([
     path: "/index",
     element: <Index />
   },
+  {
+    path: "/authRequired",
+    element: <RequireAuth />
+  },
 
 
 
@@ -261,28 +267,28 @@ const router = createBrowserRouter([
     path: "/loginSample",
     element: <LoginSample />
   },
-  
+
   {
     path: "/registerSample",
     element: <Signup />
   },
-  
+
 
   {
     path: '/',
-    element: <DefaultLayout/>,
+    element: <DefaultLayout />,
     children: [
       {
         path: '/',
-        element: <Navigate to="/users"/>
+        element: <Navigate to="/users" />
       },
       {
         path: '/dashboard',
-        element: <Dashboard/>
+        element: <Dashboard />
       },
       {
         path: '/users',
-        element: <Users/>
+        element: <Users />
       },
       {
         path: '/users/new',

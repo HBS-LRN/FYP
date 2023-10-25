@@ -10,7 +10,7 @@ export default function DefaultLayout() {
   console.log(authUser);
   if (!token) {
     return <Navigate to="/login" />;
-  } else if (authUser.role !=2) {
+  } else if (authUser.role !=0) {
     return <Navigate to="/accessProhibited" />;
   }
 
