@@ -34,18 +34,21 @@ export const NotificationProvider = ({ children }) => {
 
     }
 
-    const setFailNotification = message => {
-        Swal.fire({
-            icon: 'error',
-            title: message,
-            showCloseButton: true,
-            showCancelButton: true,
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            }
-        })
-
-    }
+    const setFailNotification = (titleMessage, textMessage) => {
+      Swal.fire({
+          icon: 'error',
+          title: titleMessage, // Use the 'anotherMessage' parameter as the title
+          text: textMessage,
+          showCloseButton: true,
+          showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+          }
+      });
+  }
+  
 
     const setDeleteNotification = () => {
         return Swal.fire({

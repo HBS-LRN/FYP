@@ -25,14 +25,15 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:55',
+            'name' => 'required|string|max:10',
             'email' => 'required|email|unique:users,email,'.$this->id,
-            'password' => [
-                'confirmed',
-                Password::min(8)
-                    ->letters()
-                    ->symbols(),
-            ]
+            'gender' => 'required',
+            'height' => 'required',
+            'weight' => 'required',
+            'phone' => ['required', 'regex:/^\d{3}-\d{7}|\d{3}-\d{8}$/'],
+            'birthdate' => ['required', 'before:-13 years'],
+            'image' => 'nullable|string',
+          
         ];
     }
 }

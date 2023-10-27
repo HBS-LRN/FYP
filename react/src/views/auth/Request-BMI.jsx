@@ -7,17 +7,17 @@ import { useNavigate } from "react-router-dom";
 export default function RequestBMI() {
   const [validated, setValidated] = useState(false);
   const [category, setCategory] = useState([]);
-  const { setNotification } = useStateContext();
-  const { user } = useStateContext();
+  const { user, setNotification } = useStateContext();
   const weightRef = createRef();
   const heightRef = createRef();
   const ingredientRef = createRef();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  
+  console.log(user)
   const handleSubmit = (event) => {
 
-    console.log(user)
     event.preventDefault();
     event.stopPropagation();
 
@@ -74,6 +74,7 @@ export default function RequestBMI() {
               postIngredients(index + 1);
             })
             .catch((err) => {
+              setLoading(false);
               console.log(err.response.data);
               const response = err.response;
               if (response && response.status === 422) {
@@ -161,6 +162,7 @@ export default function RequestBMI() {
                       ref={heightRef}
                       type="number" // Use type="number" to enforce numeric input
                       step="any" // Allow both integers and decimal numbers
+                      min="1"
                       className="form-control"
                       name="height"
                       placeholder="Enter your height"
@@ -183,6 +185,7 @@ export default function RequestBMI() {
                         ref={weightRef}
                         type="number" // Use type="number" to enforce numeric input
                         step="any" // Allow both integers and decimal numbers
+                        min="1"
                         className="form-control"
                         name="weight"
                         placeholder="Enter your weight"
@@ -245,7 +248,7 @@ export default function RequestBMI() {
 
                   </div>
                 ) : (
-                  <button className="button-price login" type="submit">
+                  <button className="button-submit" type="submit">
                     Submit
                   </button>
                 )}

@@ -8,11 +8,15 @@ export default function Login() {
 
   const emailRef = createRef();
   const passwordRef = createRef();
-  const { setUser, setToken, setAuthUser } = useStateContext()
+  const { user, setUser, setToken, setAuthUser } = useStateContext()
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
+
+
+  console.log(user)
   //handle onChange value
   const handleInputChange = () => {
     setError(null);
@@ -34,25 +38,32 @@ export default function Login() {
         password: passwordRef.current.value,
       };
 
+      //set loading to true
+      setLoading(true);
+
 
       axiosClient
         .post('/login', payload)
         .then(({ data }) => {
+          //first set user to null
+          setUser(null)
+          setToken(null)
+          //set the data to session
           setUser(data.user);
           setToken(data.token);
-          setAuthUser(data.user);
+
+          console.log(data.token)
           navigate("/dashboard");
-          console.log(data);
+          setLoading(false);
         })
         .catch((err) => {
-
-
+          setLoading(false);
           const response = err.response;
           console.log(err);
           if (response && response.status === 422) {
             setError(response.data.errors);
           } else {
-            setError("Email Or Password Is Invalid");
+            setError(response.data.message);
           }
         });
     }
@@ -152,9 +163,20 @@ export default function Login() {
                 <div className="forgetPassword">
                   <a href="/forgetPassword">Forget Password?</a>
                 </div>
-                <button className="button-price login" type="submit">
-                  Log In
-                </button>
+
+                {loading ? (
+                  <div className="loaderCustom">
+
+                    <p className="loaderCustom-text">Loading</p>
+                    <span className="loadCustom"></span>
+
+
+                  </div>
+                ) : (
+                  <button className="button-submit login" type="submit">
+                    Submit
+                  </button>
+                )}
               </div>
             </div>
           </div>

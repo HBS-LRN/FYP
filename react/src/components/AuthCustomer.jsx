@@ -4,11 +4,11 @@ import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
 
 export default function AuthCustomer() {
-  const {token} = useStateContext();
+  const {user, token} = useStateContext();
 
 
 
-  if (!token) {
+  if (!user && !token) {
     return <Navigate to="/authRequired" />;
   } 
   return (<div><Outlet/></div>);

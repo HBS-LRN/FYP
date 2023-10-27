@@ -4,6 +4,9 @@ import axiosClient from '../../axios-client.js';
 import { useStateContext } from '../../contexts/ContextProvider.jsx';
 import { useNavigate } from "react-router-dom";
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 export default function Register() {
   //react declaration
@@ -24,7 +27,7 @@ export default function Register() {
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;
-    if (form.checkValidity() && password === confirmPassword && username.length >= 3) {
+    if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <=10) {
       const payload = {
         name: nameRef.current.value,
         email: emailRef.current.value,
@@ -46,14 +49,12 @@ export default function Register() {
           const response = err.response;
           if (response && response.status === 422) {
             setError(response.data.errors);
-
           }
         });
     }
 
     setValidated(true);
   };
-
 
   //handle onChange state
   const handlePasswordChange = (event) => {
@@ -119,11 +120,11 @@ export default function Register() {
                       data-bs-placement="top"
                       value={username}
                       onChange={handleUsernameChange}
-                      pattern=".{4,}"
-                      title="Username must contain at least 4 characters."
+                      pattern=".{1,10}"
+                      title="Username must contain between 1 and 10 characters."
                     />
                     <div className="valid-tooltip">Looks good!</div>
-                    <div className="invalid-tooltip">Username must contain at least 4 characters</div>
+                    <div className="invalid-tooltip">Username must contain between 1 and 10 characters.</div>
                   </div>
                 </div>
 
@@ -190,7 +191,7 @@ export default function Register() {
                       required
                       data-bs-toggle="tooltip"
                       data-bs-placement="top"
-                      pattern={password ? `^${password}$` : null}
+                      pattern={password ? `^${escapeRegExp(password)}$` : null}
                       title="Confirm password must match the password."
                       onChange={handleConfirmPasswordChange}
                     />
@@ -201,7 +202,7 @@ export default function Register() {
 
                 <br />
 
-                <button className="button-price login">Register</button>
+                <button className="button-submit">Register</button>
               </div>
             </div>
           </div>

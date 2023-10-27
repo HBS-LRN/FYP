@@ -95,47 +95,52 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
-
+      
       {
-        path: '/registerDetail',
-        element: <RequestBMI />
+       path:'/registerDetail',
+       element: <RequestBMI />
       },
       {
         path: '/register',
         element: <Register />
       },
 
-
-      {
-        path: '/profile',
-        element: <Profile />
+     {
+        path: '/',
+        element: <AuthCustomer/>,
+        children: [
+          {
+            path: '/profile',
+            element: <Profile />
+          },
+          {
+            path: '/changePassword',
+            element: <ChangePassword />
+          },
+          {
+            path: '/dashboard',
+            element: <Dashboard />
+          },
+          {
+            path: '/orderStatus',
+            element: <OrderStatus />
+          },
+          {
+            path: '/myReservation',
+            element: <MyReservation />
+          },
+          {
+            path: '/reservationForm',
+            element: <ReservationForm />
+          },
+          {
+            path: '/myOrder',
+            element: <MyOrder />
+    
+          },
+        ]
       },
-      {
-        path: '/changePassword',
-        element: <ChangePassword />
-      },
-      {
-        path: '/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/orderStatus',
-        element: <OrderStatus />
-      },
-      {
-        path: '/myReservation',
-        element: <MyReservation />
-      },
-      {
-        path: '/reservationForm',
-        element: <ReservationForm />
-      },
-      {
-        path: '/myOrder',
-        element: <MyOrder />
-
-      },
-
+      
 
       {
         path: '/forgetPassword',
@@ -174,9 +179,9 @@ const router = createBrowserRouter([
 
 
 
-
-
-
+     
+     
+      
       // {
       //   path: '/purchaseStatus',
       //   element: <PurchaseStatus/>
@@ -206,7 +211,7 @@ const router = createBrowserRouter([
     element: <FloorPlanMapping />
 
   },
-  {
+    {
     path: '/',
     element: <StaffLayout />,
     children: [
@@ -238,7 +243,7 @@ const router = createBrowserRouter([
         path: '/addCustomer',
         element: <AddCustomer />
       },
-
+     
     ]
   },
   {
@@ -267,28 +272,28 @@ const router = createBrowserRouter([
     path: "/loginSample",
     element: <LoginSample />
   },
-
+  
   {
     path: "/registerSample",
     element: <Signup />
   },
-
+  
 
   {
     path: '/',
-    element: <DefaultLayout />,
+    element: <DefaultLayout/>,
     children: [
       {
         path: '/',
-        element: <Navigate to="/users" />
+        element: <Navigate to="/users"/>
       },
       {
         path: '/dashboard',
-        element: <Dashboard />
+        element: <Dashboard/>
       },
       {
         path: '/users',
-        element: <Users />
+        element: <Users/>
       },
       {
         path: '/users/new',

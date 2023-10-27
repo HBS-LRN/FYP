@@ -382,21 +382,22 @@ header {
 }
 
 .extras .fa {
-    margin-right: 0px;
+    margin-right: 5px;
     margin-left: 20px;
-    margin-right: 8px;
+   
 
 
 }
 
 .profile-gap img {
+    margin-right: 12px;
     border-radius: 20px;
 }
 
 .extras img {
     border-radius: 60px;
-    margin-left: 40px;
-    margin-right: 8px;
+    margin-left: 20px;
+    margin-right: 15px;
 
 }
 
@@ -422,13 +423,19 @@ header {
 }
 
 .bag {
-    text-align: end;
+    padding-left:55px;
+    display:flex;
+   
 }
 
 .bag .button {
     padding: 0 18px;
     height: 43px;
     line-height: 39px;
+}
+
+.loginCustomButton{
+    margin-left:20px;
 }
 
 /*--------------       Works Section    ----------------*/
@@ -2072,6 +2079,25 @@ header.two {
 
 }
 
+.button-submit {
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #F29F05;
+}
+
+.button-submit i {
+    padding-left: 20px;
+}
+
+.button-submit:hover {
+    background-color: transparent;
+    color: #F29F05;
+
+}
+
+
 /*-------------            Service page        -------------*/
 .about-text a {
     margin-top: 30px;
@@ -3413,6 +3439,7 @@ ul.social-media li a i,
 .services-card-style i:after,
 .services-card-style i,
 .button-price,
+.button-submit,
 .address,
 .address h6,
 .logodata.owl-carousel .owl-item img {
@@ -4315,14 +4342,14 @@ li.menu-item-has-children.active {
     top: 0;
     padding: 0;
     margin: 0;
-    color: #C8B6FF;
+    color: #f0be60;
     animation: text_713 3.5s ease both infinite;
     font-size: .8rem;
     letter-spacing: 1px;
 }
 
 .loadCustom {
-    background-color: #9A79FF;
+    background-color: #F29F05;
     border-radius: 50px;
     display: block;
     height: 16px;
@@ -4339,7 +4366,7 @@ li.menu-item-has-children.active {
     content: "";
     width: 100%;
     height: 100%;
-    background-color: #D1C2FF;
+    background-color: #f0be60;
     border-radius: inherit;
     animation: loading2_713 3.5s ease both infinite;
 }

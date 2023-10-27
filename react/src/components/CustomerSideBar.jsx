@@ -2,17 +2,28 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 
 
 
 export default function CustomerSideBar() {
 
+    const { user, setUser, setToken } = useStateContext()
+    const navigate = useNavigate();
+    const onLogout = ev => {
+        ev.preventDefault();
+
+        axiosClient.post('/logout')
+            .then(() => {
+                setUser(null);
+                setToken(null);
+                navigate("/login");
+            });
+    };
 
 
     const handleSubMenuClick = (e) => {
-
 
 
         let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
@@ -31,16 +42,30 @@ export default function CustomerSideBar() {
                         alt="" />
                     @else */}
 
-                   
+
 
 
                 <div class="col-lg-2 profile-custom-margin">
-                <img src="../assets/img/person3.jpg" width="55" height="55" /> 
-                    {/* <i class="fas fa-user" style={{ fontSize: '45px', color: 'black' }}></i> */}
+
+                    {user && user.image ? (
+
+                        <img
+                            src={`${import.meta.env.VITE_API_BASE_URL}/${user.image}`}
+                            width="55" height="55"
+                        />
+
+
+                    )
+                        : (
+                            <i class="fas fa-user" style={{ fontSize: '40px', color: 'black' }}></i>
+                        )}
+
+
                 </div>
+
                 <div class="col-lg-9 profile-name-custom-margin" >
-                    <div class="profile_name"> <b>Tee Fo Yo</b> </div>
-                    <div class="profile_email">foyo@gmail.com</div>
+                    <div class="profile_name"> <b>{user.name}</b> </div>
+                    <div class="profile_email">{user.email}</div>
                 </div>
 
             </div>
@@ -73,7 +98,7 @@ export default function CustomerSideBar() {
                 </li>
                 <li>
                     <div class="iconLink">
-                        <a href="/realTimeTracking"  target="_blank"><i class="fa-solid fa-location-dot"></i><span class="track">&nbsp;&nbsp;Real Time Track My Order</span></a>
+                        <a href="/realTimeTracking" target="_blank"><i class="fa-solid fa-location-dot"></i><span class="track">&nbsp;&nbsp;Real Time Track My Order</span></a>
                     </div>
 
                 </li>
@@ -91,7 +116,7 @@ export default function CustomerSideBar() {
 
                     </li> */}
 
-                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
+                <li><a onClick={onLogout} href="#"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
 
 
             </ul>

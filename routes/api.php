@@ -17,17 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+
+
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::get('/user/{id}', [AuthController::class, 'authenticateUser']);
+    // Route::get('/user/{id}', [AuthController::class, 'authenticateUser']);
     Route::get('/shoppingCart/{id}', [AuthController::class, 'shoppingCart']);
     Route::apiResource('/users', UserController::class);
 });
 
+
+// Route::middleware('auth:sanctum')->apiResource('/users', UserController::class);
+Route::middleware('auth:sanctum')->get('/user/{id}',[AuthController::class, 'authenticateUser']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::apiResource('/allergic', AllergicController::class);
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
+Route::post('/verifyEmail', [AuthController::class, 'verifyEmail']);
+Route::post('/resetPassword', [UserController::class, 'resetPassword']);
+Route::post('/checkExpire', [UserController::class, 'checkExpire']);

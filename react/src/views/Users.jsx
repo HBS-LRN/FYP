@@ -28,6 +28,8 @@ export default function Users() {
 
 
   const getUsers = () => {
+
+    console.log("getting")
     setLoading(true)
     axiosClient.get('/users')
       .then(({ data }) => {

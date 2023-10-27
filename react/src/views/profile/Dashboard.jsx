@@ -8,7 +8,9 @@ import CustomerSideBar from "../../components/CustomerSideBar";
 
 
 export default function Dashboard() {
+    const { user, setUser, setToken, setAuthUser } = useStateContext()
 
+    console.log(user)
 
     return (
         <div class="all">

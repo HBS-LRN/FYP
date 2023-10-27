@@ -108,8 +108,9 @@
 }
 
 .profile-custom-margin {
-    margin-bottom: 34px;
-    margin-right: 12px;
+    margin-bottom: 24px;
+    margin-right: 7px;
+    margin-left:15px;
 }
 .side-bar-margin {
     flex-basis: 26%;
