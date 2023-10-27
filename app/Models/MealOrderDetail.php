@@ -22,7 +22,6 @@ class MealOrderDetail extends Model
     }
 
     //for agile testing only
-    
     public function updateMealRating(MealOrderDetail $mealOrderDetail,$data){
 
         $mealOrderDetail->reply_comment = $data['reply_comment'];

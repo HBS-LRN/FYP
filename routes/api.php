@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\IngredientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::apiResource('/users', UserController::class);
+// ingredient 
+Route::get('/ingredients', [IngredientController::class, 'index']);
+Route::get('/ingredients/{id}', [IngredientController::class, 'show']);
+Route::post('/ingredients', [IngredientController::class, 'store']);
+Route::put('/ingredients/{id}', [IngredientController::class, 'update']);
+Route::delete('/ingredients/{id}', [IngredientController::class, 'destroy']);

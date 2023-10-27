@@ -27,9 +27,6 @@ export default function StaffLayout() {
 
             <body data-sidebar="dark">
 
-
-
-
                 <div id="layout-wrapper">
 
                     <div id="page-topbar">
@@ -52,7 +49,7 @@ export default function StaffLayout() {
                                         </span>
                                         <span className="logo-lg">
                                             <img src="../assets/img/GrandImperialGroupLogoHeader.png" alt="logo-light" height="70" />
-                                            Grand Imperialsss
+                                            Grand Imperial
                                         </span>
                                     </a>
                                 </div>
@@ -251,15 +248,18 @@ export default function StaffLayout() {
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="/mealList">Meals</a>
+                                                <a href="/mealList">Meal List</a>
                                             </li>
-                                            <li>
-                                                <a href="/mealDetail">Meals Detail</a>
-                                            </li>
+                            
                                             <li>
                                                 <a href="/addMeal">Add Meal</a>
                                             </li>
-                                         
+                                            <li>
+                                                <a href="/AddIngredient">Add Ingredient</a>
+                                            </li>
+                                            <li>
+                                                <a href="/ingredientList">Ingredient List</a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li>
@@ -273,7 +273,7 @@ export default function StaffLayout() {
                                                 <a href="/orders">Customers Orders</a>
                                             </li>
                                             <li>
-                                                <a href="/orders">Add Reservation</a>
+                                                <a href="/reservation">Add Reservation</a>
                                             </li>
 
                                             <li>

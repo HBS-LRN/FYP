@@ -12,7 +12,6 @@ import { Helmet } from 'react-helmet';
 export default function MealsList() {
 
     return (
-
         <div>
             <div className="main-content">
                 <div className="page-content">

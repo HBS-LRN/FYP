@@ -37,6 +37,12 @@ import CategoryMenuCard from "./views/menu/CategoryMenuCard";
 import StaffLayout from "./components/StaffLayout";
 import DashBoard from "./views/staff/DashBoard";
 import MealsList from "./views/staff/meal/MealsList";
+import Calendar from "./views/staff/Calendar/calendar";
+import Chat from "./views/staff/chat";
+import StaffReservation from "./views/staff/customer/reservation";
+import AddIngredient from "./views/staff/meal/AddIngredients";
+import UpdateIngredint from "./views/staff/meal/UpdateIngredients"
+import IngredientList from "./views/staff/meal/IngredientsList"
 
 import MealDetail from "./views/staff/meal/MealDetail";
 import Customers from "./views/staff/customer/CustomersList";
@@ -207,6 +213,29 @@ const router = createBrowserRouter([
       {
         path: '/mealList',
         element: <MealsList />
+      },
+      {
+        path: '/Calendar',
+        element:<Calendar/>
+      },{
+        path: "/chat",
+        element: <Chat/>
+      },
+      {
+        path: "/reservation",
+        element:<StaffReservation/>
+      },
+      {
+        path: "/addingredient",
+        element:<AddIngredient/>
+      },
+      {
+        path: "/updateingredient/:id",
+        element:<UpdateIngredint/>
+      },
+      {
+        path:"ingredientList",
+        element:<IngredientList/>
       },
       {
         path: '/mealDetail',

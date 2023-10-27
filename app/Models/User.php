@@ -74,7 +74,6 @@ class User extends Authenticatable
 
     public function updateDetail(User $user, $data)
     {
-
         $user->name =  $data['name'];
         $user->email =  $data['email'];
         $user->gender =  $data['gender'];
@@ -180,4 +179,5 @@ class User extends Authenticatable
             'meal_order_detail_id'
         );
     }
+    
 }

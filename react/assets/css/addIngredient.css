@@ -1,0 +1,28 @@
+.nav-item{
+    text-align: center;
+}
+.next button{
+    padding: 0.47rem 0.75rem;
+    background-color: #5664d2;
+    border-radius:0.25rem ;
+    border: none;
+    color: white;
+}
+td .text-danger{
+    background: none;
+    border: none;
+}
+table .thead-light{
+    background-color: rgb(238, 233, 233);
+}
+.table-responsive{
+    max-height: 400px;
+    overflow-y: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-responsive::-webkit-scrollbar{
+    width: 0%;
+}
