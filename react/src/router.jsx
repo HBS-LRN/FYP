@@ -3,6 +3,9 @@ import Users from "./views/Users";
 import ShoppingCart from "./views/shoppingCart";
 import Singup from "./views/SignUp";
 
+
+
+
 import NotFound from "./views/NotFound";
 import GuestLayout from "./components/StaffLayout";
 import AccessProhibited from "./views/accessProhibited";
@@ -12,14 +15,12 @@ import CustomerLayout from "./components/CustomerLayout";
 import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
-
-
-
 import Profile from "./views/profile/Profile";
 import ChangePassword from "./views/profile/ChangePassword";
 import Dashboard from "./views/profile/Dashboard";
 import OrderStatus from "./views/profile/OrderStatus";
 import VerifyEmail from "./views/auth/Verify-Email";
+import RequireAuth from "./views/error/require-auth";
 import Login from "./views/auth/login";
 import Register from "./views/auth/register";
 import ResetPassword from "./views/auth/ResetPassword";
@@ -35,6 +36,7 @@ import NuritionMenuCard from "./views/menu/NutritionMenuCard";
 import OrderMenuCard from "./views/menu/OrderMenuCard";
 import CategoryMenuCard from "./views/menu/CategoryMenuCard";
 import StaffLayout from "./components/StaffLayout";
+import AuthCustomer from "./components/AuthCustomer";
 import DashBoard from "./views/staff/DashBoard";
 import MealsList from "./views/staff/meal/MealsList";
 import Calendar from "./views/staff/Calendar/calendar";
@@ -56,6 +58,16 @@ import ReservationForm from "./views/reservation/ReservationForm";
 import CustomersList from "./views/staff/customer/CustomersList";
 
 import AddCustomer from "./views/staff/customer/AddCustomer";
+
+
+
+
+
+
+import DefaultLayout from "./components/DefaultLayout";
+
+import UserForm from "./views/UserForm";
+import Signup from "./views/SignUp";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -89,15 +101,16 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
-      
+
       {
-       path:'/RequestBMI',
-       element: <RequestBMI />
+        path: '/registerDetail',
+        element: <RequestBMI />
       },
       {
         path: '/register',
         element: <Register />
       },
+
 
       {
         path: '/profile',
@@ -115,6 +128,20 @@ const router = createBrowserRouter([
         path: '/orderStatus',
         element: <OrderStatus />
       },
+      {
+        path: '/myReservation',
+        element: <MyReservation />
+      },
+      {
+        path: '/reservationForm',
+        element: <ReservationForm />
+      },
+      {
+        path: '/myOrder',
+        element: <MyOrder />
+
+      },
+
 
       {
         path: '/forgetPassword',
@@ -153,21 +180,9 @@ const router = createBrowserRouter([
 
 
 
-      {
-        path: '/myReservation',
-        element: <MyReservation />
-      },
-      {
-        path: '/reservationForm',
-        element: <ReservationForm />
-      },
-      {
-        path: '/myOrder',
-        element: <MyOrder />
 
-      },
-     
-      
+
+
       // {
       //   path: '/purchaseStatus',
       //   element: <PurchaseStatus/>
@@ -195,11 +210,6 @@ const router = createBrowserRouter([
   {
     path: '/floorPlanMapping',
     element: <FloorPlanMapping />
-
-  },
-  {
-    path: '/loginSample',
-    element: <Singup />
 
   },
   {
@@ -257,7 +267,7 @@ const router = createBrowserRouter([
         path: '/addCustomer',
         element: <AddCustomer />
       },
-     
+
     ]
   },
   {
@@ -271,9 +281,54 @@ const router = createBrowserRouter([
   {
     path: "/index",
     element: <Index />
-  }
+  },
+  {
+    path: "/authRequired",
+    element: <RequireAuth />
+  },
 
 
+
+  //sample  
+
+
+  {
+    path: "/loginSample",
+    element: <LoginSample />
+  },
+
+  {
+    path: "/registerSample",
+    element: <Signup />
+  },
+
+
+  {
+    path: '/',
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/users" />
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />
+      },
+      {
+        path: '/users',
+        element: <Users />
+      },
+      {
+        path: '/users/new',
+        element: <UserForm key="userCreate" />
+      },
+      {
+        path: '/users/:id',
+        element: <UserForm key="userUpdate" />
+      }
+    ]
+  },
 
 ])
 export default router;

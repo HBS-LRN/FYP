@@ -4,17 +4,13 @@ import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 
 import { Helmet } from 'react-helmet';
-
-
-
-
 import CustomerSideBar from "../../components/CustomerSideBar";
 
 
 export default function Dashboard() {
 
-    return (
 
+    return (
         <div class="all">
             <div class="customerDashboardHeader">
                 <div class="customerDashboardBar"></div>
@@ -25,11 +21,11 @@ export default function Dashboard() {
                 <div class="row">
 
                     <CustomerSideBar />
-                    <div class="col-lg-2 dashboardContent" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
+                    <div class="col-lg-2 dashboardContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                         <div class="dashboardTitle">
                             <h3 class="profileTitle">My Dashboard</h3>
                             <p class="subTitle">Manage your billing addresses, and edit your password and account details.</p>
-                           
+
                         </div>
                         <div class="dashboard-block-list">
                             <a href="/" class="dashboard-block">

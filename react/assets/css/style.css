@@ -278,7 +278,7 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-  
+
     position: relative;
 }
 
@@ -507,13 +507,14 @@ header {
 
     float: left;
 }
-.cafa-button .recommended .bold a{
+
+.cafa-button .recommended .bold a {
     border: 1px solid #198754;
     background-color: #198754;
     color: white;
 }
 
-.cafa-button .not-recommended .bold a{
+.cafa-button .not-recommended .bold a {
     border: 1px solid #f29f05;
     background-color: #f29f05;
     color: white;
@@ -1889,15 +1890,15 @@ ul.menu-dish {
     font-size: 16px;
     color: #787878;
     font-weight: 520;
-    
-    
+
+
 }
 
 .menu-dish li {
     position: relative;
     padding-top: 10px;
     padding-left: 20px;
-  
+
 }
 
 header.two {
@@ -3237,14 +3238,14 @@ form.checkout-form .nice-select {
     /* background-color: #FCFCFC; */
     color: #CFCFCF;
     border: 1px solid #CFCFCF;
-    margin-bottom:24px;
-    
+    margin-bottom: 24px;
+
 }
 
 
-form.checkout-form p{
-    margin-top:10px;
-    font-size:15px;
+form.checkout-form p {
+    margin-top: 10px;
+    font-size: 15px;
 
 }
 
@@ -4068,6 +4069,9 @@ li.menu-item-has-children.active {
     animation-delay: .3s;
 }
 
+/* Add this to your custom CSS */
+
+
 .shadow {
     width: 15px;
     height: 4px;
@@ -4245,19 +4249,21 @@ li.menu-item-has-children.active {
     opacity: 1;
     transform: translateY(0);
 }
-.displaySearch .itemBox{
+
+.displaySearch .itemBox {
     display: flex;
-   
-   
+
+
 }
-.displaySearch{
+
+.displaySearch {
     border-radius: 20px;
     opacity: 0.8;
     box-shadow: 0px 0px 10px grey;
     padding: 5px;
     position: absolute;
     overflow-y: auto;
-    width:400px;
+    width: 400px;
     /* top: 0%; */
     height: 40vh;
     background-color: rgb(246, 246, 246);
@@ -4265,11 +4271,12 @@ li.menu-item-has-children.active {
     z-index: 2147483647;
     display: none;
 }
-.displaySearch::-webkit-scrollbar{
+
+.displaySearch::-webkit-scrollbar {
     display: none;
 }
 
-.displaySearch .itemBox .image{
+.displaySearch .itemBox .image {
     opacity: 1;
     width: 120px;
     height: 120px;
@@ -4277,7 +4284,8 @@ li.menu-item-has-children.active {
     margin: 10px;
     flex: 35%;
 }
-.displaySearch .itemBox .desrp{
+
+.displaySearch .itemBox .desrp {
     text-align: center;
     display: flex;
     color: rgb(0, 0, 0);
@@ -4285,4 +4293,134 @@ li.menu-item-has-children.active {
     align-items: center;
     flex-basis: 65%;
     justify-content: center;
+}
+
+
+/* CSS to remove the green checkmark */
+.no-validation-mark {
+    box-shadow: none !important;
+}
+
+.loaderCustom {
+
+    width: 80%;
+    height: 50px;
+    position: relative;
+}
+
+.loaderCustom-text {
+    width: 80%;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    color: #C8B6FF;
+    animation: text_713 3.5s ease both infinite;
+    font-size: .8rem;
+    letter-spacing: 1px;
+}
+
+.loadCustom {
+    background-color: #9A79FF;
+    border-radius: 50px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(64px);
+    animation: loading_713 3.5s ease both infinite;
+}
+
+
+.loadCustom::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #D1C2FF;
+    border-radius: inherit;
+    animation: loading2_713 3.5s ease both infinite;
+}
+
+@keyframes text_713 {
+    0% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        letter-spacing: 2px;
+        transform: translateX(26px);
+    }
+
+    80% {
+        letter-spacing: 1px;
+        transform: translateX(32px);
+    }
+
+    90% {
+        letter-spacing: 2px;
+        transform: translateX(0px);
+    }
+
+    100% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading_713 {
+    0% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    80% {
+        width: 16px;
+        transform: translateX(64px);
+    }
+
+    90% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    100% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading2_713 {
+    0% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+
+    40% {
+        transform: translateX(0%);
+        width: 80%;
+    }
+
+    80% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    90% {
+        width: 80%;
+        transform: translateX(15px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        width: 16px;
+    }
 }

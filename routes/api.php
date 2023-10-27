@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AllergicController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\IngredientController;
@@ -23,14 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::get('/user/{id}', [AuthController::class, 'authenticateUser']);
-
-    
     Route::get('/shoppingCart/{id}', [AuthController::class, 'shoppingCart']);
-  
+    Route::apiResource('/users', UserController::class);
 });
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+<<<<<<< HEAD
 Route::apiResource('/users', UserController::class);
 // ingredient 
 Route::get('/ingredients', [IngredientController::class, 'index']);
@@ -38,3 +38,7 @@ Route::get('/ingredients/{id}', [IngredientController::class, 'show']);
 Route::post('/ingredients', [IngredientController::class, 'store']);
 Route::put('/ingredients/{id}', [IngredientController::class, 'update']);
 Route::delete('/ingredients/{id}', [IngredientController::class, 'destroy']);
+=======
+Route::apiResource('/allergic', AllergicController::class);
+Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
+>>>>>>> 6397fdb9d1ca4cd64df44478bc62ee8bbce46ad9

@@ -227,3 +227,14 @@ label {
 
     }
 }
+
+/* CSS to remove the green checkmark */
+/* CSS to remove the green checkmark */
+.no-validation-mark:valid {
+    box-shadow: none !important;
+  }
+
+
+  .error-border {
+  border-color: red !important; /* !important is used to ensure this style takes precedence */
+}

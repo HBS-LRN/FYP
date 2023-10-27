@@ -3,14 +3,14 @@ import axiosClient from "../axios-client.js";
 import {createRef} from "react";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
 import { useState } from "react";
-
+import { useNavigate, useParams } from "react-router-dom";
 export default function LoginSample() {
   const emailRef = createRef()
   const passwordRef = createRef()
   const { setUser, setToken,setAuthUser } = useStateContext()
   const [message, setMessage] = useState(null)
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const onSubmit = ev => {
     ev.preventDefault()
 
@@ -28,11 +28,13 @@ export default function LoginSample() {
         setUser(data.user)
         setToken(data.token)
         setAuthUser(data.user)
+        navigate("/users");
+        console.log(data)
        
       })
       .catch((err) => {
         const response = err.response;
-        console.log(response.data.errors);
+        console.log(response);
         if (response && response.status === 422) {
           setErrors(response.data.errors);
         

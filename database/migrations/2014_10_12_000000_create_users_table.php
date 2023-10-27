@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('session_id')->nullable();
             $table->string('token')->nullable();
             $table->integer('point')->nullable();
+            $table->double('height')->nullable();
+            $table->double('weight')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
