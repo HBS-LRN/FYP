@@ -36,7 +36,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
-<<<<<<< HEAD
 Route::apiResource('/users', UserController::class);
 // ingredient 
 Route::get('/ingredients', [IngredientController::class, 'index']);
@@ -44,7 +43,7 @@ Route::get('/ingredients/{id}', [IngredientController::class, 'show']);
 Route::post('/ingredients', [IngredientController::class, 'store']);
 Route::put('/ingredients/{id}', [IngredientController::class, 'update']);
 Route::delete('/ingredients/{id}', [IngredientController::class, 'destroy']);
-=======
+
 Route::apiResource('/allergic', AllergicController::class);
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
 Route::post('/verifyEmail', [AuthController::class, 'verifyEmail']);
