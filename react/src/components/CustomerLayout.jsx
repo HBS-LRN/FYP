@@ -18,19 +18,23 @@ import '../../assets/css/color.css';
 export default function CustomerLayout() {
 
 
-    const { user, setUser,setToken} = useStateContext()
+    const { user, setUser, setToken } = useStateContext()
     const navigate = useNavigate();
     const onLogout = ev => {
         ev.preventDefault();
 
-        axiosClient.post('/logout')
+        const payload = {
+            user_id: user.id
+
+        };
+        axiosClient.post('/logout', payload)
             .then(() => {
                 setUser(null);
                 setToken(null);
                 navigate("/login");
             });
     };
-    
+
     //this is to handle item cart
     const handleMenuBtnClick = () => {
         document.body.classList.add('active');
@@ -40,6 +44,8 @@ export default function CustomerLayout() {
         document.body.classList.remove('active');
 
     }
+
+    
 
 
     return (
@@ -97,7 +103,7 @@ export default function CustomerLayout() {
                                         </div>
                                     </li>
                                     <li class="navbar-dropdown">
-                                        <a href="/about">Reservation</a>
+                                        <a href="/reservationForm">Reservation</a>
                                     </li>
 
                                     <li class="navbar-dropdown">
@@ -157,7 +163,7 @@ export default function CustomerLayout() {
                                                     <a href="/profile" className="dropdown-item">My Profile</a>
 
                                                     <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-
+                                                    <a href="/myReservation" className="dropdown-item">My Reservations</a>
                                                     <a href="/addresses" className="dropdown-item">My Addresses</a>
 
                                                     <a onClick={onLogout} href="#" className="dropdown-item">Log Out</a>
@@ -204,8 +210,13 @@ export default function CustomerLayout() {
                                                     <div class="qty-input">
                                                         <button class="qty-count qty-count--minus" data-action="minus"
                                                             type="button">-</button>
-                                                        <input class="product-qty" type="number" name="product-qty" min="0"
-                                                            value="1"></input>
+                                                        <input
+                                                            class="product-qty"
+                                                            type="number"
+                                                            name="product-qty"
+                                                            min="0"
+                                                            defaultValue="1" // Use defaultValue instead of value
+                                                        ></input>
                                                         <button class="qty-count qty-count--add" data-action="add"
                                                             type="button">+</button>
                                                     </div>
@@ -231,8 +242,13 @@ export default function CustomerLayout() {
                                                     <div class="qty-input">
                                                         <button class="qty-count qty-count--minus" data-action="minus"
                                                             type="button">-</button>
-                                                        <input class="product-qty" type="number" name="product-qty" min="0"
-                                                            value="1"></input>
+                                                        <input
+                                                            class="product-qty"
+                                                            type="number"
+                                                            name="product-qty"
+                                                            min="0"
+                                                            defaultValue="1" // Use defaultValue instead of value
+                                                        ></input>
                                                         <button class="qty-count qty-count--add" data-action="add"
                                                             type="button">+</button>
                                                     </div>

@@ -1,21 +1,56 @@
-import React, { createRef, useState } from 'react';
+import React, { useEffect, createRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Select from 'react-select/creatable';
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../contexts/ContextProvider.jsx";
 import { useNavigate } from "react-router-dom";
+
+
 export default function RequestBMI() {
   const [validated, setValidated] = useState(false);
   const [category, setCategory] = useState([]);
-  const { user, setNotification } = useStateContext();
+  const [ingredients, setIngredients] = useState([]);
+  const [options, setOptions] = useState([]);
+  const { user, setUser, setToken, setNotification } = useStateContext();
   const weightRef = createRef();
   const heightRef = createRef();
   const ingredientRef = createRef();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  
-  console.log(user)
+
+
+
+
+  //fetch user address data
+  useEffect(() => {
+    getIngredients();
+  }, [])
+
+  const getIngredients = async () => {
+
+    console.log("getting")
+
+    try {
+      await axiosClient.get(`/ingredients`)
+        .then(({ data }) => {
+          console.log(data)
+          setIngredients(data)
+
+          // Create options based on the fetched ingredient data
+          const ingredientOptions = data.map((ingredient) => ({
+            value: ingredient.ingredient_name, // Adjust the key based on your data structure
+            label: ingredient.ingredient_name, // Adjust the label based on your data structure
+          }));
+
+          setOptions(ingredientOptions);
+        });
+    } catch (error) {
+      const response = error.response;
+      console.log(response);
+
+    }
+  }
   const handleSubmit = (event) => {
 
     event.preventDefault();
@@ -84,6 +119,8 @@ export default function RequestBMI() {
         } else {
           // All ingredients have been posted\
           setLoading(false);
+          setUser(null);
+          setToken(null);
           console.log("All ingredients have been posted.");
           setNotification("Register Has Been Completed! Login Now");
           navigate("/login");
@@ -97,6 +134,7 @@ export default function RequestBMI() {
     setValidated(true);
   };
 
+
   const handleCategoryChange = (value, actionMeta) => {
     // Check if the user pressed the space key
     if (actionMeta.action === 'menuKeyDown' && actionMeta.key === 'Space') {
@@ -108,15 +146,18 @@ export default function RequestBMI() {
     }
   };
 
-  const options = [
-    { value: 'TO', label: 'Egg' },
-    { value: 'CF', label: 'Peanuts' },
-    { value: 'NO', label: 'Wheat', selected: true },
-    { value: 'FI', label: 'Three nuts', selected: true },
-    { value: 'OU', label: 'Shrimp' },
-    { value: 'SC', label: 'Scallops' },
-    { value: 'AV', label: 'Avocado' },
-  ];
+
+
+  //i want this to loop from the ingredients that i get
+  // const options = [
+  //   { value: 'TO', label: 'Egg' },
+  //   { value: 'CF', label: 'Peanuts' },
+  //   { value: 'NO', label: 'Wheat', selected: true },
+  //   { value: 'FI', label: 'Three nuts', selected: true },
+  //   { value: 'OU', label: 'Shrimp' },
+  //   { value: 'SC', label: 'Scallops' },
+  //   { value: 'AV', label: 'Avocado' },
+  // ];
 
   return (
     <div className="custom-gap">

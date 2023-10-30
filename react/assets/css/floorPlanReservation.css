@@ -3,7 +3,7 @@ body{
     padding: 0%;
     
     font-family: Arial, Helvetica, sans-serif;
-    background-color: red;
+    background-color: rgb(255, 255, 255);
 }
 .scollBoxReservation{
     background-color: aqua;
@@ -35,6 +35,17 @@ body{
 .fpmbg .table8{
     
     background-image: url(../img/table8.png);
+    width: 20vh;
+    height:20vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    
+}
+
+.fpmbg .table8Reserve{
+    
+    background-image: url(../img/table8Reserved.png);
     width: 20vh;
     height:20vh;
     background-repeat: no-repeat;
@@ -124,6 +135,17 @@ fieldset {
     background-size:cover;
     background-position: center;
 }
+
+.fpmbg .table4Reserve{
+    
+    background-image: url(../img/table4Reserved.png);
+    width: 15.5vh;
+    height: 14.3vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    
+}
 .fpmbg .table4Flex{
     display: flex;
     margin-bottom: 5vh;
@@ -152,6 +174,16 @@ fieldset {
     background-size:cover;
     background-position: center;
 }
+
+.fpmbg .table12Reserved{
+    
+    background-image: url(../img/table12Reserved.png);
+    width: 32vh;
+    height: 14vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
 .fpmbg .table12Left{
     margin-bottom: 5%;
 }
@@ -171,6 +203,17 @@ fieldset {
 .fpmbg .table2{
     
     background-image: url(../img/table2.png);
+    width: 7vh;
+   
+    height: 15vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+
+.fpmbg .table2Reserved{
+    
+    background-image: url(../img/table2Reserved.png);
     width: 7vh;
    
     height: 15vh;
@@ -388,4 +431,11 @@ padding: 10px;
     display: flex;
     font: 20px;
     font-weight: bolder;
+}
+.inforBox img {
+    border-radius: 50%;
+}
+
+.popUp-content .fa-arrow-left{
+    font-size: 20px;
 }

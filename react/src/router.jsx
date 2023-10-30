@@ -16,6 +16,9 @@ import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
 import Profile from "./views/profile/Profile";
+import Allergic from "./views/profile/Allergic";
+
+import AllergicForm from "./views/profile/AllergicForm";
 import ChangePassword from "./views/profile/ChangePassword";
 import Dashboard from "./views/profile/Dashboard";
 import OrderStatus from "./views/profile/OrderStatus";
@@ -144,6 +147,16 @@ const router = createBrowserRouter([
             element: <MyOrder />
     
           },
+          {
+            path: '/allergic',
+            element: <Allergic />
+    
+          },
+          {
+            path: '/allergicForm',
+            element: <AllergicForm />
+    
+          },
         ]
       },
       
@@ -161,10 +174,14 @@ const router = createBrowserRouter([
         element: <Addresses />
       },
       {
-        path: '/address/new',
-        element: <AddressForm />
+        path: '/addressForm',
+        element: <AddressForm key="addressCreate" />
       },
-
+      {
+        path: '/addressForm/:id',
+        element: <AddressForm key="addressUpdate" />
+      },
+  
       {
         path: '/checkOut',
         element: <CheckOut />

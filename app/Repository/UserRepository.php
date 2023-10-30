@@ -19,7 +19,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     //only specified method base repository doest not support need to be created
     public function updatePassword(User $user, $currentPassword, $newPassword)
     {
-        if (Hash::check($currentPassword, auth()->user()->password)) {
+        if (Hash::check($currentPassword, $user->password)) {
             $user->password = bcrypt($newPassword);
             $user->update();
             return true;

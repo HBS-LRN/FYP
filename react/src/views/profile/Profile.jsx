@@ -15,11 +15,11 @@ export default function Profile() {
 
 
 
-    const { user, setUser, setToken, setNotification } = useStateContext();
+    //react declaration
+    const { user, setUser, setNotification } = useStateContext();
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState({});
     const [genderSelected, setGenderSelected] = useState(false);
-
     const [updateUser, setUpdateUser] = useState({
         id: null,
         name: "",
@@ -42,21 +42,14 @@ export default function Profile() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
+        setValidated(true);
         const form = event.currentTarget;
 
         if (form.checkValidity()) {
-
-
-
-
-
-
             const payload = updateUser;
             if (payload.image) {
                 payload.image = payload.image_url;
             }
-
-
             delete payload.image_url;
             console.log(payload)
             try {
@@ -80,6 +73,8 @@ export default function Profile() {
         }
 
     };
+
+    //handle on change 
     const handleChange = (e) => {
 
         if (e.target.name === "gender") {
@@ -91,9 +86,12 @@ export default function Profile() {
     }
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log(file)
+        //set error equal to null
+        setError({ ...error, image: null });
+       
 
         const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = () => {
             setUpdateUser({
                 ...updateUser,
@@ -103,7 +101,7 @@ export default function Profile() {
 
             // e.target.value = "";
         };
-        reader.readAsDataURL(file);
+       
     };
 
 
@@ -113,7 +111,6 @@ export default function Profile() {
         <div>
             <form method="PUT" action="#" className="needs-validation" enctype="multipart/form-data"
                 noValidate
-
                 onSubmit={handleSubmit}>
 
                 <div class="all">

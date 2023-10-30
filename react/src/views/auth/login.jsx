@@ -3,30 +3,35 @@ import { Helmet } from 'react-helmet';
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../contexts/ContextProvider.jsx";
 import { createRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Navigate } from "react-router-dom";
+import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 export default function Login() {
 
   const emailRef = createRef();
   const passwordRef = createRef();
   const { user, setUser, setToken, setAuthUser } = useStateContext()
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({ email: '', password: '' }); // Initialize error as an object with fields
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
+  const { setFailNotification } = useNotificationContext();
   const navigate = useNavigate();
 
 
 
-  console.log(user)
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  } 
+
   //handle onChange value
   const handleInputChange = () => {
-    setError(null);
+    setError({ email: '', password: '' }); // Reset specific field errors
   };
 
   //when user click submit button
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-    setError(null);
+    setError({ email: '', password: '' }); // Reset specific field errors
     setValidated(true);
 
     // Directly use event.currentTarget to access the form element
@@ -38,36 +43,37 @@ export default function Login() {
         password: passwordRef.current.value,
       };
 
-      //set loading to true
+      //set loading to true while post to server
       setLoading(true);
 
 
-      axiosClient
-        .post('/login', payload)
-        .then(({ data }) => {
-          //first set user to null
-          setUser(null)
-          setToken(null)
-          //set the data to session
+      try {
+        const { data } = await axiosClient.post('/login', payload);
+        if (data.message) {
+          // Handle concurrent login message
+          setFailNotification("Concurrent Login Detected!", data.message);
+          // Optionally, redirect to the login page
+          setLoading(false);
+        } else {
+          // Set the data to session
           setUser(data.user);
           setToken(data.token);
-
-          console.log(data.token)
+          console.log(data.token);
           navigate("/dashboard");
           setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-          const response = err.response;
-          console.log(err);
-          if (response && response.status === 422) {
-            setError(response.data.errors);
-          } else {
-            setError(response.data.message);
-          }
-        });
+        }
+      } catch (err) {
+        setLoading(false);
+        const response = err.response;
+        console.log(err);
+        if (response && response.status === 422) {
+          setError(response.data.errors);
+        } else {
+          setError(response.data.message);
+        }
+      }
+   
     }
-
 
 
   };
@@ -104,7 +110,7 @@ export default function Login() {
                     New User? <a href="/register">Register Here</a>
                   </p>
                 </div>
-                <div className={`text email ${validated && !error ? 'was-validated' : ''}`}>
+                <div className={`text email ${validated && !error.email ? 'was-validated' : ''}`}>
                   <label htmlFor="email" className="form-label">
                     User Email
                   </label>
@@ -112,7 +118,7 @@ export default function Login() {
                     <i className="fa-regular fa-envelope" />
                     <input
                       type="email"
-                      className={`form-control ${error ? 'is-invalid' : ''}`}
+                      className={`form-control ${error.email ? 'is-invalid' : ''}`}
                       name="email"
                       ref={emailRef}
                       placeholder="Enter your email"
@@ -123,9 +129,9 @@ export default function Login() {
                     />
 
                     <div className="valid-tooltip">Looks good!</div>
-                    {error ? (
+                    {error.email ? (
                       <div className="invalid-tooltip">
-                        {error}
+                        {error.email}
                       </div>
                     ) : (
                       <div className="invalid-tooltip">
@@ -135,14 +141,14 @@ export default function Login() {
                   </div>
                 </div>
                 <br />
-                <div className={`text email ${validated && !error ? 'was-validated' : ''}`}>
+                <div className={`text email ${validated && !error.email ? 'was-validated' : ''}`}>
                   <label htmlFor="passwordText">Password</label>
                   <br />
                   <div className="custom-form">
                     <i className="fa fa-key" />
                     <input
                       type="password"
-                      className={`form-control ${error ? 'is-invalid' : ''}`}
+                      className={`form-control ${error.email ? 'is-invalid' : ''}`}
                       name="password"
                       ref={passwordRef}
                       placeholder="Enter your password"
@@ -153,7 +159,7 @@ export default function Login() {
                     />
 
                     <div className="valid-tooltip">Looks good!</div>
-                    {!error &&
+                    {!error.email &&
                       <div className="invalid-tooltip">
                         Please Provide A Valid Password
                       </div>

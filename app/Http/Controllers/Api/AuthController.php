@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -15,6 +15,8 @@ use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+
 class AuthController extends Controller
 {
 
@@ -33,12 +35,12 @@ class AuthController extends Controller
         $user = User::where('email', $data['email'])->first();
 
 
-        if(!$user){
+        if (!$user) {
             return response([
                 'message' => 'Email Do Not Exist'
             ], 401);
         }
-       
+
         $token = Str::random(64);
         try {
             DB::table('password_resets')->insert([
@@ -68,9 +70,9 @@ class AuthController extends Controller
         //send email when email exist
 
 
-       
+
     }
- 
+
     public function authenticateUser(Request $request, $id)
     {
 
@@ -94,11 +96,39 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
+
+        //call Enforce account disabling after an established number of invalid login attempts method
+        $request->authenticate();
+
+
         if (!Auth::attempt($credentials)) {
             return response([
                 'message' => 'Provided email or password is incorrect'
             ], 401);
         }
+
+        //get the user email
+        $user = User::where('email', $request->email)->first();
+
+        // Check if the user has an active session to prevent concurrent login
+
+        if ($user && $user->session_id && $user->session_id !== session()->getId()) {
+            Auth::logoutOtherDevices($request->password);
+            $user->session_id = session()->getId();
+            $user->save();
+            return response([
+                'message' => 'You are only allowed to log in once the device has been logged out. Please contact the admin if this is not you.'
+            ]);
+        }
+
+        //update session id 
+        $user->session_id = session()->getId();
+        $user->update();
+        session()->regenerate();
+        //if user is customer
+        // if ($user->role == 0) {
+        // }
+
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -108,13 +138,16 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $data = $request->all();
+
         /** @var \App\Models\User $user */
-
-
+        $user = User::find($data['user_id']);
+        $user->session_id = null;
+        $user->update();
         auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
-       
+
         return response('', 204);
     }
 }

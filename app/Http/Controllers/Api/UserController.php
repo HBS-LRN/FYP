@@ -14,9 +14,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Repository\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+
+    //using user repository 
+    private $userRepositoryInterface;
+
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
+        $this->userRepositoryInterface = $userRepositoryInterface;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +34,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
+        return UserResource::collection(User::query()->orderBy('id', 'desc'));
     }
 
     /**
@@ -80,6 +90,35 @@ class UserController extends Controller
         $user->update($data);
 
         return response()->json($user);
+    }
+
+
+    //update the user password
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'currentPass' => 'required',
+            'password' => ['required', 'password' => [
+                'required',
+                Password::min(8)
+                    ->letters()
+                    ->symbols(),
+            ], 'confirmed'],
+        ]);
+    
+        $user = User::find($request['id']);
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        $success = $this->userRepositoryInterface->updatePassword($user, $request['currentPass'], $request['password']);
+    
+        if ($success) {
+            return response(new UserResource($user), 201);
+        } else {
+            return response()->json(['message' => 'Invalid current password'], 401);
+        }
     }
 
     public function updateBMI(Request $request, $id)

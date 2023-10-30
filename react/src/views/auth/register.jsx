@@ -15,6 +15,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState({});
+  const [loading, setLoading] = useState(false);
   const nameRef = createRef();
   const emailRef = createRef();
   const passwordRef = createRef();
@@ -23,11 +24,14 @@ export default function Register() {
   const navigate = useNavigate();
 
   //when user click on submit button
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
+    setValidated(true);
+
+
     const form = event.currentTarget;
-    if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <=10) {
+    if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <= 10) {
       const payload = {
         name: nameRef.current.value,
         email: emailRef.current.value,
@@ -35,25 +39,28 @@ export default function Register() {
         password_confirmation: passwordConfirmationRef.current.value,
       };
 
-      console.log(payload)
-      axiosClient
-
-        .post("/signup", payload)
-        .then(({ data }) => {
-          setUser(data.user);
-          setToken(data.token);
-          navigate("/registerDetail");
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-          const response = err.response;
-          if (response && response.status === 422) {
-            setError(response.data.errors);
-          }
-        });
+      //set loading to true while post to server
+      setLoading(true);
+      try {
+        await axiosClient
+          .post("/signup", payload)
+          .then(({ data }) => {
+            setUser(data.user);
+            setToken(data.token);
+            navigate("/registerDetail");
+            setLoading(false);
+          });
+      } catch (err) {
+        setLoading(false);
+        console.log(err.response.data);
+        const response = err.response;
+        if (response && response.status === 422) {
+          setError(response.data.errors);
+        }
+      }
     }
 
-    setValidated(true);
+
   };
 
   //handle onChange state
@@ -202,7 +209,18 @@ export default function Register() {
 
                 <br />
 
-                <button className="button-submit">Register</button>
+                {loading ? (
+                  <div className="loaderCustom">
+
+                    <p className="loaderCustom-text">Loading</p>
+                    <span className="loadCustom"></span>
+
+
+                  </div>
+                ) : (
+                  <button className="button-submit">Register</button>
+                )}
+
               </div>
             </div>
           </div>

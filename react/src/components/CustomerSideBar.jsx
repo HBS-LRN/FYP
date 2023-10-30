@@ -13,8 +13,11 @@ export default function CustomerSideBar() {
     const navigate = useNavigate();
     const onLogout = ev => {
         ev.preventDefault();
-
-        axiosClient.post('/logout')
+        const payload = {
+            user_id: user.id
+           
+          };
+        axiosClient.post('/logout', payload)
             .then(() => {
                 setUser(null);
                 setToken(null);
@@ -85,9 +88,13 @@ export default function CustomerSideBar() {
                         <li><a href="/addresses">
                             <p>Addresses</p>
                         </a></li>
+                        <li><a href="/allergic">
+                            <p>Allergies</p>
+                        </a></li>
                         <li><a href="/changePassword">
                             <p>Change Password</p>
                         </a></li>
+                       
                     </ul>
                 </li>
                 <li>
