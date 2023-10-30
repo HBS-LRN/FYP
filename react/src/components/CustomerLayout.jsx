@@ -3,6 +3,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
+import { useNavigate } from "react-router-dom";
 import '../../assets/css/style.css';
 import '../../assets/css/owl.carousel.min.css';
 import '../../assets/css/owl.theme.default.min.css';
@@ -17,6 +18,23 @@ import '../../assets/css/color.css';
 export default function CustomerLayout() {
 
 
+    const { user, setUser, setToken } = useStateContext()
+    const navigate = useNavigate();
+    const onLogout = ev => {
+        ev.preventDefault();
+
+        const payload = {
+            user_id: user.id
+
+        };
+        axiosClient.post('/logout', payload)
+            .then(() => {
+                setUser(null);
+                setToken(null);
+                navigate("/login");
+            });
+    };
+
     //this is to handle item cart
     const handleMenuBtnClick = () => {
         document.body.classList.add('active');
@@ -26,6 +44,8 @@ export default function CustomerLayout() {
         document.body.classList.remove('active');
 
     }
+
+    
 
 
     return (
@@ -79,11 +99,11 @@ export default function CustomerLayout() {
                                             <a href="#">Noodle Receipt</a>
                                             <a href="#">Rice Receipt</a>
                                             <a href="#">Beverage Receipt</a>
-                                            
+
                                         </div>
                                     </li>
                                     <li class="navbar-dropdown">
-                                        <a href="/about">Reservation</a>
+                                        <a href="/reservationForm">Reservation</a>
                                     </li>
 
                                     <li class="navbar-dropdown">
@@ -105,36 +125,61 @@ export default function CustomerLayout() {
                                 <a href="#" id="desktop-menu" class="menu-btn" onClick={handleMenuBtnClick}>
 
                                     <i class="fa-solid fa-bag-shopping"></i></a>
-                                <a href="/login" class="button button-2"><i class="fas fa-user"></i>Login/Register</a>
-
-
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {/* <i class="fa fa-user" aria-hidden="true"></i> */}
-                                {/* <img src="../assets/img/person3.jpg" width="50" height="50" /> 
-                                <span class="span">
-                                    HI! Tee Fo Yo
-                                    <div className="dropdown profileIcon float-end">
-                                        <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
 
 
 
-                                        </a>
-                                       <br/>
-                                        <div className="dropdown-menu dropdown-menu-end">
-                                            
-                                         
-                                            <a href="/profile" className="dropdown-item">My Profile</a>
-                                          
-                                            <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-                                          
-                                            <a href="/addresses" className="dropdown-item">My Addresses</a>
-                                            
-                                            <a href="/logout" className="dropdown-item">Log Out</a>
-                                           
-                                        </div>
+                                {!user ? (
+                                    <div className="loginCustomButton">
+
+                                        <a href="/login" class="button button-2"><i class="fas fa-user"></i>Login/Register</a>
                                     </div>
 
-                                </span> */}
+                                ) : (
+
+
+                                    <div>
+                                        {user && user.image ? (
+
+                                            <img
+                                                src={`${import.meta.env.VITE_API_BASE_URL}/${user.image}`}
+                                                width="50" height="50"
+                                            />
+
+                                        ) : (
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        )}
+                                        <span class="span">
+                                            HI! {user.name}
+                                            <div className="dropdown profileIcon float-end">
+                                                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+
+                                                </a>
+                                                <br />
+                                                <div className="dropdown-menu dropdown-menu-end">
+
+
+                                                    <a href="/profile" className="dropdown-item">My Profile</a>
+
+                                                    <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                                    <a href="/myReservation" className="dropdown-item">My Reservations</a>
+                                                    <a href="/addresses" className="dropdown-item">My Addresses</a>
+
+                                                    <a onClick={onLogout} href="#" className="dropdown-item">Log Out</a>
+
+                                                </div>
+                                            </div>
+
+                                        </span>
+                                    </div>
+
+                                )}
+
+
+
+
+
 
                             </div>
                         </div>
@@ -145,7 +190,7 @@ export default function CustomerLayout() {
                                     <div class="title-checkout">
                                         <h2>My Carts</h2>
                                     </div>
-                                    
+
                                     <ul>
                                         <li class="price-list">
                                             <i class="closeButton fa-solid fa-xmark"></i>
@@ -165,8 +210,13 @@ export default function CustomerLayout() {
                                                     <div class="qty-input">
                                                         <button class="qty-count qty-count--minus" data-action="minus"
                                                             type="button">-</button>
-                                                        <input class="product-qty" type="number" name="product-qty" min="0"
-                                                            value="1"></input>
+                                                        <input
+                                                            class="product-qty"
+                                                            type="number"
+                                                            name="product-qty"
+                                                            min="0"
+                                                            defaultValue="1" // Use defaultValue instead of value
+                                                        ></input>
                                                         <button class="qty-count qty-count--add" data-action="add"
                                                             type="button">+</button>
                                                     </div>
@@ -192,8 +242,13 @@ export default function CustomerLayout() {
                                                     <div class="qty-input">
                                                         <button class="qty-count qty-count--minus" data-action="minus"
                                                             type="button">-</button>
-                                                        <input class="product-qty" type="number" name="product-qty" min="0"
-                                                            value="1"></input>
+                                                        <input
+                                                            class="product-qty"
+                                                            type="number"
+                                                            name="product-qty"
+                                                            min="0"
+                                                            defaultValue="1" // Use defaultValue instead of value
+                                                        ></input>
                                                         <button class="qty-count qty-count--add" data-action="add"
                                                             type="button">+</button>
                                                     </div>

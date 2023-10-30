@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     // data fields declaration
-   
+
 
     protected $fillable = [
         'name',
@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function scopeFilter($query, array $filters)
     {
-      
+
         if ($filters['search'] ?? false) {
             $query->where('name', 'like', '%' . request('search') . '%')
                 ->orWhere('email', 'like', '%' . request('search') . '%')
@@ -169,6 +169,13 @@ class User extends Authenticatable
             ->withPivot('shopping_cart_qty', 'id');
     }
 
+    //many to many relationship 
+    public function tables()
+    {
+        return $this->belongsToMany(Table::class, 'reservations', 'user_id', 'table_id')
+            ->withPivot('id', 'reservation_date', 'reservation_time', 'reservation_status', 'pax', 'remark');
+    }
+
     //one user has many order, one order has many order details
     public function orderDetail()
     {
@@ -181,5 +188,4 @@ class User extends Authenticatable
             'meal_order_detail_id'
         );
     }
-    
 }

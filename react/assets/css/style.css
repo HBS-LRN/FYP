@@ -382,21 +382,22 @@ header {
 }
 
 .extras .fa {
-    margin-right: 0px;
+    margin-right: 5px;
     margin-left: 20px;
-    margin-right: 8px;
+   
 
 
 }
 
 .profile-gap img {
+    margin-right: 12px;
     border-radius: 20px;
 }
 
 .extras img {
     border-radius: 60px;
-    margin-left: 40px;
-    margin-right: 8px;
+    margin-left: 20px;
+    margin-right: 15px;
 
 }
 
@@ -407,6 +408,9 @@ header {
 .button-2:hover {
     background-position: 100%;
     background-color: transparent;
+}
+.customTooltip{
+    left:160px;
 }
 
 /*------------- button end --------*/
@@ -422,13 +426,19 @@ header {
 }
 
 .bag {
-    text-align: end;
+    padding-left:55px;
+    display:flex;
+   
 }
 
 .bag .button {
     padding: 0 18px;
     height: 43px;
     line-height: 39px;
+}
+
+.loginCustomButton{
+    margin-left:20px;
 }
 
 /*--------------       Works Section    ----------------*/
@@ -2072,6 +2082,25 @@ header.two {
 
 }
 
+.button-submit {
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #F29F05;
+}
+
+.button-submit i {
+    padding-left: 20px;
+}
+
+.button-submit:hover {
+    background-color: transparent;
+    color: #F29F05;
+
+}
+
+
 /*-------------            Service page        -------------*/
 .about-text a {
     margin-top: 30px;
@@ -3413,6 +3442,7 @@ ul.social-media li a i,
 .services-card-style i:after,
 .services-card-style i,
 .button-price,
+.button-submit,
 .address,
 .address h6,
 .logodata.owl-carousel .owl-item img {
@@ -4315,14 +4345,14 @@ li.menu-item-has-children.active {
     top: 0;
     padding: 0;
     margin: 0;
-    color: #C8B6FF;
+    color: #f0be60;
     animation: text_713 3.5s ease both infinite;
     font-size: .8rem;
     letter-spacing: 1px;
 }
 
 .loadCustom {
-    background-color: #9A79FF;
+    background-color: #F29F05;
     border-radius: 50px;
     display: block;
     height: 16px;
@@ -4339,7 +4369,7 @@ li.menu-item-has-children.active {
     content: "";
     width: 100%;
     height: 100%;
-    background-color: #D1C2FF;
+    background-color: #f0be60;
     border-radius: inherit;
     animation: loading2_713 3.5s ease both infinite;
 }
@@ -4424,3 +4454,54 @@ li.menu-item-has-children.active {
         width: 16px;
     }
 }
+
+.loaderCustom2 {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #000000;
+    border-radius: 50%;
+    margin: auto;
+    justify-content: center;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+
+.text-center{
+    margin-top: 50px;;
+}
+
+.loaderCustom2 {
+    --dim: 5rem;
+    width: 40px;
+    height: 40px;
+    border: 7px solid #2596be;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: spin_51 1.5s infinite linear;
+  }
+  
+  @keyframes spin_51 {
+    from {
+      transform: rotate(0)
+    }
+  
+    to {
+      transform: rotate(360deg)
+    }
+  }
+
+  .b {
+    list-style-type: disc; /* This sets the bullet point style */
+  }

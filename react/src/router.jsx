@@ -16,6 +16,9 @@ import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
 import Profile from "./views/profile/Profile";
+import Allergic from "./views/profile/Allergic";
+
+import AllergicForm from "./views/profile/AllergicForm";
 import ChangePassword from "./views/profile/ChangePassword";
 import Dashboard from "./views/profile/Dashboard";
 import OrderStatus from "./views/profile/OrderStatus";
@@ -105,47 +108,62 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />
       },
-
+      
       {
-        path: '/registerDetail',
-        element: <RequestBMI />
+       path:'/registerDetail',
+       element: <RequestBMI />
       },
       {
         path: '/register',
         element: <Register />
       },
 
-
-      {
-        path: '/profile',
-        element: <Profile />
+     {
+        path: '/',
+        element: <AuthCustomer/>,
+        children: [
+          {
+            path: '/profile',
+            element: <Profile />
+          },
+          {
+            path: '/changePassword',
+            element: <ChangePassword />
+          },
+          {
+            path: '/dashboard',
+            element: <Dashboard />
+          },
+          {
+            path: '/orderStatus',
+            element: <OrderStatus />
+          },
+          {
+            path: '/myReservation',
+            element: <MyReservation />
+          },
+          {
+            path: '/reservationForm',
+            element: <ReservationForm />
+          },
+          {
+            path: '/myOrder',
+            element: <MyOrder />
+    
+          },
+          {
+            path: '/allergic',
+            element: <Allergic />
+    
+          },
+          {
+            path: '/allergicForm',
+            element: <AllergicForm />
+    
+          },
+        ]
       },
-      {
-        path: '/changePassword',
-        element: <ChangePassword />
-      },
-      {
-        path: '/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/orderStatus',
-        element: <OrderStatus />
-      },
-      {
-        path: '/myReservation',
-        element: <MyReservation />
-      },
-      {
-        path: '/reservationForm',
-        element: <ReservationForm />
-      },
-      {
-        path: '/myOrder',
-        element: <MyOrder />
-
-      },
-
+      
 
       {
         path: '/forgetPassword',
@@ -160,10 +178,14 @@ const router = createBrowserRouter([
         element: <Addresses />
       },
       {
-        path: '/address/new',
-        element: <AddressForm />
+        path: '/addressForm',
+        element: <AddressForm key="addressCreate" />
       },
-
+      {
+        path: '/addressForm/:id',
+        element: <AddressForm key="addressUpdate" />
+      },
+  
       {
         path: '/checkOut',
         element: <CheckOut />
@@ -184,9 +206,9 @@ const router = createBrowserRouter([
 
 
 
-
-
-
+     
+     
+      
       // {
       //   path: '/purchaseStatus',
       //   element: <PurchaseStatus/>
@@ -216,7 +238,7 @@ const router = createBrowserRouter([
     element: <FloorPlanMapping />
 
   },
-  {
+    {
     path: '/',
     element: <StaffLayout />,
     children: [
@@ -283,7 +305,7 @@ const router = createBrowserRouter([
         path: '/addCustomer',
         element: <AddCustomer />
       },
-
+     
     ]
   },
   {
@@ -312,28 +334,28 @@ const router = createBrowserRouter([
     path: "/loginSample",
     element: <LoginSample />
   },
-
+  
   {
     path: "/registerSample",
     element: <Signup />
   },
-
+  
 
   {
     path: '/',
-    element: <DefaultLayout />,
+    element: <DefaultLayout/>,
     children: [
       {
         path: '/',
-        element: <Navigate to="/users" />
+        element: <Navigate to="/users"/>
       },
       {
         path: '/dashboard',
-        element: <Dashboard />
+        element: <Dashboard/>
       },
       {
         path: '/users',
-        element: <Users />
+        element: <Users/>
       },
       {
         path: '/users/new',

@@ -17,7 +17,7 @@ class AllergicController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Allergic::all());
     }
 
     /**
@@ -55,7 +55,12 @@ class AllergicController extends Controller
      */
     public function update(UpdateAllergicRequest $request, Allergic $allergic)
     {
-        //
+        
+        $data = $request->validated();
+        $allergic->update($data);
+
+        return response()->json($allergic);
+
     }
 
     /**
@@ -66,6 +71,8 @@ class AllergicController extends Controller
      */
     public function destroy(Allergic $allergic)
     {
-        //
+        $allergic->delete();
+
+        return response("", 204);
     }
 }

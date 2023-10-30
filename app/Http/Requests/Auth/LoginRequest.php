@@ -49,7 +49,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey(),300);
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Provided email or password is incorrect',
             ]);
         }
 

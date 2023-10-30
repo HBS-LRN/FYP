@@ -8,14 +8,14 @@ const StateContext = createContext({
     setDeleteNotification: () => { },
     setSuccessNotification: () => { },
     setFailNotification: () => { },
-
+    setWarningNotification: () => { },
 })
 
 export const NotificationProvider = ({ children }) => {
     const [successNotification, _setSuccessNotification] = useState('');
     const [failNotification, _setFailNotification] = useState('');
     const [deleteNotification, _setDeleteNotification] = useState('');
-
+    const [warningNotification, _setWarningNotification] = useState('');
 
     const setSuccessNotification = message => {
         Swal.fire({
@@ -24,28 +24,19 @@ export const NotificationProvider = ({ children }) => {
             title: 'Success',
             text: message,
             customClass: 'swal-wide',
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-              },
-              hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-              }
         })
 
     }
 
-    const setFailNotification = message => {
-        Swal.fire({
-            icon: 'error',
-            title: message,
-            showCloseButton: true,
-            showCancelButton: true,
-            showClass: {
-                popup: 'animate__animated animate__fadeInDown'
-            }
-        })
-
-    }
+    const setFailNotification = (titleMessage, textMessage) => {
+      Swal.fire({
+          icon: 'error',
+          title: titleMessage, // Use the 'anotherMessage' parameter as the title
+          text: textMessage,
+          showCloseButton: true,
+      });
+  }
+  
 
     const setDeleteNotification = () => {
         return Swal.fire({
@@ -65,6 +56,25 @@ export const NotificationProvider = ({ children }) => {
           }
         });
       };
+
+      const setWarningNotification =(titleMessage, textMessage) => {
+        return Swal.fire({
+          title: titleMessage, // Use the 'anotherMessage' parameter as the title
+          text: textMessage,
+          type: 'warning',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
+        }).then((result) => {
+          if (result.value) {
+            return result.value;
+          } else {
+            return null;
+          }
+        });
+      };
       
 
     return (
@@ -72,9 +82,11 @@ export const NotificationProvider = ({ children }) => {
             successNotification,
             failNotification,
             deleteNotification,
+            warningNotification,
             setSuccessNotification,
             setDeleteNotification,
-            setFailNotification
+            setFailNotification,
+            setWarningNotification,
         }}>
             {children}
         </StateContext.Provider>

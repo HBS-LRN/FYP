@@ -70,7 +70,7 @@
     border: 1px solid #8b8888;
     width: 100%;
     height: 60px;
-    padding-left: 46px;
+    padding-left: 52px;
     border-radius: 10px;
     border: 2.3px solid rgb(23, 23, 26);
     border-radius: 24px;
@@ -79,13 +79,12 @@
 }
 
 .custom-form i {
-    left: 5%;
+    left: 4.9%;
     position: absolute;
     color: #cfcfcf;
     font-size: 20px;
-    top: 32%;
+    top: 34%;
 }
-
 
 
 
@@ -192,7 +191,7 @@ label {
     margin: 15px 107px 3px 0px;
 }
 
-.button-price.login {
+.button-submit {
     margin-top: 14px;
     
     color: white;

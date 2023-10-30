@@ -20,7 +20,8 @@ class CreateAddressesTable extends Migration
             $table->string('address_username');
             $table->string('address_userphone');
             $table->string('street');
-            $table->string('area');
+            $table->string('city');
+            $table->string('state');
             $table->string('postcode');
             $table->string('active_flag');
             $table->timestamps();

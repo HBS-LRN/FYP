@@ -9,48 +9,49 @@ import Swal from 'sweetalert2';
 export default class EventCalendar extends Component {
 
     render() {
+        const { reservations } = this.props; // Get reservations from props
+
+
+      
+        const events = reservations.map((reservation) => ({
+            id: reservation.pivot.id,
+            title: `Booked Table No ${reservation.id}, ${reservation.pivot.pax} Pax, On ${reservation.pivot.reservation_time}`,
+            date: reservation.pivot.reservation_date,
+        }));
+
         return (
+
+        
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
-               
-
-                events={[
-                    { id: 1, title: 'Booked Table No 5, 11 Pax, On 11am - 1pm Session', date: '2023-07-11' },
-                    { id: 2, title: 'Booked Table No 2, 2 Pax, On 1pm - 3pm Session', date: '2023-07-16' },
-                  
-                ]}
+                events={events} // Use the events generated from reservations
                 dateClick={this.handleDateClick}
-                eventClick = {this.handleEventClick}
+                eventClick={this.handleEventClick}
             />
-        )
+        );
     }
     handleDateClick = (arg) => { // bind with an arrow function
         alert(arg.dateStr)
     }
 
-    handleEventClick = (arg) => { // bind with an arrow function
-        console.log(arg)
-      
-        Swal.fire({
-            title: 'Are you sure?!',
-            text: 'Record will be deleted',
-            type: 'warning',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Delete Record',
-          }).then((result) => {
-            Swal.fire({
-                type: 'success',
-                icon: 'success',
-                title: 'Success',
-                text: 'Reservation Has Successfully Cancelled',
-                customClass: 'swal-wide',
-            })
-          });
 
-         
+    handleEventClick = (arg) => {
+        const { reservations, onDeleteReservation } = this.props;
+        const eventId = arg.event.id;
+
+
+
+        console.log(reservations)
+        // Find the reservation associated with the event
+        const reservation = reservations.find((r) => r.pivot.id == eventId);
+
+
+        console.log(reservation.pivot.id)
+        if (reservation) {
+            // Call the onDeleteReservation callback with the reservation ID
+            onDeleteReservation(reservation.pivot.id);
+        }
     }
+
 }
 
