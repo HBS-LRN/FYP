@@ -255,6 +255,9 @@ export default function StaffLayout() {
                                                 <a href="/addMeal">Add Meal</a>
                                             </li>
                                             <li>
+                                                <a href="/categoryList">Category List</a>
+                                            </li>
+                                            <li>
                                                 <a href="/ingredientList">Ingredient List</a>
                                             </li>
                                         </ul>

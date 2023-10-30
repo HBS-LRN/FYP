@@ -12,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\FreeGiftController;
 use App\Http\Controllers\ShoppingCartController;
 

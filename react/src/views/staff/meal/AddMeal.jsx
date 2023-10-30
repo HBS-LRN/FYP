@@ -1,22 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { Tab, Nav } from 'react-bootstrap';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'select2/dist/css/select2.min.css';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
+import axiosClient from "../../../axios-client.js";
 const AddProduct = () => {
     const [activeTab, setActiveTab] = useState(0);
     const [category, setCategory] = useState([]);
-    const [features, setFeatures] = useState([]);
-
+    const [ingredient, setIngredient] = useState([]);
+    const [ingredientOptions, setIngredientOptions] = useState([]);
     const options = [
-        { value: 'TO', label: 'Touchscreen' },
-        { value: 'CF', label: 'Call Function' },
-        { value: 'NO', label: 'Notifications', selected: true },
-        { value: 'FI', label: 'Fitness', selected: true },
-        { value: 'OU', label: 'Outdoor' },
+        { value: 1, label: 'Appetizer' },
+        { value: 2, label: 'Meat' },
+        { value: 3, label: 'Dessert'},
+        { value: 4, label: 'Seafood'},
+        { value: 5, label: 'Noodle' },
+        { value: 5, label: 'Rice' },
+        { value: 6, label: 'Beverage' },
+        { value: 7, label: 'Dimsum' },
     ];
+    useEffect(() => {
+        getIngredient();
+    }, []);
+    const getIngredient =()=>{
+ // Make the API call to get ingredient data
+        axiosClient.get('/ingredients')
+            .then(({ data }) => {
+                // Map the data to the format required by react-select
+                const options = data.map(item => ({
+                    value: item.id, // Replace with your ingredient identifier
+                    label: item.ingredient_name,
+                }));
+                setIngredientOptions(options);
+            })
+            .catch(error => {
+                console.error('API request error:', error);
+            });
+    }
+    const [meal, setMeal] = useState({
+        meal_price: '',
+        meal_qty:'',
+        meal_name:'',
+        category_id:'',
+        meal_image:''
+    })
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setIngredient({
+            ...ingredient,
+            [name]: value
+        });
+    }
+    const validateForm = () => {
+        let valid = true;
+        const newErrors = {};
 
+        if (!ingredient.ingredient_name) {
+            newErrors.ingredient_name = "Ingredient Name is required";
+            valid = false;
+        }
+
+        if (!ingredient.calorie) {
+            newErrors.calorie = "Calorie is required";
+            valid = false;
+        }
+
+        setErrors(newErrors);
+        return valid;
+    }
+
+    const saveMeal = (e) => {
+        e.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+        setLoading(true);
+        const data = {
+            ingredient_name: ingredient.ingredient_name,
+            calorie: ingredient.calorie,
+        }
+        
+        axiosClient.post('/ingredients', data)
+        .then(res => {
+            setIngredient({
+                ingredient_name: '',
+                calorie: ''
+            });
+            // Show SweetAlert success message
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'New Ingredient Had Been Successfully Added!',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    })
+        .catch(function(){
+            setLoading(false);
+        });
+    } 
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
@@ -25,8 +108,8 @@ const AddProduct = () => {
         setCategory(value);
     };
 
-    const handleFeaturesChange = (value) => {
-        setFeatures(value);
+    const handleIngredientChange = (value) => {
+        setIngredient(value);
     };
     const handlePreviousClick = () => {
         setActiveTab((prevTab) => prevTab - 1);
@@ -91,8 +174,8 @@ const AddProduct = () => {
                                                                 Meal Name
                                                             </label>
                                                             <input
-                                                                id="productname"
-                                                                name="productname"
+                                                                id="meal_name"
+                                                                name="meal_name"
                                                                 type="text"
                                                                 className="form-control"
                                                             />
@@ -106,8 +189,8 @@ const AddProduct = () => {
                                                                         Price
                                                                     </label>
                                                                     <input
-                                                                        id="price"
-                                                                        name="price"
+                                                                        id="meal_price"
+                                                                        name="meal_price"
                                                                         type="text"
                                                                         className="form-control"
                                                                     />
@@ -119,6 +202,8 @@ const AddProduct = () => {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Category</label>
                                                                     <Select
+                                                                        id='category_id'
+                                                                        name='category_id'
                                                                         value={category}
                                                                         onChange={handleCategoryChange}
                                                                         options={options} 
@@ -131,9 +216,11 @@ const AddProduct = () => {
                                                                     <label className="form-label">Ingredient</label>
 
                                                                     <Select
-                                                                        value={features}
-                                                                        onChange={handleFeaturesChange}
-                                                                        options={options} 
+                                                                        id='ingredient_id'
+                                                                        name='ingredient_id'
+                                                                        value={ingredient}
+                                                                        onChange={handleIngredientChange}
+                                                                        options={ingredientOptions} 
                                                                         isMulti 
                                                                     />
 
@@ -184,13 +271,15 @@ const AddProduct = () => {
                                                 >
                                                     Previous
                                                 </button>
+                                                
                                                 <button
-                                                    type="button"
+                                                    type={activeTab === 1 ? "submit" : "button"}
                                                     className="btn btn-primary me-2 waves-effect waves-light"
-                                                    onClick={handleNextClick}
-                                                    disabled={activeTab === 2}
+                                                    onClick={activeTab === 1 ? handleNextClick : handleNextClick}
+                                                    
                                                 >
-                                                    Next
+                                                
+                                                {activeTab === 1 ? "Create Meal" : "Next"}
                                                 </button>
                                             </div>
                                         </div>

@@ -43,8 +43,12 @@ import Calendar from "./views/staff/Calendar/calendar";
 import Chat from "./views/staff/chat";
 import StaffReservation from "./views/staff/customer/reservation";
 import AddIngredient from "./views/staff/meal/AddIngredients";
-import UpdateIngredint from "./views/staff/meal/UpdateIngredients"
+import UpdateIngredient from "./views/staff/meal/UpdateIngredients"
 import IngredientList from "./views/staff/meal/IngredientsList"
+
+import AddCategory from "./views/staff/meal/AddCategory";
+import UpdateCategory from "./views/staff/meal/UpdateCategory"
+import CategoryList from "./views/staff/meal/CatogoriesList"
 
 import MealDetail from "./views/staff/meal/MealDetail";
 import Customers from "./views/staff/customer/CustomersList";
@@ -241,11 +245,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/updateingredient/:id",
-        element:<UpdateIngredint/>
+        element:<UpdateIngredient/>
       },
       {
         path:"ingredientList",
         element:<IngredientList/>
+      },
+      {
+        path: "/addcategory",
+        element:<AddCategory/>
+      },
+      {
+        path: "/updatecategory/:id",
+        element:<UpdateCategory/>
+      },
+      {
+        path:"categoryList",
+        element:<CategoryList/>
       },
       {
         path: '/mealDetail',

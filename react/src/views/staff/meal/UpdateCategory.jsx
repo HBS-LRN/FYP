@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
-export default function UpdateIngredient() {
+export default function UpdateCategory() {
     const [ingredient, setIngredient] = useState({
         ingredient_name: '',
         calorie:''
-        
+
     })
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -92,7 +92,8 @@ export default function UpdateIngredient() {
                         setLoading(false);
                         setRedirect(true);
                     })
-                    .catch(function () {
+                    .catch(function (error) {
+                        alert(error);
                         setLoading(false);
                     });
             }

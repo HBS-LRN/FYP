@@ -1,4 +1,4 @@
-@inject('CategoryController','\App\Http\Controllers\CategoryController')
+@inject('CategoryController','\App\Http\Controllers\Api\CategoryController')
     <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-core.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-pie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>

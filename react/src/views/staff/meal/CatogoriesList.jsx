@@ -9,7 +9,7 @@ import axiosClient from "../../../axios-client.js";
 import Swal from 'sweetalert2';
 
 
-export default function IngredientList() {
+export default function CategoryList() {
     const tableStyle = {
         borderCollapse: "collapse",
         borderSpacing: 0,
@@ -111,7 +111,7 @@ export default function IngredientList() {
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <a href="/addingredient" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Ingredient</a>
+                            <a href="/addcategory" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Ingredient</a>
                         </div>
                         <div class="table-responsive mt-3">
                             <table class="table table-centered datatable dt-responsive nowrap" style={tableStyle}>

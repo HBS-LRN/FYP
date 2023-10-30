@@ -9,11 +9,6 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id','name','image','subImage'];
+    protected $fillable = ['name', 'image'];
 
-    public function categorymeals()
-    {
-
-        return $this->hasMany(Meal::class);
-    }
 }

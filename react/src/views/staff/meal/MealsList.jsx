@@ -10,12 +10,19 @@ import { Helmet } from 'react-helmet';
 
 
 export default function MealsList() {
+    const [selectedCategory, setSelectedCategory] = useState(''); // Initialize state
 
+    const categoryClick = (category) => {
+        // Check if the selected category is the same as the currently selected category.
+        // If it is, clear the selection, otherwise, set the selected category.
+        setSelectedCategory(selectedCategory === category ? '' : category);
+    }
     return (
 
         <div>
-           
-          
+            <Helmet>
+                <link rel="stylesheet" href="../../../assets/css/addMeal.css" />
+            </Helmet>
                         <div className="main-content">
                             <div className="page-content">
                                 <div className="container-fluid">
@@ -32,72 +39,134 @@ export default function MealsList() {
                                     <div className="row">
                                         <div className="col-xl-3 col-lg-4">
                                             <div className="card">
+                                             
                                                 <div className="card-header bg-transparent border-bottom">
                                                     <h5 className="mb-0">Filters</h5>
+                                                    <div className="AddMealButtton"><a href="">+ Add Meals</a></div>
                                                 </div>
                                                 <div className="card-body">
                                                     <h5 className="font-size-14 mb-3">Categories</h5>
                                                     <div className="accordion ecommerce" id="accordionExample">
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingOne">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                                    <i className="mdi mdi-desktop-classic font-size-16 align-middle me-2" /> Appetizer
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Appetizer' ? '' : 'collapsed'}`}
+                                                                type="button" data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseOne" 
+                                                                aria-expanded="true" 
+                                                                aria-controls="collapseOne"
+                                                                onClick={() => categoryClick('Appetizer')}
+                                                                >
+                                                                <i class="fa-solid fa-utensils"></i> Appetizer
                                                                 </button>
                                                             </h2>
                                                            
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingTwo">
-                                                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                    <i className="mdi mdi-hanger font-size-16 align-middle me-2" /> Meat
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Meat' ? '' : 'collapsed'}`}
+                                                                type="button" 
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#collapseTwo"
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseTwo"
+                                                                onClick={() => categoryClick('Meat')}
+                                                                >
+                                                                <i class="fa-solid fa-drumstick-bite"></i> Meat
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Dessert
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Dessert' ? '' : 'collapsed'}`}
+                                                                type="button" data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseThree" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseThree"
+                                                                onClick={() => categoryClick('Dessert')}
+                                                                >
+                                                                <i class="fa-solid fa-cheese"></i> Dessert
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Seafood
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Seafood' ? '' : 'collapsed'}`}
+                                                                type="button" 
+                                                                data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseThree" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseThree"
+                                                                onClick={() => categoryClick('Seafood')}
+                                                                >
+                                                                <i class="fa-solid fa-shrimp"></i> Seafood
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Noodle
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Noodle' ? '' : 'collapsed'}`}
+                                                                type="button" data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseThree" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseThree"
+                                                                onClick={() => categoryClick('Noodle')}
+                                                                >
+                                                                <img src="../../../assets/img/icon/noodles.png" alt="" srcset="" height="20px"width="20px"/> Noodle
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Rice
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Rice' ? '' : 'collapsed'}`}
+                                                                type="button" data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseThree" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseThree"
+                                                                onClick={() => categoryClick('Rice')}
+                                                                >
+                                                                <i class="fa-solid fa-bowl-rice"></i> Rice
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item">
                                                             <h2 className="accordion-header" id="headingThree">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                    <i className="mdi mdi-pinwheel-outline font-size-16 align-middle me-2" /> Beverage
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'Beverage' ? '' : 'collapsed'}`}
+                                                                type="button" 
+                                                                data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseThree" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseThree"
+                                                                onClick={() => categoryClick('Beverage')}
+                                                                >
+                                                                <i class="fa-solid fa-mug-hot"></i> Beverage
                                                                 </button>
                                                             </h2>
                                                             
                                                         </div>
                                                         <div className="accordion-item mb-3">
                                                             <h2 className="accordion-header" id="headingFour">
-                                                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                                    <i className="mdi mdi-dumbbell font-size-16 align-middle me-2" /> DimSum
+                                                                <button 
+                                                                className={`accordion-button ${selectedCategory === 'DimSum' ? '' : 'collapsed'}`}
+                                                                type="button" 
+                                                                data-bs-toggle="collapse" 
+                                                                data-bs-target="#collapseFour" 
+                                                                aria-expanded="false" 
+                                                                aria-controls="collapseFour"
+                                                                onClick={() => categoryClick('DimSum')}
+                                                                >
+                                                                <img src="../../../assets/img/icon/dimsum.png" alt="" srcset="" height="20px"width="20px"/> DimSum
                                                                 </button>
                                                             </h2>
                                                            
@@ -107,68 +176,16 @@ export default function MealsList() {
                                                 <div className="card-body border-top">
                                                     <div>
                                                         <h5 className="font-size-14 mb-4">Price</h5>
-                                                        <input type="text" id="pricerange" />
+                                                        <div className="PriceRange">
+                                                        <input type="number" id="pricerangeTop" className="pricerangeTop" placeholder="Start Prices"/> - 
+                                                        <input type="number" id="pricerangeBottom" className="pricerangeBottom" placeholder="End Prices"/>
+                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div className="custom-accordion">
-                                                    <div className="card-body border-top">
-                                                        <div>
-                                                            <h5 className="font-size-14 mb-0"><a href="#collapseExample1" className="text-dark d-block" data-bs-toggle="collapse">Discount <i className="mdi mdi-minus float-end accor-plus-icon" /></a></h5>
-                                                            <div className="collapse show" id="collapseExample1">
-                                                                <div className="mt-4">
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio6" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio6">50% or more</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio5" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio5">40% or more</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio4" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio4">30% or more</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio3" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio3">20% or more</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio2" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio2">10% or more</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productdiscountRadio1" name="productdiscountRadio1" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productdiscountRadio1">Less than 10%</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-body border-top">
-                                                        <div>
-                                                            <h5 className="font-size-14 mb-0"><a href="#collapseExample2" className="text-dark d-block" data-bs-toggle="collapse">Size <i className="mdi mdi-minus float-end accor-plus-icon" /></a></h5>
-                                                            <div className="collapse show" id="collapseExample2">
-                                                                <div className="mt-4">
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productsizeRadio1" name="productsizeRadio" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productsizeRadio1">X-Large</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productsizeRadio2" name="productsizeRadio" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productsizeRadio2">Large</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productsizeRadio3" name="productsizeRadio" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productsizeRadio3">Medium</label>
-                                                                    </div>
-                                                                    <div className="form-check mt-2">
-                                                                        <input type="radio" id="productsizeRadio4" name="productsizeRadio" className="form-check-input" />
-                                                                        <label className="form-check-label" htmlFor="productsizeRadio4">Small</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                  
+                                                   
                                                     <div className="card-body border-top">
                                                         <div>
                                                             <h5 className="font-size-14 mb-0"><a href="#collapseExample3" className="collapsed text-dark d-block" data-bs-toggle="collapse">Customer Rating <i className="mdi mdi-minus float-end accor-plus-icon" /></a></h5>
@@ -204,7 +221,7 @@ export default function MealsList() {
                                                         <div className="row">
                                                             <div className="col-md-6">
                                                                 <div>
-                                                                    <h5>Clothes &amp; Accessories</h5>
+                                                                    <h5>Meal List</h5>
                                                                     <ol className="breadcrumb p-0 bg-transparent mb-2">
                                                                         <li className="breadcrumb-item"><a href="javascript: void(0);">Meat</a></li>
                                                                         
@@ -222,13 +239,9 @@ export default function MealsList() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <ul className="list-inline my-3 ecommerce-sortby-list">
-                                                            <li className="list-inline-item"><span className="fw-medium font-family-secondary">Sort by:</span></li>
-                                                            <li className="list-inline-item active"><a href="#">Popularity</a></li>
-                                                            <li className="list-inline-item"><a href="#">Newest</a></li>
-                                                            <li className="list-inline-item"><a href="#">Discount</a></li>
-                                                        </ul>
+                                                      {/* meal List Start */}
                                                         <div className="row g-0">
+                                                            
                                                             <div className="col-xl-4 col-sm-6">
                                                                 <div className="product-box">
                                                                     <div className="product-img">
@@ -338,39 +351,14 @@ export default function MealsList() {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        {/* meal List End */}
                                                         <div className="row mt-4">
                                                             <div className="col-sm-6">
                                                                 <div>
-                                                                    <p className="mb-sm-0 mt-2">Page <span className="fw-bold">2</span> Of <span className="fw-bold">113</span></p>
+                                                                    <p className="mb-sm-0 mt-2">Total Product: <span className="fw-bold">113</span></p>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-sm-6">
-                                                                <div className="float-sm-end">
-                                                                    <ul className="pagination pagination-rounded mb-sm-0">
-                                                                        <li className="page-item disabled">
-                                                                            <a href="#" className="page-link"><i className="mdi mdi-chevron-left" /></a>
-                                                                        </li>
-                                                                        <li className="page-item">
-                                                                            <a href="#" className="page-link">1</a>
-                                                                        </li>
-                                                                        <li className="page-item active">
-                                                                            <a href="#" className="page-link">2</a>
-                                                                        </li>
-                                                                        <li className="page-item">
-                                                                            <a href="#" className="page-link">3</a>
-                                                                        </li>
-                                                                        <li className="page-item">
-                                                                            <a href="#" className="page-link">4</a>
-                                                                        </li>
-                                                                        <li className="page-item">
-                                                                            <a href="#" className="page-link">5</a>
-                                                                        </li>
-                                                                        <li className="page-item">
-                                                                            <a href="#" className="page-link"><i className="mdi mdi-chevron-end" /></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
+                                                          
                                                         </div>
                                                     </div>
                                                 </div>

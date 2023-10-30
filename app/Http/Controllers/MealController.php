@@ -223,7 +223,7 @@ class MealController extends Controller
             'meal_name.required' => 'Please Provide A Meal Name',
             'category_id.required'      => 'Please Select A Category',
             'meal_image.required' => 'Please Provide A Meal Image'
-
+            
         ]);
 
         if ($request->hasFile('meal_image')) {
