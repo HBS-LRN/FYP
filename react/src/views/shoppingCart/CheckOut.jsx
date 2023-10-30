@@ -3,14 +3,18 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-
+import { PayPalButton } from "react-paypal-button-v2";
 
 
 
 
 
 export default function CheckOut() {
-
+    const product = {
+        id: 1,
+        description: "Kiwi",
+        price: 100.0, // Set the price directly
+    };
     return (
 
         <div>
@@ -127,14 +131,14 @@ export default function CheckOut() {
                                 </div>
                                 <h4 class="two">Delivery addresses</h4>
 
-           
-                                        <p>Address Username:</p>
-                                        <input type="text" name="address_username" placeholder="Address Username" />
-                                   
-                                        <p>Address Userphone:</p>
-                                        <input type="text" name="address_userphone" placeholder="Address Userphone" />
-                                   
-                                
+
+                                <p>Address Username:</p>
+                                <input type="text" name="address_username" placeholder="Address Username" />
+
+                                <p>Address Userphone:</p>
+                                <input type="text" name="address_userphone" placeholder="Address Userphone" />
+
+
                                 <p>Street:</p>
                                 <input type="text" name="street" placeholder="Street" class="checkout-name" />
                                 <div class="row">
@@ -145,7 +149,7 @@ export default function CheckOut() {
                                     </div>
 
                                     <div class="col-lg-6">
-                                    <p>Postcode:</p>
+                                        <p>Postcode:</p>
                                         <input type="number" name="city" placeholder="Postcode" />
                                     </div>
                                 </div>
@@ -158,7 +162,9 @@ export default function CheckOut() {
                                     <option>California 3</option>
                                     <option>California 4</option>
                                 </select>
-                               
+
+
+
                                 <h4 class="two">Payment method</h4>
                                 <div class="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Card</button>
@@ -167,6 +173,31 @@ export default function CheckOut() {
                                 <div class="tab-content" id="v-pills-tabContent">
 
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                        {/* Keep only one instance of the PayPal button */}
+                                        <PayPalButton
+                                            options={{
+                                                clientId: "AXAKXQa-OkxM7F8T0DWTN1e4KqlTCRP3z7YaMfJb8RjxE4sDY3jTYfekcc_eQO--u7ElQXcVzbAru60K",
+                                                currency: "USD",
+                                            }}
+                                            amount={product.price}
+                                            createOrder={(data, actions) => {
+                                                return actions.order.create({
+                                                    purchase_units: [
+                                                        {
+                                                            description: product.description,
+                                                            amount: {
+                                                                currency_code: "USD",
+                                                                value: product.price,
+                                                            },
+                                                        },
+                                                    ],
+                                                });
+                                            }}
+                                            onSuccess={(details, data) => {
+                                                alert("Transaction completed by " + details.payer.name.given_name);
+                                                console.log({ details, data });
+                                            }}
+                                        />
                                         <label>
                                             <input type="radio" name="test" value="small" checked />
                                             <img alt="checkbox-img" src="../assets/img/checkbox-1.png" />
@@ -184,15 +215,15 @@ export default function CheckOut() {
                                         <input type="number" name="Name" placeholder="Card number" />
                                         <div class="row">
                                             <div class="col-lg-6">
-                                            <p>Expiration Date:</p>
+                                                <p>Expiration Date:</p>
                                                 <input type="text" name="E-mail" placeholder="Expiration Date" />
                                             </div>
                                             <div class="col-lg-6">
-                                            <p>CVV</p>
+                                                <p>CVV</p>
                                                 <input type="password" placeholder="CVV" />
                                             </div>
                                         </div>
-                                        
+
 
                                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
