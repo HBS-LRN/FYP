@@ -32,6 +32,7 @@ export default function CustomerLayout() {
                 setUser(null);
                 setToken(null);
                 navigate("/login");
+                window.location.reload();
             });
     };
 

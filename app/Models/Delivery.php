@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Delivery extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'order_id', 'username', 'userphone', 'street', 'area', 'postcode'];
+    protected $fillable = ['id', 'order_id', 'delivery_man_id','username', 'userphone', 'longitude', 'latitude',  'accuracy', 'street', 'city', 'state', 'postcode'];
     public function order()
     {
-        return $this->hasOne(Order::class);
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
 }

@@ -124,6 +124,8 @@ export default function RequestBMI() {
           console.log("All ingredients have been posted.");
           setNotification("Register Has Been Completed! Login Now");
           navigate("/login");
+          // Scroll to the top of the screen window
+          window.scrollTo(0, 0);
         }
       };
 

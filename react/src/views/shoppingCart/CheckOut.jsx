@@ -4,16 +4,34 @@ import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
 import { PayPalButton } from "react-paypal-button-v2";
-
+import { useNavigate } from "react-router-dom";
 
 
 
 
 export default function CheckOut() {
-    const product = {
-        id: 1,
-        description: "Kiwi",
-        price: 100.0, // Set the price directly
+
+    //DUMMy data
+    const [products, setProducts] = useState([
+        {
+            description: 'kIMCHI',
+            price: 100,
+        },
+        {
+            description: 'kIWI',
+            price: 55,
+        },
+        // Add more products as needed
+    ]);
+
+
+
+    const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('card'); // Initially set to 'card'
+    // Calculate the total price of the products
+    const totalPrice = products.reduce((total, product) => total + product.price, 0);
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
     };
     return (
 
@@ -166,39 +184,45 @@ export default function CheckOut() {
 
 
                                 <h4 class="two">Payment method</h4>
+                                <br />
                                 <div class="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Card</button>
-                                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Cash</button>
+                                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" onClick={() => handleTabChange('card')}>Card</button>
+                                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false" onClick={() => handleTabChange('cash')}>Pay On Delivery</button>
                                 </div>
                                 <div class="tab-content" id="v-pills-tabContent">
 
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                        {/* Keep only one instance of the PayPal button */}
+                                        <br />
+
                                         <PayPalButton
                                             options={{
-                                                clientId: "AXAKXQa-OkxM7F8T0DWTN1e4KqlTCRP3z7YaMfJb8RjxE4sDY3jTYfekcc_eQO--u7ElQXcVzbAru60K",
-                                                currency: "USD",
+                                                clientId: "Ac7ttAqaPjnYUOqrISTtqaoQB_hTxioIE7_IPo0swe3Ej9O_5qAex791191szOk3JINgu-ZkU8P-AL2N",
+                                                currency: "MYR",
                                             }}
-                                            amount={product.price}
+                                            amount={totalPrice}
                                             createOrder={(data, actions) => {
                                                 return actions.order.create({
-                                                    purchase_units: [
-                                                        {
-                                                            description: product.description,
-                                                            amount: {
-                                                                currency_code: "USD",
-                                                                value: product.price,
-                                                            },
+                                                    purchase_units: products.map((product, index) => ({
+                                                        reference_id: `${index}`, // Provide a unique reference_id for each purchase unit
+                                                        description: product.description,
+                                                        amount: {
+                                                            currency_code: "MYR",
+                                                            value: product.price,
                                                         },
-                                                    ],
+                                                    })),
                                                 });
                                             }}
                                             onSuccess={(details, data) => {
-                                                alert("Transaction completed by " + details.payer.name.given_name);
-                                                console.log({ details, data });
+                                                console.log(data.paymentSource)
+
+                                                navigate("/orderStatus");
+                                                // Scroll to the top of the screen window
+                                                window.scrollTo(0, 0);
+
+
                                             }}
                                         />
-                                        <label>
+                                        {/* <label>
                                             <input type="radio" name="test" value="small" checked />
                                             <img alt="checkbox-img" src="../assets/img/checkbox-1.png" />
                                         </label>
@@ -222,7 +246,7 @@ export default function CheckOut() {
                                                 <p>CVV</p>
                                                 <input type="password" placeholder="CVV" />
                                             </div>
-                                        </div>
+                                        </div> */}
 
 
                                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -232,7 +256,9 @@ export default function CheckOut() {
 
                                     </div>
                                 </div>
-                                <button class="button-price">Send</button>
+                                {activeTab === 'cash' && (
+                                    <button className="button-price">Confirm Your Order</button>
+                                )}
                             </form>
                         </div>
                     </div>

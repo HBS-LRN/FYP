@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../contexts/ContextProvider.jsx";
 import { createRef } from "react";
-import { useNavigate,Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 export default function Login() {
 
@@ -20,7 +20,7 @@ export default function Login() {
 
   if (user) {
     return <Navigate to="/dashboard" />;
-  } 
+  }
 
   //handle onChange value
   const handleInputChange = () => {
@@ -58,9 +58,16 @@ export default function Login() {
           // Set the data to session
           setUser(data.user);
           setToken(data.token);
-          console.log(data.token);
-          navigate("/dashboard");
+
           setLoading(false);
+
+          //check if user is customer
+          if (data.user.role == 0) {
+            navigate("/dashboard");
+          } else {
+            navigate("/staffDashboard");
+          }
+
         }
       } catch (err) {
         setLoading(false);
@@ -72,7 +79,7 @@ export default function Login() {
           setError(response.data.message);
         }
       }
-   
+
     }
 
 

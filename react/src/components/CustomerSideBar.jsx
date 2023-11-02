@@ -22,6 +22,7 @@ export default function CustomerSideBar() {
                 setUser(null);
                 setToken(null);
                 navigate("/login");
+                window.location.reload();
             });
     };
 
@@ -105,7 +106,7 @@ export default function CustomerSideBar() {
                 </li>
                 <li>
                     <div class="iconLink">
-                        <a href="/realTimeTracking" target="_blank"><i class="fa-solid fa-location-dot"></i><span class="track">&nbsp;&nbsp;Real Time Track My Order</span></a>
+                        <a href="/myOrder"><i class="fa-solid fa-location-dot"></i><span class="track">&nbsp;&nbsp;Real Time Track My Order</span></a>
                     </div>
 
                 </li>

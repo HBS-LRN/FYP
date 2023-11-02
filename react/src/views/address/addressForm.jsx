@@ -108,6 +108,8 @@ export default function AddressForm() {
                         .then(() => {
                             setNotification("New Address Was Successfully Added!");
                             navigate("/addresses");
+                            // Scroll to the top of the screen window
+                            window.scrollTo(0, 0);
                         });
                 } catch (error) {
                     console.log(error);

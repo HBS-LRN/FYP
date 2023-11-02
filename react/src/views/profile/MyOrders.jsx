@@ -3,14 +3,38 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-
-
-
-
-
-
 import CustomerSideBar from "../../components/CustomerSideBar";
+
+
 export default function MyOrder() {
+    //react declaration
+    const { user, setUser, setNotification } = useStateContext();
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+
+    //fetch user address data
+    useEffect(() => {
+        getOrders();
+    }, [])
+
+    const getOrders = async () => {
+
+        console.log("getting")
+        setLoading(true)
+        try {
+            await axiosClient.get(`/userOrder/${user.id}`)
+                .then(({ data }) => {
+                    console.log(data)
+                    setLoading(false)
+                    setOrders(data.orders)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false)
+        }
+    }
 
     return (
 
@@ -26,73 +50,94 @@ export default function MyOrder() {
                     <CustomerSideBar />
 
 
-                    <div class="col-lg-2 addressContent" data-aos="flip-up"  data-aos-delay="300" data-aos-duration="400">
+                    <div class="col-lg-2 addressContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                         <div class="addressTitle">
                             <h3 class="profileTitle">My Orders</h3>
                             <p class="subTitle">See Your Real Time Tracking Order Here</p>
 
-                           
+
 
                         </div>
 
-                        {/* @foreach ($addresses as $address) */}
-                        <div class="row userAddress">
-                            <div class="col-lg-5 userInfo">
-                                <div class="name">
+                        {loading &&
+                            <div class="text-center">
+                                <div class="loaderCustom2"></div>
+                            </div>
+                        }
+                        <div class="scroll-wrap">
 
-                                    <label for="nameLabel">Order Number</label>
-                                    <span>
-                                        Tee Fo Yo
-                                        {/* {{ $address->address_username }} */}
-                                    </span>
+
+                            {orders.length === 0 &&
+                                <div className="text-center">
+
+                                    <br />
+                                    This section appears to be empty. It's possible that your order is currently in the 'Preparing' status, or you may not have any orders yet.
                                 </div>
-                                <div class="phone">
-                                    <label for="phoneLabel">Date Placed</label>
-                                    <span>
-                                        011-63951578
-                                        {/* {{ $address->address_userphone }} */}
-                                    </span>
-                                </div>
-                                <div class="addressForm">
-                                    <label for="addressLabel">Deliver Address</label>
-                                    <div class="addressBorder">
-                                        <span>
-                                            sdsdsd
-                                            {/* {{ $address->street }},
+
+                            }
+                            {!loading && orders && orders.map((order) => (
+                                <div class="row userAddress">
+                                    <div class="col-lg-5 userInfo">
+                                        <div class="name">
+
+                                            <label for="nameLabel">Order Number</label>
+                                            <span>
+                                                {order.id}
+                                                {/* {{ $address->address_username }} */}
+                                            </span>
+                                        </div>
+                                        <div class="phone">
+                                            <label for="phoneLabel">Date Placed</label>
+                                            <span>
+                                                {order.order_date}
+                                                {/* {{ $address->address_userphone }} */}
+                                            </span>
+                                        </div>
+                                        <div class="addressForm">
+                                            <label for="addressLabel">Deliver Address</label>
+                                            <div class="addressBorder">
+                                                <span>
+                                                    {order.delivery.street}, {order.delivery.city}, {order.delivery.postcode} {order.delivery.state}.
+                                                    {/* {{ $address->street }},
                                         {{ $address->postcode }},
                                         {{ $address->area }} */}
-                                        </span>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="col-lg-3 buttonType offset-lg-3">
-                                <div class="row actionLink">
-                         
+                                    <div class="col-lg-3 buttonType offset-lg-3">
+                                        <div class="row actionLink">
 
-                                    <div class="default">
-                                        {/* @if ($address->active_flag == 'T')
+
+                                            <div class="default">
+                                                {/* @if ($address->active_flag == 'T')
                                         <button type="submit" class="currentUsedAddress" disabled>Current Used
                                     @else */}
-                                        {/* <form action="/address/{{ $address->id }}/update" method="POST">
+                                                {/* <form action="/address/{{ $address->id }}/update" method="POST">
                                             @csrf
                                             @method('PUT') */}
-                                        <button type="submit" class="setAsDefault">See Real Time Tracking</button>
-                                        {/* </form> */}
-                                        {/* @endif */}
 
+                                                <Link to={'/realTimeTracking/' +  order.id} className="setAsDefault" target="_blank">
+                                                    <i className="fa-solid fa-location-dot"></i>
+                                                    <span className="track">&nbsp;&nbsp;Real Time Track My Order</span>
+                                                </Link>
+                                                {/* <button type="submit" class="setAsDefault">See Real Time Tracking</button> */}
+                                                {/* </form> */}
+                                                {/* @endif */}
+
+                                            </div>
+
+
+                                        </div>
                                     </div>
 
 
                                 </div>
-                            </div>
 
+                            ))}
 
                         </div>
-                       
-
-
-
 
 
                     </div>

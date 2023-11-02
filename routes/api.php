@@ -4,8 +4,10 @@ use App\Http\Controllers\AddressController as ControllersAddressController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AllergicController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\IngredientController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TableReservationController;
 use Illuminate\Http\Request;
@@ -38,9 +40,15 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::apiResource('/allergic', AllergicController::class);
     Route::get('/tables', [TableReservationController::class, 'index']);
     Route::apiResource('/reservations', ReservationController::class);
-   
     Route::post('/reservation', [ReservationController::class, 'specificReservation']);
     Route::get('/userReservations/{id}', [ReservationController::class, 'index']);
+    Route::apiResource('/delivery', DeliveryController::class);
+    Route::get('/userDelivery/{id}', [DeliveryController::class, 'index']);
+    Route::get('/userOrder/{id}', [OrderController::class, 'userOrder']);
+    Route::get('/userDelivery', [OrderController::class, 'userDelivery']);
+    Route::get('/userDelivery/{id}', [OrderController::class, 'userDelivery']);
+    Route::put('/updateDeliveryStatus/{id}', [DeliveryController::class, 'updateDelivery']);
+    Route::get('/completeDelivery/{id}', [OrderController::class, 'completedDelivery']);
 
 });
 

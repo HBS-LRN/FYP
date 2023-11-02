@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Invoice</title>
 
     <!-- Bootstrap core CSS -->
@@ -47,9 +47,9 @@
             <div class="col-xs-6">
                 <h4>To:</h4>
                 <address>
-                    <strong>{{ auth()->user()->name }}</strong><br>
-                    <span>{{ $deliveryAddress->street }}</span> <br>
-                    <span>{{ $deliveryAddress->postcode }} {{ $deliveryAddress->area }}</span>
+
+                    {{-- dynamic content --}}
+                 
                 </address>
             </div>
 
@@ -77,11 +77,9 @@
 
               
                     <tr>
-                        <td>
-                            <div><strong>{{ $selectedGift['product_name'] }}</strong></div>
-                        </td>
-                        <td class="text-center">{{ $quantity }}</td>
-                        <td class="text-right">{{ $selectedGift['memberPoint_cost'] * $quantity }} Points</td>
+
+                        {{-- dynamic loop item content --}}
+          
                     </tr>
             </tbody>
         </table>

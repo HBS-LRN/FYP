@@ -102,7 +102,7 @@ export default function Allergic() {
                                 <div className="loaderCustom2"></div>
                             </div>
                         )}
-
+<div class="scroll-wrap">
                         {!loading &&
                             allergies.map((allergic, index) => (
                                 <div className="row userAddress" key={allergic.id}>
@@ -159,6 +159,7 @@ export default function Allergic() {
                                     </div>
                                 </div>
                             ))}
+                            </div>
                     </div>
                 </div>
             </div>

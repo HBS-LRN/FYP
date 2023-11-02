@@ -295,6 +295,22 @@ export default function StaffLayout() {
                                         </ul>
                                     </li>
                                     <li>
+                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                        <i class="fas fa-shipping-fast"></i>
+                                            
+                                            <span> Manage Delivery</span>
+                                        </a>
+                                        <ul className="sub-menu" aria-expanded="false">
+                                            <li>
+                                                <a href="/deliveryList">Delivery List</a>
+                                            </li>
+                                            <li>
+                                                <a href="/completedDeliveryList">Delivery Completed</a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li>
                                         <a href="/staffcalendar" className="waves-effect">
                                             <i className="ri-calendar-2-line"></i>
                                             <span>Calendar</span>
