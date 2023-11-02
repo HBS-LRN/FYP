@@ -8,6 +8,7 @@ import { useDropzone } from 'react-dropzone';
 export default function AddCategory() {
     const [category, setCategory] = useState({
         name: '',
+        iconImage: null,
         image: null,
     });
     const [errors, setErrors] = useState({});
@@ -19,11 +20,17 @@ export default function AddCategory() {
             [name]: value
         });
     }
-    const onDrop = (acceptedFiles) => {
-       
+    const onImageDrop = (acceptedFiles) => {
         setCategory({
             ...category,
             image: acceptedFiles[0],
+        });
+    }
+
+    const onIconImageDrop = (acceptedFiles) => {
+        setCategory({
+            ...category,
+            iconImage: acceptedFiles[0],
         });
     }
 
@@ -41,6 +48,11 @@ export default function AddCategory() {
             valid = false;
         }
 
+        if (!category.iconImage) {
+            newErrors.iconImage = "Icon Image is required";
+            valid = false;
+        }
+
         setErrors(newErrors);
         return valid;
     }
@@ -53,6 +65,7 @@ export default function AddCategory() {
         setLoading(true);
         const formData = new FormData();
         formData.append('name', category.name);
+        formData.append('iconImage', category.iconImage);
         formData.append('image', category.image);
    
 
@@ -60,6 +73,7 @@ export default function AddCategory() {
         .then(res => {
             setCategory({
                 name: '',
+                iconImage: null,
                 image: null
             });
             // Show SweetAlert success message
@@ -72,12 +86,14 @@ export default function AddCategory() {
         });
     })
     .catch(function (error) {
-        console.log(error);
+        console.log(error.response);
         setLoading(false);
     });
     }
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps: getImageRootProps, getInputProps: getImageInputProps } = useDropzone({ onDrop: onImageDrop });
+    const { getRootProps: getIconRootProps, getInputProps: getIconInputProps } = useDropzone({ onDrop: onIconImageDrop });
+    
    
     return(
         <div>
@@ -141,9 +157,9 @@ export default function AddCategory() {
 
                                         <div className="mb-3">
                                         <label class="form-label" for="image">Category Image</label>
-                                                    <div className="dropzone" {...getRootProps()}>
+                                                    <div className="dropzone" {...getImageRootProps()}>
                                                         <div className="fallback">
-                                                            <input {...getInputProps()}/>
+                                                            <input {...getImageInputProps()}/>
                                                         </div>
                                                         {category.image ? (
                                                                     <p>Selected file: {category.image.name}</p>
@@ -153,7 +169,22 @@ export default function AddCategory() {
                                                                  
                                                     </div>
                                                     {errors.image && <div className="text-danger">{errors.image}</div>}
-                                                </div>
+                                        </div>
+                                        <div className="mb-3">
+                                            <label class="form-label" for="image">Category Icon Image</label>
+                                            <div className="dropzone" {...getIconRootProps()}>
+                                                <div className="fallback">
+                                                    <input {...getIconInputProps()}/>
+                                                    </div>
+                                                    {category.iconImage ? (
+                                                        <p>Selected file: {category.iconImage.name}</p>
+                                                    ) : (
+                                                        <p>Drag 'n' drop an image here, or click to select one</p>
+                                                    )}
+                                                                 
+                                        </div>
+                                            {errors.iconImage && <div className="text-danger">{errors.iconImage}</div>}
+                                        </div>
                                         <ul class="pager wizard twitter-bs-wizard-pager-link">
                                
                                 <li class="next"><button type='submit'>Add Category</button></li>

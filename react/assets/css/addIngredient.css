@@ -26,3 +26,6 @@ table {
 .table-responsive::-webkit-scrollbar{
     width: 0%;
 }
+.mb-3 .dropzone{
+    min-height: 10px;
+}
