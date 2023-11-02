@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 
+import axiosClient from "../axios-client.js";
 
-
-
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import $ from 'jquery';
+import 'owl.carousel';
+import OwlCarousel from 'react-owl-carousel2';
+import 'react-owl-carousel2/src/owl.carousel.css'; // Import the CSS file
 export default function Index() {
 
 
@@ -27,15 +31,51 @@ export default function Index() {
                 boxButton1.style.top = "0px";
             }
         });
-        searchBar.addEventListener("keydown",function(){
-            if(searchBar.value !=""){
-                resultBox.style.display ="block";
-            }else{
-                resultBox.style.display ="none";
+        searchBar.addEventListener("keydown", function () {
+            if (searchBar.value != "") {
+                resultBox.style.display = "block";
+            } else {
+                resultBox.style.display = "none";
             }
         });
 
     }, []);
+
+    const [contactUs, setContactUs] = useState([]);
+    const [loading, setLoading] = useState(false);
+    //fetch contact us data
+    useEffect(() => {
+        getContactUs();
+    }, [])
+    
+
+    const getContactUs = async () => {
+        setLoading(true);
+        console.log("getting");
+        try {
+            await axiosClient.get("/contactus").then(({ data }) => {
+                console.log(data);
+                setContactUs(data);
+                setLoading(false);
+              
+            });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false);
+        }
+    }
+
+    const options = {
+        loop: true,
+        margin: 10,
+        nav: false,
+        dots: true,
+        items: 1,
+        dotsEach: 1, 
+        // autoplay: true,
+        // autoplayTimeout: 5000,
+    };
 
 
 
@@ -47,12 +87,12 @@ export default function Index() {
                     <div class="row align-items-center">
                         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
                             <div class="restaurant">
-                                <br/>
+                                <br />
                                 <h1>The Best restaurants
                                     in your home</h1>
 
                                 <p>Enjoy The Personalized Nutrition-Based Food Ordering In Healthy Recipe and Floor Plan Map Reservation! </p>
-                                
+
                                 <div class="col-sc-1">
                                     <input type="search" name="search" id="search" placeholder="type here for search..."></input><i
                                         class="fa fa-search"></i>
@@ -92,11 +132,11 @@ export default function Index() {
 
                                     <div class="title">Healthy Recipe</div>
                                     <div class="discription">
-                                    Personalized Nutrition Recommendation Meal Here!!
+                                        Personalized Nutrition Recommendation Meal Here!!
                                     </div>
 
                                 </a>
-                                <a href="/categoryMenuCard"class="foodShowBox" id="foodShowBox2">
+                                <a href="/categoryMenuCard" class="foodShowBox" id="foodShowBox2">
                                     <img width="120" height="160"
                                         src="assets/img/dim-sum-spare-ribs-PhotoRoom.png-PhotoRoom.png"
 
@@ -176,73 +216,56 @@ export default function Index() {
                         <div class="col-xl-6 col-lg-12" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
                             <div class="reviews-content">
                                 <h2>What customers say about us</h2>
-                                <div class="custome owl-carousel owl-theme">
-                                    <div class="item">
-                                        <h4>Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</h4>
-                                        <div class="thomas">
-                                            <img alt="girl" src="../assets/img/photo-5.jpg" />
 
-                                            <div>
-                                                <h6>Thomas Adamson</h6>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <h4>"Dapibus ultrices in iaculis nunc sed augue lacus viverra vitae. Mauris a diam
-                                            maecenas sed enim. Egestas diam in arcu cursus euismod quis. Quam quisque id diam
-                                            vel".</h4>
-                                        <div class="thomas">
-                                            <img alt="girl" src="../assets/img/photo-5.jpg" />
 
-                                            <div>
-                                                <h6>Thomas Adamson</h6>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <h4>"Dapibus ultrices in iaculis nunc sed augue lacus viverra vitae. Mauris a diam
-                                            maecenas sed enim. Egestas diam in arcu cursus euismod quis. Quam quisque id diam
-                                            vel".</h4>
-                                        <div class="thomas">
-                                            <img alt="girl" src="../assets/img/photo-5.jpg" />
+                                {contactUs.length>0?
+                                <OwlCarousel options={options}> {/* Render data using Owl Carousel */}
+                                 
 
-                                            <div>
-                                                <h6>Thomas Adamson</h6>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
+                                        {contactUs && contactUs.map((contact) => (
+
+                                            <div class="item" key={contact.id}>
+                                                <h4>{contact.description}</h4>
+                                                <div class="thomas">
+
+                                                    {contact && contact.image ? (
+
+                                                        <img 
+                                                            src={`${import.meta.env.VITE_API_BASE_URL}/${contact.image}`}
+                                                            width="16" height="10"
+                                                        />
+
+                                                    ) : (
+                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                    )}
+
+
+                                                    <div>
+                                                        <h6>{contact.username}</h6>
+                                                        <h7>{contact.email}</h7>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        ))}
+                                </OwlCarousel>:""}
+                            {/* </div> */}
+
                         </div>
-                        <div class="col-xl-6 col-lg-12" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
-                            <div class="reviews-img">
-                                <img alt="img" src="../assets/img/join-img.jpg 
+                    </div>
+                    <div class="col-xl-6 col-lg-12" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="reviews-img">
+                            <img alt="img" src="../assets/img/join-img.jpg 
                                 " width="600" height="330" />
-                                <i class="fa-regular fa-thumbs-up"></i>
-                            </div>
+                            <i class="fa-regular fa-thumbs-up"></i>
                         </div>
                     </div>
                 </div>
-            </section>
-            <Helmet>
-                <link rel="stylesheet" href="../../../assets/css/index.css" />
-            </Helmet>
         </div>
+            </section >
+        <Helmet>
+            <link rel="stylesheet" href="../../../assets/css/index.css" />
+        </Helmet>
+        </div >
 
 
     );

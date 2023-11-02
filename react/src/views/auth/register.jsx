@@ -48,6 +48,8 @@ export default function Register() {
             setUser(data.user);
             setToken(data.token);
             navigate("/registerDetail");
+            // Scroll to the top of the screen window
+            window.scrollTo(0, 0);
             setLoading(false);
           });
       } catch (err) {

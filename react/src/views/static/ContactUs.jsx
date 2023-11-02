@@ -1,12 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
+import axiosClient from "../../axios-client.js";
 
-
-
+import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function ContactUs() {
 
+	const { user, setUser, setNotification } = useStateContext();
+	const [validated, setValidated] = useState(false);
+	const [contactus, setContactUs] = useState({
+		id: null,
+		username: "",
+		email: "",
+		description: "",
+		image: "",
+
+	});
+
+
+
+	
+
+	//when user click on submit button
+	const handleSubmit = async (event) => {
+	
+		event.preventDefault();
+		event.stopPropagation();
+		setValidated(true);
+		const form = event.currentTarget;
+
+		if (form.checkValidity()) {
+			var payload
+			if (!user) {
+				payload = {
+					...contactus,
+				};
+			} else {
+				payload = {
+					...contactus,
+					image: user.image
+				};
+			}
+
+			console.log(payload)
+
+
+
+			try {
+				await axiosClient
+					.post("/contactus", payload)
+					.then((data) => {
+						console.log(data)
+						setNotification("Your Message Has Been Succesfully Uploaded!");
+
+					});
+			} catch (error) {
+				console.log(error);
+			}
+
+		}
+
+	};
+
+	useEffect(() => {
+		if (user) {
+		  setContactUs({
+			...contactus,
+			'username': user.name,
+			'email': user.email
+		  });
+		}
+	  }, []);
+
+	//handle on change field
+	const handleChange = (e) => {
+		setContactUs({ ...contactus, [e.target.name]: e.target.value })
+
+	}
 
 	return (
 
@@ -60,7 +131,7 @@ export default function ContactUs() {
 					</div>
 				</div>
 			</section>
-			
+
 
 			<section class="gap margin-gap">
 				<div class="container">
@@ -70,16 +141,63 @@ export default function ContactUs() {
 								<div class="join-courier content">
 									<h3>Get in touch with us - Rating Form </h3>
 									<p>Your feedback is invaluable to us. If you have any complaints, suggestions, or general feedback, we encourage you to submit them through our convenient Rating Form.</p>
-									<form class="blog-form">
+									<form
+										action="#"
+										method="POST"
+										className={`blog-form needs-validation ${validated ? 'was-validated' : ''}`}
+										encType="multipart/form-data"
+										noValidate
+										onSubmit={handleSubmit}
+									>
 										<div class="name-form">
 											<i class="fa-regular fa-user"></i>
-											<input type="text" name="name" placeholder="Enter your name" />
+											<input
+												type="text"
+												name="username"
+												placeholder="Enter your name"
+												className="form-control"
+												required
+												data-bs-toggle="tooltip"
+												data-bs-placement="top"
+												value={user && user.name}
+												onChange={handleChange}
+												pattern=".{3,}" // Enforce a minimum length of 3 characters
+												title="Full Name must contain at least 3 characters."
+											/>
+											<div className="valid-tooltip customTooltip">Looks good!</div>
+											<div className="invalid-tooltip customTooltip">Full Name must contain at least 3 characters.</div>
 										</div>
 										<div class="name-form">
 											<i class="fa-regular fa-envelope"></i>
-											<input type="text" name="email" placeholder="Enter your email"  />
+											<input
+												type="email"
+												name="email"
+												placeholder="Enter your email"
+												className="form-control"
+												required
+												value={user && user.email}
+												data-bs-toggle="tooltip"
+												data-bs-placement="top"
+												onChange={handleChange}
+											/>
+
+											<div className="valid-tooltip customTooltip">Looks good!</div>
+											<div className="invalid-tooltip customTooltip">Please Enter A Valid Email.</div>
+
 										</div>
-										<textarea placeholder="Enter your message"></textarea>
+										<div class="name-form">
+											<textarea
+												name="description"
+												placeholder="Enter your message"
+												className="form-control"
+												required
+												data-bs-toggle="tooltip"
+												data-bs-placement="top"
+												onChange={handleChange}
+											/>
+										</div>
+										<div className="valid-tooltip customTooltip">Looks good!</div>
+										<div className="invalid-tooltip customTooltip">Please Enter Message</div>
 										<button class="button-price">Submit Application</button>
 									</form>
 
@@ -93,7 +211,9 @@ export default function ContactUs() {
 					</div>
 				</div>
 			</section>
-
+			<Helmet>
+				<link rel="stylesheet" href="../../../assets/css/contactus.css" />
+			</Helmet>
 		</div>
 
 

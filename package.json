@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "apexcharts": "^3.41.0",
+        "owl.carousel": "^2.3.4",
         "react-dropzone": "^14.2.3",
         "sweetalert2": "^11.7.32"
     }

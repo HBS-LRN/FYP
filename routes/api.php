@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\CategoryController;
-
+use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\TableReservationController;
@@ -50,7 +50,6 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/userDelivery/{id}', [DeliveryController::class, 'index']);
     Route::get('/userOrder/{id}', [OrderController::class, 'userOrder']);
     Route::get('/userDelivery', [OrderController::class, 'userDelivery']);
-    Route::get('/userDelivery/{id}', [OrderController::class, 'userDelivery']);
     Route::put('/updateDeliveryStatus/{id}', [DeliveryController::class, 'updateDelivery']);
     Route::get('/completeDelivery/{id}', [OrderController::class, 'completedDelivery']);
 
@@ -65,7 +64,7 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('/users', UserController::class);
-
+Route::apiResource('/contactus', ContactUsController::class);
 
 // ingredient 
 Route::get('/ingredients', [IngredientController::class, 'index']);

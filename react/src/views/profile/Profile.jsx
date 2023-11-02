@@ -30,8 +30,6 @@ export default function Profile() {
         gender: "",
         birthdate: "",
         image: null,
-        image_url: null,
-
     });
 
     useEffect(() => {
@@ -46,11 +44,13 @@ export default function Profile() {
         const form = event.currentTarget;
 
         if (form.checkValidity()) {
+
+            console.log(updateUser)
             const payload = updateUser;
-            if (payload.image) {
-                payload.image = payload.image_url;
-            }
-            delete payload.image_url;
+            // if (payload.image) {
+            //     payload.image = payload.image_url;
+            // }
+        
             console.log(payload)
             try {
                 await axiosClient
@@ -58,7 +58,6 @@ export default function Profile() {
                     .then((response) => {
                         console.log(response.data);
                         setUser(response.data);
-                        // window.location.reload();
                         setNotification("Your details were successfully updated");
                     });
             } catch (error) {
@@ -66,12 +65,28 @@ export default function Profile() {
                 console.log(response);
                 if (response && response.status === 422) {
                     setError(response.data.errors);
-                }else if(response && response.status === 400){
-                    setError({ image:response.data.error});
+                } else if (response && response.status === 400) {
+                    setError({ image: response.data.error });
                 }
             }
         }
 
+    };
+
+
+    const handleDateChange = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+        const minDate = new Date();
+        minDate.setFullYear(today.getFullYear() - 13);
+
+        if (selectedDate > minDate || selectedDate >= today) {
+            setError({ birthdate: 'The birthdate must be a date before -13 years.' });
+        } else {
+            setError({ birthdate: '' });
+        }
+
+        setUpdateUser({ ...updateUser, birthdate: e.target.value });
     };
 
     //handle on change 
@@ -86,24 +101,17 @@ export default function Profile() {
     }
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        //set error equal to null
         setError({ ...error, image: null });
-       
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-            setUpdateUser({
-                ...updateUser,
-                image: file,
-                image_url: reader.result,
-            });
-
-            // e.target.value = "";
+            setUpdateUser((prevUser) => ({
+                ...prevUser,
+                image: reader.result,
+            }));
         };
-       
     };
-
 
 
     return (
@@ -284,13 +292,13 @@ export default function Profile() {
                                                 className={`form-control birthInput ${error.birthdate ? 'is-invalid' : ''}`}
 
                                                 value={updateUser.birthdate}
-                                                onChange={handleChange}
+                                                onChange={handleDateChange}
                                             />
 
                                             <div className="valid-tooltip customTooltip">Looks good!</div>
 
 
-                                            {error.date ? (
+                                            {error.birthdate ? (
                                                 <div className="invalid-tooltip customTooltip">{error.birthdate}</div>
                                             ) : (
                                                 <div className="invalid-tooltip customTooltip">Please enter a valid date of birth.</div>
@@ -370,25 +378,25 @@ export default function Profile() {
                                         <br />
 
                                         <div className="file">
-                                        <input
-                                            type="file"
-                                            name="image"
-                                            accept=".png,.jpg,.jpeg,.gif"
-                                            onChange={handleImageChange}
-                                        />
-                                        <div class="fileSize">
-                                          
-                                        </div>
+                                            <input
+                                                type="file"
+                                                name="image"
+                                                accept=".png,.jpg,.jpeg,.gif"
+                                                onChange={handleImageChange}
+                                            />
+                                            <div class="fileSize">
 
-                                        {error.image &&
-                                            <div class="fileSize" style={{ color: 'red' }}>
-                                                *{error.image}
                                             </div>
 
-                                        }
+                                            {error.image &&
+                                                <div class="fileSize" style={{ color: 'red' }}>
+                                                    *{error.image}
+                                                </div>
+
+                                            }
 
 
-                                     
+
                                             <div class="fileSize">
                                                 File size: maximum 5 MB
                                             </div>

@@ -1,0 +1,15 @@
+.name-form i {
+    left: 2.5%;
+    position: absolute;
+    color: #cfcfcf;
+    font-size: 20px;
+    top: 30%; 
+}
+
+.name-form{
+    margin-top:27px;
+    position:relative;
+}
+.customTooltip {
+    left: 0px;
+}
