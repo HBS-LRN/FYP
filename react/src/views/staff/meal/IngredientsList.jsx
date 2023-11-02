@@ -9,7 +9,7 @@ import axiosClient from "../../../axios-client.js";
 import Swal from 'sweetalert2';
 
 
-export default function AddIngredient() {
+export default function IngredientList() {
     const tableStyle = {
         borderCollapse: "collapse",
         borderSpacing: 0,
@@ -19,17 +19,20 @@ export default function AddIngredient() {
       const [ingredientList,setIngredientList] = useState([]);
       const [loading, setLoading] = useState(false);
       useEffect(()=>{
-        axiosClient.get('/ingredients')
-         .then(({data}) =>{
-            setLoading(false)
-            setIngredientList(data)
-         
-         })
-         .catch((error)=>{
-            setLoading(false)
-            console.error('API request error:', error);
-         });
+        getIngredient();
       },[])
+      const getIngredient =()=>{
+        axiosClient.get('/ingredients')
+        .then(({data}) =>{
+           setLoading(false)
+           setIngredientList(data)
+        
+        })
+        .catch((error)=>{
+           setLoading(false)
+           console.error('API request error:', error);
+        });
+      }
       const deleteIngredient = ingredientID =>{
         Swal.fire({
             title: 'Are you sure?',
@@ -41,11 +44,6 @@ export default function AddIngredient() {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-              )
               axiosClient.delete(`/ingredients/${ingredientID}`)
               .then(({data}) =>{
                 Swal.fire(
@@ -54,7 +52,7 @@ export default function AddIngredient() {
                     'success'
                   )
                   
-                  location.reload();
+                  getIngredient()
              })
             
             }

@@ -15,7 +15,6 @@ class CreateMealIngredientsTable extends Migration
     {
         Schema::create('meal_ingredients', function (Blueprint $table) {
             $table->id();
-            $table->integer('ingredient_qty');
             $table->unsignedBigInteger('ingredient_id');
             $table->unsignedBigInteger('meal_id');
             $table->foreign('ingredient_id')

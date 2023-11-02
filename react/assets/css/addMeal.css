@@ -4,3 +4,35 @@
    
 
   }
+  .card-header {
+    display: flex;
+  }
+  .card-header .AddMealButtton a{
+    background-color: rgb(0, 102, 255);
+    border-color: rgb(0, 119, 255);
+    padding: 2px 15px;
+    color: white;
+    border-radius: 0.25rem;
+  }
+  .card-header .mb-0{
+    flex-basis: 50%;
+  }
+  .card-header .AddMealButtton{
+    flex-basis: 50%;
+  }
+  .card-body .PriceRange{
+    color: blue;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    display: flex;
+  }
+  .card-body .PriceRange input{
+    border-radius: 5px;
+    outline: none;
+    border: gray 1px solid;
+    font-size: 15px;
+    height: 35px;
+    width: 120px;
+    padding: 5px;
+  }

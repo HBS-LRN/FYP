@@ -12,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\FreeGiftController;
 use App\Http\Controllers\ShoppingCartController;
 
@@ -45,10 +45,10 @@ Route::group(['middleware' => 'isAdmin'], function () {
 
 
    //Show inventory report
-   Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
+   // Route::get('/inventoryReport', [MealController::class, 'showInventoryReport']);
 
-   //Show inventory detail report
-   Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
+   // //Show inventory detail report
+   // Route::get('/inventoryReportDetail/{id}', [MealController::class, 'showInventoryReportDetail']);
 
    //Show graph report(xml)
    Route::get('/graphReport/xml', [CategoryController::class, 'generateXml']); /* showGraphReport  */
@@ -93,34 +93,34 @@ Route::group(['middleware' => 'isStaff'], function () {
 // Show Meal Create Form
 Route::get('/staffDashboard', [UserController::class, 'showDashboard']);
    // Show admin meal list 
-   Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
+   // Route::get('/meal/adshow', [MealController::class, 'adshow']); /* adshow */  // if xml page is 'showListOfMeals'
+
+   // // Show Meal Create Form
+   // Route::get('/meal/xml', [MealController::class, 'generateXml']);
 
    // Show Meal Create Form
-   Route::get('/meal/xml', [MealController::class, 'generateXml']);
+   // Route::get('/meal/create', [MealController::class, 'create']);
 
-   // Show Meal Create Form
-   Route::get('/meal/create', [MealController::class, 'create']);
+   // // Store Meal Data
+   // Route::post('/meal/store', [MealController::class, 'store']);
 
-   // Store Meal Data
-   Route::post('/meal/store', [MealController::class, 'store']);
+   // // Show update meal form
+   // Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
 
-   // Show update meal form
-   Route::get('/meal/upshow/{id}', [MealController::class, 'upshow']);
+   // //Update meal
+   // Route::post('/mealupdate/{id}', [MealController::class, 'update']);
 
-   //Update meal
-   Route::post('/mealupdate/{id}', [MealController::class, 'update']);
+   // //Delete meal
+   // Route::get('/deleteMeal/{id}', [MealController::class, 'delete']);
 
-   //Delete meal
-   Route::get('/deleteMeal/{id}', [MealController::class, 'delete']);
+   // //show meal inventory page
+   // Route::get('/showInventory', [MealController::class, 'inventory']);
 
-   //show meal inventory page
-   Route::get('/showInventory', [MealController::class, 'inventory']);
+   // //show edit meal inventory page
+   // Route::get('/editInventory/{id}', [MealController::class, 'showEditInventory']);
 
-   //show edit meal inventory page
-   Route::get('/editInventory/{id}', [MealController::class, 'showEditInventory']);
-
-   //update inventory
-   Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory']);
+   // //update inventory
+   // Route::post('/updateInventory/{id}', [MealController::class, 'updateInventory']);
 
    //show meal rating page
    Route::get('/mealRating', [OrderController::class, 'showMealRating']);
@@ -246,22 +246,22 @@ Route::get('/nonAuthenticated', [UserController::class, 'nonAuthenticate']);
 Route::post('/purchase/publicBankLogin/checkID', [OrderController::class, 'publicBankCheckUserID'])->middleware('transaction.limit');
 
 //search meal
-Route::get('/search', [MealController::class, 'search']);
+// Route::get('/search', [MealController::class, 'search']);
 
-// Store All Meal Data
-Route::get('/meal/{meal}', [MealController::class, 'index']);
+// // Store All Meal Data
+// Route::get('/meal/{meal}', [MealController::class, 'index']);
 
-//show pop up meal with route
-Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popUpMeal');
+// //show pop up meal with route
+// Route::get('/mealpopups/{id}', [MealController::class, 'mealPopUp'])->name('popUpMeal');
 
-//show pop up meal
-Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
+// //show pop up meal
+// Route::get('/mealpopup/{meal}', [MealController::class, 'show']);
 
-//log
-Route::get('/log', [MealController::class, 'showLog']);
+// //log
+// Route::get('/log', [MealController::class, 'showLog']);
 
-//log detail
-Route::get('/logDetails/{id}', [MealController::class, 'showLogDetails']);
+// //log detail
+// Route::get('/logDetails/{id}', [MealController::class, 'showLogDetails']);
 
 //show list of orders
 Route::get('/showOrders', [OrderController::class, 'showOrders']);
