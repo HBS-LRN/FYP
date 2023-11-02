@@ -29,7 +29,7 @@ import Register from "./views/auth/register";
 import ResetPassword from "./views/auth/ResetPassword";
 import Addresses from "./views/address/addresses";
 import AddressForm from "./views/address/addressForm";
-import CheckOut from "./views/shoppingCart/checkOut";
+import CheckOut from "./views/shoppingCart/CheckOut";
 
 import MyReservation from "./views/profile/MyReservation";
 import RealTimeOrderTracking from "./views/profile/RealTimeOrderTracking";
