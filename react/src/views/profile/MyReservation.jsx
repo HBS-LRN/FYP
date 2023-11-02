@@ -34,6 +34,7 @@ export default function MyReservation() {
                     console.log(data)
                     setLoading(false)
                     setReservations(data)
+                    console.log(reservations)
                 });
         } catch (error) {
             const response = error.response;

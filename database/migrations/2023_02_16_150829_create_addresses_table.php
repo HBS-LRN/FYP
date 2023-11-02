@@ -22,7 +22,7 @@ class CreateAddressesTable extends Migration
             $table->string('street');
             $table->string('city');
             $table->string('state');
-            $table->string('postcode');
+            $table->integer('postcode');
             $table->string('active_flag');
             $table->timestamps();
             $table->foreign('user_id')

@@ -147,7 +147,7 @@ export default function OrderStatus() {
                                         <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
                                         <div class="item-description">
 
-                                           Taiwanese Chicken
+                                            Taiwanese Chicken
 
                                         </div>
                                         <div class="item-quantity">RM 5
@@ -173,7 +173,7 @@ export default function OrderStatus() {
                                         <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
                                         <div class="item-description">
 
-                                        Taiwanese Chicken
+                                            Taiwanese Chicken
 
                                         </div>
                                         <div class="item-quantity">RM 5
@@ -190,11 +190,64 @@ export default function OrderStatus() {
                                             Product Status:<span class="item-currentStatus">Preparing</span>
                                         </div>
                                     </div>
+                                    <div class="product-items">
 
+
+
+                                        {/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
+    alt="" /> */}
+                                        <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
+                                        <div class="item-description">
+
+                                            Taiwanese Chicken
+
+                                        </div>
+                                        <div class="item-quantity">RM 5
+                                            X
+                                            5 Qty
+                                        </div>
+                                        <div class="item-total">
+                                            Order Total:<p>
+                                                RM 25
+                                            </p>
+                                        </div>
+
+                                        <div class="item-status">
+                                            Product Status:<span class="item-currentStatus">Preparing</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="product-items">
+
+
+
+{/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
+    alt="" /> */}
+<img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
+<div class="item-description">
+
+    Taiwanese Chicken
+
+</div>
+<div class="item-quantity">RM 5
+    X
+    5 Qty
+</div>
+<div class="item-total">
+    Order Total:<p>
+        RM 25
+    </p>
+</div>
+
+<div class="item-status">
+    Product Status:<span class="item-currentStatus">Preparing</span>
+</div>
+</div>
                                 </div>
 
                             </div>
-                             
+
 
 
                             <div id="shipProduct">
@@ -245,8 +298,8 @@ export default function OrderStatus() {
                                 @if ($meal->pivot->meal_order_status == 'completed') */}
                                     <div class="product-items">
 
-                                    <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
-                                          
+                                        <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
+
 
 
                                         <div class="item-description">
@@ -337,87 +390,87 @@ export default function OrderStatus() {
 
                                     <div class="product-items">
 
-<img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
-      
+                                        <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
 
 
-    <div class="item-description">
-        gg
-    </div>
-    <div class="item-quantity">RM5
-        X
-        6
-    </div>
-    <div class="item-total">
-        Order Total:<p>
-            RM 5 * 6
-        </p>
-    </div>
+
+                                        <div class="item-description">
+                                            gg
+                                        </div>
+                                        <div class="item-quantity">RM5
+                                            X
+                                            6
+                                        </div>
+                                        <div class="item-total">
+                                            Order Total:<p>
+                                                RM 5 * 6
+                                            </p>
+                                        </div>
 
 
-    <button type="button" class="ratingButton rating"
-        runat="server">Rating</button>
+                                        <button type="button" class="ratingButton rating"
+                                            runat="server">Rating</button>
 
 
-    <div class="popup" id="popup-1">
-        <div class="overlay-pop"></div>
-        <div class="content">
-            <div class="close-btn">&times;</div>
-            <div class="ratingContainer">
-                <div class="">
-                    <div class="text">Thanks for rating us!</div>
-                </div>
-                <form method="POST" action="/comment" enctype="multipart/form-data">
+                                        <div class="popup" id="popup-1">
+                                            <div class="overlay-pop"></div>
+                                            <div class="content">
+                                                <div class="close-btn">&times;</div>
+                                                <div class="ratingContainer">
+                                                    <div class="">
+                                                        <div class="text">Thanks for rating us!</div>
+                                                    </div>
+                                                    <form method="POST" action="/comment" enctype="multipart/form-data">
 
-                    <div class="star-widget">
-                        <div class="star">
+                                                        <div class="star-widget">
+                                                            <div class="star">
 
-                            <input type="radio" name="rate" id="rate-5"
-                                value="5" />
-                            <label for="rate-5" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-4"
-                                value="4" />
-                            <label for="rate-4" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-3"
-                                value="3" />
-                            <label for="rate-3" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-2"
-                                value="2" />
-                            <label for="rate-2" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-1"
-                                value="1" />
-                            <label for="rate-1" class="fas fa-star"></label>
+                                                                <input type="radio" name="rate" id="rate-5"
+                                                                    value="5" />
+                                                                <label for="rate-5" class="fas fa-star"></label>
+                                                                <input type="radio" name="rate" id="rate-4"
+                                                                    value="4" />
+                                                                <label for="rate-4" class="fas fa-star"></label>
+                                                                <input type="radio" name="rate" id="rate-3"
+                                                                    value="3" />
+                                                                <label for="rate-3" class="fas fa-star"></label>
+                                                                <input type="radio" name="rate" id="rate-2"
+                                                                    value="2" />
+                                                                <label for="rate-2" class="fas fa-star"></label>
+                                                                <input type="radio" name="rate" id="rate-1"
+                                                                    value="1" />
+                                                                <label for="rate-1" class="fas fa-star"></label>
 
-                            <div class="textarea">
+                                                                <div class="textarea">
 
-                                <textarea cols="30" id="txtItemComment" placeholder="Describe about the product.." name="txtItemComment"></textarea>
-                            </div>
-                            <div class="btnRating">
+                                                                    <textarea cols="30" id="txtItemComment" placeholder="Describe about the product.." name="txtItemComment"></textarea>
+                                                                </div>
+                                                                <div class="btnRating">
 
 
-                                {/* <input type="hidden" id="mealOrderDetailId"
+                                                                    {/* <input type="hidden" id="mealOrderDetailId"
                                             name="mealOrderDetailId"
                                             value="{{ $meal->pivot->id }}"> */}
 
-                                <button type="submit" runat="server"
-                                    onserverclick="btnRating_Click">Submit</button>
+                                                                    <button type="submit" runat="server"
+                                                                        onserverclick="btnRating_Click">Submit</button>
 
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-
-
-            </div>
-        </div>
-    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
 
 
-    <div class="item-status completed">
-        Product Status:<span class="item-currentStatus">Completed</span>
-    </div>
-    {/* @if ($meal->pivot->reply_comment != null)
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="item-status completed">
+                                            Product Status:<span class="item-currentStatus">Completed</span>
+                                        </div>
+                                        {/* @if ($meal->pivot->reply_comment != null)
             <div class="comment" id="id1" runat="server">
                 <img src="../image/GrandImperialGroupLogo.png"
                     alt="">Grand<span class="semicolon">:</span>
@@ -425,9 +478,9 @@ export default function OrderStatus() {
             </div>
             @endif */}
 
-</div>
+                                    </div>
 
-                                    
+
                                 </div>
 
 
@@ -441,13 +494,13 @@ export default function OrderStatus() {
                 </div>
 
                 <Helmet>
-                <script src="../../../assets/js/customerPurchase.js" type="text/javascript" />
-                <link rel="stylesheet" href="../../../assets/css/customerSideBar.css" />
-                <link rel="stylesheet" href="../../../assets/css/customerPurchase.css" />
-            </Helmet>
+                    <script src="../../../assets/js/customerPurchase.js" type="text/javascript" />
+                    <link rel="stylesheet" href="../../../assets/css/customerSideBar.css" />
+                    <link rel="stylesheet" href="../../../assets/css/customerPurchase.css" />
+                </Helmet>
 
             </div>
-            
+
         </div>
 
 

@@ -1,0 +1,8 @@
+/* Hide the second image
+img:nth-of-type(2) {
+    display: none;
+} */
+
+.leaflet-touch .leaflet-bar  {
+    margin-top:105px;
+}

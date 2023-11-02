@@ -22,7 +22,7 @@ export default function ChangePassword() {
     const passwordRef = createRef();
     const passwordConfirmationRef = createRef();
     const [password, setPassword] = useState('');
-  
+
     const [confirmPassword, setConfirmPassword] = useState('');
     const { user, setUser, setNotification } = useStateContext();
     const [validated, setValidated] = useState(false);
@@ -80,7 +80,7 @@ export default function ChangePassword() {
 
     const handleCurentPasswordChange = (event) => {
         setError({ ...error, currentPassword: null });
-        
+
     };
 
     return (
@@ -107,94 +107,96 @@ export default function ChangePassword() {
 
                                 </div>
                                 <div class="userProfile">
-                                    <div class="text">
+                                    <div class="scroll-wrap">
+                                        <div class="text">
 
-                                        <div className={`passwordSetting label ${validated && !error.currentPassword ?  'was-validated' : ''}`}>
-                                            <label for="currentPassword" class="currentPasswordLabel">Current Password</label>
-                                            <input
-                                                ref={currentPassRef}
-                                                type="password"
-                                                name="current_password"
-                                                placeholder="Enter your password"
-                                                className={`form-control currentPassword ${error.currentPassword ? 'is-invalid' : ''}`}
-                                                required
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                onChange={handleCurentPasswordChange}
-                                                title="Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number."
+                                            <div className={`passwordSetting label ${validated && !error.currentPassword ? 'was-validated' : ''}`}>
+                                                <label for="currentPassword" class="currentPasswordLabel">Current Password</label>
+                                                <input
+                                                    ref={currentPassRef}
+                                                    type="password"
+                                                    name="current_password"
+                                                    placeholder="Enter your password"
+                                                    className={`form-control currentPassword ${error.currentPassword ? 'is-invalid' : ''}`}
+                                                    required
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    onChange={handleCurentPasswordChange}
+                                                    title="Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number."
 
-                                            />
-                                            <div className="valid-tooltip customTooltip">Looks good!</div>
-                                            {error.currentPassword ? (
-                                                <div className="invalid-tooltip customTooltip">{error.currentPassword}</div>
-                                            ) : (
-                                                <div className="invalid-tooltip customTooltip">Please Enter A Valid Password</div>
-                                            )}
-                                        </div>
-
-                                        <br />
-                                        <div className={`passwordSetting label ${validated ? 'was-validated' : ''}`}>
-                                            <label for="newPassword" class="newPasswordLabel">New Password</label>
-
-
-                                            <input
-                                                ref={passwordRef}
-                                                type="password"
-                                                name="password"
-                                                placeholder="Enter your password"
-                                                className="form-control newPassword"
-                                                required
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                                title="Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number."
-                                                onChange={handlePasswordChange}
-                                            />
-                                            <div className="valid-tooltip customTooltip">Looks good!</div>
-                                            <div className="invalid-tooltip customTooltip">
-                                                Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number.
+                                                />
+                                                <div className="valid-tooltip customTooltip">Looks good!</div>
+                                                {error.currentPassword ? (
+                                                    <div className="invalid-tooltip customTooltip">{error.currentPassword}</div>
+                                                ) : (
+                                                    <div className="invalid-tooltip customTooltip">Please Enter A Valid Password</div>
+                                                )}
                                             </div>
 
-                                        </div>
-                                        <br />
+                                            <br />
+                                            <div className={`passwordSetting label ${validated ? 'was-validated' : ''}`}>
+                                                <label for="newPassword" class="newPasswordLabel">New Password</label>
 
-                                        {/* 
+
+                                                <input
+                                                    ref={passwordRef}
+                                                    type="password"
+                                                    name="password"
+                                                    placeholder="Enter your password"
+                                                    className="form-control newPassword"
+                                                    required
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                                    title="Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number."
+                                                    onChange={handlePasswordChange}
+                                                />
+                                                <div className="valid-tooltip customTooltip">Looks good!</div>
+                                                <div className="invalid-tooltip customTooltip">
+                                                    Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number.
+                                                </div>
+
+                                            </div>
+                                            <br />
+
+                                            {/* 
                             @error('password')
                                 <span class="error"  style="red">*{{ $message }}</span>
                             @enderror */}
-                                        <div className={`confirmPasswordSetting label ${validated ? 'was-validated' : ''}`}>
+                                            <div className={`confirmPasswordSetting label ${validated ? 'was-validated' : ''}`}>
 
-                                            <label for="confirmPassword" class="confirmPasswordLabel">Confirm Password</label>
+                                                <label for="confirmPassword" class="confirmPasswordLabel">Confirm Password</label>
 
-                                            <input
-                                                ref={passwordConfirmationRef}
-                                                type="password"
-                                                name="password_confirmation"
-                                                placeholder="Enter your confirm password"
-                                                className="form-control confirmPassword"
-                                                required
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                pattern={password ? `^${escapeRegExp(password)}$` : null}
-                                                title="Confirm password must match the password."
-                                                onChange={handleConfirmPasswordChange}
-                                            />
-                                            <div className="valid-tooltip customTooltip">Looks good!</div>
-                                            <div className="invalid-tooltip customTooltip">Confirm password does not match the password.</div>
+                                                <input
+                                                    ref={passwordConfirmationRef}
+                                                    type="password"
+                                                    name="password_confirmation"
+                                                    placeholder="Enter your confirm password"
+                                                    className="form-control confirmPassword"
+                                                    required
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    pattern={password ? `^${escapeRegExp(password)}$` : null}
+                                                    title="Confirm password must match the password."
+                                                    onChange={handleConfirmPasswordChange}
+                                                />
+                                                <div className="valid-tooltip customTooltip">Looks good!</div>
+                                                <div className="invalid-tooltip customTooltip">Confirm password does not match the password.</div>
 
-                                        </div>
-                                        {/* @error('password_confirmation')
+                                            </div>
+                                            {/* @error('password_confirmation')
                                 <span class="error" style="red">*{{ $message }}</span>
                             @enderror */}
 
 
-                                        <div class="confirmButton">
-                                            <button type="submit" class="confirm">Submit</button>
+                                            <div class="confirmButton">
+                                                <button type="submit" class="confirm">Submit</button>
+                                            </div>
+
                                         </div>
-
                                     </div>
-                                </div>
 
+                                </div>
 
                             </div>
                         </div>

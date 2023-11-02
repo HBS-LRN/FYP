@@ -15,21 +15,28 @@ class CreateDeliveriesTable extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id');
+            $table->integer('order_id');
+            $table->integer('delivery_man_id');
             $table->string('username');
             $table->string('userphone');
+            $table->double('longitude')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('accuracy')->nullable();
             $table->string('street');
-            $table->string('area');
+            $table->string('city');
+            $table->string('state');
             $table->integer('postcode');
-          
 
             $table->timestamps();
 
-            $table->foreign('order_id')
-            ->references('id')
-            ->on('orders')
-            ->onDelete('cascade');
-
+            // $table->foreign('order_id')
+            // ->references('id')
+            // ->on('orders')
+            // ->onDelete('cascade');
+            // $table->foreign('delivery_man_id')
+            // ->references('id')
+            // ->on('users')
+            // ->onDelete('cascade');
         });
     }
 

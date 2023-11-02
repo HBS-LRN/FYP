@@ -76,7 +76,7 @@ export default function Addresses() {
             setLoading(false)
         }
     }
-    
+
     return (
 
         <div class="all">
@@ -108,85 +108,85 @@ export default function Addresses() {
                         }
 
 
+                        <div class="scroll-wrap">
+                            {!loading && addresses.map((address) => (
 
-                        {!loading && addresses.map((address) => (
 
+                                <div class="row userAddress">
+                                    <div class="col-lg-9 userInfo">
+                                        <div class="name">
 
-                            <div class="row userAddress">
-                                <div class="col-lg-9 userInfo">
-                                    <div class="name">
-
-                                        <label for="nameLabel">Full Name</label>
-                                        <span>
-                                            {address.address_username}
-
-                                        </span>
-                                    </div>
-                                    <div class="phone">
-                                        <label for="phoneLabel">Phone</label>
-                                        <span>
-                                            {address.address_userphone}
-
-                                        </span>
-                                    </div>
-                                    <div class="addressForm">
-                                        <label for="addressLabel">Address</label>
-                                        <div class="addressBorder">
+                                            <label for="nameLabel">Full Name</label>
                                             <span>
-                                                {address.street}, {address.city}, {address.postcode} {address.state}.
-
+                                                {address.address_username}
 
                                             </span>
                                         </div>
+                                        <div class="phone">
+                                            <label for="phoneLabel">Phone</label>
+                                            <span>
+                                                {address.address_userphone}
+
+                                            </span>
+                                        </div>
+                                        <div class="addressForm">
+                                            <label for="addressLabel">Address</label>
+                                            <div class="addressBorder">
+                                                <span>
+                                                    {address.street}, {address.city}, {address.postcode} {address.state}.
+
+
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-lg-3 buttonType">
-                                    <div class="row actionLink">
-                                        <div class="col-lg-3 editLink">
-                                            <Link className="btn-edit" to={'/addressForm/' + address.id}>Edit</Link>
-                                            {/* <a href="/addresseEdit/{{ $address->id }}">Edit</a> */}
-                                        </div>
+                                    <div class="col-lg-3 buttonType">
+                                        <div class="row actionLink">
+                                            <div class="col-lg-3 editLink">
+                                                <Link className="btn-edit" to={'/addressForm/' + address.id}>Edit</Link>
+                                                {/* <a href="/addresseEdit/{{ $address->id }}">Edit</a> */}
+                                            </div>
 
-                                        <div class="col-lg-3 deleteLink">
-                                            <a class="deleteAddress" onClick={ev => onDeleteClick(address)} href="#">Delete</a>
-                                        </div>
+                                            <div class="col-lg-3 deleteLink">
+                                                <a class="deleteAddress" onClick={ev => onDeleteClick(address)} href="#">Delete</a>
+                                            </div>
 
-                                        <div class="default">
+                                            <div class="default">
 
-                                            <button
-                                                type="submit"
-                                                className={address.active_flag === 'T' ? "currentUsedAddress" : "setAsDefault"}
-                                                onClick={(ev) => onUpdateCurrentClick(address)}
-                                                disabled={address.active_flag === 'T'}
-                                            >
-                                                {address.active_flag === 'T' ? 'Current Used' : 'Set As Default'}
-                                            </button>
+                                                <button
+                                                    type="submit"
+                                                    className={address.active_flag === 'T' ? "currentUsedAddress" : "setAsDefault"}
+                                                    onClick={(ev) => onUpdateCurrentClick(address)}
+                                                    disabled={address.active_flag === 'T'}
+                                                >
+                                                    {address.active_flag === 'T' ? 'Current Used' : 'Set As Default'}
+                                                </button>
 
 
-                                            {/* @if ($address->active_flag == 'T')
+                                                {/* @if ($address->active_flag == 'T')
                                         <button type="submit" class="currentUsedAddress" disabled>Current Used
                                     @else */}
-                                            {/* <form action="/address/{{ $address->id }}/update" method="POST">
+                                                {/* <form action="/address/{{ $address->id }}/update" method="POST">
                                             @csrf
                                             @method('PUT') */}
-                                            {/* <button type="submit" onClick={ev => onUpdateCurrentClick(address)} class="setAsDefault">Set As Default</button> */}
-                                            {/* </form> */}
-                                            {/* @endif */}
+                                                {/* <button type="submit" onClick={ev => onUpdateCurrentClick(address)} class="setAsDefault">Set As Default</button> */}
+                                                {/* </form> */}
+                                                {/* @endif */}
+
+                                            </div>
+
 
                                         </div>
-
-
                                     </div>
+
+
                                 </div>
 
-
-                            </div>
-
-                        ))}
+                            ))}
 
 
-
+                        </div>
 
 
 
