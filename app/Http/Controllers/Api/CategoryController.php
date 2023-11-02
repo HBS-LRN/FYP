@@ -23,10 +23,12 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         try {
-            // Generate a unique image name
-            $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
             
+            // Generate a unique image name
+            $iconImageName = Str::random(32) . "." . $request->iconImage->getClientOriginalExtension();
+            $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
             // Specify the absolute path
+
             $absolutePath = public_path('../react/assets/img/icon');
             
             // Ensure the directory exists
@@ -37,15 +39,23 @@ class CategoryController extends Controller
             // Create Product
             Category::create([
                 'name' => $request->name,
+                'iconImage' => $iconImageName,
                 'image' => $imageName,
             ]);
 
             // Specify the relative path
+            $relativePathIcon = '../react/assets/img/icon/' . $iconImageName;
             $relativePath = '../react/assets/img/icon/' . $imageName;
 
             // Save Image using file_put_contents
-            file_put_contents($relativePath, file_get_contents($request->image));
-
+            file_put_contents($relativePathIcon, file_get_contents($request->iconImage));
+            file_put_contents($relativePath, file_get_contents($request->imageName));
+            
+            \Log::info('Processing iconImage');
+            \Log::info('Processing image');
+            \Log::info('Absolute Path: ' . $absolutePath);
+            \Log::info('Relative Icon Image Path: ' . $relativePathIcon);
+            \Log::info('Relative Image Path: ' . $relativePath);
             // Return Json Response
             return response()->json([
                 'message' => "Category successfully created."

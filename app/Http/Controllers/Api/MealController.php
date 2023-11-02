@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Models\Meal;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\MealOrderDetail;
-use App\Models\Meal_Ingredient;
+use App\Models\MealIngredient;
 use Illuminate\Http\Request;
 use App\Http\Requests\mealStoreRequest;
 use App\Http\Controllers\Controller;
@@ -90,7 +88,7 @@ class MealController extends Controller
         $meal->meal_desc = $request->meal_desc;
         $meal->meal_image = $imageName;
         $meal->category_id = $request->category_id;
-        
+
         $meal->save();
         // Specify the relative path
         $relativePath = '../react/assets/img/meal/' . $imageName;
@@ -114,15 +112,12 @@ class MealController extends Controller
 function storeMealIngredients(Meal $meal, array $ingredients)
 {
     foreach ($ingredients as $ingredient) {
-        // Check if $ingredient is an array before accessing it
-        if (is_array($ingredient)) {
-            Meal_Ingredient::create([
-                'ingredient_id' => $ingredient['ingredient_id'],
-                'meal_id' => $meal->id,
-            ]);
-        }
+        MealIngredient::create([
+            'ingredient_id' => $ingredient,
+            'meal_id' => $meal->id,
+        ]);
     }
-} 
+}
     public function update(MealStoreRequest $request, $id)
     {
         try {
@@ -173,13 +168,11 @@ function storeMealIngredients(Meal $meal, array $ingredients)
     function updateMealIngredients(Meal $meal, array $ingredients)
     {
         // Delete existing Meal Ingredients
-        Meal_Ingredient::where('meal_id', $meal->id)->delete();
+        MealIngredient::where('meal_id', $meal->id)->delete();
 
         // Store new Meal Ingredients
         $this->storeMealIngredients($meal, $ingredients);
     }
-
-   
 
     public function destroy($id)
     {
@@ -192,7 +185,7 @@ function storeMealIngredients(Meal $meal, array $ingredients)
         $meal->delete();
 
         // Delete associated Meal Ingredients
-        Meal_Ingredient::where('meal_id', $id)->delete();
+        MealIngredient::where('meal_id', $id)->delete();
 
         return response()->json(['message' => 'Meal and associated ingredients deleted'], 200);
     } 

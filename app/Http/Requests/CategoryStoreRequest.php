@@ -25,12 +25,14 @@ class CategoryStoreRequest extends FormRequest
         if(request()->isMethod('post')) {
             return [
                 'name' => 'required|string|max:258',
+                'iconImage' => 'required|image|mimes:jpeg,png,jpg|max:80000',
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:80000'
                
             ];
         } else {
             return [
                 'name' => 'required|string|max:258',
+                'iconImage' => 'nullable|image|mimes:jpeg,png,jpg|max:80000',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|max:80000'
             ];
         }
@@ -41,12 +43,12 @@ class CategoryStoreRequest extends FormRequest
         if(request()->isMethod('post')) {
             return [
                 'name.required' => 'Name is required!',
+                'iconImage.required' => 'Image is required!',
                 'image.required' => 'Image is required!'
             ];
         } else {
             return [
                 'name.required' => 'Name is required!'
-
             ];   
         }
     }

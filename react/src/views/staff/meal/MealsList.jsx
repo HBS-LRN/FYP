@@ -75,7 +75,7 @@ const [categorytList,setCategorytList] = useState([]);
                                              
                                                 <div className="card-header bg-transparent border-bottom">
                                                     <h5 className="mb-0">Filters</h5>
-                                                    <div className="AddMealButtton"><a href="">+ Add Meals</a></div>
+                                                    <div className="AddMealButtton"><a href="/addMeal">+ Add Meals</a></div>
                                                 </div>
                                                 <div className="card-body">
                                                     <h5 className="font-size-14 mb-3">Categories</h5>
