@@ -25,13 +25,13 @@ class CategoryStoreRequest extends FormRequest
         if(request()->isMethod('post')) {
             return [
                 'name' => 'required|string|max:258',
-                'image' => 'required|image|mimes:jpeg,png,jpg|max:4048'
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:80000'
                
             ];
         } else {
             return [
                 'name' => 'required|string|max:258',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:4048'
+                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:80000'
             ];
         }
     }

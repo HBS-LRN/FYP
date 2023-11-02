@@ -10,13 +10,46 @@ import { Helmet } from 'react-helmet';
 
 
 export default function MealsList() {
-    const [selectedCategory, setSelectedCategory] = useState(''); // Initialize state
-
+    const [selectCategory, setSelectCategory] = useState([]); // Initialize state as an array
+    const [loading, setLoading] = useState(false);
     const categoryClick = (category) => {
-        // Check if the selected category is the same as the currently selected category.
-        // If it is, clear the selection, otherwise, set the selected category.
-        setSelectedCategory(selectedCategory === category ? '' : category);
+    // Check if the selected category is the same as the currently selected category.
+    // If it is, clear the selection (set it to an empty array), otherwise, set the selected category.
+    setSelectCategory(selectCategory === category ? [] : category);
+}
+const [categorytList,setCategorytList] = useState([]);
+    useEffect(()=>{
+        getCategory();
+    },[])
+    const getCategory = () => {
+        axiosClient.get('/category')
+            .then(({ data }) => {
+                console.log('API Response:', data); // Add this line
+                setLoading(false);
+                setCategorytList(data);
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
     }
+      var categoryDetail ="";
+      categoryDetail = categorytList.map((item)=>(
+        <div className="accordion-item">
+            <h2 className="accordion-header" id="headingThree">
+                 <button 
+                    className={`accordion-button ${selectCategory === item.name ? '' : 'collapsed'}`}
+                    type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#collapseThree" 
+                    aria-expanded="false" 
+                    aria-controls="collapseThree"
+                    onClick={() => categoryClick(item.name)}
+                    >
+                <img src={"../../../assets/img/icon/"+item.image} alt="" srcset="" height="20px"width="20px"/> {item.name}
+                </button>
+                </h2>                                           
+           </div>
+      ));
     return (
 
         <div>
@@ -47,131 +80,19 @@ export default function MealsList() {
                                                 <div className="card-body">
                                                     <h5 className="font-size-14 mb-3">Categories</h5>
                                                     <div className="accordion ecommerce" id="accordionExample">
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingOne">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Appetizer' ? '' : 'collapsed'}`}
-                                                                type="button" data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseOne" 
-                                                                aria-expanded="true" 
-                                                                aria-controls="collapseOne"
-                                                                onClick={() => categoryClick('Appetizer')}
-                                                                >
-                                                                <i class="fa-solid fa-utensils"></i> Appetizer
-                                                                </button>
-                                                            </h2>
-                                                           
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingTwo">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Meat' ? '' : 'collapsed'}`}
-                                                                type="button" 
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#collapseTwo"
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseTwo"
-                                                                onClick={() => categoryClick('Meat')}
-                                                                >
-                                                                <i class="fa-solid fa-drumstick-bite"></i> Meat
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingThree">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Dessert' ? '' : 'collapsed'}`}
-                                                                type="button" data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseThree" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseThree"
-                                                                onClick={() => categoryClick('Dessert')}
-                                                                >
-                                                                <i class="fa-solid fa-cheese"></i> Dessert
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingThree">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Seafood' ? '' : 'collapsed'}`}
-                                                                type="button" 
-                                                                data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseThree" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseThree"
-                                                                onClick={() => categoryClick('Seafood')}
-                                                                >
-                                                                <i class="fa-solid fa-shrimp"></i> Seafood
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingThree">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Noodle' ? '' : 'collapsed'}`}
-                                                                type="button" data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseThree" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseThree"
-                                                                onClick={() => categoryClick('Noodle')}
-                                                                >
-                                                                <img src="../../../assets/img/icon/noodles.png" alt="" srcset="" height="20px"width="20px"/> Noodle
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingThree">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Rice' ? '' : 'collapsed'}`}
-                                                                type="button" data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseThree" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseThree"
-                                                                onClick={() => categoryClick('Rice')}
-                                                                >
-                                                                <i class="fa-solid fa-bowl-rice"></i> Rice
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item">
-                                                            <h2 className="accordion-header" id="headingThree">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'Beverage' ? '' : 'collapsed'}`}
-                                                                type="button" 
-                                                                data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseThree" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseThree"
-                                                                onClick={() => categoryClick('Beverage')}
-                                                                >
-                                                                <i class="fa-solid fa-mug-hot"></i> Beverage
-                                                                </button>
-                                                            </h2>
-                                                            
-                                                        </div>
-                                                        <div className="accordion-item mb-3">
-                                                            <h2 className="accordion-header" id="headingFour">
-                                                                <button 
-                                                                className={`accordion-button ${selectedCategory === 'DimSum' ? '' : 'collapsed'}`}
-                                                                type="button" 
-                                                                data-bs-toggle="collapse" 
-                                                                data-bs-target="#collapseFour" 
-                                                                aria-expanded="false" 
-                                                                aria-controls="collapseFour"
-                                                                onClick={() => categoryClick('DimSum')}
-                                                                >
-                                                                <img src="../../../assets/img/icon/dimsum.png" alt="" srcset="" height="20px"width="20px"/> DimSum
-                                                                </button>
-                                                            </h2>
-                                                           
-                                                        </div>
-                                                    </div>
+                                                        
+                                                        
+                                                    {loading ? (
+                                        <tr>
+                                        <td colSpan="4">Loading...</td>
+                                        </tr>
+                                    ) : (
+                                        categoryDetail
+                                    )}
+                                                       
+                                                       
+                                                     
+                                                    </div>    
                                                 </div>
                                                 <div className="card-body border-top">
                                                     <div>

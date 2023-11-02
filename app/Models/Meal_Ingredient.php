@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meal_Ingredient extends Model
 {
     use HasFactory;
-    protected $fillable = ['ingredient_qty', 'ingredient_id', 'meal_id'];
+    protected $fillable = ['ingredient_id', 'meal_id'];
 
     public function ingredient()
     {

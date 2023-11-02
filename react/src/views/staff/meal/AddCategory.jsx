@@ -54,7 +54,7 @@ export default function AddCategory() {
         const formData = new FormData();
         formData.append('name', category.name);
         formData.append('image', category.image);
-        alert(formData.name);
+   
 
         axiosClient.post('/category', formData)
         .then(res => {
@@ -78,7 +78,7 @@ export default function AddCategory() {
     }
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+   
     return(
         <div>
               <Helmet>
@@ -150,8 +150,9 @@ export default function AddCategory() {
                                                                 ) : (
                                                                     <p>Drag 'n' drop an image here, or click to select one</p>
                                                                 )}
-                                                                 {errors.image && <div className="text-danger">{errors.image}</div>}
+                                                                 
                                                     </div>
+                                                    {errors.image && <div className="text-danger">{errors.image}</div>}
                                                 </div>
                                         <ul class="pager wizard twitter-bs-wizard-pager-link">
                                

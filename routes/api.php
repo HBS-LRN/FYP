@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\AllergicController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\IngredientController;
-
+use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\CategoryController;
 
 use App\Http\Controllers\Api\ReservationController;
@@ -72,10 +72,21 @@ Route::post('/category', [CategoryController::class, 'store']);
 Route::put('/category/{id}', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
+//ingredientMeal
+// Route::get('/ingredientMeal',[IngredientMealController::class, 'index']);
+// Route::post('/ingredientMeal', [IngredientMealController::class, 'store']);
+// Route::put('/ingredientMeal/{id}', [IngredientMealController::class, 'update']);
+// Route::delete('/ingredientMeal/{id}', [IngredientMealController::class, 'destroy']);
+
+//meal
+Route::get('/meal',[MealController::class, 'index']);
+Route::post('/meal', [MealController::class, 'store']);
+Route::put('/meal/{id}', [MealController::class, 'update']);
+Route::delete('/meal/{id}', [MealController::class, 'destroy']);
+
+
 Route::apiResource('/allergic', AllergicController::class);
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
-
-
 
 
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

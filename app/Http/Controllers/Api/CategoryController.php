@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -15,38 +16,48 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::all(); // Replace => with =
+        $categories = Category::all(); 
         return response()->json($categories);
     }
-
 
     public function store(CategoryStoreRequest $request)
     {
         try {
-            $imageName = Str::random(32).".".$request->image->getClientOriginalExtension();
-      
+            // Generate a unique image name
+            $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
+            
+            // Specify the absolute path
+            $absolutePath = public_path('../react/assets/img/icon');
+            
+            // Ensure the directory exists
+            if (!File::exists($absolutePath)) {
+                File::makeDirectory($absolutePath, 0755, true);
+            }
+
             // Create Product
             Category::create([
                 'name' => $request->name,
                 'image' => $imageName,
-
             ]);
-      
-            // Save Image in Storage folder
-            Storage::disk('react/assets/img/icon')->put($imageName, file_get_contents($request->image));
+
+            // Specify the relative path
+            $relativePath = '../react/assets/img/icon/' . $imageName;
+
+            // Save Image using file_put_contents
+            file_put_contents($relativePath, file_get_contents($request->image));
 
             // Return Json Response
             return response()->json([
-                'message' => "Categroy successfully created."
-            ],200);
+                'message' => "Category successfully created."
+            ], 200);
         } catch (\Exception $e) {
-            \Log::error('Category creation/update failed: ' . $e->getMessage());
+            \Log::error('Category creation failed: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Something went really wrong!',
             ], 500);
         }
-
     }
+    
 
     public function update(Request $request, $id)
     {
@@ -66,22 +77,31 @@ class CategoryController extends Controller
             if($request->image) {
  
                 // Public storage
-                $storage = Storage::disk('react\assets\img\icon');
+                $storage = Storage::disk('../react/assets/img/icon/');
       
-                // Old iamge delete
-                if($storage->exists($product->image))
-                    $storage->delete($product->image);
-      
-                // Image name
-                $imageName = Str::random(32).".".$request->image->getClientOriginalExtension();
-                $product->image = $imageName;
-      
-                // Image save in public folder
-                $storage->put($imageName, file_get_contents($request->image));
+                // Old image delete
+                if($storage->exists($category->image))
+                    $storage->delete($category->image);
+                
+                // Generate a unique image name
+                $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
+                
+                // Specify the absolute path
+                $absolutePath = public_path('../react/assets/img/icon');
+                
+                // Ensure the directory exists
+                if (!File::exists($absolutePath)) {
+                    File::makeDirectory($absolutePath, 0755, true);
+                }
+
+                $relativePath = '../react/assets/img/icon/' . $imageName;
+
+                // Save Image using file_put_contents
+                file_put_contents($relativePath, file_get_contents($request->image));
             }
       
-            // Update Product
-            $product->save();
+            
+            $category->save();
       
             // Return Json Response
             return response()->json([
