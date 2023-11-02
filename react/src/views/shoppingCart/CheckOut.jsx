@@ -3,7 +3,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-import { PayPalButton } from "react-paypal-button-v2";
+
 
 
 
