@@ -133,7 +133,8 @@ class AuthController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
-        return response(compact('user', 'token'));
+        $cartQuantity = $user->meals->count();
+        return response(compact('user', 'token', 'cartQuantity'));
     }
 
     public function logout(Request $request)

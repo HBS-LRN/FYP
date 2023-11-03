@@ -134,6 +134,7 @@ export default function AddIngredient() {
                                             <input id="Calorie" name="calorie" value={ingredient.calorie} onChange={handleInput} type="Number" class="form-control"/>
                                             {errors.calorie && <div className="text-danger">{errors.calorie}</div>}
                                         </div>
+                                        
                                         <ul class="pager wizard twitter-bs-wizard-pager-link">
                                
                                 <li class="next"><button type='submit'>Add Ingredient</button></li>

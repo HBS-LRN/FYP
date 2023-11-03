@@ -9,7 +9,7 @@ export default function Login() {
 
   const emailRef = createRef();
   const passwordRef = createRef();
-  const { user, setUser, setToken, setAuthUser } = useStateContext()
+  const { user, setUser, setToken, setAuthUser, setCartQuantity} = useStateContext()
   const [error, setError] = useState({ email: '', password: '' }); // Initialize error as an object with fields
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -56,9 +56,11 @@ export default function Login() {
           setLoading(false);
         } else {
           // Set the data to session
+
+          console.log(data.user.meals)
           setUser(data.user);
           setToken(data.token);
-
+          setCartQuantity(data.cartQuantity);
           setLoading(false);
 
           //check if user is customer

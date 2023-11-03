@@ -10,6 +10,7 @@ class Ingredient extends Model
     protected $fillable = [
         'ingredient_name',
         'calorie',
+        'stock'
     ];
    
 

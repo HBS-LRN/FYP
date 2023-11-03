@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\ShoppingCartController;
 use App\Http\Controllers\Api\TableReservationController;
 
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/userDelivery', [OrderController::class, 'userDelivery']);
     Route::put('/updateDeliveryStatus/{id}', [DeliveryController::class, 'updateDelivery']);
     Route::get('/completeDelivery/{id}', [OrderController::class, 'completedDelivery']);
-
+    Route::apiResource('/shoppingCart', ShoppingCartController::class);
 });
 
 
@@ -87,10 +88,11 @@ Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
 //meal
 Route::get('/meal',[MealController::class, 'index']);
+
 Route::post('/meal', [MealController::class, 'store']);
 Route::put('/meal/{id}', [MealController::class, 'update']);
 Route::delete('/meal/{id}', [MealController::class, 'destroy']);
-
+Route::get('/meal/{id}', [MealController::class, 'showCategoryMeal']);
 
 Route::apiResource('/allergic', AllergicController::class);
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

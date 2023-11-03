@@ -3,29 +3,139 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-
 import AOS from 'aos';
-import 'aos/dist/aos.css';
 
-
-
+import OwlCarousel from 'react-owl-carousel2';
+import { useNavigate, useParams } from "react-router-dom";
+import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 
 export default function OrderMenuCard() {
 
 
-    // $( ".info" ).click(function() {
-    //     $( ".dish-info" ).show('slow');
-    //      $(this).parent().parent().parent().hide('slow');
-    //     $(this).parent().parent().parent().next().show('slow');
 
 
-    //   });
 
-    //   $( ".info2" ).click(function() {
-    //     $(this).parent().hide('slow');
-    //      $(this).parent().prev().show('slow');
-    //     //$('.dish-foods').show('slow');
-    //   });
+
+    //react declaration
+    const navigate = useNavigate();
+    const { user, setCartQuantity,cartQuantity } = useStateContext();
+    let { id } = useParams();
+    const [categories, setCategories] = useState([]);
+    const [meals, setMeals] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const { setDeleteNotification, setSuccessNotification } = useNotificationContext();
+
+
+
+    //fetch meal data
+    if (id) {
+        useEffect(() => {
+            setLoading(true);
+            axiosClient
+                .get(`/meal/${id}`)
+                .then(({ data }) => {
+                    console.log(data);
+
+                    const mealData = data;
+
+                    // Set the initial quantity for each meal to 1
+                    const mealsWithQuantity = mealData.map((meal) => ({
+                        ...meal,
+                        quantity: 1,
+                    }));
+
+                    setMeals(mealsWithQuantity);
+                })
+                .catch(() => {
+                    setLoading(false);
+                });
+        }, []);
+    }
+    //fetch categories data
+    useEffect(() => {
+        getCategories();
+    }, [])
+
+    const getCategories = async () => {
+
+        console.log("getting")
+        setLoading(true)
+        try {
+            await axiosClient.get(`category`)
+                .then(({ data }) => {
+                    console.log(data)
+                    setLoading(false)
+                    setCategories(data)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false)
+        }
+    }
+
+
+
+    const addToCart = meal => {
+        // make an API request here to add the meal to the cart
+        // Use axios.post to send a POST request to  API endpoint
+        // Include the `mealId` and the `quantity` in the request body
+        const payload = {
+            meal_id: meal.id,
+            shopping_cart_qty: meal.quantity,
+            user_id: user.id
+        };
+
+        try {
+            axiosClient.post("/shoppingCart", payload)
+                .then(({ data }) => {
+                    console.log(data)
+                    setSuccessNotification('Shopping Cart Added Successfully ')
+                    // Update the cart quantity in the layout
+                  
+                    setCartQuantity(data);
+                    console.log(cartQuantity); // Log the updated value here
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+
+        }
+    };
+
+    const decreaseQuantity = (mealId) => {
+        setMeals((prevMeals) =>
+            prevMeals.map((meal) => {
+                if (meal.id === mealId && meal.quantity > 1) {
+                    return { ...meal, quantity: meal.quantity - 1 };
+                }
+                return meal;
+            })
+        );
+    };
+
+    const increaseQuantity = (mealId) => {
+        setMeals((prevMeals) =>
+            prevMeals.map((meal) => {
+                if (meal.id === mealId) {
+                    return { ...meal, quantity: meal.quantity + 1 };
+                }
+                return meal;
+            })
+        );
+    };
+    //handle owl
+    const options = {
+        loop: true,
+        margin: 170,
+        dots: true,
+        items: 3,
+
+    };
+
+
+
+    //handle style
     const handleShowDishInfoClick = (event) => {
         const dishContainerElement = event.target.closest('.dish-foods');
         const dishContent = event.target.closest('.dish').querySelector('.dish-info');
@@ -114,886 +224,205 @@ export default function OrderMenuCard() {
 
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="row">
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/Taiwanese-fried-chicken-11.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Taiwanese Fried Chicken </h3>
-                                                        <div class="dish-icon">
-                                                            
-                                                            <div class="dish-icon end">
 
-                                                                <i class="info fa-solid fa-circle-info" onClick={handleShowDishInfoClick}></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM 39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
+                                            {loading &&
+                                                <div class="text-center">
+                                                    <div class="loaderCustom2"></div>
+                                                </div>
+                                            }
 
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
-                                                        <h5>
-                                                            Potatoes with pork and dried fruits
-                                                        </h5>
-                  
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.
-                                                            Ingredient Include:
+                                            {!loading && meals && meals
+                                                .map((m) => (
+                                                    <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                                        <div class="dish">
+                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} />
+                                                            <div class="dish-foods">
+                                                                <h3>{m.meal_name} </h3>
+                                                                <div class="dish-icon">
 
-                                                        </p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
+                                                                    <div class="dish-icon end">
 
-                                                        </ul>
-                                                        <h5>
-                                                            Rating And Review
-                                                        </h5>
-                                                        
-                                                        
-                                                        <div className="dropdown float-end">
-                                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-
-                                                                <i class="fa-solid fa-filter"></i>
-                                                                <span class="filter">Filter</span>
-
-                                                            </a>
-                                                            <div className="dropdown-menu dropdown-menu-end">
-                                                                {/* item */}
-                                                                <a href="javascript:void(0);" className="dropdown-item">5 Star&nbsp;(8)</a>
-                                                                {/* item */}
-                                                                <a href="javascript:void(0);" className="dropdown-item">4 Star&nbsp;(80)</a>
-                                                                {/* item */}
-                                                                <a href="javascript:void(0);" className="dropdown-item">3 Star&nbsp;(80)</a>
-                                                                {/* item */}
-                                                                <a href="javascript:void(0);" className="dropdown-item">2 Star&nbsp;(80)</a>
-                                                                <a href="javascript:void(0);" className="dropdown-item">1 Star&nbsp; (80)</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="overallRating">
-                                                        <h3>
-                                                                4.9 Out Of 5
-                                                                <br />
-                                                                <i class="fa-solid fa-star"></i>
-                                                                <i class="fa-solid fa-star"></i>
-                                                                <i class="fa-solid fa-star"></i>
-                                                                <i class="fa-solid fa-star"></i>
-                                                                <i class="fa-solid fa-star"></i>
-
-                                                            </h3>
-                                                            {/* <p> 50 Ratings.</p> */}
-
-                                                        </div>
-                                                        <div class="rating-scroll" >
-                                                            <div class="row rating">
-                                                                <div class="col-xl-2 rating-review">
-                                                                    <img src="../assets/img/bungsenggg.jpg" />
-
-
-                                                                </div>
-
-                                                                <div class="col-xl-8 col-lg-12  comment">
-                                                                    <div>
-                                                                        <h6>Thomas Adamson</h6>
-
-
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
+                                                                        <i class="info fa-solid fa-circle-info" onClick={handleShowDishInfoClick}></i>
 
                                                                     </div>
                                                                 </div>
-                                                                <p>
-                                                                    Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-
-                                                            </div>
-                                                            <div class="row rating">
-                                                                <div class="col-xl-2 rating-review">
-                                                                    <img src="../assets/img/bungsenggg.jpg" />
-
+                                                                <div class="price">
+                                                                    <h2>RM {m.meal_price}</h2>
+                                                                    <div class="qty-input">
+                                                                        <button
+                                                                            className="qty-count qty-count--minus"
+                                                                            data-action="minus"
+                                                                            type="button"
+                                                                            onClick={() => decreaseQuantity(m.id)}
+                                                                        >
+                                                                            -
+                                                                        </button>
+                                                                        <input
+                                                                            className="product-qty"
+                                                                            type="number"
+                                                                            name="product-qty"
+                                                                            min="1"
+                                                                            value={m.quantity}
+                                                                            readOnly
+                                                                        />
+                                                                        <button
+                                                                            className="qty-count qty-count--add"
+                                                                            data-action="add"
+                                                                            type="button"
+                                                                            onClick={() => increaseQuantity(m.id)}
+                                                                        >
+                                                                            +
+                                                                        </button>
+                                                                    </div>
 
                                                                 </div>
+                                                                <button class="button-price" onClick={() => addToCart(m)}>Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
+                                                            </div>
+                                                            <div class="dish-info" style={{ display: 'none' }}>
+                                                                <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
+                                                                <h5>
+                                                                    {m.meal_name}
+                                                                </h5>
 
-                                                                <div class="col-xl-8 col-lg-12 comment">
-                                                                    <div>
-                                                                        <h6>Thomas Adamson</h6>
+                                                                <p>{m.meal_desc}
+
+                                                                </p>
+                                                                <ul class="menu-dish">
+                                                                    {m.meal_ingredients.map((meal_ingredient) => (
+                                                                        <>
+                                                                            <li>{meal_ingredient.ingredient.ingredient_name}</li>
+
+                                                                        </>
+
+                                                                    ))}
+
+                                                                </ul>
+                                                                <h5>
+                                                                    Rating And Review
+                                                                </h5>
 
 
+                                                                <div className="dropdown float-end">
+                                                                    <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                                                        <i class="fa-solid fa-filter"></i>
+                                                                        <span class="filter">Filter</span>
+
+                                                                    </a>
+                                                                    <div className="dropdown-menu dropdown-menu-end">
+                                                                        {/* item */}
+                                                                        <a href="javascript:void(0);" className="dropdown-item">5 Star&nbsp;(8)</a>
+                                                                        {/* item */}
+                                                                        <a href="javascript:void(0);" className="dropdown-item">4 Star&nbsp;(80)</a>
+                                                                        {/* item */}
+                                                                        <a href="javascript:void(0);" className="dropdown-item">3 Star&nbsp;(80)</a>
+                                                                        {/* item */}
+                                                                        <a href="javascript:void(0);" className="dropdown-item">2 Star&nbsp;(80)</a>
+                                                                        <a href="javascript:void(0);" className="dropdown-item">1 Star&nbsp; (80)</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="overallRating">
+                                                                    <h3>
+                                                                        4.9 Out Of 5
+                                                                        <br />
                                                                         <i class="fa-solid fa-star"></i>
                                                                         <i class="fa-solid fa-star"></i>
                                                                         <i class="fa-solid fa-star"></i>
                                                                         <i class="fa-solid fa-star"></i>
                                                                         <i class="fa-solid fa-star"></i>
+
+                                                                    </h3>
+                                                                    {/* <p> 50 Ratings.</p> */}
+
+                                                                </div>
+                                                                <div class="rating-scroll" >
+                                                                    <div class="row rating">
+                                                                        <div class="col-xl-2 rating-review">
+                                                                            <img src="../assets/img/bungsenggg.jpg" />
+
+
+                                                                        </div>
+
+                                                                        <div class="col-xl-8 col-lg-12  comment">
+                                                                            <div>
+                                                                                <h6>Thomas Adamson</h6>
+
+
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <p>
+                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
+
+                                                                    </div>
+                                                                    <div class="row rating">
+                                                                        <div class="col-xl-2 rating-review">
+                                                                            <img src="../assets/img/bungsenggg.jpg" />
+
+
+                                                                        </div>
+
+                                                                        <div class="col-xl-8 col-lg-12 comment">
+                                                                            <div>
+                                                                                <h6>Thomas Adamson</h6>
+
+
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <p>
+                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
+
+                                                                    </div>
+                                                                    <div class="row rating">
+                                                                        <div class="col-xl-2 rating-review">
+                                                                            <img src="../assets/img/bungsenggg.jpg" />
+
+
+                                                                        </div>
+
+                                                                        <div class="col-xl-8 col-lg-12 comment">
+                                                                            <div>
+                                                                                <h6>Thomas Adamson</h6>
+
+
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+                                                                                <i class="fa-solid fa-star"></i>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <p>
+                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
 
                                                                     </div>
                                                                 </div>
-                                                                <p>
-                                                                    Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
 
                                                             </div>
-                                                            <div class="row rating">
-                                                                <div class="col-xl-2 rating-review">
-                                                                    <img src="../assets/img/bungsenggg.jpg" />
-
-
-                                                                </div>
-
-                                                                <div class="col-xl-8 col-lg-12 comment">
-                                                                    <div>
-                                                                        <h6>Thomas Adamson</h6>
-
-
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-
-                                                                    </div>
-                                                                </div>
-                                                                <p>
-                                                                    Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
 
 
 
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/Chinese-lemon-chicken-salad.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Chinese Lemon Salad</h3>
-                                                        <div class="dish-icon">
-                                                           
-                                                            <div class="dish-icon end">
+                                                        </div>
+                                                    </div>
 
-                                                                <i class="info fa-solid fa-circle-info" onClick={handleShowDishInfoClick}></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM 46</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
-                                                        <h5>
-                                                            FO Yo with pork and dried fruits
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="400" data-aos-duration="500">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="assets/img/spicy-bamboo-salad.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Chinese Spicy Bamboo</h3>
-                                                        <div class="dish-icon">
-                                                           
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Rice with shrimps and kiwi
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/Dumpling.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Dumpling With &nbsp; &nbsp; &nbsp;(3 Pieces) </h3>
-                                                        <div class="dish-icon">
-                                                          
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM 49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Spaghetti with mushrooms and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/Gingery-Shrimp-Salad-Bites.jpg" />
-                                                    <div class="dish-foods">
-                                                        <h3>Gingery-Shrimp-Salad-Bites</h3>
-                                                        <div class="dish-icon">
-                                                            
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM 39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Sliced pork, avocado and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="400" data-aos-duration="500">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/ShrimShumai.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Chinese Shrim Shumai</h3>
-                                                        <div class="dish-icon">
-                                                          
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>RM 49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Veal meat, tomatoes and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                        <div class="row">
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-4.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Spaghetti with mushrooms and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Spaghetti with mushrooms and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-6.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Veal meat, tomatoes and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Veal meat, tomatoes and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-5.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Sliced pork, avocado and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                               
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="nphumber" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Sliced pork, avocado and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="assets/img/dish-1.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Pasta, kiwi
-                                                            and sauce chilli</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Potatoes with pork and dried fruits
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-2.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Potatoes with pork
-                                                            and dried fruits</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$46</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Potatoes with pork and dried fruits
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                        <div class="row">
-
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-1.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Pasta, kiwi
-                                                            and sauce chilli</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Potatoes with pork and dried fruits
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-5.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Sliced pork, avocado and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                <div class="star">
-                                                                    <a href="#"><i class="fa-solid fa-heart"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$39</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Sliced pork, avocado and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-6.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Veal meat, tomatoes and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                <div class="star">
-                                                                    <a href="#"><i class="fa-solid fa-heart"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Veal meat, tomatoes and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-2.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Potatoes with pork
-                                                            and dried fruits</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                <div class="star">
-                                                                    <a href="#"><i class="fa-solid fa-heart"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$46</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Potatoes with pork and dried fruits
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-3.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Rice with shrimps and kiwi</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                <div class="star">
-                                                                    <a href="#"><i class="fa-solid fa-heart"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Rice with shrimps and kiwi
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="dish">
-                                                    <img alt="food-dish" src="../assets/img/dish-4.png" />
-                                                    <div class="dish-foods">
-                                                        <h3>Spaghetti with mushrooms and...</h3>
-                                                        <div class="dish-icon">
-                                                            <div class="cafa-button">
-                                                                <a href="#">Breakfast</a>
-                                                                <a href="#">Brunch</a>
-                                                            </div>
-                                                            <div class="dish-icon end">
-
-                                                                <i class="info fa-solid fa-circle-info"></i>
-                                                                <div class="star">
-                                                                    <a href="#"><i class="fa-solid fa-heart"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price">
-                                                            <h2>$49</h2>
-                                                            <div class="qty-input">
-                                                                <button class="qty-count qty-count--minus" data-action="minus" type="button">-</button>
-                                                                <input class="product-qty" type="number" name="product-qty" min="0" value="1" />
-                                                                <button class="qty-count qty-count--add" data-action="add" type="button">+</button>
-                                                            </div>
-                                                        </div>
-                                                        <button class="button-price">Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                    </div>
-                                                    <div class="dish-info" style={{ display: 'none' }}>
-                                                        <i class="info2 fa-solid fa-xmark"></i>
-                                                        <h5>
-                                                            Spaghetti with mushrooms and...
-                                                        </h5>
-                                                        <div class="cafa-button">
-                                                            <a href="#">Breakfast</a>
-                                                            <a href="#">Brunch</a>
-                                                        </div>
-                                                        <p>In egestas erat imperdiet sed euismod nisi porta. Ultrices sagittis orci a scelerisque. Diam quam nulla porttitor.</p>
-                                                        <ul class="menu-dish">
-                                                            <li>Nulla porttitor massa id;</li>
-                                                            <li>Aliquam vestibulum morbi;</li>
-                                                            <li>Blandit donec adipiscing;</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                ))
+                                            }
                                         </div>
                                     </div>
-
 
                                 </div>
-
                             </div>
 
                         </div>
@@ -1014,57 +443,65 @@ export default function OrderMenuCard() {
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-12">
-                            <div class="comment-data comment-slide owl-carousel owl-theme">
-                                <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                    <div class="category">
+                            {/* <div class="comment-data comment-slide owl-carousel owl-theme"> */}
 
-                                        <img alt="food-dish" src="../assets/img/Taiwanese-fried-chicken-11.png" width="300" height="340" />
-                                        <div class="dish-foods">
-                                            <h3>Appertizer Menu </h3>
+                            {categories.length > 0 ?
+                                <OwlCarousel options={options}> {/* Render data using Owl Carousel */}
+                                    {categories && categories.map((category) => (
 
+
+                                        <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                            <div class="category">
+                                                <a href={`/orderMenuCard/${category.id}`}>
+                                                    <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${category.image}`} width="300" height="340" />
+                                                </a>
+                                                <div class="dish-foods">
+                                                    <h3>{category.name}  Menu </h3>
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {/* <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                        <div class=" category">
+
+                                            <img alt="food-dish" src="../assets/img/chinese-egg-tarts-dan-tat.png" width="300" height="340" />
+                                            <div class="dish-foods">
+                                                <h3>Appertizer Menu </h3>
+
+
+                                            </div>
 
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                    <div class=" category">
+                                    <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                        <div class=" category">
 
-                                        <img alt="food-dish" src="../assets/img/chinese-egg-tarts-dan-tat.png" width="300" height="340" />
-                                        <div class="dish-foods">
-                                            <h3>Appertizer Menu </h3>
+                                            <img alt="food-dish" src="../assets/img/hokkien-mee.png" width="300" height="340" />
+                                            <div class="dish-foods">
+                                                <h3>Appertizer Menu </h3>
 
+
+                                            </div>
 
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                    <div class=" category">
+                                    <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                        <div class=" category">
 
-                                        <img alt="food-dish" src="../assets/img/hokkien-mee.png" width="300" height="340" />
-                                        <div class="dish-foods">
-                                            <h3>Appertizer Menu </h3>
+                                            <img alt="food-dish" src="../assets/img/chinese-egg-tarts-dan-tat.png" width="300" height="340" />
+                                            <div class="dish-foods">
+                                                <h3> Menu </h3>
 
+
+                                            </div>
 
                                         </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                    <div class=" category">
-
-                                        <img alt="food-dish" src="../assets/img/chinese-egg-tarts-dan-tat.png" width="300" height="340" />
-                                        <div class="dish-foods">
-                                            <h3> Menu </h3>
-
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                                    </div> */}
+                                </OwlCarousel> : ""}
+                            {/* </div> */}
                         </div>
 
                     </div>

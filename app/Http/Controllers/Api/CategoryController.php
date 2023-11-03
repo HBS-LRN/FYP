@@ -24,44 +24,46 @@ class CategoryController extends Controller
     {
         try {
             
-            // Generate a unique image name
-            $iconImageName = Str::random(32) . "." . $request->iconImage->getClientOriginalExtension();
-            $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
-            // Specify the absolute path
+            // // Generate a unique image name
+            // $iconImageName = Str::random(32) . "." . $request->iconImage->getClientOriginalExtension();
+            // $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
+            // // Specify the absolute path
 
-            $absolutePath = public_path('../react/assets/img/icon');
+            // $absolutePath = public_path('../react/assets/img/icon');
             
-            // Ensure the directory exists
-            if (!File::exists($absolutePath)) {
-                File::makeDirectory($absolutePath, 0755, true);
-            }
+            // // Ensure the directory exists
+            // if (!File::exists($absolutePath)) {
+            //     File::makeDirectory($absolutePath, 0755, true);
+            // }
 
             // Create Product
-            Category::create([
-                'name' => $request->name,
-                'iconImage' => $iconImageName,
-                'image' => $imageName,
-            ]);
 
-            // Specify the relative path
-            $relativePathIcon = '../react/assets/img/icon/' . $iconImageName;
-            $relativePath = '../react/assets/img/icon/' . $imageName;
+            $data = $request->validated();
+            if ($request->hasFile('iconImage')) {
+                $data['iconImage'] = $request->file('iconImage')->store('images', 'public');
+               
+            }
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image')->store('images', 'public');
+               
+            }
+            Category::create($data);
 
-            // Save Image using file_put_contents
-            file_put_contents($relativePathIcon, file_get_contents($request->iconImage));
-            file_put_contents($relativePath, file_get_contents($request->imageName));
+            // // Specify the relative path
+            // $relativePathIcon = '../react/assets/img/icon/' . $iconImageName;
+            // $relativePath = '../react/assets/img/icon/' . $imageName;
+
+            // // Save Image using file_put_contents
+            // file_put_contents($relativePathIcon, file_get_contents($request->iconImage));
+            // file_put_contents($relativePath, file_get_contents($request->imageName));
             
-            \Log::info('Processing iconImage');
-            \Log::info('Processing image');
-            \Log::info('Absolute Path: ' . $absolutePath);
-            \Log::info('Relative Icon Image Path: ' . $relativePathIcon);
-            \Log::info('Relative Image Path: ' . $relativePath);
+          
             // Return Json Response
             return response()->json([
                 'message' => "Category successfully created."
             ], 200);
         } catch (\Exception $e) {
-            \Log::error('Category creation failed: ' . $e->getMessage());
+           
             return response()->json([
                 'message' => 'Something went really wrong!',
             ], 500);

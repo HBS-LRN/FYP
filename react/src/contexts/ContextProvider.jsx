@@ -5,18 +5,18 @@ const StateContext = createContext({
   currentUser: null,
   token: null,
   notification: null,
-  authUser: null,
+  cartQuantity: null,
   refreshHeader: null,
   setUser: () => { },
   setToken: () => { },
-  setAuthUser: () => { },
+  setCartQuantity: () => { },
   setNotification: () => { },
   setRefreshHeader: () => { },
 })
 
 export const ContextProvider = ({ children }) => {
   const [user, _setUser] = useState(JSON.parse(localStorage.getItem('AUTH_USER')));
-  const [authUser, _setAuthUser] = useState(JSON.parse(localStorage.getItem('ACCESS_ID')));
+  const [cartQuantity, _setCartQuantity] = useState(localStorage.getItem('CART_QTY'));
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [refreshHeader, _setRefreshHeader] = useState(localStorage.getItem('REFRESH_HEADER'));
   const [notification, _setNotification] = useState('');
@@ -30,12 +30,12 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
-  const setAuthUser = (user) => {
-    _setAuthUser(user)
-    if (user) {
-      localStorage.setItem('ACCESS_ID', JSON.stringify(user));
+  const setCartQuantity = (cartQuantity) => {
+    _setCartQuantity(cartQuantity)
+    if (cartQuantity) {
+      localStorage.setItem('CART_QTY', cartQuantity);
     } else {
-      localStorage.removeItem('ACCESS_ID');
+      localStorage.removeItem('CART_QTY');
     }
   }
   const setUser = (user) => {
@@ -73,8 +73,8 @@ export const ContextProvider = ({ children }) => {
       setToken,
       notification,
       setNotification,
-      authUser,
-      setAuthUser,
+      cartQuantity,
+      setCartQuantity,
       refreshHeader,
       setRefreshHeader
     }}>

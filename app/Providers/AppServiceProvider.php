@@ -17,6 +17,8 @@ use App\Repository\OrderRepository;
 use App\Repository\OrderRepositoryInterface;
 use App\Repository\ReservationRepository;
 use App\Repository\ReservationRepositoryInterface;
+use App\Repository\ShoppingCartRepository;
+use App\Repository\ShoppingCartRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ReservationRepositoryInterface::class, ReservationRepository::class);
         $this->app->bind(DeliveryRepositoryInterface::class, DeliveryRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(ShoppingCartRepositoryInterface::class, ShoppingCartRepository::class);
         $this->app->bind(MealFactoryInterface::class, MealFactory::class);
+
     }
 
     /**

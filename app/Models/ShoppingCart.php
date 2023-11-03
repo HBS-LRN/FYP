@@ -18,6 +18,14 @@ class ShoppingCart extends Model
         return $this->hasOne(Order::class);
     }
 
+
+
+
+
+
+
+
+    
     //for agile testing use only
     public function store($data)
     {

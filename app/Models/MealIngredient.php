@@ -19,4 +19,5 @@ class MealIngredient extends Model
     {
         return $this->belongsTo(Meal::class, 'meal_id');
     }
+
 }

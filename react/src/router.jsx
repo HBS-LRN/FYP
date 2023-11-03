@@ -196,7 +196,7 @@ const router = createBrowserRouter([
         element: <NuritionMenuCard />
       },
       {
-        path: '/orderMenuCard',
+        path: '/orderMenuCard/:id',
         element: <OrderMenuCard />
       },
       {

@@ -3,9 +3,7 @@ import { Helmet } from 'react-helmet';
 
 
 import axiosClient from "../axios-client.js";
-
 import 'owl.carousel/dist/assets/owl.carousel.css';
-import $ from 'jquery';
 import 'owl.carousel';
 import OwlCarousel from 'react-owl-carousel2';
 import 'react-owl-carousel2/src/owl.carousel.css'; // Import the CSS file
@@ -47,7 +45,7 @@ export default function Index() {
     useEffect(() => {
         getContactUs();
     }, [])
-    
+
 
     const getContactUs = async () => {
         setLoading(true);
@@ -57,7 +55,7 @@ export default function Index() {
                 console.log(data);
                 setContactUs(data);
                 setLoading(false);
-              
+
             });
         } catch (error) {
             const response = error.response;
@@ -72,9 +70,9 @@ export default function Index() {
         nav: false,
         dots: true,
         items: 1,
-        dotsEach: 1, 
-        // autoplay: true,
-        // autoplayTimeout: 5000,
+        dotsEach: 1,
+        autoplay: true,
+        autoplayTimeout: 5000,
     };
 
 
@@ -218,9 +216,9 @@ export default function Index() {
                                 <h2>What customers say about us</h2>
 
 
-                                {contactUs.length>0?
-                                <OwlCarousel options={options}> {/* Render data using Owl Carousel */}
-                                 
+                                {contactUs.length > 0 ?
+                                    <OwlCarousel options={options}> {/* Render data using Owl Carousel */}
+
 
                                         {contactUs && contactUs.map((contact) => (
 
@@ -230,7 +228,7 @@ export default function Index() {
 
                                                     {contact && contact.image ? (
 
-                                                        <img 
+                                                        <img
                                                             src={`${import.meta.env.VITE_API_BASE_URL}/${contact.image}`}
                                                             width="16" height="10"
                                                         />
@@ -247,24 +245,24 @@ export default function Index() {
                                                 </div>
                                             </div>
                                         ))}
-                                </OwlCarousel>:""}
-                            {/* </div> */}
+                                    </OwlCarousel> : ""}
+                                {/* </div> */}
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-12" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
-                        <div class="reviews-img">
-                            <img alt="img" src="../assets/img/join-img.jpg 
+                        <div class="col-xl-6 col-lg-12" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
+                            <div class="reviews-img">
+                                <img alt="img" src="../assets/img/join-img.jpg 
                                 " width="600" height="330" />
-                            <i class="fa-regular fa-thumbs-up"></i>
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-        </div>
             </section >
-        <Helmet>
-            <link rel="stylesheet" href="../../../assets/css/index.css" />
-        </Helmet>
+            <Helmet>
+                <link rel="stylesheet" href="../../../assets/css/index.css" />
+            </Helmet>
         </div >
 
 

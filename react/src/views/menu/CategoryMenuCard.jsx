@@ -3,8 +3,6 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-
-import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 
@@ -13,63 +11,36 @@ import 'aos/dist/aos.css';
 export default function CategoryMenuCard() {
 
 
-    // $( ".info" ).click(function() {
-    //     $( ".dish-info" ).show('slow');
-    //      $(this).parent().parent().parent().hide('slow');
-    //     $(this).parent().parent().parent().next().show('slow');
 
-
-    //   });
-
-    //   $( ".info2" ).click(function() {
-    //     $(this).parent().hide('slow');
-    //      $(this).parent().prev().show('slow');
-    //     //$('.dish-foods').show('slow');
-    //   });
-    const handleShowDishInfoClick = (event) => {
-        const dishContainerElement = event.target.closest('.dish-foods');
-        const dishContent = event.target.closest('.dish').querySelector('.dish-info');
-
-        // Hide dish container
-        dishContainerElement.style.display = 'none';
-
-        // Show dish info with animation
-        dishContent.style.opacity = '0';
-        dishContent.style.transform = 'translateY(20px)';
-        dishContent.style.display = 'block';
-
-        // Trigger animation after a short delay
-        setTimeout(() => {
-            dishContent.style.opacity = '1';
-            dishContent.style.transform = 'translateY(0)';
-            dishContent.classList.add('fade-up-animation');
-        }, 10);
-
-
-    };
-    const handleHideDishInfoClick = (event) => {
-
-        console.log("hideclick")
-
-        const dishContainerElement = event.target.closest('.dish-info');
-        dishContainerElement.style.display = 'none';
-        const dishContent = event.target.closest('.dish').querySelector('.dish-foods');
-        console.log(dishContent)
-        // Show dish info with animation
-        dishContent.style.opacity = '0';
-        dishContent.style.transform = 'translateY(20px)';
-        dishContent.style.display = 'block';
-
-        // Trigger animation after a short delay
-        setTimeout(() => {
-            dishContent.style.opacity = '1';
-            dishContent.style.transform = 'translateY(0)';
-            dishContent.classList.add('fade-up-animation');
-        }, 10);
+    //react declaration
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
 
 
 
-    };
+
+    //fetch categories data
+    useEffect(() => {
+        getCategories();
+    }, [])
+
+    const getCategories = async () => {
+
+        console.log("getting")
+        setLoading(true)
+        try {
+            await axiosClient.get(`category`)
+                .then(({ data }) => {
+                    console.log(data)
+                    setLoading(false)
+                    setCategories(data)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false)
+        }
+    }
 
 
 
@@ -114,75 +85,29 @@ export default function CategoryMenuCard() {
 
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <div class="row">
-                                            <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
 
-                                                    <a href="/orderMenuCard"><img alt="food-dish" src="../assets/img/Taiwanese-fried-chicken-11.png" width="300" height="340" /></a>
-                                                    <div class="dish-foods">
-                                                        <h3>Appetizer Menu&nbsp; </h3>
-
-
-                                                    </div>
-
+                                            {loading &&
+                                                <div class="text-center">
+                                                    <div class="loaderCustom2"></div>
                                                 </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
+                                            }
 
-                                                    <img alt="food-dish" src="../assets/img/chinese-egg-tarts-dan-tat.png" width="300" height="340" />
-                                                    <div class="dish-foods">
-                                                        <h3>Dimsum Menu &nbsp;</h3>
-
-
+                                            {!loading && categories
+                                                .filter(category => category.id !== 8)
+                                                .map((category) => (
+                                                    <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                                        <div class="dish category">
+                                                            <a href={`/orderMenuCard/${category.id}`}>
+                                                                <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${category.image}`} width="300" height="340" />
+                                                            </a>
+                                                            <div class="dish-foods">
+                                                                <h3>{category.name} Menu</h3>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                ))
+                                            }
 
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
-
-                                                    <img alt="food-dish" src="../assets/img/hokkien-mee.png" width="300" height="340" />
-                                                    <div class="dish-foods">
-                                                        <h3>Noodle Menu&nbsp; </h3>
-
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
-                                                    <img alt="food-dish" src="../assets/img/golden-fried-rice.png" width="300" height="340" />
-                                                    <div class="dish-foods">
-                                                        <h3>Rice Menu&nbsp;&nbsp;&nbsp; </h3>
-
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
-                                                    <img alt="food-dish" src="../assets/img/hongshao-chicken-red-braised-chicken.png" width="300" height="340" />
-                                                    <div class="dish-foods">
-                                                        <h3>Chicken Menu&nbsp;&nbsp;&nbsp; </h3>
-
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                <div class="dish category">
-                                                    <img alt="food-dish" src="../assets/img/forzen-peach-daiquiris.png" width="300" height="340" />
-                                                    <div class="dish-foods">
-                                                        <h3>Beverage Menu&nbsp;&nbsp;&nbsp; </h3>
-
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
 
                                         </div>
 
@@ -208,4 +133,5 @@ export default function CategoryMenuCard() {
 
 
     );
+
 }

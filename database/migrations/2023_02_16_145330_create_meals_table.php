@@ -20,7 +20,7 @@ class CreateMealsTable extends Migration
             $table->string('meal_image');
             $table->string('meal_name');
             $table->string('meal_desc');
-
+            $table->double('total_calorie');
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')

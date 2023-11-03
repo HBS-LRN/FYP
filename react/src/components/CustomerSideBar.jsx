@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function CustomerSideBar() {
 
-    const { user, setUser, setToken } = useStateContext()
+    const { user, setUser, setToken,setCartQuantity } = useStateContext()
     const navigate = useNavigate();
     const onLogout = ev => {
         ev.preventDefault();
@@ -21,6 +21,7 @@ export default function CustomerSideBar() {
             .then(() => {
                 setUser(null);
                 setToken(null);
+                setCartQuantity(null);
                 navigate("/login");
                 window.location.reload();
             });

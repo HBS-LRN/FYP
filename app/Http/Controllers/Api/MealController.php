@@ -10,7 +10,7 @@ use App\Models\MealIngredient;
 use Illuminate\Http\Request;
 use App\Http\Requests\mealStoreRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -18,10 +18,10 @@ use Illuminate\Support\Str;
 
 class MealController extends Controller
 {
-   
+
     public function index()
     {
-        $meal = Meal::all(); 
+        $meal = Meal::all();
         return response()->json($meal);
     }
 
@@ -36,7 +36,7 @@ class MealController extends Controller
         return response()->json($meal);
     }
 
-    
+
     public function search(Request $request)
     {
 
@@ -65,59 +65,65 @@ class MealController extends Controller
     }
 
 
-    
+
     public function store(MealStoreRequest $request)
-{
-    try {
-        \Log::info('Request data received in update method', ['request' => $request->all()]);
-        // Generate a unique image name
-        $imageName = Str::random(32) . "." . $request->meal_image->getClientOriginalExtension();
+    {
+        try {
 
-        // Specify the absolute path
-        $absolutePath = public_path('../react/assets/img/meal');
+            // // Generate a unique image name
+            // $imageName = Str::random(32) . "." . $request->meal_image->getClientOriginalExtension();
 
-        // Ensure the directory exists
-        if (!File::exists($absolutePath)) {
-            File::makeDirectory($absolutePath, 0755, true);
+            // // Specify the absolute path
+            // $absolutePath = public_path('../react/assets/img/meal');
+
+            // // Ensure the directory exists
+            // if (!File::exists($absolutePath)) {
+            //     File::makeDirectory($absolutePath, 0755, true);
+            // }
+
+
+            // Create Product
+            $meal = new Meal();
+            $meal->meal_price = $request->meal_price;
+            $meal->meal_name = $request->meal_name;
+            $meal->meal_desc = $request->meal_desc;
+
+            if ($request->hasFile('meal_image')) {
+                $data['meal_image'] = $request->file('meal_image')->store('images', 'public');
+                $meal->meal_image =  $data['meal_image'];
+            }
+            // $meal->meal_image = $imageName;
+            $meal->category_id = $request->category_id;
+
+            $meal->save();
+            // Specify the relative path
+            // $relativePath = '../react/assets/img/meal/' . $imageName;
+
+            // // Save Image using file_put_contents
+            // file_put_contents($relativePath, file_get_contents($request->meal_image));
+            $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
+
+            $this->storeMealIngredients($meal, $ingredientIds);
+            // Return Json Response
+            return response()->json([
+                'message' => "Category successfully created."
+            ], 200);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Something went really wrong!' . $e->getMessage(),
+            ], 500);
         }
-
-        // Create Product
-        $meal = new Meal();
-        $meal->meal_price = $request->meal_price;
-        $meal->meal_name = $request->meal_name;
-        $meal->meal_desc = $request->meal_desc;
-        $meal->meal_image = $imageName;
-        $meal->category_id = $request->category_id;
-
-        $meal->save();
-        // Specify the relative path
-        $relativePath = '../react/assets/img/meal/' . $imageName;
-
-        // Save Image using file_put_contents
-        file_put_contents($relativePath, file_get_contents($request->meal_image));
-        $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
-
-        $this->storeMealIngredients($meal, $ingredientIds);
-        // Return Json Response
-        return response()->json([
-            'message' => "Category successfully created."
-        ], 200);
-    } catch (\Exception $e) {
-        \Log::error('Category creation failed: ' . $e->getMessage());
-        return response()->json([
-            'message' => 'Something went really wrong!' . $e->getMessage(),
-        ], 500);
     }
-}
-function storeMealIngredients(Meal $meal, array $ingredients)
-{
-    foreach ($ingredients as $ingredient) {
-        MealIngredient::create([
-            'ingredient_id' => $ingredient,
-            'meal_id' => $meal->id,
-        ]);
+    function storeMealIngredients(Meal $meal, array $ingredients)
+    {
+        foreach ($ingredients as $ingredient) {
+            MealIngredient::create([
+                'ingredient_id' => $ingredient,
+                'meal_id' => $meal->id,
+            ]);
+        }
     }
-}
     public function update(MealStoreRequest $request, $id)
     {
         try {
@@ -128,34 +134,34 @@ function storeMealIngredients(Meal $meal, array $ingredients)
                     'message' => 'Meal Not Found.'
                 ], 404);
             }
-    
+
             $meal->meal_price = $request->meal_price;
             $meal->meal_name = $request->meal_name;
             $meal->meal_desc = $request->meal_desc;
             $meal->category_id = $request->category_id;
-    
+
             if ($request->hasFile('meal_image')) {
                 // Handle image update
                 $image = $request->file('meal_image');
                 $imageName = Str::random(32) . "." . $image->getClientOriginalExtension();
-    
+
                 // Store the new image
                 $image->move(public_path('react/assets/img/icon'), $imageName);
-    
+
                 // Delete the old image if it exists
                 $oldImage = $meal->meal_image;
                 if (File::exists(public_path('react/assets/img/icon/' . $oldImage))) {
                     File::delete(public_path('react/assets/img/icon/' . $oldImage));
                 }
-    
+
                 // Update the image name in the database
                 $meal->meal_image = $imageName;
             }
-    
+
             $meal->save();
             $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
             $this->updateMealIngredients($meal, $ingredientIds);
-    
+
             return response()->json([
                 'message' => "Meal successfully updated."
             ], 200);
@@ -188,5 +194,43 @@ function storeMealIngredients(Meal $meal, array $ingredients)
         MealIngredient::where('meal_id', $id)->delete();
 
         return response()->json(['message' => 'Meal and associated ingredients deleted'], 200);
-    } 
+    }
+
+
+    // public function showCategoryMeal($id)
+    // {
+    //     /** @var \App\Models\Category $category */
+    //     $category = Category::find($id);
+
+
+
+    //     return response()->json(
+    //         $category->categorymeals->where('meal_qty', '!=', '0')
+    //     );
+    // }
+
+    // public function showCategoryMeal($id)
+    // {
+    //     $category = Category::find($id);
+    
+    //     $categoryMeals = $category->categorymeals()
+    //         ->whereHas('meal', function ($query) {
+    //             $query->where('meal_qty', '!=', 0);
+    //         })
+    //         ->with(['mealIngredients', 'mealIngredients.ingredient'])
+    //         ->get();
+    
+    //     return response()->json($categoryMeals);
+    // }
+
+    public function showCategoryMeal($id)
+    {
+        $category = Category::find($id);
+    
+        $categoryMeals = $category->categorymeals()
+            ->with(['mealIngredients', 'mealIngredients.ingredient'])
+            ->get();
+    
+        return response()->json($categoryMeals);
+    }
 }
