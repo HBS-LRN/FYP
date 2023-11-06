@@ -99,6 +99,7 @@ h2 {
 .button-container {
     display: flex;
     width: 100%;
+    
     margin: 30px 36px 15px 27px;
     cursor: pointer;
     justify-content: center;
@@ -344,7 +345,7 @@ a {
     
     position: absolute;
     width: 20%;
-    height: 7.4%;
+    height: 7.2%;
     left:34%;
     transition: .5s;
     background: linear-gradient(to right, #ff105f, #ffad06);
@@ -654,4 +655,9 @@ input#rate-5:checked~label {
 
 .item-status.completed{
     margin-top: 0;
+}
+
+input[type="radio"]:checked ~ .checked {
+    color: #fe7;
+    text-shadow: 0 0 20px #952;
 }

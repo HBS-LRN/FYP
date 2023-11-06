@@ -42,6 +42,7 @@ export default function CustomerLayout() {
     //this is to handle item cart
     const handleMenuBtnClick = () => {
         document.body.classList.add('active');
+        getShoppingCarts();
     };
 
     const handleMenuCloseBtnClick = () => {
@@ -50,7 +51,7 @@ export default function CustomerLayout() {
     }
 
 
-    //fetch categories data
+    //fetch shopping cart data
     useEffect(() => {
         getShoppingCarts();
     }, [])
@@ -109,10 +110,15 @@ export default function CustomerLayout() {
         }
     };
 
+    // Decrease the quantity by 1, but ensure it doesn't go below 0
     const decreaseQuantity = (shoppingCartId) => {
-        updateQuantity(shoppingCartId, -1);
+        const mealToUpdate = shoppingCarts.find((meal) => meal.pivot.id === shoppingCartId);
+        if (mealToUpdate && mealToUpdate.pivot.shopping_cart_qty > 1) {
+            updateQuantity(shoppingCartId, -1);
+        }
     };
 
+    // Increase the quantity by 1
     const increaseQuantity = (shoppingCartId) => {
         updateQuantity(shoppingCartId, 1);
     };
@@ -123,11 +129,12 @@ export default function CustomerLayout() {
         setShoppingCarts((prevShoppingCarts) =>
             prevShoppingCarts.filter((meal) => meal.pivot.id !== shoppingCart.pivot.id)
         );
-        //display notification using sweet alert
+
+
         try {
             await axiosClient.delete(`/shoppingCart/${shoppingCart.pivot.id}`)
             // The API call will update the quantity in the API with the new value
-
+            setCartQuantity(prevQuantity => prevQuantity - 1);
 
         } catch (error) {
             const response = error.response;
@@ -151,13 +158,13 @@ export default function CustomerLayout() {
         }, 0);
     };
 
-     //hanlde navigation
-     const onNavigateClick = () => {
+    //hanlde navigation
+    const onNavigateClick = () => {
 
-       navigate("checkout")
+        navigate("checkout")
         // Scroll to the top of the screen window
         window.scrollTo(0, 0);
-       document.body.classList.remove('active');
+        document.body.classList.remove('active');
 
 
     }
@@ -313,6 +320,20 @@ export default function CustomerLayout() {
                                     }
                                     <ul>
 
+                                        {shoppingCarts.length === 0 &&
+                                            <div class="text-center">
+                                                <br />
+                                                <br />
+                                                <br />
+
+                                                <img alt="food-dish" src="../../../assets/img/noitemsfound.png" width="235"
+                                                    height="251" />
+                                                <p>Your Cart Is Currently Empty!</p>
+
+
+                                            </div>
+                                        }
+
                                         <div class="scroll-wrap">
                                             {!loading && shoppingCarts.map((m) => (
 
@@ -320,12 +341,14 @@ export default function CustomerLayout() {
                                                     <i class="closeButton fa-solid fa-xmark" onClick={ev => onDeleteClick(m)}></i>
                                                     <div class="counter-container">
                                                         <div class="counter-food">
-                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="160"
+                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="140"
                                                                 height="121" />
 
                                                             <h4>{m.meal_name}</h4>
                                                         </div>
-                                                        <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
+                                                        <div class="col-lg-3">
+                                                            <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
+                                                        </div>
                                                     </div>
                                                     <div class="price">
                                                         <div>
@@ -368,7 +391,7 @@ export default function CustomerLayout() {
                                                 </li>
                                             ))}
 
-                                            <li class="price-list">
+                                            {/* <li class="price-list">
                                                 <i class="closeButton fa-solid fa-xmark"></i>
                                                 <div class="counter-container">
                                                     <div class="counter-food">
@@ -399,23 +422,27 @@ export default function CustomerLayout() {
                                                         <span>Quantity</span>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </li> */}
                                         </div>
                                     </ul>
-                                    <div class="totel-price">
-                                        <span>Total order:</span>
-                                        <h5>RM {calculateTotalPrice()}</h5>
-                                    </div>
-                                    <div class="totel-price">
-                                        <span>Delivery Fee: </span>
-                                        <h5>RM 5</h5>
-                                    </div>
-                                    <div class="totel-price">
-                                        <span>To pay:</span>
-                                        <h2>RM {calculateTotalPrice() + 5}</h2>
-                                    </div>
-                                    <button class="button-price" onClick={ev => onNavigateClick()}>Checkout</button>
 
+                                    {shoppingCarts.length !== 0 &&
+                                        <>
+                                            <div class="totel-price">
+                                                <span>Total order:</span>
+                                                <h5>RM{calculateTotalPrice()}</h5>
+                                            </div>
+                                            <div class="totel-price">
+                                                <span>Delivery Fee: </span>
+                                                <h5>RM5</h5>
+                                            </div>
+                                            <div class="totel-price">
+                                                <span>To pay:</span>
+                                                <h2>RM {calculateTotalPrice() + 5}</h2>
+                                            </div>
+                                            <button class="button-price" onClick={ev => onNavigateClick()}>Checkout</button>
+                                        </>
+                                    }
                                 </div>
                             </div>
                         </div>

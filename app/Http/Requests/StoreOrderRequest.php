@@ -24,13 +24,19 @@ class StoreOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_id' => 'required',
-            'order_total' => 'required',
-            'delivery_fee' => 'nullable',
-            'order_status' => 'required',
-            'payment_status' => 'nullable',
-            'payment_method' => 'required',
-            'order_date' => 'required'
+
+            'order_total' => 'required|numeric', 
+            'delivery_fee' => 'required|numeric', 
+            'order_status' => 'required|string', 
+            'payment_status' => 'required|string', 
+            'payment_method' => 'required|string',
+            'order_date' => 'required|date', 
+            'user_id' => 'required|integer',
+            'orderItems' => 'required|array', 
+            'orderItems.*.meal_id' => 'required|integer',
+            'orderItems.*.order_quantity' => 'required|integer',
+
+
         ];
     }
 }

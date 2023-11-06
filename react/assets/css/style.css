@@ -3172,6 +3172,7 @@ li.hide-button h6 i {
 
 .counter-food {
     display: flex;
+    flex-basis: 70%;
     align-items: center;
 }
 
@@ -3241,7 +3242,8 @@ form.checkout-form input[type="password"] {
     border-radius: 10px;
     /* margin-top: 20px; */
     outline: none;
-    color: #CFCFCF;
+    color:  #787878;
+   
     border: 1px solid #CFCFCF;
 }
 
@@ -3256,7 +3258,7 @@ form.checkout-form .nice-select {
     height: 60px;
     /* margin-top: 10px; */
     /* background-color: #FCFCFC; */
-    color: #CFCFCF;
+    color: #787878;
     border: 1px solid #CFCFCF;
     margin-bottom: 24px;
 
@@ -4546,4 +4548,16 @@ li.menu-item-has-children.active {
 
 .counter-food img{
     border-radius: 20px;
+}
+
+form.checkout-form button.button-price {
+    margin-top: 25px;
+}
+.checkout-form .button-price.changeAddress{
+    margin-left:70px;
+    width:205px;
+    height:40px;
+    padding-top:7px;
+    border-radius:6px;
+    margin-top:15px;
 }

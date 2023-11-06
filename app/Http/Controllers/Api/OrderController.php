@@ -7,9 +7,12 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Delivery;
+use App\Models\MealOrderDetail;
+use App\Models\ShoppingCart;
 use App\Models\User;
 use App\Repository\OrderRepositoryInterface;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -44,8 +47,41 @@ class OrderController extends Controller
 
 
         //call order repository interface to create data 
-        $order = $this->orderRepositoryInterface->create($data);
-        return response()->json($order);
+        // $order = $this->orderRepositoryInterface->create($data);
+
+
+
+
+        $orderDate = Carbon::parse($data['order_date'])->format('Y-m-d');
+        $order = Order::create([
+            'user_id' => $data['user_id'],
+            'order_total' => $data['order_total'],
+            'delivery_fee' => $data['delivery_fee'],
+            'order_status' => $data['order_status'],
+            'payment_status' => $data['payment_status'],
+            'payment_method' => $data['payment_method'],
+            'order_date' => $orderDate, // Use the formatted date
+        ]);
+
+        foreach ($data['orderItems'] as $orderItem) {
+            MealOrderDetail::create([
+                'order_id' => $order->id,
+                'meal_id' => $orderItem['meal_id'],
+                'order_quantity' => $orderItem['order_quantity'],
+                'meal_order_status' => "pending"
+            ]);
+        }
+
+        // Find all shopping cart items that belong to the user
+        $shoppingCartItems = ShoppingCart::where('user_id',  $data['user_id'])->get();
+
+        // Loop through the shopping cart items and delete them
+        foreach ($shoppingCartItems as $shoppingCartItem) {
+            $shoppingCartItem->delete();
+        }
+
+
+        return $order;
     }
 
     /**
@@ -115,12 +151,28 @@ class OrderController extends Controller
         $deliveries = Delivery::with('order')
             ->where('delivery_man_id', $id)
             ->get();
-    
+
         // Filter deliveries with an associated order having 'order_status' as 'completed'
         $filteredDeliveries = $deliveries->filter(function ($delivery) {
             return $delivery->order && $delivery->order->order_status === 'completed';
         });
-    
+
         return response()->json($filteredDeliveries);
+    }
+
+    public function showOrderStatus($id)
+    {
+
+
+
+          //get all of the orders belong to that particular user 
+        /** @var \App\Models\User $user */
+        $user = User::with('orders.meals')->find($id);
+        $orders = $user->orders;
+    
+        return response()->json($orders);
+
+
+       
     }
 }

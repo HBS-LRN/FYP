@@ -48,7 +48,6 @@ export default function Addresses() {
         setDeleteNotification().then((value) => {
             if (value) {
                 axiosClient.delete(`/addresses/${address.id}`)
-                setSuccessNotification('Address was successfully deleted')
                 getAddresses()
             }
         });

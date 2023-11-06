@@ -29,6 +29,7 @@ class IngredientController extends Controller
         $data = $request->validate([
             'ingredient_name' => 'required',
             'calorie' => 'required',
+            'stock' => 'required',
         ]);
         $ingredient = Ingredient::create($data);
         
@@ -41,6 +42,7 @@ class IngredientController extends Controller
         $data = $request->validate([
             'ingredient_name' => 'required',
             'calorie' => 'required',
+            'stock' => 'required',
         ]);
         $ingredient = Ingredient::find($id);
         $ingredient->update($data);

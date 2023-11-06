@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tab, Nav } from 'react-bootstrap';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'select2/dist/css/select2.min.css';
@@ -12,7 +12,7 @@ const AddProduct = () => {
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
     const [errors, setErrors] = useState({});
-    
+
     const [meal, setMeal] = useState({
         meal_name: '',
         meal_image: null,
@@ -20,8 +20,31 @@ const AddProduct = () => {
         meal_desc: '',
         category_id: '',
         ingredient_id: [],
+        unit: [],
+        cookMethod: [],
     });
     const [loading, setLoading] = useState(false);
+
+    const handleUnitInput = (e, index) => {
+        const { value } = e.target;
+        const updatedUnit = [...meal.unit];
+        updatedUnit[index] = value;
+    
+        setMeal({
+            ...meal,
+            unit: updatedUnit,
+        });
+    };
+    
+    const handleCookMethodInput = (selectedOption, index) => {
+        const updatedCookMethod = [...meal.cookMethod];
+        updatedCookMethod[index] = selectedOption.value;
+    
+        setMeal({
+            ...meal,
+            cookMethod: updatedCookMethod,
+        });
+    };
     const handleInput = (e) => {
         if (e.target) {
             const { name, value } = e.target;
@@ -38,7 +61,7 @@ const AddProduct = () => {
         });
         console.log(acceptedFiles[0].name);
     }
-    
+
     const validateForm = () => {
         const errors = {};
 
@@ -69,13 +92,13 @@ const AddProduct = () => {
         getIngredient();
         getCategory();
     }, []);
-    const getIngredient =()=>{
- // Make the API call to get ingredient data
+    const getIngredient = () => {
+        // Make the API call to get ingredient data
         axiosClient.get('/ingredients')
             .then(({ data }) => {
                 // Map the data to the format required by react-select
                 const options = data.map(item => ({
-                    value: item.id, 
+                    value: item.id,
                     label: item.ingredient_name,
                 }));
                 setIngredientOptions(options);
@@ -84,20 +107,20 @@ const AddProduct = () => {
                 console.error('API request error:', error);
             });
     }
-    const getCategory =()=>{
+    const getCategory = () => {
         // Make the API call to get Category data
-            axiosClient.get('/category')
+        axiosClient.get('/category')
             .then(({ data }) => {
-                    // Map the data to the format required by react-select
-                    const options = data.map(item => ({
-                    value: item.id, 
+                // Map the data to the format required by react-select
+                const options = data.map(item => ({
+                    value: item.id,
                     label: item.name,
                 }));
                 setCategoryOptions(options);
             })
             .catch(error => {
-            console.error('API request error:', error);
-        });
+                console.error('API request error:', error);
+            });
     }
     const saveMeal = (e) => {
         e.preventDefault();
@@ -110,51 +133,53 @@ const AddProduct = () => {
         formData.append('meal_price', meal.meal_price);
         formData.append('meal_desc', meal.meal_desc);
         formData.append('category_id', meal.category_id);
-        meal.ingredient_id.map((ingredientId) => {
+        meal.ingredient_id.map((ingredientId, index) => {
             formData.append('ingredient_id[]', ingredientId);
+            formData.append('unit[]', meal.unit[index]);
+            formData.append('cookMethod[]', meal.cookMethod[index]);
         });
         formData.append('meal_image', meal.meal_image);
 
-    
+
         // Log the data before making the API call
         for (var pair of formData.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
-        
+
         axiosClient.post('/meal', formData)
-        .then(res => {
-            // setMeal({
-            //     meal_name: '',
-            //     meal_image: null,
-            //     meal_price: '',
-            //     meal_desc: '',
-            //     category_id: '',
-            //     ingredient_id: [],
-            // });
-            console.log(res.message);
-            // Show SweetAlert success message
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'New Meal Had Been Successfully Added!',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    })
-    .catch(function (error) {
-        if (error.response) {
-            console.log(error.response.data); // This will log the response data from the server.
-            console.log(error.response.status); // This will log the HTTP status code.
-        } else if (error.request) {
-            console.log(error.request); // This will log the request made but no response was received.
-        } else {
-            console.log('Error', error.message);
-        }
-        console.log(error); // This will log the Axios request config.
-        setLoading(false);
-    });
+            .then(res => {
+                // setMeal({
+                //     meal_name: '',
+                //     meal_image: null,
+                //     meal_price: '',
+                //     meal_desc: '',
+                //     category_id: '',
+                //     ingredient_id: [],
+                // });
+                console.log(res.message);
+                // Show SweetAlert success message
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'New Meal Had Been Successfully Added!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data); // This will log the response data from the server.
+                    console.log(error.response.status); // This will log the HTTP status code.
+                } else if (error.request) {
+                    console.log(error.request); // This will log the request made but no response was received.
+                } else {
+                    console.log('Error', error.message);
+                }
+                console.log(error); // This will log the Axios request config.
+                setLoading(false);
+            });
     }
-   
+
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
@@ -171,7 +196,7 @@ const AddProduct = () => {
         <div>
             <Helmet>
                 <link rel="stylesheet" href="../../../assets/css/addMeal.css" />
-             
+
             </Helmet>
             <div className="main-content">
                 <div className="page-content">
@@ -180,7 +205,7 @@ const AddProduct = () => {
                             <div className="col-12">
                                 <div className="page-title-box d-sm-flex align-items-center justify-content-between">
                                     <h4 className="mb-sm-0">Add Meal</h4>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -188,36 +213,36 @@ const AddProduct = () => {
                             <div className="col-lg-12">
                                 <div className="card">
                                     <div className="card-body">
-                                    <form onSubmit={saveMeal}>
-                                        <div id="addproduct-nav-pills-wizard" className="twitter-bs-wizard nav-pills nav-justified">
-                                            <Nav className="twitter-bs-wizard-nav">
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        href="#basic-info"
-                                                        className={activeTab === 0 ? 'active' : ''}
-                                                        onClick={() => handleTabClick(0)}
-                                                    >
-                                                        <span className="step-number">01</span>
-                                                        <span className="step-title">Basic Info</span>
-                                                    </Nav.Link>
-                                                </Nav.Item>
-                                                <Nav.Item>
-                                                    <Nav.Link
-                                                        href="#product-img"
-                                                        className={activeTab === 1 ? 'active' : ''}
-                                                        onClick={() => handleTabClick(1)}
-                                                    >
-                                                        <span className="step-number">02</span>
-                                                        <span className="step-title">Meal Img</span>
-                                                    </Nav.Link>
-                                                </Nav.Item>
-                                                
-                                            </Nav>
-                                            <Tab.Content className="twitter-bs-wizard-tab-content">
-                                                <div className={`tab-pane ${activeTab === 0 ? 'active' : ''}`}>
-                                                    <h4 className="card-title">Basic Information</h4>
-                                                    <p className="card-title-desc">Fill all information below</p>
-                                                    
+                                        <form onSubmit={saveMeal}>
+                                            <div id="addproduct-nav-pills-wizard" className="twitter-bs-wizard nav-pills nav-justified">
+                                                <Nav className="twitter-bs-wizard-nav">
+                                                    <Nav.Item>
+                                                        <Nav.Link
+                                                            href="#basic-info"
+                                                            className={activeTab === 0 ? 'active' : ''}
+                                                            onClick={() => handleTabClick(0)}
+                                                        >
+                                                            <span className="step-number">01</span>
+                                                            <span className="step-title">Basic Info</span>
+                                                        </Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link
+                                                            href="#product-img"
+                                                            className={activeTab === 1 ? 'active' : ''}
+                                                            onClick={() => handleTabClick(1)}
+                                                        >
+                                                            <span className="step-number">02</span>
+                                                            <span className="step-title">Meal Img</span>
+                                                        </Nav.Link>
+                                                    </Nav.Item>
+
+                                                </Nav>
+                                                <Tab.Content className="twitter-bs-wizard-tab-content">
+                                                    <div className={`tab-pane ${activeTab === 0 ? 'active' : ''}`}>
+                                                        <h4 className="card-title">Basic Information</h4>
+                                                        <p className="card-title-desc">Fill all information below</p>
+
                                                         <div className="mb-3">
                                                             <label className="form-label" htmlFor="productname">
                                                                 Meal Name
@@ -264,7 +289,7 @@ const AddProduct = () => {
                                                                         onChange={(selectedOption) => handleInput({ target: { name: 'category_id', value: selectedOption.value } })} // Update this line
                                                                         options={categoryOptions}
                                                                     />
-                                                                     {errors.category_id && <div className="text-danger">{errors.category_id}</div>}
+                                                                    {errors.category_id && <div className="text-danger">{errors.category_id}</div>}
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6">
@@ -278,10 +303,72 @@ const AddProduct = () => {
                                                                         options={ingredientOptions}
                                                                         isMulti
                                                                     />
-                                                                      {errors.ingredient_id && <div className="text-danger">{errors.ingredient_id}</div>}
+                                                                    {errors.ingredient_id && <div className="text-danger">{errors.ingredient_id}</div>}
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
+
+
+                                                        {meal.ingredient_id &&
+                                                            meal.ingredient_id.map((ingredientId, index) => (
+                                                                <div className="row" key={index}>
+                                                                    <div className="col-md-4">
+                                                                        <div className="mb-3">
+                                                                            <label className="form-label">Ingredient</label>
+                                                                            <input
+                                                                                id={`ingredient_id`}
+                                                                                name={`ingredient_id`}
+                                                                                type="text"
+                                                                                placeholder='Enter Meal Name Here......'
+                                                                                value={ingredientOptions.find((option) => option.value === ingredientId)?.label || ''}
+                                                                                className="form-control"
+                                                                                onChange={handleInput}
+                                                                            />
+                                                                            {errors.ingredient_id && <div className="text-danger">{errors.ingredient_id}</div>}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-md-4">
+                                                                        <div className="mb-3">
+                                                                            <label className="form-label">Cooking Unit / Kg</label>
+                                                                            <input
+                                                                                id={`unit_${index}`}
+                                                                                name={`unit_${index}`}
+                                                                                type="number"
+                                                                                placeholder='Enter Unit / Kg Here...'
+                                                                                value={meal.unit[index] || ''}
+                                                                                className="form-control"
+                                                                                onChange={(e) => handleUnitInput(e, index)}
+                                                                            />
+                                                                            {errors[`unit_${index}`] && <div className="text-danger">{errors[`unit_${index}`]}</div>}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-md-4">
+                                                                        <div className="mb-3">
+                                                                            <label className="form-label">Cook Method</label>
+                                                                            <Select
+                                                                                id={`cookMethod_${index}`}
+                                                                                name={`cookMethod_${index}`}
+                                                                                value={
+                                                                                    meal.cookMethod[index] !== undefined
+                                                                                        ? {
+                                                                                            value: meal.cookMethod[index],
+                                                                                            label: meal.cookMethod[index],
+                                                                                        }
+                                                                                        : ''
+                                                                                }
+                                                                                onChange={(selectedOption) => handleCookMethodInput(selectedOption, index)}
+                                                                               t 
+                                                                            />
+                                                                            {errors[`cookMethod_${index}`] && (
+                                                                                <div className="text-danger">{errors[`cookMethod_${index}`]}</div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+
                                                         <div className="mb-3">
                                                             <label className="form-label" htmlFor="productdesc">
                                                                 Meal Description
@@ -292,51 +379,51 @@ const AddProduct = () => {
                                                                 name="meal_desc"
                                                                 onChange={handleInput}
                                                                 rows={5}
-                                                                value={meal.meal_desc} 
+                                                                value={meal.meal_desc}
                                                             />
-                                                             {errors.meal_desc && <div className="text-danger">{errors.meal_desc}</div>}
+                                                            {errors.meal_desc && <div className="text-danger">{errors.meal_desc}</div>}
                                                         </div>
-                                                    
-                                                </div>
 
-                                                <div className={`tab-pane ${activeTab === 1 ? 'active' : ''}`}>
-                                                    <h4 className="card-title">Product Images</h4>
-                                                    <p className="card-title-desc">Upload product image</p>
-                                                    <div className="dropzone" {...getRootProps()}>
-                                                        <div className="fallback">
-                                                            <input {...getInputProps()}/>
-                                                        </div>
-                                                        {meal.meal_image ? (
-                                                                    <p>Selected file: {meal.meal_image.name}</p>
-                                                                ) : (
-                                                                    <p>Drag 'n' drop an image here, or click to select one</p>
-                                                                )}
-                                                                 
                                                     </div>
-                                                    {errors.meal_image && <div className="text-danger">{errors.meal_image}</div>}
+
+                                                    <div className={`tab-pane ${activeTab === 1 ? 'active' : ''}`}>
+                                                        <h4 className="card-title">Product Images</h4>
+                                                        <p className="card-title-desc">Upload product image</p>
+                                                        <div className="dropzone" {...getRootProps()}>
+                                                            <div className="fallback">
+                                                                <input {...getInputProps()} />
+                                                            </div>
+                                                            {meal.meal_image ? (
+                                                                <p>Selected file: {meal.meal_image.name}</p>
+                                                            ) : (
+                                                                <p>Drag 'n' drop an image here, or click to select one</p>
+                                                            )}
+
+                                                        </div>
+                                                        {errors.meal_image && <div className="text-danger">{errors.meal_image}</div>}
+                                                    </div>
+
+                                                </Tab.Content>
+                                                <div className="mt-4">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary me-2 waves-effect waves-light"
+                                                        onClick={handlePreviousClick}
+                                                        disabled={activeTab === 0}
+                                                    >
+                                                        Previous
+                                                    </button>
+
+                                                    <button
+                                                        type={activeTab === 1 ? "submit" : "button"}
+                                                        className="btn btn-primary me-2 waves-effect waves-light"
+                                                        onClick={activeTab === 1 ? null : handleNextClick}
+                                                    >
+
+                                                        {activeTab === 1 ? "Create Meal" : "Next"}
+                                                    </button>
                                                 </div>
-                                                
-                                            </Tab.Content>
-                                            <div className="mt-4">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary me-2 waves-effect waves-light"
-                                                    onClick={handlePreviousClick}
-                                                    disabled={activeTab === 0}
-                                                >
-                                                    Previous
-                                                </button>
-                                                
-                                                <button
-                                                    type={activeTab === 1 ? "submit" : "button"}
-                                                    className="btn btn-primary me-2 waves-effect waves-light"
-                                                    onClick={activeTab === 1 ? null : handleNextClick}          
-                                                >
-                                                
-                                                {activeTab === 1 ? "Create Meal" : "Next"}
-                                                </button>
                                             </div>
-                                        </div>
                                         </form>
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MealIngredient extends Model
 {
     use HasFactory;
-    protected $fillable = ['ingredient_id', 'meal_id'];
+    protected $fillable = ['ingredient_id', 'meal_id', 'unit', 'cookMethod'];
 
     public function ingredient()
     {
@@ -19,5 +19,4 @@ class MealIngredient extends Model
     {
         return $this->belongsTo(Meal::class, 'meal_id');
     }
-
 }

@@ -14,53 +14,96 @@ export default function OrderStatus() {
 
 
 
+    //react declaration
+    const { user, setUser, setNotification } = useStateContext();
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [pendingCount, setPendingCount] = useState(0);
+    const [preparingCount, setPreparingCount] = useState(0);
+    const [completedCount, setCompletedCount] = useState(0);
+    //fetch user orders data
     useEffect(() => {
+        getOrders();
+    }, [])
 
-        let ratingButton = document.querySelectorAll(".rating");
-        for (var i = 0; i < ratingButton.length; i++) {
-            ratingButton[i].addEventListener("click", (e) => {
-                let ratingParent = e.target.parentElement.children[5];//selecting main parent of arrow
-                console.log(ratingParent);
-                ratingParent.classList.toggle("active");
+    const getOrders = async () => {
 
-            });
+        console.log("getting")
+        setLoading(true)
+        try {
+            await axiosClient.get(`/showOrderStatus/${user.id}`)
+                .then(({ data }) => {
+                    console.log(data)
 
+
+
+                    setOrders(data)
+                    // Categorize orders into pending, preparing, and completed
+                    const pendingOrders = data.filter((order) => order.order_status === 'pending');
+                    const preparingOrders = data.filter((order) => order.order_status === 'preparing');
+                    const completedOrders = data.filter((order) => order.order_status === 'completed');
+                    // Count the meals based on the order status
+                    const pendingMealsCount = pendingOrders.reduce((count, order) => count + order.meals.length, 0);
+                    const preparingMealsCount = preparingOrders.reduce((count, order) => count + order.meals.length, 0);
+                    const completedMealsCount = completedOrders.reduce((count, order) => count + order.meals.length, 0);
+                    // Update the counts
+                    setPendingCount(pendingMealsCount);
+                    setPreparingCount(preparingMealsCount);
+                    setCompletedCount(completedMealsCount);
+                    setLoading(false)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false)
         }
+    }
 
 
-        let ratingCloseBtn = document.querySelectorAll(".close-btn");
-        for (var i = 0; i < ratingCloseBtn.length; i++) {
-            ratingCloseBtn[i].addEventListener("click", (e) => {
-                let ratingCloseParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+    // Initialize the state to keep track of the selected meal's id
+    const [selectedMealId, setSelectedMealId] = useState(null);
 
-                ratingCloseParent.classList.remove("active");
+    // Function to toggle the 'active' class of the popup
+    const togglePopup = (mealId) => {
+        setSelectedMealId((prevState) => (prevState === mealId ? null : mealId));
+    };
 
-            });
+    const [formData, setFormData] = useState({
+        rating: '', // To store the selected rating
+        comment: '', // To store the comment
+    });
 
-        }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleRatingSubmit = (e, mealId) => {
+        e.preventDefault();
+
+        // Access form data from the component's state
+        const { rating, comment } = formData;
+
+        // Now you can use the 'rating' and 'comment' values as needed
+        console.log('Rating: ', rating);
+        console.log('Comment: ', comment);
+        console.log(mealId);
+
+    };
 
 
-        var pendPrduct = document.getElementById("pendingProduct");
-        var completedProduct = document.getElementById("completedProduct");
-        var shipProduct = document.getElementById("shipProduct");
-        pendPrduct.style.display = 'block';
-        var btn = document.getElementById("btn");
-
-
-
-
-
-
-    }, []);
     function pendingProd() {
 
-        console.log('haha')
+
         pendPrduct.style.display = 'block';
         console.log(pendPrduct)
         completedProduct.style.display = 'none';
         shipProduct.style.display = 'none';
 
-        btn.style.left = "34.1%";
+        btn.style.left = "34.3%";
         btn.style.width = "20.5%";
     }
     function shipProd() {
@@ -79,7 +122,7 @@ export default function OrderStatus() {
         completedProduct.style.display = 'block';
         shipProduct.style.display = 'none';
 
-        btn.style.left = "73.4%";
+        btn.style.left = "73.9%";
         btn.style.width = "19%";
 
     }
@@ -112,11 +155,11 @@ export default function OrderStatus() {
 
 
                                 <button type="button" class="toggle-btn" onClick={pendingProd}>
-                                    Preparing<span class="quantityProduct">(2)</span></button>
+                                    Preparing<span class="quantityProduct">({pendingCount})</span></button>
                                 <button type="button" class="toggle-btn" onClick={shipProd}>
-                                    To Delivery <span class="quantityProduct">(3)</span></button>
+                                    To Delivery <span class="quantityProduct">({preparingCount})</span></button>
                                 <button type="button" class="toggle-btn" onClick={completeProd}>
-                                    Completed Order<span class="quantityProduct">(4)</span>
+                                    Completed Order<span class="quantityProduct">({completedCount})</span>
                                 </button>
 
                                 {/* <button type="button" class="toggle-btn" onclick="pendingProd()">
@@ -130,361 +173,203 @@ export default function OrderStatus() {
 
                             </div>
 
-                            <div id="pendingProduct">
-
-
-                                <div class="scroll-wrap">
-
-                                    {/* @foreach ($orders as $order)
-                            @foreach ($order->meals as $meal)
-                                @if ($meal->pivot->meal_order_status == 'preparing') */}
-                                    <div class="product-items">
-
-
-
-                                        {/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
-                                            alt="" /> */}
-                                        <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
-                                        <div class="item-description">
-
-                                            Taiwanese Chicken
-
-                                        </div>
-                                        <div class="item-quantity">RM 5
-                                            X
-                                            5 Qty
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 25
-                                            </p>
-                                        </div>
-
-                                        <div class="item-status">
-                                            Product Status:<span class="item-currentStatus">Preparing</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-items">
-
-
-
-                                        {/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
-                                            alt="" /> */}
-                                        <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
-                                        <div class="item-description">
-
-                                            Taiwanese Chicken
-
-                                        </div>
-                                        <div class="item-quantity">RM 5
-                                            X
-                                            5 Qty
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 25
-                                            </p>
-                                        </div>
-
-                                        <div class="item-status">
-                                            Product Status:<span class="item-currentStatus">Preparing</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-items">
-
-
-
-                                        {/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
-    alt="" /> */}
-                                        <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
-                                        <div class="item-description">
-
-                                            Taiwanese Chicken
-
-                                        </div>
-                                        <div class="item-quantity">RM 5
-                                            X
-                                            5 Qty
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 25
-                                            </p>
-                                        </div>
-
-                                        <div class="item-status">
-                                            Product Status:<span class="item-currentStatus">Preparing</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="product-items">
-
-
-
-{/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
-    alt="" /> */}
-<img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
-<div class="item-description">
-
-    Taiwanese Chicken
-
-</div>
-<div class="item-quantity">RM 5
-    X
-    5 Qty
-</div>
-<div class="item-total">
-    Order Total:<p>
-        RM 25
-    </p>
-</div>
-
-<div class="item-status">
-    Product Status:<span class="item-currentStatus">Preparing</span>
-</div>
-</div>
+                            {loading &&
+                                <div class="text-center">
+                                    <div class="loaderCustom2"></div>
                                 </div>
-
+                            }
+                            <div id="pendingProduct">
+                                <div className="scroll-wrap">
+                                    {!loading && orders.map((order) => (
+                                        <div key={order.id}>
+                                            {order.order_status === 'pending' ? (
+                                                <>
+                                                    {order.meals.length > 0 ? (
+                                                        order.meals.map((meal) => (
+                                                            <div className="product-items" key={meal.id}>
+                                                                <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`} alt="" />
+                                                                <div className="item-description">{meal.meal_name}</div>
+                                                                <div className="item-quantity">RM {meal.meal_price} X {meal.pivot.order_quantity} Qty</div>
+                                                                <div className="item-total">
+                                                                    Order Total:
+                                                                    <p>RM {parseFloat(meal.meal_price * meal.pivot.order_quantity).toFixed(2)}</p>
+                                                                </div>
+                                                                <div className="item-status">
+                                                                    Product Status:
+                                                                    <span className="item-currentStatus">Pending</span>
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p>No meals for this order.</p>
+                                                    )}
+                                                </>
+                                            ) : null}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-
 
 
                             <div id="shipProduct">
 
                                 <div class="scroll-wrap">
-
-                                    {/* @foreach ($orders as $order)
-    @foreach ($order->meals as $meal)
-        @if ($meal->pivot->meal_order_status == 'preparing') */}
-                                    <div class="product-items">
-
-
-
-                                        {/* <img src="{{ $meal->meal_image ? asset('storage/' . $meal->meal_image) : asset('/images/no-image.png') }}"
-                    alt="" /> */}
-                                        <img src="../assets/img/Taiwanese-fried-chicken-11.png" alt="" />
-                                        <div class="item-description">
-
-                                            dsd
-
-                                        </div>
-                                        <div class="item-quantity">RM 5
-                                            X
-                                            5
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 5
-                                            </p>
-                                        </div>
-
-                                        <div class="item-status">
-                                            Product Status:<span class="item-currentStatus">Preparing</span>
-                                        </div>
+                                    <div className="scroll-wrap">
+                                        {orders.map((order) => (
+                                            <div key={order.id}>
+                                                {order.order_status === 'preparing' ? (
+                                                    <>
+                                                        {order.meals.length > 0 ? (
+                                                            order.meals.map((meal) => (
+                                                                <div className="product-items" key={meal.id}>
+                                                                    <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`} alt="" />
+                                                                    <div className="item-description">{meal.meal_name}</div>
+                                                                    <div className="item-quantity">RM {meal.meal_price} X {meal.pivot.order_quantity} Qty</div>
+                                                                    <div className="item-total">
+                                                                        Order Total:
+                                                                        <p>RM {parseFloat(meal.meal_price * meal.pivot.order_quantity).toFixed(2)}</p>
+                                                                    </div>
+                                                                    <div className="item-status">
+                                                                        Product Status:
+                                                                        <span className="item-currentStatus">Pending</span>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        ) : (
+                                                            <p>No meals for this order.</p>
+                                                        )}
+                                                    </>
+                                                ) : null}
+                                            </div>
+                                        ))}
                                     </div>
-
                                 </div>
-
                             </div>
 
 
-
                             <div id="completedProduct">
-
                                 <div class="scroll-wrap">
-                                    {/* @foreach ($orders as $order)
-                            @foreach ($order->meals as $meal)
-                                @if ($meal->pivot->meal_order_status == 'completed') */}
-                                    <div class="product-items">
-
-                                        <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
-
-
-
-                                        <div class="item-description">
-                                            gg
-                                        </div>
-                                        <div class="item-quantity">RM5
-                                            X
-                                            6
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 5 * 6
-                                            </p>
-                                        </div>
-
-
-                                        <button type="button" class="ratingButton rating"
-                                            runat="server">Rating</button>
-
-
-                                        <div class="popup" id="popup-1">
-                                            <div class="overlay-pop"></div>
-                                            <div class="content">
-                                                <div class="close-btn">&times;</div>
-                                                <div class="ratingContainer">
-                                                    <div class="">
-                                                        <div class="text">Thanks for rating us!</div>
-                                                    </div>
-                                                    <form method="POST" action="/comment" enctype="multipart/form-data">
-
-                                                        <div class="star-widget">
-                                                            <div class="star">
-
-                                                                <input type="radio" name="rate" id="rate-5"
-                                                                    value="5" />
-                                                                <label for="rate-5" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-4"
-                                                                    value="4" />
-                                                                <label for="rate-4" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-3"
-                                                                    value="3" />
-                                                                <label for="rate-3" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-2"
-                                                                    value="2" />
-                                                                <label for="rate-2" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-1"
-                                                                    value="1" />
-                                                                <label for="rate-1" class="fas fa-star"></label>
-
-                                                                <div class="textarea">
-
-                                                                    <textarea cols="30" id="txtItemComment" placeholder="Describe about the product.." name="txtItemComment"></textarea>
+                                    {orders.map((order) => (
+                                        <div key={order.id}>
+                                            {order.order_status === 'completed' ? (
+                                                <>
+                                                    {order.meals.length > 0 ? (
+                                                        order.meals.map((meal) => (
+                                                            <div className="product-items" key={meal.id}>
+                                                                <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`} alt="" />
+                                                                <div className="item-description">{meal.meal_name}</div>
+                                                                <div className="item-quantity">RM {meal.meal_price} X {meal.pivot.order_quantity} Qty</div>
+                                                                <div className="item-total">
+                                                                    Order Total:
+                                                                    <p>RM {parseFloat(meal.meal_price * meal.pivot.order_quantity).toFixed(2)}</p>
                                                                 </div>
-                                                                <div class="btnRating">
-
-
-                                                                    {/* <input type="hidden" id="mealOrderDetailId"
-                                                                                name="mealOrderDetailId"
-                                                                                value="{{ $meal->pivot->id }}"> */}
-
-                                                                    <button type="submit" runat="server"
-                                                                        onserverclick="btnRating_Click">Submit</button>
-
+                                                                <button type="button" className="ratingButton rating" runat="server" onClick={() => togglePopup(meal.pivot.id)}>
+                                                                    Rating
+                                                                </button>
+                                                                {/* Add a unique identifier to the popup element */}
+                                                                <div className={`popup ${meal.pivot.id === selectedMealId ? 'active' : ''}`} id={`popup-${meal.pivot.id}`}>
+                                                                    <div className="overlay-pop"></div>
+                                                                    <div className="content">
+                                                                        <div className="close-btn" onClick={() => togglePopup(meal.pivot.id)}>×</div>
+                                                                        <div className="ratingContainer">
+                                                                            <div className="">
+                                                                                <div className="text">Thanks for rating us!</div>
+                                                                            </div>
+                                                                            <form onSubmit={(e) => handleRatingSubmit(e, meal.pivot.id)}>
+                                                                                <div className="star-widget">
+                                                                                    <div className="star">
+                                                                                        <input
+                                                                                            type="radio"
+                                                                                            name="rating"
+                                                                                            id={`rate-5-${meal.pivot.id}`}
+                                                                                            value="5"
+                                                                                            checked={formData.rating === '5'}
+                                                                                            onChange={handleInputChange}
+                                                                                        />
+                                                                                        <label
+                                                                                            for={`rate-5-${meal.pivot.id}`}
+                                                                                            className={`fas fa-star${formData.rating === '5' ? ' checked' : ''}`}
+                                                                                            aria-hidden="true"
+                                                                                        ></label>
+                                                                                        <input
+                                                                                            type="radio"
+                                                                                            name="rating"
+                                                                                            id={`rate-4-${meal.pivot.id}`}
+                                                                                            value="4"
+                                                                                            checked={formData.rating === '4'}
+                                                                                            onChange={handleInputChange}
+                                                                                        />
+                                                                                        <label for={`rate-4-${meal.pivot.id}`} className={`fas fa-star${formData.rating === '5' ? ' checked' : ''}`} aria-hidden="true"></label>
+                                                                                        <input
+                                                                                            type="radio"
+                                                                                            name="rating"
+                                                                                            id={`rate-3-${meal.pivot.id}`}
+                                                                                            value="3"
+                                                                                            checked={formData.rating === '3'}
+                                                                                            onChange={handleInputChange}
+                                                                                        />
+                                                                                        <label for={`rate-3-${meal.pivot.id}`} className={`fas fa-star${formData.rating === '5' ? ' checked' : ''}`} aria-hidden="true"></label>
+                                                                                        <input
+                                                                                            type="radio"
+                                                                                            name="rating"
+                                                                                            id={`rate-2-${meal.pivot.id}`}
+                                                                                            value="2"
+                                                                                            checked={formData.rating === '2'}
+                                                                                            onChange={handleInputChange}
+                                                                                        />
+                                                                                        <label for={`rate-2-${meal.pivot.id}`} className={`fas fa-star${formData.rating === '5' ? ' checked' : ''}`} aria-hidden="true"></label>
+                                                                                        <input
+                                                                                            type="radio"
+                                                                                            name="rating"
+                                                                                            id={`rate-1-${meal.pivot.id}`}
+                                                                                            value="1"
+                                                                                            checked={formData.rating === '1'}
+                                                                                            onChange={handleInputChange}
+                                                                                        />
+                                                                                        <label for={`rate-1-${meal.pivot.id}`} className={`fas fa-star${formData.rating === '5' ? ' checked' : ''}`} aria-hidden="true"></label>
+                                                                                        <div className="textarea">
+                                                                                            <textarea
+                                                                                                cols="30"
+                                                                                                id={`txtItemComment-${meal.pivot.id}`}
+                                                                                                name="comment"
+                                                                                                value={formData.comment}
+                                                                                                onChange={handleInputChange}
+                                                                                                placeholder="Describe about the product.."
+                                                                                            ></textarea>
+                                                                                        </div>
+                                                                                        <div className="btnRating">
+                                                                                            <button type="submit" runat="server">
+                                                                                                Submit
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                <div className="item-status completed">
+                                                                    Product Status:
+                                                                    <span className="item-currentStatus">Completed</span>
+                                                                </div>
+                                                                {/* Comment Section */}
+                                                                {meal.pivot.reply_comment !== null && (
+                                                                    <div className="comment" id="id1" runat="server">
+                                                                        <img src="../image/GrandImperialGroupLogo.png" alt="" />
+                                                                        Grand<span className="semicolon">:</span>
+                                                                        <p>{meal.pivot.reply_comment}</p>
+                                                                    </div>
+                                                                )}
                                                             </div>
-                                                        </div>
-                                                    </form>
-
-
-
-                                                </div>
-                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p>No meals for this order.</p>
+                                                    )}
+                                                </>
+                                            ) : null}
                                         </div>
-
-
-                                        <div class="item-status completed">
-                                            Product Status:<span class="item-currentStatus">Completed</span>
-                                        </div>
-                                        {/* @if ($meal->pivot->reply_comment != null)
-                                                <div class="comment" id="id1" runat="server">
-                                                    <img src="../image/GrandImperialGroupLogo.png"
-                                                        alt="">Grand<span class="semicolon">:</span>
-                                                        <p>{{ $meal-> pivot -> reply_comment}}</p>
-                                                </div>
-                                                @endif */}
-
-                                    </div>
-
-                                    <div class="product-items">
-
-                                        <img src="../../../assets/img/GrandImperialGroupLogo.png" alt="" />
-
-
-
-                                        <div class="item-description">
-                                            gg
-                                        </div>
-                                        <div class="item-quantity">RM5
-                                            X
-                                            6
-                                        </div>
-                                        <div class="item-total">
-                                            Order Total:<p>
-                                                RM 5 * 6
-                                            </p>
-                                        </div>
-
-
-                                        <button type="button" class="ratingButton rating"
-                                            runat="server">Rating</button>
-
-
-                                        <div class="popup" id="popup-1">
-                                            <div class="overlay-pop"></div>
-                                            <div class="content">
-                                                <div class="close-btn">&times;</div>
-                                                <div class="ratingContainer">
-                                                    <div class="">
-                                                        <div class="text">Thanks for rating us!</div>
-                                                    </div>
-                                                    <form method="POST" action="/comment" enctype="multipart/form-data">
-
-                                                        <div class="star-widget">
-                                                            <div class="star">
-
-                                                                <input type="radio" name="rate" id="rate-5"
-                                                                    value="5" />
-                                                                <label for="rate-5" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-4"
-                                                                    value="4" />
-                                                                <label for="rate-4" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-3"
-                                                                    value="3" />
-                                                                <label for="rate-3" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-2"
-                                                                    value="2" />
-                                                                <label for="rate-2" class="fas fa-star"></label>
-                                                                <input type="radio" name="rate" id="rate-1"
-                                                                    value="1" />
-                                                                <label for="rate-1" class="fas fa-star"></label>
-
-                                                                <div class="textarea">
-
-                                                                    <textarea cols="30" id="txtItemComment" placeholder="Describe about the product.." name="txtItemComment"></textarea>
-                                                                </div>
-                                                                <div class="btnRating">
-
-
-                                                                    {/* <input type="hidden" id="mealOrderDetailId"
-                                            name="mealOrderDetailId"
-                                            value="{{ $meal->pivot->id }}"> */}
-
-                                                                    <button type="submit" runat="server"
-                                                                        onserverclick="btnRating_Click">Submit</button>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="item-status completed">
-                                            Product Status:<span class="item-currentStatus">Completed</span>
-                                        </div>
-                                        {/* @if ($meal->pivot->reply_comment != null)
-            <div class="comment" id="id1" runat="server">
-                <img src="../image/GrandImperialGroupLogo.png"
-                    alt="">Grand<span class="semicolon">:</span>
-                    <p>{{ $meal-> pivot -> reply_comment}}</p>
-            </div>
-            @endif */}
-
-                                    </div>
-
-
+                                    ))}
                                 </div>
-
-
-
                             </div>
 
                         </div>

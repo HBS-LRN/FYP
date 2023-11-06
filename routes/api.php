@@ -54,6 +54,11 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::put('/updateDeliveryStatus/{id}', [DeliveryController::class, 'updateDelivery']);
     Route::get('/completeDelivery/{id}', [OrderController::class, 'completedDelivery']);
     Route::apiResource('/shoppingCart', ShoppingCartController::class);
+    Route::get('/currentAddress/{id}', [AddressController::class, 'getCurrentAddress']);
+    Route::apiResource('/order', OrderController::class);
+    Route::get('/showOrderStatus/{id}', [OrderController::class, 'showOrderStatus']);
+
+    
 });
 
 

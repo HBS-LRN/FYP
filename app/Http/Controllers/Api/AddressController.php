@@ -154,4 +154,19 @@ class AddressController extends Controller
 
         return response()->json($state);
     }
+
+
+
+    public function getCurrentAddress($id)
+    {
+        /** @var \App\Models\User $user */
+        $user = User::find($id);
+
+        // Retrieve the user's addresses where the active_flag is 'T'
+        $currentAddress = $user->addresses->where('active_flag', 'T')->first();
+
+
+        return response()->json($currentAddress);
+       
+    }
 }

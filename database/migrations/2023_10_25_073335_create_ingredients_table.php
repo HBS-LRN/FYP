@@ -17,6 +17,7 @@ class CreateIngredientsTable extends Migration
             $table->id();
             $table->string("ingredient_name");
             $table->double("calorie");
+            $table->integer("stock");
             $table->timestamps();
         });
     }

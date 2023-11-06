@@ -9,7 +9,7 @@ class Meal extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'meal_price', 'meal_image', 'meal_name', 'meal_desc','meal_qty','total_calorie'];
+    protected $fillable = ['category_id', 'meal_price', 'meal_image', 'meal_name', 'meal_desc', 'meal_qty', 'total_calorie'];
 
     public function category()
     {
@@ -29,5 +29,4 @@ class Meal extends Model
     {
         return $this->hasMany(MealIngredient::class);
     }
-  
 }

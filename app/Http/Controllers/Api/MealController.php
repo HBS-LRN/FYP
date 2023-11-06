@@ -10,6 +10,7 @@ use App\Models\MealIngredient;
 use Illuminate\Http\Request;
 use App\Http\Requests\mealStoreRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Ingredient;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -87,7 +88,7 @@ class MealController extends Controller
             $meal->meal_price = $request->meal_price;
             $meal->meal_name = $request->meal_name;
             $meal->meal_desc = $request->meal_desc;
-
+            $meal->total_calorie = 0.00;
             if ($request->hasFile('meal_image')) {
                 $data['meal_image'] = $request->file('meal_image')->store('images', 'public');
                 $meal->meal_image =  $data['meal_image'];
@@ -103,7 +104,7 @@ class MealController extends Controller
             // file_put_contents($relativePath, file_get_contents($request->meal_image));
             $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
 
-            $this->storeMealIngredients($meal, $ingredientIds);
+            $this->storeMealIngredients($meal, $ingredientIds, $request->unit, $request->cookMethod);
             // Return Json Response
             return response()->json([
                 'message' => "Category successfully created."
@@ -115,15 +116,54 @@ class MealController extends Controller
             ], 500);
         }
     }
-    function storeMealIngredients(Meal $meal, array $ingredients)
+
+    function storeMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)
     {
-        foreach ($ingredients as $ingredient) {
-            MealIngredient::create([
+
+        $cookMethodCalories = [
+            'water_boiled' => 0,
+            'fried' => 100, 
+            'deep_fried' => 200, 
+            'raw' => 0,
+            'saute' => 50, 
+            'steam' => 20, 
+            'spicy' => 150, 
+        ];
+
+
+        $totalCalorie = 0.00; // Initialize the total calorie to zero
+
+        foreach ($ingredients as $key => $ingredient) {
+            $mealIngredient = new MealIngredient([
                 'ingredient_id' => $ingredient,
                 'meal_id' => $meal->id,
+                'unit' => $unit[$key],
+                'cookMethod' => $cookMethod[$key],
             ]);
+
+            // Retrieve the Ingredient model for the current ingredient
+            $ingredientModel = Ingredient::find($ingredient);
+
+            // Add the calorie of the current ingredient to the total calorie
+            if ($ingredientModel) {
+                $totalCalorie += $ingredientModel->calorie;
+            }
+
+            // Add the calorie based on the selected cook method
+            if (isset($cookMethodCalories[$cookMethod[$key]])) {
+                $totalCalorie += $cookMethodCalories[$cookMethod[$key]];
+            }
+
+            $mealIngredient->save();
         }
+
+        // Update the total_calorie attribute of the Meal model with the calculated total calorie
+        $meal->total_calorie = $totalCalorie;
+        $meal->save();
     }
+
+
+
     public function update(MealStoreRequest $request, $id)
     {
         try {
@@ -171,14 +211,14 @@ class MealController extends Controller
             ], 500);
         }
     }
-    function updateMealIngredients(Meal $meal, array $ingredients)
-    {
-        // Delete existing Meal Ingredients
-        MealIngredient::where('meal_id', $meal->id)->delete();
+    // function updateMealIngredients(Meal $meal, array $ingredients)
+    // {
+    //     // Delete existing Meal Ingredients
+    //     MealIngredient::where('meal_id', $meal->id)->delete();
 
-        // Store new Meal Ingredients
-        $this->storeMealIngredients($meal, $ingredients);
-    }
+    //     // Store new Meal Ingredients
+    //     $this->storeMealIngredients($meal, $ingredients);
+    // }
 
     public function destroy($id)
     {
@@ -212,25 +252,25 @@ class MealController extends Controller
     // public function showCategoryMeal($id)
     // {
     //     $category = Category::find($id);
-    
+
     //     $categoryMeals = $category->categorymeals()
     //         ->whereHas('meal', function ($query) {
     //             $query->where('meal_qty', '!=', 0);
     //         })
     //         ->with(['mealIngredients', 'mealIngredients.ingredient'])
     //         ->get();
-    
+
     //     return response()->json($categoryMeals);
     // }
 
     public function showCategoryMeal($id)
     {
         $category = Category::find($id);
-    
+
         $categoryMeals = $category->categorymeals()
             ->with(['mealIngredients', 'mealIngredients.ingredient'])
             ->get();
-    
+
         return response()->json($categoryMeals);
     }
 }
