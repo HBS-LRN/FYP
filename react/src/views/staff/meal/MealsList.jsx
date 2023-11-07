@@ -45,7 +45,7 @@ export default function MealsList() {
                     aria-controls="collapseThree"
                     onClick={() => categoryClick(item.name)}
                 >
-                    <img src={"../../../assets/img/icon/" + item.image} alt="" srcset="" height="20px" width="20px" /> {item.name}
+                    <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.iconImage}`}  alt="" srcset="" height="20px" width="20px" /> {item.name}
                 </button>
             </h2>
         </div>

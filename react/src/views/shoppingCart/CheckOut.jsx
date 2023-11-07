@@ -217,7 +217,7 @@ export default function CheckOut() {
                     order_date: new Date(), // Use the current date or timestamp
                     payment_method: 'Pay On Delivery', // Set payment_method to 'Pay On Delivery'
                     orderItems: orderItems,
-                    username:currentAddress.address_username,
+                    username: currentAddress.address_username,
                     userphone: currentAddress.address_userphone,
                     street: currentAddress.street,
                     city: currentAddress.city,
@@ -489,7 +489,12 @@ export default function CheckOut() {
                                                         order_date: new Date(), // Use the current date or timestamp
                                                         payment_method: data.paymentSource, // Payment Method
                                                         orderItems: orderItems,
-                                                        currentAddress: currentAddress,
+                                                        username: currentAddress.address_username,
+                                                        userphone: currentAddress.address_userphone,
+                                                        street: currentAddress.street,
+                                                        city: currentAddress.city,
+                                                        state: currentAddress.state,
+                                                        postcode: currentAddress.postcode
                                                     };
 
                                                     try {

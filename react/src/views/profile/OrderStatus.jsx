@@ -40,7 +40,7 @@ export default function OrderStatus() {
                     setOrders(data)
                     // Categorize orders into pending, preparing, and completed
                     const pendingOrders = data.filter((order) => order.order_status === 'pending');
-                    const preparingOrders = data.filter((order) => order.order_status === 'preparing');
+                    const preparingOrders = data.filter((order) => order.order_status === 'delivering');
                     const completedOrders = data.filter((order) => order.order_status === 'completed');
                     // Count the meals based on the order status
                     const pendingMealsCount = pendingOrders.reduce((count, order) => count + order.meals.length, 0);
@@ -103,7 +103,7 @@ export default function OrderStatus() {
         completedProduct.style.display = 'none';
         shipProduct.style.display = 'none';
 
-        btn.style.left = "34.3%";
+        btn.style.left = "34.0%";
         btn.style.width = "20.5%";
     }
     function shipProd() {
@@ -217,7 +217,7 @@ export default function OrderStatus() {
                                     <div className="scroll-wrap">
                                         {orders.map((order) => (
                                             <div key={order.id}>
-                                                {order.order_status === 'preparing' ? (
+                                                {order.order_status === 'delivering' ? (
                                                     <>
                                                         {order.meals.length > 0 ? (
                                                             order.meals.map((meal) => (
