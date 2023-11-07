@@ -57,7 +57,7 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/currentAddress/{id}', [AddressController::class, 'getCurrentAddress']);
     Route::apiResource('/order', OrderController::class);
     Route::get('/showOrderStatus/{id}', [OrderController::class, 'showOrderStatus']);
-
+    Route::post('/rating', [OrderController::class, 'storeRating']);
     
 });
 
@@ -97,7 +97,10 @@ Route::get('/meal',[MealController::class, 'index']);
 Route::post('/meal', [MealController::class, 'store']);
 Route::put('/meal/{id}', [MealController::class, 'update']);
 Route::delete('/meal/{id}', [MealController::class, 'destroy']);
-Route::get('/meal/{id}', [MealController::class, 'showCategoryMeal']);
+
+
+
+Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 
 Route::apiResource('/allergic', AllergicController::class);
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

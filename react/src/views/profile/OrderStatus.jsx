@@ -3,7 +3,7 @@ import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-
+import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 
 
 
@@ -21,6 +21,7 @@ export default function OrderStatus() {
     const [pendingCount, setPendingCount] = useState(0);
     const [preparingCount, setPreparingCount] = useState(0);
     const [completedCount, setCompletedCount] = useState(0);
+    const { setWarningNotification, setFailNotification } = useNotificationContext();
     //fetch user orders data
     useEffect(() => {
         getOrders();
@@ -81,17 +82,37 @@ export default function OrderStatus() {
         });
     };
 
-    const handleRatingSubmit = (e, mealId) => {
+
+    //handle the rating submit button
+    const handleRatingSubmit = async (e, mealId) => {
         e.preventDefault();
 
         // Access form data from the component's state
         const { rating, comment } = formData;
 
-        // Now you can use the 'rating' and 'comment' values as needed
-        console.log('Rating: ', rating);
-        console.log('Comment: ', comment);
-        console.log(mealId);
+        const payload = {
+            rating_star: rating,
+            rating_comment: comment,
+            id: mealId,
+            user_id:user.id
+        };
+        try {
+            await axiosClient
+                .post("/rating", payload)
+                .then((data) => {
 
+                    console.log(data)
+                    console.log(data.response)
+                    setNotification("Thanks For Rating Us!");
+                    setSelectedMealId((prevState) => (prevState === mealId ? null : mealId));
+                    setOrders(data.data);
+                });
+        } catch (error) {
+            console.log(error);
+            const response = err.response;
+
+            setFailNotification("Something Gone Wrong!", response);
+        }
     };
 
 
@@ -263,9 +284,12 @@ export default function OrderStatus() {
                                                                     Order Total:
                                                                     <p>RM {parseFloat(meal.meal_price * meal.pivot.order_quantity).toFixed(2)}</p>
                                                                 </div>
-                                                                <button type="button" className="ratingButton rating" runat="server" onClick={() => togglePopup(meal.pivot.id)}>
-                                                                    Rating
-                                                                </button>
+
+                                                                {!meal.pivot.rating_star &&
+                                                                    <button type="button" className="ratingButton rating" runat="server" onClick={() => togglePopup(meal.pivot.id)}>
+                                                                        Rating
+                                                                    </button>
+                                                                }
                                                                 {/* Add a unique identifier to the popup element */}
                                                                 <div className={`popup ${meal.pivot.id === selectedMealId ? 'active' : ''}`} id={`popup-${meal.pivot.id}`}>
                                                                     <div className="overlay-pop"></div>

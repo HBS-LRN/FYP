@@ -185,4 +185,32 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
+
+    public function storeRating(Request $request)
+    {
+        // Validate the request data if needed
+
+        // Find the meal_order_detail record based on the provided ID
+        $mealOrderDetail = MealOrderDetail::find($request->input('id'));
+
+        if (!$mealOrderDetail) {
+            // Handle the case where the meal_order_detail with the provided ID is not found
+            return response()->json(['error' => 'Meal Order Detail not found'], 404);
+        }
+
+        // Update the rating_star and rating_comment fields
+        $mealOrderDetail->rating_star = $request->input('rating_star');
+        $mealOrderDetail->rating_comment = $request->input('rating_comment');
+
+        // Save the updated record
+        $mealOrderDetail->save();
+
+        //get all of the orders belong to that particular user 
+        /** @var \App\Models\User $user */
+        $user = User::with('orders.meals')->find($request->input('user_id'));
+        $orders = $user->orders;
+
+        return response()->json($orders);
+    }
 }

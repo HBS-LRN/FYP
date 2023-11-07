@@ -237,40 +237,24 @@ class MealController extends Controller
     }
 
 
-    // public function showCategoryMeal($id)
-    // {
-    //     /** @var \App\Models\Category $category */
-    //     $category = Category::find($id);
-
-
-
-    //     return response()->json(
-    //         $category->categorymeals->where('meal_qty', '!=', '0')
-    //     );
-    // }
-
-    // public function showCategoryMeal($id)
-    // {
-    //     $category = Category::find($id);
-
-    //     $categoryMeals = $category->categorymeals()
-    //         ->whereHas('meal', function ($query) {
-    //             $query->where('meal_qty', '!=', 0);
-    //         })
-    //         ->with(['mealIngredients', 'mealIngredients.ingredient'])
-    //         ->get();
-
-    //     return response()->json($categoryMeals);
-    // }
-
     public function showCategoryMeal($id)
     {
         $category = Category::find($id);
-
+    
         $categoryMeals = $category->categorymeals()
             ->with(['mealIngredients', 'mealIngredients.ingredient'])
+            ->whereHas('mealIngredients', function ($query) {
+                $query->whereHas('ingredient', function ($subquery) {
+                    $subquery->where('stock', '>', 0);
+                });
+            })
+            ->whereDoesntHave('mealIngredients', function ($query) {
+                $query->whereHas('ingredient', function ($subquery) {
+                    $subquery->where('stock', '<=', 0);
+                });
+            })
             ->get();
-
+    
         return response()->json($categoryMeals);
     }
 }

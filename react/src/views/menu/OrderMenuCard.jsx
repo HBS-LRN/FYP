@@ -32,7 +32,7 @@ export default function OrderMenuCard() {
         useEffect(() => {
             setLoading(true);
             axiosClient
-                .get(`/meal/${id}`)
+                .get(`/showCategoryMeal/${id}`)
                 .then(({ data }) => {
                     console.log(data);
 
