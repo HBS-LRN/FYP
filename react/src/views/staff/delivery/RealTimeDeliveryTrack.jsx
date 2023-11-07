@@ -14,6 +14,7 @@ export default function RealTimeDeliveryTrack() {
     let { id } = useParams();
     const mapRef = useRef(null);
     const navigate = useNavigate();
+    const { setWarningNotification, setFailNotification } = useNotificationContext();
     function hideThirdMarker() {
         // Check if the third img element exists before removing it
         const leafletMarkerPane = document.querySelector('.leaflet-marker-pane');

@@ -207,6 +207,7 @@ export default function CheckOut() {
                     order_quantity: cartItem.pivot.shopping_cart_qty,
                 }));
 
+                console.log(currentAddress)
                 const payload = {
                     user_id: user.id,
                     order_total: calculateTotalPrice() + 5,
@@ -216,6 +217,12 @@ export default function CheckOut() {
                     order_date: new Date(), // Use the current date or timestamp
                     payment_method: 'Pay On Delivery', // Set payment_method to 'Pay On Delivery'
                     orderItems: orderItems,
+                    username:currentAddress.address_username,
+                    userphone: currentAddress.address_userphone,
+                    street: currentAddress.street,
+                    city: currentAddress.city,
+                    state: currentAddress.state,
+                    postcode: currentAddress.postcode
                 };
 
                 try {
@@ -482,6 +489,7 @@ export default function CheckOut() {
                                                         order_date: new Date(), // Use the current date or timestamp
                                                         payment_method: data.paymentSource, // Payment Method
                                                         orderItems: orderItems,
+                                                        currentAddress: currentAddress,
                                                     };
 
                                                     try {

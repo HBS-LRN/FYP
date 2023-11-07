@@ -19,7 +19,7 @@ class Meal extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'meal_order_details', 'order_id', 'meal_id')->withPivot('id', 'order_quantity', 'rating_star', 'rating_comment', 'reply_comment', 'meal_order_status');
+        return $this->belongsToMany(Order::class, 'meal_order_details', 'order_id', 'meal_id')->withPivot('id', 'order_quantity', 'rating_star', 'rating_comment', 'reply_comment');
     }
     public function users()
     {

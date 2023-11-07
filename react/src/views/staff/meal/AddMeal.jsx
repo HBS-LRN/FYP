@@ -29,17 +29,17 @@ const AddProduct = () => {
         const { value } = e.target;
         const updatedUnit = [...meal.unit];
         updatedUnit[index] = value;
-    
+
         setMeal({
             ...meal,
             unit: updatedUnit,
         });
     };
-    
+
     const handleCookMethodInput = (selectedOption, index) => {
         const updatedCookMethod = [...meal.cookMethod];
         updatedCookMethod[index] = selectedOption.value;
-    
+
         setMeal({
             ...meal,
             cookMethod: updatedCookMethod,
@@ -359,7 +359,16 @@ const AddProduct = () => {
                                                                                         : ''
                                                                                 }
                                                                                 onChange={(selectedOption) => handleCookMethodInput(selectedOption, index)}
-                                                                               t 
+                                                                                options={[
+                                                                                    { value: 'water_boiled', label: 'Water Boiled' },
+                                                                                    { value: 'fried', label: 'Fried' },
+                                                                                    { value: 'deep_fried', label: 'Deep Fried' },
+                                                                                    { value: 'raw', label: 'Raw' },
+                                                                                    { value: 'saute', label: 'Saute' },
+                                                                                    { value: 'steam', label: 'Steam' },
+                                                                                    { value: 'spicy', label: 'Spicy' },
+                                                                                ]}
+
                                                                             />
                                                                             {errors[`cookMethod_${index}`] && (
                                                                                 <div className="text-danger">{errors[`cookMethod_${index}`]}</div>

@@ -22,7 +22,6 @@ class CreateMealOrderDetailsTable extends Migration
             $table->integer("rating_star")->nullable();
             $table->string("rating_comment")->nullable();
             $table->string("reply_comment")->nullable();
-            $table->string("meal_order_status");
             $table->timestamps();
 
          

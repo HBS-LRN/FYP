@@ -146,7 +146,7 @@ class MealController extends Controller
 
             // Add the calorie of the current ingredient to the total calorie
             if ($ingredientModel) {
-                $totalCalorie += $ingredientModel->calorie;
+                $totalCalorie += $ingredientModel->calorie * $unit[$key];
             }
 
             // Add the calorie based on the selected cook method

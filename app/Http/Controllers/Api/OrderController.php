@@ -38,12 +38,12 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreOrderRequest  $request
+     * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
 
 
         //call order repository interface to create data 
@@ -60,7 +60,21 @@ class OrderController extends Controller
             'order_status' => $data['order_status'],
             'payment_status' => $data['payment_status'],
             'payment_method' => $data['payment_method'],
-            'order_date' => $orderDate, // Use the formatted date
+            'order_date' => $orderDate,
+
+
+        ]);
+
+        // Create a Delivery record along with the order
+        Delivery::create([
+            'order_id' => $order->id,
+            'username' => $data['username'],
+            'userphone' => $data['userphone'],
+            'street' => $data['street'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'postcode' => $data['postcode'],
+            'delivery_man_id' => 0, //default value
         ]);
 
         foreach ($data['orderItems'] as $orderItem) {
@@ -68,7 +82,6 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'meal_id' => $orderItem['meal_id'],
                 'order_quantity' => $orderItem['order_quantity'],
-                'meal_order_status' => "pending"
             ]);
         }
 
@@ -165,14 +178,11 @@ class OrderController extends Controller
 
 
 
-          //get all of the orders belong to that particular user 
+        //get all of the orders belong to that particular user 
         /** @var \App\Models\User $user */
         $user = User::with('orders.meals')->find($id);
         $orders = $user->orders;
-    
+
         return response()->json($orders);
-
-
-       
     }
 }

@@ -108,7 +108,7 @@ export default function DeliveryList() {
     deliveryDetail = deliveries.map((delivery, index) => {
         console.log(user.id)
         console.log(delivery.delivery_man_id)
-        if (delivery.order.order_status === "preparing") {
+        if (delivery.order.order_status === "pending") {
             return (
                 <tr key={delivery.order_id}>
                     <td>{delivery.order_id}</td>
