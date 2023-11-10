@@ -7,20 +7,125 @@ import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
 
 
-
-
 export default function MealsList() {
-    const [selectCategory, setSelectCategory] = useState([]); // Initialize state as an array
-    const [loading, setLoading] = useState(false);
-    const categoryClick = (category) => {
-        // Check if the selected category is the same as the currently selected category.
-        // If it is, clear the selection (set it to an empty array), otherwise, set the selected category.
-        setSelectCategory(selectCategory === category ? [] : category);
-    }
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [categorytList, setCategorytList] = useState([]);
+    const [mealList, setMeal] = useState([]); 
+    const [loading, setLoading] = useState(false);
+    const [isFilterActive, setIsFilterActive] = useState(false);
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    const [filteredMeals, setFilteredMeals] = useState([]); 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Function to handle category selection
+    const categoryClick = (categoryId) => {
+        // If the selected category is the same as the currently selected category, clear the selection
+        // Otherwise, set the selected category.
+        const newSelectedCategory = selectedCategory === categoryId ? null : categoryId;
+        setSelectedCategory(newSelectedCategory);
+        setIsFilterActive(newSelectedCategory !== null); 
+        filterMeals(newSelectedCategory);
+    }
+    // Function to filter meals based on the selected category
+    // filteredMeals = mealList.filter((meal) => {
+    //     // If no category is selected, show all meals, otherwise check if the meal belongs to the selected category
+    //     return selectedCategory===null || meal.category_id===selectedCategory;
+    // });
+    const filterMeals = (categoryId) => {
+        let filterChange;
+        if (searchQuery !=null) {
+            filterChange = mealList.filter((meal) =>
+                meal.meal_name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+    
+        if (categoryId !== null) {
+            filterChange = mealList.filter((meal) =>
+                categoryId === null || meal.category_id === categoryId
+            );
+        }
+        setFilteredMeals(filterChange);
+    };
+    // const filterMeals = (categoryId) => {
+
+    
+    //     if (categoryId !== null) {
+    //         filterChange = mealList.filter((meal) =>
+    //             categoryId === null || meal.category_id === categoryId
+    //         );
+    //     }
+    //     setFilteredMeals(filterChange);
+    // };
+
+    // const applyPriceFilter = () => {
+    //     const filteredMeals = mealList.filter((meal) => {
+    //         const mealPrice = parseFloat(meal.meal_price);
+    //         return (isNaN(minPrice) || mealPrice >= parseFloat(minPrice)) && (isNaN(maxPrice) || mealPrice <= parseFloat(maxPrice));
+    //     });
+    //     setFilteredMeals(filteredMeals);
+    //     setIsFilterActive(true);
+    // }
+    const applyPriceFilter = () => {
+        let updatedFilteredMeals;
+        if (selectedCategory !== null) {
+            const filteredByCategory = filteredMeals.filter((meal) => {
+                return selectedCategory === null || meal.category_id === selectedCategory;
+            });
+        
+            updatedFilteredMeals = filteredByCategory.filter((meal) => {
+                const mealPrice = parseFloat(meal.meal_price);
+                return (isNaN(minPrice) || mealPrice >= parseFloat(minPrice)) && (isNaN(maxPrice) || mealPrice <= parseFloat(maxPrice));
+            });
+        } else {
+            // When no category is selected, filter by price range only.
+            updatedFilteredMeals = mealList.filter((meal) => {
+                const mealPrice = parseFloat(meal.meal_price);
+                return (
+                    (isNaN(minPrice) || mealPrice >= parseFloat(minPrice)) &&
+                    (isNaN(maxPrice) || mealPrice <= parseFloat(maxPrice))
+                );
+            });
+        }
+    
+        setFilteredMeals(updatedFilteredMeals);
+        setIsFilterActive(true);
+    }
+    // searching function
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+
+        setSearchQuery(query);
+
+        // If the query is empty, clear the filter
+        if (query == null) {
+            clearFilter();
+            return;
+        }
+
+        axiosClient.get(`/mealSearch?searchQuery=${query}`)
+            .then((response) => {
+                setFilteredMeals(response.data);
+            })
+            .catch((error) => {
+                console.error('Error searching meals:', error);
+            });
+    };
+    const clearFilter = () => {
+        setSelectedCategory(null);
+        setIsFilterActive(false);
+        setMinPrice('');
+        setMaxPrice('');
+        setFilteredMeals(mealList);
+    }
+    
     useEffect(() => {
         getCategory();
-    }, [])
+        getMeal();
+        setIsFilterActive(false);
+        
+    },[])
+    // get Categorylist
     const getCategory = () => {
         axiosClient.get('/category')
             .then(({ data }) => {
@@ -38,18 +143,33 @@ export default function MealsList() {
         <div className="accordion-item">
             <h2 className="accordion-header" id="headingThree">
                 <button
-                    className={`accordion-button ${selectCategory === item.name ? '' : 'collapsed'}`}
+                    className={`accordion-button ${selectedCategory === item.id ? '' : 'collapsed'}`}
                     type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseThree"
-                    aria-expanded="false"
-                    aria-controls="collapseThree"
-                    onClick={() => categoryClick(item.name)}
+                    data-bs-target={`#collapse${item.id}`}
+                    aria-expanded={selectedCategory === item.id ? 'true' : 'false'}
+                    aria-controls={`collapse${item.id}`}
+                    onClick={() => categoryClick(item.id)}
                 >
                     <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.iconImage}`}  alt="" srcset="" height="20px" width="20px" /> {item.name}
                 </button>
             </h2>
         </div>
     ));
+    // get meal List
+    const getMeal = () => {
+        axiosClient.get('/meal')
+            .then(({ data }) => {
+                console.log('API Response:', data); // Add this line
+                setLoading(false);
+                setMeal(data);
+                setFilteredMeals(data);
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+    }
+
     return (
 
         <div>
@@ -76,9 +196,19 @@ export default function MealsList() {
                                     <div className="card-header bg-transparent border-bottom">
                                         <h5 className="mb-0">Filters</h5>
                                         <div className="AddMealButtton"><a href="/addMeal">+ Add Meals</a></div>
+                                   
                                     </div>
                                     <div className="card-body">
-                                        <h5 className="font-size-14 mb-3">Categories</h5>
+                                        <div className="flexBox">
+                                        <h5 >Categories</h5> 
+                                        {isFilterActive && (
+                                            <button className="clearfilterBtn" onClick={() => clearFilter()}>
+                                                <i className="fas fa-trash-alt"></i> Clear Filter
+                                            </button>
+                                        )}
+                                        </div>
+                                        
+                                        
                                         <div className="accordion ecommerce" id="accordionExample">
 
 
@@ -96,10 +226,20 @@ export default function MealsList() {
                                     </div>
                                     <div className="card-body border-top">
                                         <div>
-                                            <h5 className="font-size-14 mb-4">Price</h5>
+                                        <div className="flexBox">
+                                            <h5>Price</h5>
+                                            <button onClick={applyPriceFilter} className="pricFilterBtn"><i class="fas fa-funnel-dollar"></i> Apply Filter</button>
+                                            </div>
+                                            
                                             <div className="PriceRange">
-                                                <input type="number" id="pricerangeTop" className="pricerangeTop" placeholder="Start Prices" /> -
-                                                <input type="number" id="pricerangeBottom" className="pricerangeBottom" placeholder="End Prices" />
+                                                <input type="number" id="pricerangeTop" className="pricerangeTop" placeholder="Start Prices" 
+                                                value={minPrice}
+                                                onChange={(e) => setMinPrice(e.target.value)}/> -
+                                                <input type="number" id="pricerangeBottom" className="pricerangeBottom" placeholder="End Prices" 
+                                                value={maxPrice}
+                                                onChange={(e) => setMaxPrice(e.target.value)}
+                                                />
+
                                             </div>
 
                                         </div>
@@ -153,7 +293,11 @@ export default function MealsList() {
                                                     <div className="form-inline float-md-end">
                                                         <div className="search-box ms-2">
                                                             <div className="position-relative">
-                                                                <input type="text" className="form-control rounded" placeholder="Search..." />
+                                                                <input type="text" 
+                                                                className="form-control rounded" 
+                                                                placeholder="Search..."  
+                                                                value={searchQuery}
+                                                                onChange={handleSearchChange}/>
                                                                 <i className="mdi mdi-magnify search-icon" />
                                                             </div>
                                                         </div>
@@ -161,122 +305,43 @@ export default function MealsList() {
                                                 </div>
                                             </div>
                                             {/* meal List Start */}
-                                            <div className="row g-0">
+                                            <div className="row g-0 mealListOverflow">
+                                            {loading ? (
+                                                <div>Loading...</div>
+                                            ) : (filteredMeals.length > 0) ? (                   
+                                                 // Render the filtered meals
+                                                 filteredMeals.map((item) => (
+                                                    <a className="col-xl-4 col-sm-6" href={"/mealDetail/"+item.id}>
+                                                        <div className="product-box">
+                                                            <div className="product-img">
 
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-ribbon badge bg-warning">
-                                                                Trending
-                                                            </div>
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart-outline" />
-                                                                </a>
-                                                            </div>
-
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-ribbon badge bg-primary">
-                                                                - 25 %
-                                                            </div>
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart-outline" />
-                                                                </a>
-                                                            </div>
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart text-danger" />
-                                                                </a>
-                                                            </div>
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart-outline" />
-                                                                </a>
-                                                            </div>
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart text-danger" />
-                                                                </a>
-                                                            </div>
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-xl-4 col-sm-6">
-                                                    <div className="product-box">
-                                                        <div className="product-img">
-                                                            <div className="product-ribbon badge bg-primary">
-                                                                - 22 %
-                                                            </div>
-                                                            <div className="product-like">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-heart-outline" />
-                                                                </a>
-                                                            </div>
-                                                            <img src="../assets/img/Chinese-lemon-chicken-salad.png" alt="img-1" className="img-fluid mx-auto d-block" />
-                                                        </div>
-                                                        <div className="text-center">
-
-                                                            <h5 className="font-size-15"><a href="#" className="text-dark">Chinese lemon chicken salad</a></h5>
-                                                            <h5 className="mt-3 mb-0">RM 15.90</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                                {/* <div className="product-ribbon badge bg-primary">
+                                                                    - 25 %
+                                                                </div> */}                                                                                                    
+                                                                <div className="product-like">
+                                                                        <a href="#">
+                                                                            <i className="mdi mdi-heart-outline" />
+                                                                            </a>
+                                                                            </div>
+                                                                                <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.meal_image}`} alt="img-1" height="250px" width="100%"  />
+                                                                            </div>
+                                                                            <div className="text-center">
+                                                                                <h5 className="font-size-15"><a href="#" className="text-dark">{item.meal_name}</a></h5>
+                                                                                <h5 className="mt-3 mb-0">RM {item.meal_price}</h5>
+                                                                            </div>
+                                                                            </div>
+                                                                            </a>
+                                                 ))
+                                            ): (
+                                                <div>No results found.</div>
+                                            )}
+                                             
                                             </div>
                                             {/* meal List End */}
                                             <div className="row mt-4">
                                                 <div className="col-sm-6">
                                                     <div>
-                                                        <p className="mb-sm-0 mt-2">Total Product: <span className="fw-bold">113</span></p>
+                                                        <p className="mb-sm-0 mt-2">Total Product: <span className="fw-bold">{filteredMeals.length}</span></p>
                                                     </div>
                                                 </div>
 

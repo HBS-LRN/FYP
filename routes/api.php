@@ -97,6 +97,7 @@ Route::get('/meal',[MealController::class, 'index']);
 Route::post('/meal', [MealController::class, 'store']);
 Route::put('/meal/{id}', [MealController::class, 'update']);
 Route::delete('/meal/{id}', [MealController::class, 'destroy']);
+Route::get('/mealSearch',[MealController::class, 'adminSearchMeals']);
 
 
 

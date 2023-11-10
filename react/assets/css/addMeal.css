@@ -36,3 +36,55 @@
     width: 120px;
     padding: 5px;
   }
+.product-box{
+ 
+  padding: 15px 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.product-box .product-img{
+  min-height: 250px;
+  min-width: 100%;
+}
+.mealListOverflow{
+  overflow-y: scroll;
+  height: 100vh;
+}
+.mealListOverflow::-webkit-scrollbar{
+  width: 0px;
+}
+.card-body .flexBox{
+ 
+  display: flex;
+  margin-bottom: 10px;
+}
+.card-body .flexBox h5{
+  flex-basis: 50%;
+  margin: 0%;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+
+  
+}
+.card-body .flexBox .clearfilterBtn{
+  color: white;
+  padding: 5px;
+  background-color: rgb(237, 99, 99);
+  border-radius: 5px;
+  font-size: 14px;
+  border: none;
+  flex-basis: 50%;
+}
+.card-body .flexBox .pricFilterBtn{
+  flex-basis: 50%;
+  font-size: 14px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(122, 177, 122);
+
+}

@@ -65,6 +65,16 @@ class MealController extends Controller
         return $output;
     }
 
+    public function adminSearchMeals(Request $request){
+        $searchQuery = $request->get('searchQuery');
+
+        $meals = Meal::query()
+        ->where('meal_name', 'LIKE', "%$searchQuery%")
+        ->get();
+
+        return response()->json($meals);
+    }
+
 
 
     public function store(MealStoreRequest $request)

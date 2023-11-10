@@ -299,7 +299,7 @@ const router = createBrowserRouter([
         element:<CategoryList/>
       },
       {
-        path: '/mealDetail',
+        path: '/mealDetail/:id',
         element: <MealDetail />
       },
       {

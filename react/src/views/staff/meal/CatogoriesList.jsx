@@ -22,7 +22,7 @@ export default function CategoryList() {
         getIngredient();
       },[])
       const getIngredient =()=>{
-        axiosClient.get('/ingredients')
+        axiosClient.get('/category')
         .then(({data}) =>{
            setLoading(false)
            setIngredientList(data)
@@ -33,7 +33,7 @@ export default function CategoryList() {
            console.error('API request error:', error);
         });
       }
-      const deleteIngredient = ingredientID =>{
+      const deleteCategory = CategoryID =>{
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -44,11 +44,11 @@ export default function CategoryList() {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              axiosClient.delete(`/ingredients/${ingredientID}`)
+              axiosClient.delete(`/category/${CategoryID}`)
               .then(({data}) =>{
                 Swal.fire(
                     'Deleted!',
-                    data.ingredient_name+' has been deleted.',
+                    data.name+' has been deleted.',
                     'success'
                   )
                   
@@ -69,12 +69,13 @@ export default function CategoryList() {
                 </div>
             </td>
             
-            <td>{item.ingredient_name}</td>
-            <td>{item.calorie}</td>
-          
+            <td>{item.name}</td>
+  
+            <td><img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.iconImage}`}  alt="" srcset="" height="20px" width="20px" /></td>
+            <td><img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.image}`}  alt="" srcset="" height="100px" width="100px" /></td>
             <td id={"tooltip-container"+index}>
                 <a href={"/updateingredient/"+item.id} class="me-3 text-primary" data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
-                <button class="text-danger" onClick={en => deleteIngredient(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
+                <button class="text-danger" onClick={en => deleteCategory(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
             </td>
         </tr>
      
@@ -92,12 +93,12 @@ export default function CategoryList() {
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Ingredient</h4>
+                    <h4 class="mb-sm-0">Category</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Meal</a></li>
-                            <li class="breadcrumb-item active">Ingredient</li>
+                            <li class="breadcrumb-item active">Category</li>
                         </ol>
                     </div>
 
@@ -111,7 +112,7 @@ export default function CategoryList() {
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <a href="/addcategory" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Ingredient</a>
+                            <a href="/addcategory" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Category</a>
                         </div>
                         <div class="table-responsive mt-3">
                             <table class="table table-centered datatable dt-responsive nowrap" style={tableStyle}>
@@ -122,8 +123,9 @@ export default function CategoryList() {
                                                 No.
                                             </div>
                                         </th>
-                                        <th>Ingredient Name</th>
-                                        <th>Calorie</th>
+                                        <th>Category Name</th>
+                                        <th>Icon Image</th>
+                                        <th>Image</th>
                                         <th style={{width: "120px"}}>Action</th>
                                     </tr>
                                 </thead>
@@ -148,20 +150,7 @@ export default function CategoryList() {
 </div>
 
 
-<footer class="footer">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <script>document.write(new Date().getFullYear())</script> © Nazox.
-            </div>
-            <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block">
-                    Crafted with <i class="mdi mdi-heart text-danger"></i> by <a href="https://1.envato.market/themesdesign" target="_blank">Themesdesign</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+
 </div>
         </div>
     );

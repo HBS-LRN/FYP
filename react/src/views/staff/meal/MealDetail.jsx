@@ -20,13 +20,13 @@ export default function MealsList() {
                         <div className="row">
                             <div className="col-12">
                                 <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 className="mb-sm-0">Product Detail</h4>
+                                    <h4 className="mb-sm-0">Meal Detail</h4>
                                     <div className="page-title-right">
                                         <ol className="breadcrumb m-0">
                                             <li className="breadcrumb-item">
-                                                <a href="javascript: void(0);">Ecommerce</a>
+                                                <a href="javascript: void(0);">Meal</a>
                                             </li>
-                                            <li className="breadcrumb-item active">Product Detail</li>
+                                            <li className="breadcrumb-item active">Meal Detail</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -536,61 +536,7 @@ export default function MealsList() {
                                 {/* end card */}
                             </div>
                         </div>
-                        {/* end row */}
-                        <div className="row">
-                            <div className="col-lg-12">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col-md-4">
-                                                <div className="d-flex">
-                                                    <div className="avatar-sm me-3">
-                                                        <span className="avatar-title bg-light rounded-circle text-primary font-size-24">
-                                                            <i className="ri-checkbox-circle-line" />
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex-1 align-self-center overflow-hidden">
-                                                        <h5>Free Shipping</h5>
-                                                        <p className="text-muted mb-0">
-                                                            Sed ut perspiciatis unde
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <div className="d-flex mt-4 mt-md-0">
-                                                    <div className="avatar-sm me-3">
-                                                        <span className="avatar-title bg-light rounded-circle text-primary font-size-24">
-                                                            <i className="ri-exchange-line" />
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex-1 align-self-center overflow-hidden">
-                                                        <h5>Easy Return</h5>
-                                                        <p className="text-muted mb-0">
-                                                            Neque porro quisquam est
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <div className="d-flex mt-4 mt-md-0">
-                                                    <div className="avatar-sm me-3">
-                                                        <span className="avatar-title bg-light rounded-circle text-primary font-size-24">
-                                                            <i className="ri-money-dollar-circle-line" />
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex-1 align-self-center overflow-hidden">
-                                                        <h5>Cash on Delivery</h5>
-                                                        <p className="text-muted mb-0">Ut enim ad minima quis</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* end row */}
+                        
                     </div>{" "}
                     {/* container-fluid */}
                 </div>
