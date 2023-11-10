@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Delivery;
+use App\Models\Meal;
 use App\Models\MealOrderDetail;
 use App\Models\ShoppingCart;
 use App\Models\User;
@@ -74,6 +75,8 @@ class OrderController extends Controller
             'city' => $data['city'],
             'state' => $data['state'],
             'postcode' => $data['postcode'],
+            'customer_longitude'=> $data['customer_longitude'],
+            'customer_latitude'=> $data['customer_latitude'],
             'delivery_man_id' => 0, //default value
         ]);
 
@@ -85,6 +88,24 @@ class OrderController extends Controller
             ]);
         }
 
+        foreach ($data['orderItems'] as $orderItem) {
+            // Find the meal associated with the order item
+            $meal = Meal::find($orderItem['meal_id']);
+        
+            // Loop through the meal's ingredients and update the stock
+            foreach ($meal->mealIngredients as $mealIngredient) {
+                $ingredient = $mealIngredient->ingredient;
+                $newStock = $ingredient->stock - ($orderItem['order_quantity'] * $mealIngredient->unit);
+        
+                // Ensure stock doesn't go negative
+                if ($newStock < 0) {
+                    $newStock = 0;
+                }
+        
+                // Update the ingredient's stock
+                $ingredient->update(['stock' => $newStock]);
+            }
+        }
         // Find all shopping cart items that belong to the user
         $shoppingCartItems = ShoppingCart::where('user_id',  $data['user_id'])->get();
 
@@ -92,6 +113,8 @@ class OrderController extends Controller
         foreach ($shoppingCartItems as $shoppingCartItem) {
             $shoppingCartItem->delete();
         }
+
+
 
 
         return $order;

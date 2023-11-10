@@ -269,17 +269,20 @@ a {
 } */
 /* Customize the scrollbar */
 .scroll-wrap::-webkit-scrollbar {
-    width: 8px; /* Adjust the width to make it thinner */
+    width: 20px;
 }
 
 /* Customize the scrollbar track */
 .scroll-wrap::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Change the background color of the track */
+    background-color: transparent;
 }
 
 /* Customize the scrollbar thumb */
 .scroll-wrap::-webkit-scrollbar-thumb {
-    background: #888; /* Change the color of the thumb */
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
 }
 
 
@@ -329,7 +332,7 @@ a {
     height: 52px;
     width: 52px;
     border-radius: 16px;
-    margin: -14px 10px 20px 0px;
+    margin: -14px 8px 20px 0px;
 }
 
 .scroll-wrap .product-items .comment p {
@@ -660,4 +663,10 @@ input#rate-5:checked~label {
 input[type="radio"]:checked ~ .checked {
     color: #fe7;
     text-shadow: 0 0 20px #952;
+}
+
+.comment p{
+    color:red;
+    font-size:17px;
+    margin-right: 3px;
 }

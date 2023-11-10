@@ -22,7 +22,7 @@ export default function Allergic() {
     const getAllergies = async () => {
         setLoading(true);
         try {
-            await axiosClient.get('/allergic')
+            await axiosClient.get(`/allergic/${user.id}`)
                 .then(({ data }) => {
                     console.log(data)
                     setAllergies(data);

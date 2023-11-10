@@ -39,13 +39,52 @@ export default function Index() {
 
     }, []);
 
+
+
+    //react declaration
+    const [searchTerm, setSearchTerm] = useState('');
     const [contactUs, setContactUs] = useState([]);
+    const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [selectedMeal, setSelectedMeal] = useState(null);
     //fetch contact us data
     useEffect(() => {
         getContactUs();
+
     }, [])
 
+
+    //user search meal...
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (searchTerm.trim() !== '') {
+                getMeals();
+            }
+        }, 300);
+
+        // Cleanup the timeout on component unmount or when searchTerm changes
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchTerm]);
+    const getMeals = async () => {
+
+        console.log("getting")
+        setLoading(true)
+        try {
+            await axiosClient.get(`/searchMeal/${searchTerm}`)
+                .then(({ data }) => {
+                    console.log(data)
+                    setLoading(false)
+                    setMeals(data)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            setLoading(false)
+        }
+    }
 
     const getContactUs = async () => {
         setLoading(true);
@@ -63,6 +102,20 @@ export default function Index() {
             setLoading(false);
         }
     }
+
+
+    const handleMealClick = (meal) => {
+        setSelectedMeal(meal);
+        document.body.classList.add('active');
+    };
+    const handleMenuCloseBtnClick = () => {
+        document.body.classList.remove('active');
+
+    }
+
+    const closePopup = () => {
+        setSelectedMeal(null);
+    };
 
     const options = {
         loop: true,
@@ -92,35 +145,45 @@ export default function Index() {
                                 <p>Enjoy The Personalized Nutrition-Based Food Ordering In Healthy Recipe and Floor Plan Map Reservation! </p>
 
                                 <div class="col-sc-1">
-                                    <input type="search" name="search" id="search" placeholder="type here for search..."></input><i
-                                        class="fa fa-search"></i>
+                                    <input type="search" name="search" id="search" value={searchTerm}
+                                        onChange={handleSearchChange} placeholder="type here for search..."></input><i
+                                            class="fa fa-search"></i>
                                 </div>
                                 <div class="displaySearch" id='resultBox'>
-                                    <div className="itemBox">
-                                        <img src="../assets/img/dish-2.png" alt="" className="image" />
-                                        <div className="desrp">
-                                            hahdahda
+
+                                    {loading &&
+                                        <div class="text-center">
+                                            <div class="loaderCustom2"></div>
                                         </div>
-                                    </div>
-                                    <div className="itemBox">
-                                        <img src="../assets/img/dish-2.png" alt="" className="image" />
-                                        <div className="desrp">
-                                            hahdahda
+                                    }
+                                    {!loading && meals.length === 0 &&
+                                        <div class="noitemfound">
+                                            <img alt="no-item-found" src="../../../assets/img/noitemsfound.png" width="235"
+                                                height="251" />
+                                            <p>No items found.</p>
                                         </div>
-                                    </div>
-                                    <div className="itemBox">
-                                        <img src="../assets/img/dish-2.png" alt="" className="image" />
-                                        <div className="desrp">
-                                            sdasd
+                                    }
+                                    {!loading && meals.map((meal) => (
+                                        <div className="itemBox" key={meal.id} onClick={() => handleMealClick(meal)} >
+                                            <a href="#">
+                                                <img alt="food-dish" className="image" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`}
+                                                />
+                                            </a>
+                                            <div className="desrp">
+                                                {meal.meal_name}
+                                            </div>
+
                                         </div>
-                                    </div>
+                                    ))}
+
                                 </div>
                             </div>
 
                         </div>
+
                         <div class="col-lg-6 mainpageShow" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
                             <div class="img-restaurant">
-                                <a href="/nutritionMenuCard" class="foodShowBox" id="foodShowBox1">
+                                <a href="/nutritionMenuCard/8" class="foodShowBox" id="foodShowBox1">
                                     <img width="120" height="120"
                                         src="assets/img/healthy-food.jpg"
 
@@ -150,6 +213,86 @@ export default function Index() {
                 </div>
 
             </section>
+            {selectedMeal && (
+                <div class="menu-wrap">
+                    <div class="menu-inner ps ps--active-x ps--active-y">
+                        <span class="menu-cls-btn" onClick={handleMenuCloseBtnClick}><i class="cls-leftright"></i><i class="cls-rightleft"></i></span>
+                        <div class="checkout-order">
+                            <div class="title-checkout">
+                                <h2>Search Item</h2>
+                            </div>
+                            <ul>
+
+
+                                <div class="scroll-wrap">
+
+
+                                    <li class="price-list">
+
+                                        <div class="counter-container">
+                                            <div class="counter-food">
+                                                <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${selectedMeal.meal_image}`} width="140"
+                                                    height="121" />
+
+                                                <h4>{selectedMeal.meal_name}</h4>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <h3>RM{selectedMeal.meal_price}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="price">
+                                            <div>
+                                                <h2>RM {selectedMeal.meal_price}</h2>
+                                                <span>Sum</span>
+                                            </div>
+                                            <div>
+                                                <div class="qty-input">
+                                                    <button
+                                                        className="qty-count qty-count--minus"
+                                                        data-action="minus"
+                                                        type="button"
+                                                    // onClick={() => decreaseQuantity(m.pivot.id)}
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <input
+                                                        class="product-qty"
+                                                        type="number"
+                                                        name="product-qty"
+                                                        min="0"
+                                                    // value={m.pivot.shopping_cart_qty}
+
+
+                                                    ></input>
+
+
+                                                    <button
+                                                        className="qty-count qty-count--add"
+                                                        data-action="add"
+                                                        type="button"
+                                                    // onClick={() => increaseQuantity(m.pivot.id, 1)}
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                                <span>Quantity</span>
+                                            </div>
+                                        </div>
+                                    </li>
+
+
+
+                                </div>
+                            </ul>
+
+
+                            <button class="button-price" onClick={ev => onNavigateClick()}>Checkout</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <section class="works-section custom-margin">
                 <div class="container">

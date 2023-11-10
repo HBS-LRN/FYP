@@ -19,7 +19,8 @@ class Meal extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'meal_order_details', 'order_id', 'meal_id')->withPivot('id', 'order_quantity', 'rating_star', 'rating_comment', 'reply_comment');
+        return $this->belongsToMany(Order::class, 'meal_order_details', 'meal_id', 'order_id')
+            ->withPivot('id', 'order_quantity', 'rating_star', 'rating_comment', 'reply_comment');
     }
     public function users()
     {
@@ -27,6 +28,14 @@ class Meal extends Model
     }
     public function mealIngredients()
     {
-        return $this->hasMany(MealIngredient::class);
+        return $this->hasMany(MealIngredient::class, 'meal_id');
+    }
+    public function mealOrderDetails()
+    {
+        return $this->hasMany(MealOrderDetail::class, 'meal_id', 'id');
+    }
+    public function ingredients()
+    {
+        return $this->hasManyThrough(Ingredient::class, MealIngredient::class, 'meal_id', 'id', 'id', 'ingredient_id');
     }
 }

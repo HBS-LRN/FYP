@@ -38,7 +38,9 @@ class User extends Authenticatable
         'session_id',
         'token',
         'height',
-        'weight'
+        'weight',
+        'BMR',
+        'BMI'
 
     ];
 
@@ -156,6 +158,12 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id');
     }
 
+    //one user has many allergics
+    public function allergics()
+    {
+        return $this->hasMany(Allergic::class, 'user_id');
+    }
+
     //one user has many addresses
     public function addresses()
     {
@@ -166,7 +174,8 @@ class User extends Authenticatable
     public function meals()
     {
         return $this->belongsToMany(Meal::class, 'shopping_carts', 'user_id', 'meal_id')
-            ->withPivot('shopping_cart_qty', 'id');
+            ->withPivot('shopping_cart_qty', 'id')
+            ->with('mealIngredients');
     }
 
     //many to many relationship 

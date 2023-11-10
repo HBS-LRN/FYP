@@ -76,6 +76,9 @@ import DefaultLayout from "./components/DefaultLayout";
 
 import UserForm from "./views/UserForm";
 import Signup from "./views/SignUp";
+import RatingList from "./views/staff/Rating/ratingList";
+import RatingForm from "./views/staff/Rating/RatingForm";
+import UserChat from "./views/profile/Chat";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -192,7 +195,7 @@ const router = createBrowserRouter([
         element: <CheckOut />
       },
       {
-        path: '/nutritionMenuCard',
+        path: '/nutritionMenuCard/:id',
         element: <NuritionMenuCard />
       },
       {
@@ -204,7 +207,10 @@ const router = createBrowserRouter([
         element: <CategoryMenuCard />
       },
 
-
+      {
+        path: '/userChat',
+        element: <UserChat />
+      },
 
 
 
@@ -335,6 +341,14 @@ const router = createBrowserRouter([
         path: '/customerList',
         element: <CustomersList />
     
+      },
+      {
+        path: '/ratingList',
+        element: <RatingList />
+      },
+      {
+        path: '/ratingForm/:id',
+        element: <RatingForm />
       },
     ]
   },

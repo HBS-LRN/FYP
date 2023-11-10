@@ -314,9 +314,9 @@ export default function StaffLayout() {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="/staffcalendar" className="waves-effect">
-                                            <i className="ri-calendar-2-line"></i>
-                                            <span>Calendar</span>
+                                        <a href="/ratingList" className="waves-effect">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                            <span>Meal Rating</span>
                                         </a>
                                     </li>
 

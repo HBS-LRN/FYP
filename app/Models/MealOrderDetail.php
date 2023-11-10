@@ -13,20 +13,12 @@ class MealOrderDetail extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id', 'id');
     }
-    
+
     public function meal()
     {
-        return $this->belongsTo(Meal::class);
+        return $this->belongsTo(Meal::class, 'meal_id', 'id');
     }
 
-    //for agile testing only
-    public function updateMealRating(MealOrderDetail $mealOrderDetail,$data){
-
-        $mealOrderDetail->reply_comment = $data['reply_comment'];
-        $mealOrderDetail->update();
-        return $mealOrderDetail;
-        
-    }
 }

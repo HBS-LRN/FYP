@@ -29,11 +29,19 @@ export default function Profile() {
         phone: "",
         gender: "",
         birthdate: "",
-        image: null,
+       
     });
 
     useEffect(() => {
-        setUpdateUser(user)
+        if (user.image !== null) {
+            setUpdateUser({
+                ...user,
+                image: null,
+            });
+           
+        } else {
+            setUpdateUser(user);
+        }
 
     }, []);
     //when user click on submit button
@@ -51,6 +59,9 @@ export default function Profile() {
             //     payload.image = payload.image_url;
             // }
         
+            if (payload.image === null) {
+                delete payload.image; // Remove the 'image' property if it's null
+              }
             console.log(payload)
             try {
                 await axiosClient

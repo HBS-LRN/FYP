@@ -511,6 +511,7 @@ header {
     margin-left: 10px;
     color: rgb(18, 18, 18);
 
+    
     border: 0;
 }
 
@@ -1836,6 +1837,7 @@ ul.paragraph li i {
     margin-top: 40px;
     background-color: white;
     box-shadow: 0px 0px 10px rgb(218, 218, 218);
+    
 
 
 
@@ -1873,6 +1875,7 @@ ul.paragraph li i {
 .dish-icon {
     display: flex;
 
+   
     align-items: center;
     justify-content: space-between;
     border: 1px solid #F2F2F2;
@@ -4280,8 +4283,8 @@ li.menu-item-has-children.active {
 }
 
 .displaySearch {
-    border-radius: 20px;
-    opacity: 0.8;
+    border-radius: 10px;
+
     box-shadow: 0px 0px 10px grey;
     padding: 5px;
     position: absolute;
@@ -4289,15 +4292,28 @@ li.menu-item-has-children.active {
     width: 400px;
     /* top: 0%; */
     height: 40vh;
-    background-color: rgb(246, 246, 246);
+    background-color: rgb(255, 255, 255);
     /* z-index: 9999; */
-    z-index: 2147483647;
+  
     display: none;
 }
 
 .displaySearch::-webkit-scrollbar {
-    display: none;
+    width: 20px;
 }
+/* Customize the scrollbar track */
+.displaySearch::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Customize the scrollbar thumb */
+.displaySearch::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
 
 .displaySearch .itemBox .image {
     opacity: 1;

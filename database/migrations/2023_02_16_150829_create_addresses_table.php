@@ -24,6 +24,9 @@ class CreateAddressesTable extends Migration
             $table->string('state');
             $table->integer('postcode');
             $table->string('active_flag');
+            $table->double('longitude')->nullable();
+            $table->double('latitude')->nullable();
+            $table->double('accuracy')->nullable();
             $table->timestamps();
             $table->foreign('user_id')
             ->references('id')

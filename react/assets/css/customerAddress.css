@@ -357,15 +357,18 @@ h2 {
 } */
 /* Customize the scrollbar */
 .scroll-wrap::-webkit-scrollbar {
-    width: 8px; /* Adjust the width to make it thinner */
+    width: 20px;
 }
 
 /* Customize the scrollbar track */
 .scroll-wrap::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Change the background color of the track */
+    background-color: transparent;
 }
 
 /* Customize the scrollbar thumb */
 .scroll-wrap::-webkit-scrollbar-thumb {
-    background: #888; /* Change the color of the thumb */
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
 }
