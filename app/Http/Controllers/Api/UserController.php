@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Repository\UserRepositoryInterface;
+use DateTime;
 
 class UserController extends Controller
 {
@@ -62,7 +63,6 @@ class UserController extends Controller
     {
         return new UserResource($user);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -72,9 +72,6 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-
-
-
         $data = $request->validated();
         if (isset($data['image'])) {
             try {
@@ -85,13 +82,52 @@ class UserController extends Controller
             $data['image'] = $relativePath;
         }
 
-
-
         $user->update($data);
 
+
+        // Pass the user's gender, height, and weight to the bmr function
+        $this->calculateBMR($data['gender'], $data['height'], $data['weight'], $user);
+        // Pass the user's , height, and weight to the bmi function
+        $this->calculateBMI($data['weight'], $data['height'], $user);
         return response()->json($user);
     }
 
+
+
+    public function calculateBMI($weight, $height, User $user)
+    {
+        // Ensure that height is in meters
+        $heightInMeters = $height / 100;
+
+        // Calculate BMI
+        $bmi = $weight / ($heightInMeters * $heightInMeters);
+
+        // Update the user's BMR field
+        $user->update(['BMI' => $bmi]);
+    }
+    public function calculateBMR($gender, $height, $weight, User $user)
+    {
+        // Check if the user has a gender, height, and weight
+        if ($gender && $height && $weight) {
+            // Define calorie calculation formulas based on gender
+            $calorie = ($gender === 'Male')
+                ? 66.5 + (13.75 * $weight) + (5.003 * $height) - (6.75 * $this->age($user->birthdate))
+                : 655.1 + (9.563 * $weight) + (1.850 * $height) - (4.676 * $this->age($user->birthdate));
+
+            // Update the user's BMR field
+            $user->update(['BMR' => $calorie]);
+        }
+    }
+
+    public function age($birthdate)
+    {
+        // Calculate the user's age based on birthdate
+        $birthDate = new DateTime($birthdate);
+        $currentDate = new DateTime('now');
+        $age = $currentDate->diff($birthDate)->y;
+
+        return $age;
+    }
 
     //update the user password
     public function updatePassword(Request $request)
@@ -105,15 +141,15 @@ class UserController extends Controller
                     ->symbols(),
             ], 'confirmed'],
         ]);
-    
+
         $user = User::find($request['id']);
-    
+
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-    
+
         $success = $this->userRepositoryInterface->updatePassword($user, $request['currentPass'], $request['password']);
-    
+
         if ($success) {
             return response(new UserResource($user), 201);
         } else {

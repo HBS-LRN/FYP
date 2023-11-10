@@ -379,8 +379,8 @@ export default function OrderStatus() {
                                                                 {/* Comment Section */}
                                                                 {meal.pivot.reply_comment !== null && (
                                                                     <div className="comment" id="id1" runat="server">
-                                                                        <img src="../image/GrandImperialGroupLogo.png" alt="" />
-                                                                        Grand<span className="semicolon">:</span>
+                                                                        <img src="../assets/img/GrandImperialGroupLogo.png" alt="" />
+                                                                        Grands<span className="semicolon">:</span>
                                                                         <p>{meal.pivot.reply_comment}</p>
                                                                     </div>
                                                                 )}

@@ -54,24 +54,6 @@ export default function RealTimeLocationTracker() {
         });
     });
   }
-  const getAddressFromData = (data) => {
-    let address = '';
-    if (data.street) {
-      address += data.street + ", ";
-    }
-    if (data.city) {
-      address += data.city + ", ";
-    }
-    if (data.state) {
-      address += data.state + ", ";
-    }
-    if (data.postcode) {
-      address += data.postcode;
-    }
-    return address;
-  };
-
-
 
 
 
@@ -94,30 +76,22 @@ export default function RealTimeLocationTracker() {
         .get(`/userDelivery/${id}`)
         .then(({ data }) => {
           console.log(data);
-
-          // After setting the address data, call getLatLng
-          const address = getAddressFromData(data);
-
-          console.log(address)
-          getLatLng(address)
+          getLatLng()
             .then(location => {
-              console.log('Latitude:', location.latitude);
-              console.log('Longitude:', location.longitude);
+          
 
               // Create waypoints
-              const startWaypoint = L.latLng(location.latitude, location.longitude);
+              const startWaypoint = L.latLng(data.customer_latitude, data.customer_longitude);
               const endWaypoint = L.latLng(originLatitude, originLongitude);
 
-              var newMarker = L.marker([location.latitude, location.longitude]).addTo(map);
+              var newMarker = L.marker([data.customer_latitude, data.customer_longitude]).addTo(map);
 
               // Now, create the routing control and set the waypoints
               L.Routing.control({
                 waypoints: [startWaypoint, endWaypoint], // Set the waypoints
               }).addTo(map);
             })
-            .catch(error => {
-              setWarningNotification("Geocoding Failed", "Your address could not be found in the geolocation service. You Only Able To See The Delivery Man Current Location.");
-            });
+           
         })
         .catch((error) => {
           console.log(error);

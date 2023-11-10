@@ -30,6 +30,8 @@ class CreateUsersTable extends Migration
             $table->integer('point')->nullable();
             $table->double('height')->nullable();
             $table->double('weight')->nullable();
+            $table->double('BMR')->nullable();
+            $table->double('BMI')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

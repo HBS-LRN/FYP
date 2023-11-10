@@ -4,7 +4,7 @@ import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
 import { useNavigate } from "react-router-dom";
-
+import { useNotificationContext } from "../contexts/NotificationProvider.jsx";
 import '../../assets/css/style.css';
 import '../../assets/css/owl.carousel.min.css';
 import '../../assets/css/owl.theme.default.min.css';
@@ -21,6 +21,7 @@ export default function CustomerLayout() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [shoppingCarts, setShoppingCarts] = useState([]);
+    const { setWarningNotification } = useNotificationContext();
     const onLogout = ev => {
         ev.preventDefault();
 
@@ -54,14 +55,14 @@ export default function CustomerLayout() {
     //fetch shopping cart data
     useEffect(() => {
         getShoppingCarts();
-    }, [])
+    }, [cartQuantity])
 
     const getShoppingCarts = async () => {
 
         console.log("getting")
         setLoading(true)
         try {
-            await axiosClient.get(`/shoppingCart/${user.id}`)
+            await axiosClient.get(`/userShoppingCart/${user.id}`)
                 .then(({ data }) => {
                     console.log(data)
                     setLoading(false)
@@ -118,9 +119,36 @@ export default function CustomerLayout() {
         }
     };
 
-    // Increase the quantity by 1
-    const increaseQuantity = (shoppingCartId) => {
-        updateQuantity(shoppingCartId, 1);
+
+
+    const increaseQuantity = async (shoppingCartId, increment) => {
+        const meal = shoppingCarts.find((item) => item.pivot.id === shoppingCartId);
+
+        console.log(meal)
+        const ingredientShortages = [];
+
+        meal.meal_ingredients.forEach((mealIngredient) => {
+            if (mealIngredient.ingredient.stock < (meal.pivot.shopping_cart_qty + increment) * mealIngredient.unit) {
+                ingredientShortages.push({
+                    ingredientName: mealIngredient.ingredient.ingredient_name,
+                    requiredStock: (meal.pivot.shopping_cart_qty + increment) * mealIngredient.unit,
+                    availableStock: mealIngredient.ingredient.stock,
+                });
+            }
+        });
+
+        if (ingredientShortages.length === 0) {
+            // No ingredient shortages, proceed to update quantity
+            await updateQuantity(shoppingCartId, increment);
+        } else {
+            // Notify about insufficient stock for each ingredient
+            for (const shortage of ingredientShortages) {
+                setWarningNotification(
+                    "Insufficient Stock, Cannot Add More",
+                    `Meal For ${shortage.ingredientName} for ${meal.pivot.shopping_cart_qty + increment} requires ${shortage.requiredStock}g, but there are only ${shortage.availableStock}g available.`
+                );
+            }
+        }
     };
 
     //hanlde delete shopping cart
@@ -326,7 +354,7 @@ export default function CustomerLayout() {
                                                 <br />
                                                 <br />
 
-                                                <img alt="food-dish" src="../../../assets/img/noitemsfound.png" width="235"
+                                                <img alt="no-item-found" src="../../../assets/img/noitemsfound.png" width="235"
                                                     height="251" />
                                                 <p>Your Cart Is Currently Empty!</p>
 
@@ -380,7 +408,7 @@ export default function CustomerLayout() {
                                                                     className="qty-count qty-count--add"
                                                                     data-action="add"
                                                                     type="button"
-                                                                    onClick={() => increaseQuantity(m.pivot.id)}
+                                                                    onClick={() => increaseQuantity(m.pivot.id,1)}
                                                                 >
                                                                     +
                                                                 </button>

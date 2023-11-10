@@ -1,0 +1,537 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+.all {
+    background-color: #f7f7f7;
+    padding-bottom: 190px;
+
+}
+
+.customerAccBar {
+    background-color: #fffefe;
+    margin-top: 120px;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    background-image: url("../img/tang-yuan.png");
+    filter: blur(1px);
+    -webkit-filter: blur(1px);
+}
+
+.customerAcc {
+    font-weight: 600;
+    color: #e6e6e6;
+    font-size: 40px;
+    margin-left: 100px;
+    right: 0;
+    left: 0;
+    margin-top: -70px;
+    position: absolute;
+    text-align: center;
+}
+
+/* try pull */
+h2 {
+    color: black;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    font-weight: 400;
+}
+
+.customerAccContent {
+    margin: 0%;
+    padding: 60px 0px 150px 150px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    background-color: #f7f7f7;
+    display: flex;
+}
+
+.customerAccContent .sideNavigation {
+    flex-basis: 40%;
+}
+
+.customerAccContent .profile img {
+    height: 52px;
+    width: 52px;
+    border-radius: 16px;
+    margin: 0 14px 0 12px;
+    background: #1d1b31;
+    transition: all 0.5s ease;
+}
+
+.customerAccContent .profile {
+    margin-right: 30px;
+    border-bottom: 1px solid #999;
+}
+
+.customerAccContent .profile .profile_name {
+    margin: -53px 60px 50px 70px;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: 515;
+    white-space: nowrap;
+}
+
+.customerAccContent .profile .profile_email {
+    margin: -50px 60px 35px 70px;
+    font-size: 13px;
+}
+
+.accountContent {
+    flex-basis: 69%;
+    border: 1px solid white;
+    padding-right: 50px;
+    margin-left: 0px;
+    margin-right: 0px;
+    box-shadow: 5px 10px 18px #888888;
+    width: 60%;
+    background-color: white;
+    padding-left: 20px;
+
+    border-radius: 20px;
+}
+
+.profileTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+
+}
+
+
+.usernameInput {
+    margin-top: -20px;
+    margin-left: 100px;
+}
+
+.text {
+    margin-top: 30px;
+}
+
+a {
+    font-size: 13px;
+}
+
+.usernameLabelInput .usernameLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+.usernameLabelInput .username {
+    margin-left: 50px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+.usernameInstruct {
+    font-size: 13px;
+    color: #a09f9f;
+    margin-left: 127px;
+}
+
+.nameLabelInput .nameLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+.label {
+    display: flex;
+    position: relative;
+    margin-bottom: 4px;
+
+}
+
+.customTooltip {
+    left: 130px;
+}
+
+.nameLabelInput .name {
+    margin-left: 82px;
+    margin-top: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+.emailLabelInput .emailLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+.emailLabelInput .email {
+    margin-left: 87px;
+    padding-top: 7px;
+    margin-top: 0px;
+    padding-bottom: 7px;
+
+    width: 60%;
+}
+
+.custom-form {
+    position: relative;
+}
+
+.heightLabelInput .heightLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+.weightLabelInput .weightLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+
+.heightLabelInput .height {
+    margin-left: 44px;
+    padding-top: 7px;
+    margin-top: 0px;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+.weightLabelInput .weight {
+    margin-left: 44px;
+    padding-top: 7px;
+    margin-top: 0px;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+
+.phoneNumberLabelInput .phoneNumberLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+
+
+.shopNameLabelInput .shopNameLabel {
+    color: #636363;
+    font-size: 14px;
+}
+
+.shopNameLabelInput .shopName {
+    margin-left: 39px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+.genderLabelInput .genderLabel {
+    color: #636363;
+    font-size: 14px;
+    flex-basis: 13%;
+
+}
+
+
+
+/* 
+.genderLabelInput [type=radio] {
+    position: unset;
+    width:100px;
+    height:100px;
+
+} */
+
+
+
+.dateLabelInput {
+    display: flex;
+}
+
+
+
+
+
+.selectImage {
+    margin: 0px;
+    border-left: 1px solid grey;
+    padding-left: 30px;
+    height: 440px;
+}
+
+.submitButton {
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+.fileSize {
+    color: #636363;
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+.fileExtension {
+    color: #636363;
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+.saveButton {
+    position: relative;
+    left: 250px;
+    bottom: 56px;
+
+    display: flex;
+    justify-content: right;
+    justify-items: right;
+}
+
+.saveButton .save {
+    padding: 10px 40px;
+    color: white;
+    background-color: rgb(255, 86, 86);
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.userProfile {
+    display: flex;
+}
+
+.userProfile .text {
+    flex-basis: 75%;
+}
+
+.selectImage img {
+    margin-left: 65px;
+    margin-bottom: 30px;
+}
+
+.userProfile .selectImage {
+    flex-basis: 25%;
+}
+
+.file {
+    margin-left: 26px;
+}
+
+
+.dateLabelInput .birthLabel {
+    color: #636363;
+    flex-basis: 25%;
+    font-size: 14px;
+    margin-right: 2px;
+}
+
+.dateLabelInput .birthInput {
+    margin-left: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    flex-basis: 60%;
+
+    width: 60%;
+}
+
+.phoneNumberLabelInput {
+    display: flex;
+}
+
+.phoneNumberLabelInput .phoneNumberLabel {
+    color: #636363;
+    font-size: 14px;
+    flex-basis: 25%;
+    margin-right: 2px;
+}
+
+.phoneNumberLabelInput .phoneNumber {
+    padding-left: 13px;
+    padding-top: 7px;
+    margin-left: 5px;
+    flex-basis: 60%;
+    padding-bottom: 7px;
+    border: 0.5px solid rgb(197, 197, 197);
+    width: 60%;
+}
+
+.genderLabelInput .genderLabel {
+    color: #636363;
+    font-size: 14px;
+    margin-right: 65px;
+}
+
+.genderLabelInput .gender {
+    margin-left: 150px;
+    margin-top: 0px;
+}
+
+.sideNavigation {
+    margin-right: 40px;
+    flex-basis: 40%;
+}
+
+
+.profile_email {
+    word-break: keep-all;
+    word-wrap: normal;
+    overflow-x: auto;
+    overflow-y: no-display;
+    text-overflow: ellipsis;
+    margin: 0px;
+    word-break: keep-all;
+    width: 200px;
+}
+
+.error {
+    font-size: 13px;
+    margin-left: 135px;
+    color: red;
+
+}
+
+.userProfile .text {
+    margin: 0px;
+}
+
+.accountTitle .profileTitle {
+    margin-top: 0px;
+}
+
+.userProfile .selectImage {
+    padding-top: 20px;
+}
+
+.custom-auth-gap {
+    margin-top: 60px;
+    margin-bottom: 0;
+}
+
+.subTitle {
+    padding-bottom: 4px;
+    border-bottom: 1px solid #999;
+    font-weight: 300;
+    font-size: 14px;
+
+}
+
+
+.fc-event-title.fc-sticky {
+    padding-bottom: 20px;
+    float: left;
+    word-break: break-all;
+
+}
+
+.fc-daygrid-event {
+    white-space: normal;
+}
+
+.dropzone {
+    min-height: 30px;
+    border: 2px dashed #ced4da;
+    background: #fff;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 4px;
+}
+
+.dropzone p {
+    font-size: 15px;
+}
+
+.chatcustom {
+    position: relative;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    max-height: 450px;
+
+    height: 450px;
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+    overflow-y: auto;
+    /* Only vertical overflow */
+
+
+}
+.ctext-wrap-content p{
+    color:white;
+}
+
+.ctext-wrap-content .user{
+    color:black;
+}
+/* .scroll-wrap::-webkit-scrollbar {
+    display: none;
+} */
+/* Customize the scrollbar */
+.chatcustom::-webkit-scrollbar {
+    width: 20px;
+}
+
+/* Customize the scrollbar track */
+.chatcustom::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Customize the scrollbar thumb */
+.chatcustom::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .modal-content {
+    position: relative;
+    max-width: 36%;
+    max-height: 100%;
+    background: #fff; /* Add a background color for better visibility */
+  }
+  
+  .modal-content img {
+    width: 100%;
+    height: 30%;
+    object-fit: contain;
+  }
+  
+ 
+.close-button {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 40px;
+    color: #000000;
+    z-index: 1000; /* Ensure the close button is above the modal content */
+  }
+
+  .col-center{
+    text-align: center;
+  }
+  .text-muted{
+    font-size:14px;
+  }
+ 

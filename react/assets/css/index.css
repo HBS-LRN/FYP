@@ -10,16 +10,256 @@
 
 .owl-carousel .owl-item i {
     font-size: 50px;
- 
+
 }
+
 .thomas i {
-   
+
     border-radius: 60px;
     margin-right: 70px;
-    margin-left:8px;
+    margin-left: 8px;
     width: 16px;
 }
 
-.thomas{
+.thomas {
     margin-top: 45px;
+}
+
+.noitemfound p {
+
+    margin: auto;
+}
+
+.noitemfound {
+    text-align: center;
+    margin: auto;
+}
+
+/* slide pop up window */
+.popup {
+    position: absolute;
+    width: 100%;
+    height: 100pc;
+    display: none;
+    left: 0%;
+    top: 0%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* background-color: aqua; */
+}
+
+.popup-overlay {
+    background-color: rgba(0, 0, 0, 0.575);
+    height: 100pc;
+    width: 100pc;
+    top: 0px;
+    position: absolute;
+}
+
+.main-popup {
+    position: fixed;
+    right: 0%;
+    border-radius: 20px;
+    top: 0%;
+    height: 91.5%;
+    width: 29%;
+    z-index: 1;
+    margin-right: 1px;
+    background: rgb(255, 255, 255);
+    padding: 25px 20px;
+    line-height: 1rem;
+    transform: translateX(100%);
+}
+
+.main-popup .popup-content .imgbox {
+    padding-top: 0px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.main-popup .popup-content .imgbox .img {
+    width: 375px;
+    height: 220px;
+    border-radius: 30px;
+}
+
+.main-popup .popup-content .detail .foodName {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 25px;
+    margin: 10px 0px 10px 0%;
+}
+
+.close-btn {
+    border-radius: 10px;
+    border: .6px solid white;
+    padding: 80px 3px;
+    position: absolute;
+    top: 40%;
+    background-color: white;
+    right: 102%;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .5s ease all;
+}
+
+.close-btn:hover {
+    background: white;
+}
+
+.popup-content p {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* pop up qty selection design */
+.main-popup .popup-content .qtySelection {
+    padding: 10px 0px;
+    border-top: 1px solid grey;
+    display: flex;
+    border-bottom: 1px solid grey;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px 20px 0px;
+}
+
+.main-popup .popup-content .qtySelection .label {
+    font-family: 'Poppins', sans-serif;
+    padding-right: 30px;
+    flex-basis: 20%;
+    text-align: right;
+}
+
+.main-popup .popup-content .qtySelection #qty {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    border: none;
+    background: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    outline: none;
+    width: 20%;
+    flex-basis: 10%;
+    align-items: center;
+    float: left;
+}
+
+.qtySelection #qty::-webkit-inner-spin-button,
+.qtySelection #qty::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.main-popup .popup-content .qtySelection .fas {
+    background-color: rgb(238, 238, 238);
+    font-size: 15px;
+    float: left;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.main-popup .popup-content .qtySelection .fas:hover {
+    background-color: gold;
+}
+
+.main-popup .popup-content .price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0%;
+    color: rgb(227, 202, 43);
+    font-weight: bold;
+}
+
+.main-popup .popup-content .price .label {
+    flex-basis: 50%;
+    text-align: right;
+}
+
+.main-popup .popup-content #price {
+    background: none;
+    outline: none;
+    flex-basis: 50%;
+    border: none;
+    font-size: 20px;
+    width: 25%;
+    color: rgb(227, 202, 43);
+}
+
+/* additional List Design */
+.main-popup .popup-content .additionalList {
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-popup .popup-content .additionalList .flex {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 60px;
+}
+
+.main-popup .popup-content .additionalList .flex .label {
+    flex-basis: 20%;
+    font-weight: bolder;
+}
+
+.main-popup .popup-content .additionalList .flex #size {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 1%;
+}
+
+.main-popup .popup-content .additionalList .flex .fSizeD {
+    line-height: 0.7cm;
+    word-break: break-all;
+    flex-basis: 40%;
+    font-size: 16px;
+}
+
+.main-popup .popup-content .submitBtnBox {
+    display: flex;
+    position: fixed;
+    bottom: 3%;
+    left: 5%;
+    justify-content: center;
+}
+
+.main-popup .popup-content .submitBtnBox .submitBtn {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px 155px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: white;
+    background-color: rgb(255, 86, 86);
+    border: 1px solid white;
+    /* background-image: linear-gradient(to left,gold,rgb(188, 155, 44),rgb(168, 141, 54)); */
+}
+
+.main-popup .popup-content .submitBtnBox .submitBtn:hover {
+    background-color: rgb(250, 60, 60);
 }

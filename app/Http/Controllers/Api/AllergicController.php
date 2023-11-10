@@ -7,6 +7,7 @@ use App\Models\Allergic;
 use App\Http\Requests\StoreAllergicRequest;
 use App\Http\Requests\UpdateAllergicRequest;
 use App\Http\Resources\AllergicResource;
+use App\Models\User;
 
 class AllergicController extends Controller
 {
@@ -35,15 +36,27 @@ class AllergicController extends Controller
         return response(new AllergicResource($allergic) , 201);
     }
 
+  
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Allergic  $allergic
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Allergic $allergic)
-    {
-        //
+    public function show($id)
+    { 
+        
+        /** @var \App\Models\User $user */
+        $user = User::find($id); 
+
+
+          // Check if the address exists
+          if (!$user) {
+            return response(['message' => 'User Not Found'], 404);
+        }
+
+        return response()->json($user->allergics);
+
     }
 
     /**

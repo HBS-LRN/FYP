@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from "react-router-dom";
 
 
-
+import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 import CustomerSideBar from "../../components/CustomerSideBar";
 export default function AddressForm() {
 
@@ -18,6 +18,7 @@ export default function AddressForm() {
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState({});
     const [loading, setLoading] = useState(false);
+    const { setWarningNotification, setFailNotification } = useNotificationContext();
     const [states, setStates] = useState([]); // Initialize as an empty array
     const [address, setAddress] = useState({
         id: null,
@@ -28,6 +29,9 @@ export default function AddressForm() {
         city: "",
         state: "",
         postcode: "",
+        latitude: "",
+        longitude: ""
+
 
     });
 
@@ -79,51 +83,94 @@ export default function AddressForm() {
         const form = event.currentTarget;
 
         if (form.checkValidity()) {
-            const payload = {
-                ...address,
-                user_id: user.id,
-            };
-            console.log(payload)
+            // Call the address validation service to check if the address is valid
+            const location = await validateAddress(address);
 
+            if (location) {
+                const payload = {
+                    ...address,
+                    user_id: user.id,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                };
 
-            if (address.id) {
-                try {
-                    await axiosClient
-                        .put(`/addresses/${address.id}`, payload)
-                        .then(() => {
-                            setNotification("Address Was Successfully Updated!");
-                            navigate("/addresses");
-                        });
-                } catch (error) {
-                    const response = err.response;
-                    console.log(response);
-                    if (response && response.status === 422) {
-                        setError(response.data.errors);
+                console.log(payload)
+                if (address.id) {
+                    try {
+                        await axiosClient
+                            .put(`/addresses/${address.id}`, payload)
+                            .then(() => {
+                                setNotification("Address Was Successfully Updated!");
+                                navigate("/addresses");
+                            });
+                    } catch (error) {
+                        const response = err.response;
+                        console.log(response);
+                        if (response && response.status === 422) {
+                            setError(response.data.errors);
+                        }
+                    }
+                } else {
+                    try {
+                        await axiosClient
+                            .post("/addresses", payload)
+                            .then(() => {
+                                setNotification("New Address Was Successfully Added!");
+                                navigate("/addresses");
+                                window.scrollTo(0, 0);
+                            });
+                    } catch (error) {
+                        console.log(error);
+                        const response = err.response;
+
+                        if (response && response.status === 422) {
+                            setError(response.data.errors);
+                        }
                     }
                 }
             } else {
-                try {
-                    await axiosClient
-                        .post("/addresses", payload)
-                        .then(() => {
-                            setNotification("New Address Was Successfully Added!");
-                            navigate("/addresses");
-                            // Scroll to the top of the screen window
-                            window.scrollTo(0, 0);
-                        });
-                } catch (error) {
-                    console.log(error);
-                    const response = err.response;
+                setFailNotification(
+                    "Opps, Invalid address!",
+                    "Please enter a valid address or address within Selangor or Kuala Lumpur only"
+                );
 
-                    if (response && response.status === 422) {
-                        setError(response.data.errors);
+            }
+        }
+    };
+
+    const validateAddress = async (address) => {
+        const apiKey = 'AIzaSyBEks4sU0u5DEF9wxLV5jeeGFVEnMaCH6g'; // Replace with your API key
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address.street)},${encodeURIComponent(address.city)},${encodeURIComponent(address.state)},${encodeURIComponent(address.postcode)}&key=${apiKey}`;
+        const validStates = ["Selangor", "Kuala Lumpur"];
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log("geodata", data);
+
+            if (data.status === "OK" && data.results && data.results.length > 0) {
+                const firstResult = data.results[0];
+
+                // Check if the first result has more than 3 address components
+                if (firstResult.address_components && firstResult.address_components.length > 3) {
+                    const isWithinValidStates = firstResult.address_components.some((component) => {
+                        return validStates.includes(component.long_name);
+                    });
+
+                    if (isWithinValidStates) {
+                        return {
+                            latitude: firstResult.geometry.location.lat,
+                            longitude: firstResult.geometry.location.lng,
+                        };
                     }
                 }
             }
+        } catch (error) {
+            console.log("geoerror", error);
         }
 
+        return null; // Default to null for an invalid address or when the condition is not met
     };
-
     //handle on change field
     const handleChange = (e) => {
 

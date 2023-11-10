@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ReservationController;
@@ -58,6 +59,11 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::apiResource('/order', OrderController::class);
     Route::get('/showOrderStatus/{id}', [OrderController::class, 'showOrderStatus']);
     Route::post('/rating', [OrderController::class, 'storeRating']);
+    Route::get('/userShoppingCart/{id}', [ShoppingCartController::class, 'show']);
+    Route::get('/showRating', [MealController::class, 'showRating']);
+    Route::get('/showRating/{id}', [MealController::class, 'showRatingForm']);
+    Route::post('/submitRating', [MealController::class, 'submitRating']);
+    Route::apiResource('/chat', ChatController::class);
     
 });
 
@@ -72,6 +78,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::apiResource('/users', UserController::class);
 Route::apiResource('/contactus', ContactUsController::class);
 
+Route::get('/searchMeal/{search}',[MealController::class, 'searchMeal']);
 // ingredient 
 Route::get('/ingredients', [IngredientController::class, 'index']);
 Route::get('/ingredients/{id}', [IngredientController::class, 'show']);

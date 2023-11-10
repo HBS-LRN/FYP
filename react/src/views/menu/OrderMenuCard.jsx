@@ -1,105 +1,206 @@
-import { Link, Navigate, Outlet } from "react-router-dom";
+
 import { useStateContext } from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client.js";
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-import AOS from 'aos';
-
-import OwlCarousel from 'react-owl-carousel2';
 import { useNavigate, useParams } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import OwlCarousel from 'react-owl-carousel2';
 import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
+
 
 export default function OrderMenuCard() {
 
 
 
-
-
-
     //react declaration
     const navigate = useNavigate();
-    const { user, setCartQuantity,cartQuantity } = useStateContext();
+    const { user, setCartQuantity, cartQuantity } = useStateContext();
     let { id } = useParams();
     const [categories, setCategories] = useState([]);
     const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setDeleteNotification, setSuccessNotification } = useNotificationContext();
+    const { setDeleteNotification, setSuccessNotification, setWarningNotification } = useNotificationContext();
+    const [shoppingCarts, setShoppingCarts] = useState([]);
+    const [selectedFilterCount, setSelectedFilterCount] = useState(null);
+    const [allergies, setAllergies] = useState([]);
+
+    //fetch allergies data
+
+    useEffect(() => {
+        getAllergies();
+    }, []);
 
 
+    //fetch user allergies
 
-    //fetch meal data
-    if (id) {
-        useEffect(() => {
-            setLoading(true);
+    const getAllergies = async () => {
+
+        try {
+            await axiosClient.get(`/allergic/${user.id}`)
+                .then(({ data }) => {
+                    console.log(data)
+                    setAllergies(data);
+
+                });
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
+    const isMealRecommended = (meal) => {
+        return meal.total_calorie <= user.BMR && meal.meal_ingredients.every((meal_ingredient) => {
+            const allergicIngredients = [];
+            allergies.forEach((allergy) => {
+                if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                    allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                }
+            });
+            return allergicIngredients.length === 0;
+        });
+    };
+    
+    const hasAllergicIngredients = (meal) => {
+        // Check if the meal has any ingredients that the user is allergic to
+        return meal.meal_ingredients.some((meal_ingredient) => {
+            return allergies.some((allergy) =>
+                allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()
+            );
+        });
+    };
+    
+    useEffect(() => {
+        setLoading(true);
+        if (allergies.length > 0) {
             axiosClient
                 .get(`/showCategoryMeal/${id}`)
                 .then(({ data }) => {
                     console.log(data);
-
+    
                     const mealData = data;
-
-                    // Set the initial quantity for each meal to 1
                     const mealsWithQuantity = mealData.map((meal) => ({
                         ...meal,
                         quantity: 1,
                     }));
-
-                    setMeals(mealsWithQuantity);
+    
+                    // Custom sorting logic
+                    const sortedMeals = mealsWithQuantity.slice().sort((mealA, mealB) => {
+                        if (isMealRecommended(mealA) && !isMealRecommended(mealB)) {
+                            return -1; // mealA is recommended and mealB is not, so mealA comes first
+                        } else if (!isMealRecommended(mealA) && isMealRecommended(mealB)) {
+                            return 1; // mealB is recommended and mealA is not, so mealB comes first
+                        } else if (hasAllergicIngredients(mealA) && !hasAllergicIngredients(mealB)) {
+                            return 1; // mealA has allergic ingredients and mealB doesn't, so mealB comes first
+                        } else if (!hasAllergicIngredients(mealA) && hasAllergicIngredients(mealB)) {
+                            return -1; // mealB has allergic ingredients and mealA doesn't, so mealA comes first
+                        } else {
+                            // Check user's BMI and meal's total calorie for obese users
+                            if (user.BMI >= 30) {
+                                if (mealA.total_calorie < 1000 && mealB.total_calorie >= 1000) {
+                                    return -1; // mealA has less than 1000 calories, so it comes first for obese users
+                                } else if (mealA.total_calorie >= 1000 && mealB.total_calorie < 1000) {
+                                    return 1; // mealB has less than 1000 calories, so it comes first for obese users
+                                }
+                            }
+                        }
+                        return 0; // Default: maintain the order
+                    });
+    
+                    console.log("gettingsortmeal", sortedMeals);
+    
+                    setMeals(sortedMeals);
+                    setLoading(false);
                 })
                 .catch(() => {
                     setLoading(false);
                 });
-        }, []);
-    }
+        }
+    }, [allergies]);
     //fetch categories data
     useEffect(() => {
         getCategories();
+        getShoppingCarts();
     }, [])
+
+
+
 
     const getCategories = async () => {
 
         console.log("getting")
-        setLoading(true)
+
         try {
             await axiosClient.get(`category`)
                 .then(({ data }) => {
                     console.log(data)
-                    setLoading(false)
+
                     setCategories(data)
                 });
         } catch (error) {
             const response = error.response;
             console.log(response);
-            setLoading(false)
+
         }
     }
 
 
 
-    const addToCart = meal => {
-        // make an API request here to add the meal to the cart
-        // Use axios.post to send a POST request to  API endpoint
-        // Include the `mealId` and the `quantity` in the request body
-        const payload = {
-            meal_id: meal.id,
-            shopping_cart_qty: meal.quantity,
-            user_id: user.id
-        };
+    // This function checks if a meal with a specific `mealId` is already in the cart
+    const isMealInCart = (shoppingCart, mealId) => {
+        return shoppingCart.some((cartItem) => cartItem.id === mealId);
+    };
 
-        try {
-            axiosClient.post("/shoppingCart", payload)
+    const addToCart = (meal) => {
+        // Make an API request here to add the meal to the cart
+        // Use axios.post to send a POST request to the API endpoint
+        // Include the `mealId` and the `quantity` in the request body
+
+
+        const mealId = meal.id;
+        // Check if the meal is already in the cart
+        if (isMealInCart(shoppingCarts, mealId)) {
+            // Meal is already in the cart, show a warning message or handle it as needed
+            setWarningNotification('Meal Already in Cart', 'You cannot add the same meal to the cart multiple times.');
+        } else {
+            // The meal is not in the cart, proceed to add it
+            const payload = {
+                meal_id: mealId,
+                shopping_cart_qty: meal.quantity,
+                user_id: user.id
+            };
+
+            axiosClient
+                .post('/shoppingCart', payload)
                 .then(({ data }) => {
-                    console.log(data)
-                    setSuccessNotification('Shopping Cart Added Successfully ')
+                    console.log(data);
+                    setSuccessNotification('Shopping Cart Added Successfully');
                     // Update the cart quantity in the layout
-                  
                     setCartQuantity(data);
                     console.log(cartQuantity); // Log the updated value here
+                })
+                .catch((error) => {
+                    const response = error.response;
+                    console.log(response);
                 });
+        }
+
+    };
+    useEffect(() => {
+        getShoppingCarts()
+    }, [cartQuantity]);
+    // Get the shopping cart items for the user
+    const getShoppingCarts = async () => {
+        console.log('Getting shopping cart items');
+
+        try {
+            const { data } = await axiosClient.get(`/shoppingCart/${user.id}`);
+            console.log(data);
+            setShoppingCarts(data); // This sets the original data if needed.
         } catch (error) {
             const response = error.response;
             console.log(response);
-
+            return []; // Return an empty array in case of an error
         }
     };
 
@@ -115,14 +216,38 @@ export default function OrderMenuCard() {
     };
 
     const increaseQuantity = (mealId) => {
-        setMeals((prevMeals) =>
-            prevMeals.map((meal) => {
-                if (meal.id === mealId) {
+        const updatedMeals = meals.map((meal) => {
+            if (meal.id === mealId) {
+                const ingredientShortages = [];
+
+                meal.meal_ingredients.forEach((mealIngredient) => {
+                    //+1 because cannot add more than that available stock
+                    if (mealIngredient.ingredient.stock < (meal.quantity + 1) * mealIngredient.unit) {
+                        ingredientShortages.push({
+                            ingredientName: mealIngredient.ingredient.ingredient_name,
+                            requiredStock: (meal.quantity + 1) * mealIngredient.unit,
+                            availableStock: mealIngredient.ingredient.stock,
+                        });
+                    }
+                });
+
+                if (ingredientShortages.length === 0) {
+                    // Sufficient stock for all ingredients
                     return { ...meal, quantity: meal.quantity + 1 };
+                } else {
+                    // Notify about insufficient stock for each ingredient
+                    for (const shortage of ingredientShortages) {
+                        setWarningNotification(
+                            "Insufficient Stock, Cannot Add More",
+                            `Meal For ${shortage.ingredientName} for  ${meal.quantity + 1} requires ${shortage.requiredStock}g, but there are only ${shortage.availableStock}g available.`
+                        );
+                    }
                 }
-                return meal;
-            })
-        );
+            }
+            return meal;
+        });
+
+        setMeals(updatedMeals);
     };
     //handle owl
     const options = {
@@ -132,10 +257,6 @@ export default function OrderMenuCard() {
         items: 3,
 
     };
-
-
-
-    //handle style
     const handleShowDishInfoClick = (event) => {
         const dishContainerElement = event.target.closest('.dish-foods');
         const dishContent = event.target.closest('.dish').querySelector('.dish-info');
@@ -183,6 +304,59 @@ export default function OrderMenuCard() {
 
 
 
+    //this function  is to calculate the number of ratings
+    const calculateRatings = (mealOrderDetails) => {
+        const ratingCounts = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+        };
+        let totalRatings = 0;
+        let totalRatingSum = 0;
+
+        mealOrderDetails.forEach((orderDetail) => {
+            if (orderDetail.rating_star !== null) {
+                ratingCounts[orderDetail.rating_star]++;
+                totalRatingSum += orderDetail.rating_star;
+                totalRatings++;
+            }
+        });
+
+        const overallRating = totalRatings > 0 ? (totalRatingSum / totalRatings).toFixed(1) : '0';
+
+        return { ratingCounts, overallRating };
+    };
+
+
+
+
+    //this is to generate the start rating
+    function generateStarRating(overallRating) {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+            if (i <= overallRating) {
+                stars.push(<i key={i} className="fa-solid fa-star"></i>);
+            } else if (i - 0.5 <= overallRating) {
+                stars.push(<i key={i} className="fa-solid fa-star-half"></i>);
+            } else {
+                stars.push(<i key={i} className="fa-solid fa-star-o"></i>);
+            }
+        }
+        return stars;
+    }
+
+
+    const handleFilterSelect = (selectedFilterCount) => {
+        setSelectedFilterCount(selectedFilterCount);
+    };
+    // Function to update the selected filter count
+    const countOrderDetailsWithRating = (rating, orderDetails) => {
+        return orderDetails.filter((orderDetail) => orderDetail.rating_star === rating).length;
+    };
+
+
     return (
 
 
@@ -199,6 +373,7 @@ export default function OrderMenuCard() {
 
                                     <li><a href="index.html"><i class="fa-solid fa-right-long"></i>Category</a></li>
                                     <li class="two"><a href="index.html"><i class="fa-solid fa-right-long"></i>Menu</a></li>
+
                                 </ul>
                                 <h2 data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">Appertize Menu</h2>
 
@@ -216,213 +391,323 @@ export default function OrderMenuCard() {
 
                         <div class="row">
 
-
-
                             <div class="col-lg-12">
 
-                                <div class="tab-content" id="v-pills-tabContent" >
-
-                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                        <div class="row">
-
-                                            {loading &&
-                                                <div class="text-center">
-                                                    <div class="loaderCustom2"></div>
-                                                </div>
-                                            }
-
-                                            {!loading && meals && meals
-                                                .map((m) => (
-                                                    <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
-                                                        <div class="dish">
-                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} />
-                                                            <div class="dish-foods">
-                                                                <h3>{m.meal_name} </h3>
-                                                                <div class="dish-icon">
-
-                                                                    <div class="dish-icon end">
-
-                                                                        <i class="info fa-solid fa-circle-info" onClick={handleShowDishInfoClick}></i>
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="price">
-                                                                    <h2>RM {m.meal_price}</h2>
-                                                                    <div class="qty-input">
-                                                                        <button
-                                                                            className="qty-count qty-count--minus"
-                                                                            data-action="minus"
-                                                                            type="button"
-                                                                            onClick={() => decreaseQuantity(m.id)}
-                                                                        >
-                                                                            -
-                                                                        </button>
-                                                                        <input
-                                                                            className="product-qty"
-                                                                            type="number"
-                                                                            name="product-qty"
-                                                                            min="1"
-                                                                            value={m.quantity}
-                                                                            readOnly
-                                                                        />
-                                                                        <button
-                                                                            className="qty-count qty-count--add"
-                                                                            data-action="add"
-                                                                            type="button"
-                                                                            onClick={() => increaseQuantity(m.id)}
-                                                                        >
-                                                                            +
-                                                                        </button>
-                                                                    </div>
-
-                                                                </div>
-                                                                <button class="button-price" onClick={() => addToCart(m)}>Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
-                                                            </div>
-                                                            <div class="dish-info" style={{ display: 'none' }}>
-                                                                <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
-                                                                <h5>
-                                                                    {m.meal_name}
-                                                                </h5>
-
-                                                                <p>{m.meal_desc}
-
-                                                                </p>
-                                                                <ul class="menu-dish">
-                                                                    {m.meal_ingredients.map((meal_ingredient) => (
-                                                                        <>
-                                                                            <li>{meal_ingredient.ingredient.ingredient_name}</li>
-
-                                                                        </>
-
-                                                                    ))}
-
-                                                                </ul>
-                                                                <h5>
-                                                                    Rating And Review
-                                                                </h5>
+                                <div class="Provides" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
 
 
-                                                                <div className="dropdown float-end">
-                                                                    <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                        {/* <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Breakfast</button>
+                                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Lunch</button>
+                                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Dinner</button> */}
 
-                                                                        <i class="fa-solid fa-filter"></i>
-                                                                        <span class="filter">Filter</span>
-
-                                                                    </a>
-                                                                    <div className="dropdown-menu dropdown-menu-end">
-                                                                        {/* item */}
-                                                                        <a href="javascript:void(0);" className="dropdown-item">5 Star&nbsp;(8)</a>
-                                                                        {/* item */}
-                                                                        <a href="javascript:void(0);" className="dropdown-item">4 Star&nbsp;(80)</a>
-                                                                        {/* item */}
-                                                                        <a href="javascript:void(0);" className="dropdown-item">3 Star&nbsp;(80)</a>
-                                                                        {/* item */}
-                                                                        <a href="javascript:void(0);" className="dropdown-item">2 Star&nbsp;(80)</a>
-                                                                        <a href="javascript:void(0);" className="dropdown-item">1 Star&nbsp; (80)</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="overallRating">
-                                                                    <h3>
-                                                                        4.9 Out Of 5
-                                                                        <br />
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-                                                                        <i class="fa-solid fa-star"></i>
-
-                                                                    </h3>
-                                                                    {/* <p> 50 Ratings.</p> */}
-
-                                                                </div>
-                                                                <div class="rating-scroll" >
-                                                                    <div class="row rating">
-                                                                        <div class="col-xl-2 rating-review">
-                                                                            <img src="../assets/img/bungsenggg.jpg" />
-
-
-                                                                        </div>
-
-                                                                        <div class="col-xl-8 col-lg-12  comment">
-                                                                            <div>
-                                                                                <h6>Thomas Adamson</h6>
-
-
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <p>
-                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-
-                                                                    </div>
-                                                                    <div class="row rating">
-                                                                        <div class="col-xl-2 rating-review">
-                                                                            <img src="../assets/img/bungsenggg.jpg" />
-
-
-                                                                        </div>
-
-                                                                        <div class="col-xl-8 col-lg-12 comment">
-                                                                            <div>
-                                                                                <h6>Thomas Adamson</h6>
-
-
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <p>
-                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-
-                                                                    </div>
-                                                                    <div class="row rating">
-                                                                        <div class="col-xl-2 rating-review">
-                                                                            <img src="../assets/img/bungsenggg.jpg" />
-
-
-                                                                        </div>
-
-                                                                        <div class="col-xl-8 col-lg-12 comment">
-                                                                            <div>
-                                                                                <h6>Thomas Adamson</h6>
-
-
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-                                                                                <i class="fa-solid fa-star"></i>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <p>
-                                                                            Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-
-
-
-                                                        </div>
-                                                    </div>
-
-                                                ))
-                                            }
-                                        </div>
+                                    </div>
+                                    <div class="like-meal">
+                                        {/* <a href="#"><i class="fa-solid fa-heart"></i>Your Personalized Meals</a> */}
                                     </div>
 
                                 </div>
+
+                            </div>
+
+                            <div class="col-lg-12">
+
+                                <div class="row">
+                                    {loading &&
+                                        <div class="text-center">
+                                            <div class="loaderCustom2"></div>
+                                        </div>
+                                    }
+
+                                    {!loading && meals && meals
+                                        .map((m) => (
+                                            <div class="col-xl-4 col-lg-6" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
+                                                <div class="dish">
+                                                    <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} />
+                                                    <div class="dish-foods">
+                                                        <h3>{m.meal_name} </h3>
+                                                        <div class="dish-icon">
+
+
+
+                                                            <div class="cafa-button">
+                                                                {m.meal_ingredients.map((meal_ingredient) => {
+                                                                    const allergicIngredients = [];
+                                                                    allergies.forEach((allergy) => {
+                                                                        if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                            allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                        }
+                                                                    });
+
+                                                                    return (
+                                                                        <div key={meal_ingredient.id}>
+                                                                            {allergicIngredients.length > 0 && (
+                                                                                <div class="not-recommended float">
+                                                                                    <div class="allergic">
+                                                                                        <a href="#">Ingredients, ({allergicIngredients.join(', ')}) Cause You Allergies!</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    );
+                                                                })}
+
+                                                                {user.BMI <= 30 && (
+                                                                    m.total_calorie <= user.BMR && m.meal_ingredients.every((meal_ingredient) => {
+                                                                        const allergicIngredients = [];
+                                                                        allergies.forEach((allergy) => {
+                                                                            if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                                allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                            }
+                                                                        });
+                                                                        return allergicIngredients.length === 0;
+                                                                    }) && (
+                                                                        <div class="recommended float">
+                                                                            <div class="bold">
+                                                                                <a href="#">Recommended Meal Just For You.</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Diet Aligns With Your BMI.</a>
+                                                                                <a href="#">No Ingredients Cause You Allergies.</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                )}
+
+                                                                {user.BMI <= 30 && (
+                                                                    m.total_calorie > user.BMR && m.meal_ingredients.every((meal_ingredient) => {
+                                                                        const allergicIngredients = [];
+                                                                        allergies.forEach((allergy) => {
+                                                                            if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                                allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                            }
+                                                                        });
+                                                                        return allergicIngredients.length === 0;
+                                                                    }) && (
+                                                                        <div class="not-recommended float">
+                                                                            <div class="bold">
+                                                                                <a href="#">Not Recommended Meal For You.</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI.</a>
+                                                                                <a href="#">No Ingredients Cause You Allergies.</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                )}
+
+
+
+                                                                {user.BMI >= 30 && m.total_calorie <= 1000 && m.meal_ingredients.every((meal_ingredient) => {
+                                                                    const allergicIngredients = [];
+                                                                    allergies.forEach((allergy) => {
+                                                                        if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                            allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                        }
+                                                                    });
+                                                                    return allergicIngredients.length === 0;
+                                                                }) && (
+                                                                        <div class="recommended float">
+                                                                            <div class="bold">
+                                                                                <a href="#">Recommended Meal Just For You (Obese).</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Diet Aligns With Your BMI.</a>
+                                                                                <a href="#">No Ingredients Cause You Allergies.</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+
+
+                                                                {user.BMI >= 30 && m.total_calorie > 1000 && m.meal_ingredients.every((meal_ingredient) => {
+                                                                    const allergicIngredients = [];
+                                                                    allergies.forEach((allergy) => {
+                                                                        if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                            allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                        }
+                                                                    });
+                                                                    return allergicIngredients.length === 0;
+                                                                }) && (
+                                                                        <div class="not-recommended float">
+                                                                            <div class="bold">
+                                                                                <a href="#">Not Recommended Meal For You.</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI.</a>
+                                                                                <a href="#">No Ingredients Cause You Allergies.</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+
+
+                                                            </div>
+
+
+                                                            <div class="dish-icon end">
+                                                                <i class="info fa-solid fa-circle-info" onClick={handleShowDishInfoClick}></i>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                        <div class="price">
+                                                            <h2>RM {m.meal_price}</h2>
+                                                            <div class="qty-input">
+                                                                <button
+                                                                    className="qty-count qty-count--minus"
+                                                                    data-action="minus"
+                                                                    type="button"
+                                                                    onClick={() => decreaseQuantity(m.id)}
+                                                                >
+                                                                    -
+                                                                </button>
+                                                                <input
+                                                                    className="product-qty"
+                                                                    type="number"
+                                                                    name="product-qty"
+                                                                    min="1"
+                                                                    value={m.quantity}
+                                                                    readOnly
+                                                                />
+                                                                <button
+                                                                    className="qty-count qty-count--add"
+                                                                    data-action="add"
+                                                                    type="button"
+                                                                    onClick={() => increaseQuantity(m.id)}
+                                                                >
+                                                                    +
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                        <button class="button-price" onClick={() => addToCart(m)}>Add to Basket<i class="fa-solid fa-bag-shopping"></i></button>
+                                                    </div>
+                                                    <div class="dish-info" style={{ display: 'none' }}>
+                                                        <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
+                                                        <h5>
+                                                            {m.meal_name}
+                                                        </h5>
+
+                                                        <p>{m.meal_desc}
+
+                                                        </p>
+                                                        <ul class="menu-dish">
+                                                            {m.meal_ingredients.map((meal_ingredient) => (
+                                                                <>
+                                                                    <li>{meal_ingredient.ingredient.ingredient_name}</li>
+
+                                                                </>
+
+                                                            ))}
+
+                                                        </ul>
+                                                        <h5>
+                                                            Rating And Review
+                                                        </h5>
+
+
+
+
+                                                        <div className="dropdown float-end">
+                                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                                                <i class="fa-solid fa-filter"></i>
+                                                                <span class="filter">Filter</span>
+
+                                                            </a>
+                                                            <div className="dropdown-menu dropdown-menu-end">
+                                                                {[5, 4, 3, 2, 1].map((filterCount) => (
+                                                                    <a
+                                                                        key={filterCount}
+                                                                        href="javascript:void(0);"
+                                                                        className="dropdown-item"
+                                                                        onClick={() => handleFilterSelect(filterCount)}
+                                                                    >
+
+                                                                        {filterCount} Star
+                                                                        {`  (${countOrderDetailsWithRating(filterCount, m.meal_order_details)})`}
+                                                                    </a>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                        <div class="overallRating">
+                                                            <h3>
+                                                                {calculateRatings(m.meal_order_details).overallRating} Out Of 5
+                                                                <br />
+                                                                {generateStarRating(calculateRatings(m.meal_order_details).overallRating)}
+
+                                                            </h3>
+                                                            {/* <p> 50 Ratings.</p> */}
+
+                                                        </div>
+                                                        <div class="rating-scroll">
+                                                            {m.meal_order_details.length > 0 ? (
+                                                                (() => {
+                                                                    // Filter the data to remove items with no ratings
+
+
+                                                                    const filteredOrderDetails =
+                                                                        selectedFilterCount !== null
+                                                                            ? m.meal_order_details.filter((orderDetail) =>
+                                                                                orderDetail.rating_star === selectedFilterCount && (orderDetail.rating_comment || orderDetail.rating_star !== null)
+                                                                            )
+                                                                            : m.meal_order_details.filter((orderDetail) =>
+                                                                                orderDetail.rating_star !== null || orderDetail.rating_comment !== null
+                                                                            );
+
+                                                                    // Check if there are any items left after filtering
+                                                                    if (filteredOrderDetails.length > 0) {
+                                                                        // If there are items with ratings, display them
+                                                                        return filteredOrderDetails.map((orderDetail, index) => (
+                                                                            <div className="row rating" key={index}>
+                                                                                <div className="col-xl-2 rating-review">
+                                                                                    {orderDetail.order.user.image ? (
+                                                                                        <img src={`${import.meta.env.VITE_API_BASE_URL}/${orderDetail.order.user.image}`} alt={`User ${index + 1}`} />
+                                                                                    ) : (
+                                                                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                                                                    )}
+                                                                                </div>
+                                                                                <div className="col-xl-8 col-lg-12 comment">
+                                                                                    <div>
+                                                                                        <h6>{orderDetail.order.user.name}</h6>
+                                                                                        {[...Array(orderDetail.rating_star || 0)].map((star, starIndex) => (
+                                                                                            <i key={starIndex} className="fa-solid fa-star"></i>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <p>{orderDetail.rating_comment || '0'}</p>
+                                                                            </div>
+                                                                        ));
+                                                                    } else {
+                                                                        // If there are no items with ratings, display "No Ratings Yet"
+                                                                        return (
+
+                                                                            <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This Meal Has No Ratings Yet!</p>
+
+                                                                        );
+                                                                    }
+                                                                })()
+                                                            ) : <div className="text center">
+                                                                <p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This Meal Has No Ratings Yet!</p>
+                                                            </div>}
+                                                        </div>
+
+
+
+
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        ))
+                                    }
+
+                                </div>
+
+
+
+
+
                             </div>
 
                         </div>
@@ -431,7 +716,7 @@ export default function OrderMenuCard() {
 
                 </div>
 
-            </section>
+            </section >
 
             <section class="service-shows gap" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
                 <div class="container-fluid">
@@ -507,11 +792,13 @@ export default function OrderMenuCard() {
                     </div>
                 </div>
             </section>
+
             <Helmet>
-                <link rel="stylesheet" href="../../../assets/css/orderMenuCard.css" />
+             
+            <link rel="stylesheet" href="../../../assets/css/orderMenuCard.css" />
 
             </Helmet>
-        </div>
+        </div >
 
 
     );

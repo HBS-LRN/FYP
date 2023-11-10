@@ -22,6 +22,8 @@ class CreateDeliveriesTable extends Migration
             $table->double('longitude')->nullable();
             $table->double('latitude')->nullable();
             $table->double('accuracy')->nullable();
+            $table->double('customer_longitude')->nullable();
+            $table->double('customer_latitude')->nullable();
             $table->string('street');
             $table->string('city');
             $table->string('state');

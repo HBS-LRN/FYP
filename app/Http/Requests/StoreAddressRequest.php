@@ -30,7 +30,9 @@ class StoreAddressRequest extends FormRequest
             'street' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'postcode' => 'required|digits:5'
+            'postcode' => 'required|digits:5',
+            'latitude' => 'required',
+            'longitude'=> 'required'
         ];
     }
 }

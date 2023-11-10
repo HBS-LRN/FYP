@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\mealStoreRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Ingredient;
+use App\Models\MealOrderDetail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -132,12 +134,12 @@ class MealController extends Controller
 
         $cookMethodCalories = [
             'water_boiled' => 0,
-            'fried' => 100, 
-            'deep_fried' => 200, 
+            'fried' => 100,
+            'deep_fried' => 200,
             'raw' => 0,
-            'saute' => 50, 
-            'steam' => 20, 
-            'spicy' => 150, 
+            'saute' => 50,
+            'steam' => 20,
+            'spicy' => 150,
         ];
 
 
@@ -250,9 +252,9 @@ class MealController extends Controller
     public function showCategoryMeal($id)
     {
         $category = Category::find($id);
-    
+
         $categoryMeals = $category->categorymeals()
-            ->with(['mealIngredients', 'mealIngredients.ingredient'])
+            ->with(['mealOrderDetails', 'mealOrderDetails.order.user', 'mealIngredients', 'mealIngredients.ingredient'])
             ->whereHas('mealIngredients', function ($query) {
                 $query->whereHas('ingredient', function ($subquery) {
                     $subquery->where('stock', '>', 0);
@@ -264,7 +266,48 @@ class MealController extends Controller
                 });
             })
             ->get();
-    
+
+
         return response()->json($categoryMeals);
+    }
+    public function showRating()
+    {
+        $mealRating = MealOrderDetail::with(['meal.orders.user'])
+            ->whereNotNull('rating_comment')
+            ->whereNotNull('rating_star')
+            ->whereNull('reply_comment')
+            ->get();
+
+        return response()->json($mealRating);
+    }
+    public function showRatingForm($id)
+    {
+        $mealRating = MealOrderDetail::with(['meal.orders.user'])
+            ->where('id', $id)
+            ->whereNotNull('rating_comment')
+            ->whereNotNull('rating_star')
+            ->first(); // Use first() to retrieve only one record
+
+        return response()->json($mealRating);
+    }
+    public function submitRating(Request $request)
+    {
+
+        $data = $request->all();
+        $mealRating = MealOrderDetail::find($data['id']);
+
+        if (!$mealRating) {
+            return response()->json(['message' => 'Meal Rating not found'], 404);
+        }
+
+        $mealRating->update(['reply_comment' => $data['reply_comment']]);
+
+        return response()->json($mealRating);
+    }
+    public function searchMeal($search)
+    {
+
+        $meals = Meal::where('meal_name', 'like', '%' . $search . '%')->get();
+        return response()->json($meals);
     }
 }

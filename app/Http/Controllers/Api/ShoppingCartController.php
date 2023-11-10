@@ -55,6 +55,10 @@ class ShoppingCartController extends Controller
 
         /** @var \App\Models\User $user */
         $user = User::find($id);
+      // Load the mealIngredients relationship for each meal
+      $user->load('meals.mealIngredients.ingredient');
+
+
         return response()->json($user->meals);
     }
 

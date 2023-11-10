@@ -118,6 +118,13 @@ export default function CustomerSideBar() {
                     </div>
 
                 </li>
+                <li>
+                    <div>
+                        <a href="/userChat">
+                        <i class="fa-solid fa-message"></i>Chat Grand Imperial!</a>
+                    </div>
+
+                </li>
                 {/* <li>
                         <div class="iconLink">
                             <a href="/memberPoint"><i class="fa fa-user-plus"></i><span class="memberPoint">Member Point</span></a>
