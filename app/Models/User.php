@@ -40,7 +40,8 @@ class User extends Authenticatable
         'height',
         'weight',
         'BMR',
-        'BMI'
+        'BMI',
+        'active_member'
 
     ];
 

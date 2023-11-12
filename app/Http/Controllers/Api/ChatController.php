@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MyEvent;
+use App\Events\NewChatMessage;
+use App\Events\PusherBroadcast;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
+
 
 class ChatController extends Controller
 {
@@ -16,7 +20,6 @@ class ChatController extends Controller
      */
     public function index()
     {
-        /** @var \App\Models\Chat $chats */
         $chats = Chat::all();
         return response()->json($chats);
     }
@@ -36,13 +39,17 @@ class ChatController extends Controller
             $data['image'] = $request->file('image')->store('images', 'public');
             $chat->image =  $data['image'];
         }
+        if (isset($data['admin_id'])) {
+            $chat->admin_id = $data['admin_id'];
+        }
 
         $chat->message = $data['message'];
         $chat->date = $data['date'];
         $chat->time = $data['time'];
         $chat->user_id = $data['user_id'];
         $chat->save();
-      
+        broadcast(new NewChatMessage($chat))->toOthers();
+
         return response()->json($chat);
     }
 
@@ -54,13 +61,20 @@ class ChatController extends Controller
      */
     public function show($id)
     {
-        // Retrieve all chats where user_id is equal to $id or 1
-        $chats = Chat::where('user_id', $id)
-            ->orWhere('user_id', 1)
-            ->get();
 
-        // You can now return or use $chats as needed
-        return response()->json($chats );
+
+        //if it is admin id
+        if ($id == 1) {
+            $chats = Chat::all();
+            return response()->json($chats);
+        } else {
+            // Retrieve all chats where user_id is equal to $id
+            $chats = Chat::where('user_id', $id)
+                ->orWhere('admin_id', $id)
+                ->get();
+
+            return response()->json($chats);
+        }
     }
 
     /**

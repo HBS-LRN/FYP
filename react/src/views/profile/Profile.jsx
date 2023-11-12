@@ -29,7 +29,7 @@ export default function Profile() {
         phone: "",
         gender: "",
         birthdate: "",
-       
+
     });
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function Profile() {
                 ...user,
                 image: null,
             });
-           
+
         } else {
             setUpdateUser(user);
         }
@@ -58,10 +58,10 @@ export default function Profile() {
             // if (payload.image) {
             //     payload.image = payload.image_url;
             // }
-        
+
             if (payload.image === null) {
                 delete payload.image; // Remove the 'image' property if it's null
-              }
+            }
             console.log(payload)
             try {
                 await axiosClient
@@ -145,6 +145,20 @@ export default function Profile() {
                             <div class="col-lg-2 accountContent">
                                 <div class="accountTitle">
                                     <h3 class="profileTitle">My Profile</h3>
+                                    <div className="dropdown toggleicon float-end">
+                                        <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-end">
+                                            <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                            <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                            <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                            <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                            <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                            <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                            <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                            <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
+                                        </div>
+                                    </div>
                                     <p class="subTitle">Manage and protect your account</p>
 
                                 </div>

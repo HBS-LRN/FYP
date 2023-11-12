@@ -25,6 +25,7 @@ class StoreChatRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
+            'admin_id' => 'nullable',
             'image' => 'nullable',
             'message' => 'nullable',
             'date' => 'required',

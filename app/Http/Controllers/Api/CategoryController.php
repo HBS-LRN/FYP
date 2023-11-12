@@ -139,4 +139,10 @@ class CategoryController extends Controller
         return response()->json($category);
     } 
 
+    public function show($id)
+    {
+      
+        $category = Category::find($id);
+        return response()->json($category);
+    } 
 }

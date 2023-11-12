@@ -54,8 +54,8 @@ export default function Allergic() {
         console.log(index)
         const updatedAllergies = [...allergies];
         updatedAllergies[index].ingredient_name = editedAllergic;
-        console.log( updatedAllergies[index])
-      
+        console.log(updatedAllergies[index])
+
         setAllergies(updatedAllergies);
 
         const payload = {
@@ -81,7 +81,7 @@ export default function Allergic() {
                     <CustomerSideBar />
 
                     <div
-                        className="col-lg-2 addressContent"
+                        className="col-lg-2 allergic"
                         data-aos="flip-up"
                         data-aos-delay="300"
                         data-aos-duration="400"
@@ -89,12 +89,26 @@ export default function Allergic() {
                         <div className="addressTitle">
                             <h3 className="profileTitle">My Allergies</h3>
                             <p className="subTitle">
-                            Manage Your Allergies Here!
+                                Manage Your Allergies Here!
                             </p>
                             <div className="addAddress">
                                 <div className="addAddressFont">
-                                    <a href="/allergicForm">+ Add New Allergic</a>
+                                    <Link to="/allergicForm">+ Add New Allergic</Link>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="dropdown toggleicon float-end">
+                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-end">
+                                <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
                             </div>
                         </div>
                         {loading && (
@@ -102,64 +116,64 @@ export default function Allergic() {
                                 <div className="loaderCustom2"></div>
                             </div>
                         )}
-<div class="scroll-wrap">
-                        {!loading &&
-                            allergies.map((allergic, index) => (
-                                <div className="row userAddress" key={allergic.id}>
-                                    <div className="col-lg-9 userInfo was-validated">
-                                        <div className="name">
-                                            <label htmlFor="nameLabel">Allergic To:</label>
-                                           
-                                            {editIndex === index ? (
-                                                <>
-                                                
-                                                    <input
-                                                        type="text"
-                                                        value={editedAllergic}
-                                                        required
-                                                        onChange={(e) => setEditedAllergic(e.target.value)}
-                                                        className="allergicname form-control "
-                                                        placeholder="Update allergic name"
-                                                    />
+                        <div class="scroll-wrap">
+                            {!loading &&
+                                allergies.map((allergic, index) => (
+                                    <div className="row userAddress" key={allergic.id}>
+                                        <div className="col-lg-9 col-sm-6 userInfo was-validated">
+                                            <div className="name">
+                                                <label htmlFor="nameLabel">Allergic To:</label>
 
-&nbsp;
-                                                    <i class="fas fa-edit"  onClick={() => handleSaveClick(index)}></i>
-                                                
-                                                </>
-                                            ) : (
-                                                <span className="editable" data-pk={allergic.id} data-type="text">
-                                                    {allergic.ingredient_name}
-                                                </span>
-                                            )}
+                                                {editIndex === index ? (
+                                                    <>
 
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 buttonType">
-                                        <div className="row actionLink">
-                                            <div className="col-lg-3 editLink">
+                                                        <input
+                                                            type="text"
+                                                            value={editedAllergic}
+                                                            required
+                                                            onChange={(e) => setEditedAllergic(e.target.value)}
+                                                            className="allergicname form-control "
+                                                            placeholder="Update allergic name"
+                                                        />
 
+                                                        &nbsp;
+                                                        <i class="fas fa-edit" onClick={() => handleSaveClick(index)}></i>
 
-                                                <a className="btn-edit" onClick={() => handleEditClick(index, allergic.ingredient_name)}>
-                                                    Edit
-                                                </a>
-                                            </div>
-                                            <div className="col-lg-3 deleteLink">
-                                                <a
-                                                    className="deleteAddress"
-                                                    onClick={() => onDeleteClick(allergic)}
-                                                    href="#"
-                                                >
-                                                    Delete
-                                                </a>
-                                            </div>
-                                            <div className="default">
-                                                {/* Add code for setting as default here */}
+                                                    </>
+                                                ) : (
+                                                    <span className="editable" data-pk={allergic.id} data-type="text">
+                                                        {allergic.ingredient_name}
+                                                    </span>
+                                                )}
+
                                             </div>
                                         </div>
+                                        <div className="col-lg-3 col-sm-6 buttonType">
+                                            <div className="row actionLink">
+                                                <div className="col-lg-3 editLink">
+
+
+                                                    <a className="btn-edit" onClick={() => handleEditClick(index, allergic.ingredient_name)}>
+                                                        Edit
+                                                    </a>
+                                                </div>
+                                                <div className="col-lg-3 deleteLink">
+                                                    <a
+                                                        className="deleteAddress"
+                                                        onClick={() => onDeleteClick(allergic)}
+                                                        href="#"
+                                                    >
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                                <div className="default">
+                                                    {/* Add code for setting as default here */}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            </div>
+                                ))}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -70,7 +70,7 @@ h2 {
     border-bottom: 1px solid #999;
 }
 
-.customerDashboardHeaderContent  .profile .profile_name {
+.customerDashboardHeaderContent .profile .profile_name {
     margin: -53px 60px 50px 70px;
     color: rgb(0, 0, 0);
     font-size: 18px;
@@ -78,7 +78,7 @@ h2 {
     white-space: nowrap;
 }
 
-.customerDashboardHeaderContent  .profile .profile_email {
+.customerDashboardHeaderContent .profile .profile_email {
     margin: -50px 60px 35px 70px;
     font-size: 13px;
 }
@@ -90,7 +90,7 @@ h2 {
 }
 
 .dashboardContent {
-    flex-basis:70%;
+    flex-basis: 70%;
     border: 1px solid white;
 
     padding-right: 50px;
@@ -102,7 +102,7 @@ h2 {
     background-color: white;
     padding-left: 20px;
     border-radius: 20px;
-   
+
 
 }
 
@@ -177,4 +177,33 @@ a {
 .subTitle {
     padding-bottom: 4px;
     border-bottom: 1px solid #999;
+}
+
+.dropdown.toggleicon {
+    display: none;
+}
+
+@media all and (max-width: 1200px) {
+    .dashboardContent {
+
+        flex-basis: 100%;
+        padding-bottom: 250px;
+    }
+
+    .customerDashboard {
+        margin-left: 0px;
+    }
+
+    .dashboard-block {
+        width: 39%;
+    }
+
+    .all {
+        padding-bottom: 100px;
+    }
+    .dropdown.toggleicon {
+        display: block;
+    }
+    
+
 }

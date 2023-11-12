@@ -244,14 +244,7 @@ class UserController extends Controller
             return response(new UserResource($user), 201);
         }
     }
-    public function shoppingCart(Request $request, $id)
-    {
-        /** @var \App\Models\User $user */
-        $user = User::find($id);
-        return response($user->meals);
-    }
-
-
+ 
     /**
      * Remove the specified resource from storage.
      *
@@ -299,4 +292,15 @@ class UserController extends Controller
 
         return $relativePath;
     }
+
+
+    public function deactivatedCustomer()
+    {
+
+          // Retrieve all deactivated user 
+        $deactivateUser = User::where('active_member','N')->get();
+        return response()->json($deactivateUser);
+    }
+
+  
 }

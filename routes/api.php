@@ -64,7 +64,9 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/showRating/{id}', [MealController::class, 'showRatingForm']);
     Route::post('/submitRating', [MealController::class, 'submitRating']);
     Route::apiResource('/chat', ChatController::class);
-    
+    Route::put('/setNonActiveMember/{id}', [AuthController::class, 'setNonActiveMember']);
+    Route::get('/deactivatedCustomer', [UserController::class, 'deactivatedCustomer']);
+    Route::put('/setActiveMember/{id}', [AuthController::class, 'setActiveMember']);
 });
 
 
@@ -91,7 +93,7 @@ Route::get('/category', [CategoryController::class, 'index']);
 Route::post('/category', [CategoryController::class, 'store']);
 Route::put('/category/{id}', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
-
+Route::get('/category/{id}', [CategoryController::class, 'show']);
 //ingredientMeal
 // Route::get('/ingredientMeal',[IngredientMealController::class, 'index']);
 // Route::post('/ingredientMeal', [IngredientMealController::class, 'store']);

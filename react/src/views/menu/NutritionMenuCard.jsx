@@ -21,17 +21,24 @@ export default function NuritionMenuCard() {
     const [categories, setCategories] = useState([]);
     const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setDeleteNotification, setSuccessNotification, setWarningNotification } = useNotificationContext();
+    const { setDeleteNotification, setSuccessNotification, setWarningNotification, setFailNotification } = useNotificationContext();
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const [selectedFilterCount, setSelectedFilterCount] = useState(null);
     const [allergies, setAllergies] = useState([]);
+    const [options, setOptions] = useState({
+        loop: true,
+        margin: 170,
+        dots: true,
+        items: 3,
+        nav: true,
+    });
 
     //fetch allergies data
-
-    useEffect(() => {
-        getAllergies();
-    }, []);
-
+    if (user) {
+        useEffect(() => {
+            getAllergies();
+        }, []);
+    }
 
     //fetch user allergies
 
@@ -60,7 +67,7 @@ export default function NuritionMenuCard() {
             return allergicIngredients.length === 0;
         });
     };
-    
+
     const hasAllergicIngredients = (meal) => {
         // Check if the meal has any ingredients that the user is allergic to
         return meal.meal_ingredients.some((meal_ingredient) => {
@@ -69,21 +76,22 @@ export default function NuritionMenuCard() {
             );
         });
     };
-    
+
     useEffect(() => {
         setLoading(true);
-        if (allergies.length > 0) {
+        if (user && allergies.length > 0) {
+
             axiosClient
                 .get(`/showCategoryMeal/${id}`)
                 .then(({ data }) => {
                     console.log(data);
-    
+
                     const mealData = data;
                     const mealsWithQuantity = mealData.map((meal) => ({
                         ...meal,
                         quantity: 1,
                     }));
-    
+
                     // Custom sorting logic
                     const sortedMeals = mealsWithQuantity.slice().sort((mealA, mealB) => {
                         if (isMealRecommended(mealA) && !isMealRecommended(mealB)) {
@@ -106,25 +114,53 @@ export default function NuritionMenuCard() {
                         }
                         return 0; // Default: maintain the order
                     });
-    
+
                     console.log("gettingsortmeal", sortedMeals);
-    
+
                     setMeals(sortedMeals);
                     setLoading(false);
                 })
                 .catch(() => {
                     setLoading(false);
                 });
+        } else {
+
+            axiosClient
+                .get(`/showCategoryMeal/${id}`)
+                .then(({ data }) => {
+                    console.log(data);
+
+                    const mealData = data;
+                    const mealsWithQuantity = mealData.map((meal) => ({
+                        ...meal,
+                        quantity: 1,
+                    }));
+
+
+                    setMeals(mealsWithQuantity);
+                    setLoading(false);
+                })
+                .catch(() => {
+                    setLoading(false);
+                });
+            // setWarningNotification(
+            //     "Oops! Login First!",
+            //     "Please log in to view your personalized recommended meals."
+            // );
         }
     }, [allergies]);
     //fetch categories data
     useEffect(() => {
         getCategories();
-        getShoppingCarts();
+
     }, [])
 
 
-
+    if (user) {
+        useEffect(() => {
+            getShoppingCarts()
+        }, [cartQuantity]);
+    }
 
     const getCategories = async () => {
 
@@ -158,37 +194,66 @@ export default function NuritionMenuCard() {
 
 
         const mealId = meal.id;
-        // Check if the meal is already in the cart
-        if (isMealInCart(shoppingCarts, mealId)) {
+
+        if (!user) {
+            setFailNotification('Unable To Add Cart', 'You Need To Login First!.');
+            // Check if the meal is already in the cart
+        } else if (isMealInCart(shoppingCarts, mealId)) {
             // Meal is already in the cart, show a warning message or handle it as needed
             setWarningNotification('Meal Already in Cart', 'You cannot add the same meal to the cart multiple times.');
         } else {
             // The meal is not in the cart, proceed to add it
-            const payload = {
-                meal_id: mealId,
-                shopping_cart_qty: meal.quantity,
-                user_id: user.id
-            };
+            // Check if the meal is not recommended or has allergens
+            const isNotRecommendedOrHasAllergens =
+                (!isMealRecommended(meal) || hasAllergicIngredients(meal));
 
-            axiosClient
-                .post('/shoppingCart', payload)
-                .then(({ data }) => {
-                    console.log(data);
-                    setSuccessNotification('Shopping Cart Added Successfully');
-                    // Update the cart quantity in the layout
-                    setCartQuantity(data);
-                    console.log(cartQuantity); // Log the updated value here
-                })
-                .catch((error) => {
-                    const response = error.response;
-                    console.log(response);
+            // Display confirmation dialog only if the meal is not recommended or has allergens
+            if (isNotRecommendedOrHasAllergens) {
+
+                setWarningNotification("This meal is not recommended or contains allergens.", "Are you sure you want to add it to the cart?").then((value) => {
+                    if (value) {
+                        // Proceed to add the meal to the cart
+                        const payload = {
+                            meal_id: mealId,
+                            shopping_cart_qty: meal.quantity,
+                            user_id: user.id
+                        };
+
+                        axiosClient
+                            .post('/shoppingCart', payload)
+                            .then(({ data }) => {
+                                setSuccessNotification('Shopping Cart Added Successfully');
+                                setCartQuantity(data);
+                            })
+                            .catch((error) => {
+                                const response = error.response;
+                                console.log(response);
+                            });
+                    }
                 });
+            } else {
+                // Add the meal to the cart without confirmation if it's recommended and has no allergens
+                const payload = {
+                    meal_id: mealId,
+                    shopping_cart_qty: meal.quantity,
+                    user_id: user.id
+                };
+
+                axiosClient
+                    .post('/shoppingCart', payload)
+                    .then(({ data }) => {
+                        setSuccessNotification('Shopping Cart Added Successfully');
+                        setCartQuantity(data);
+                    })
+                    .catch((error) => {
+                        const response = error.response;
+                        console.log(response);
+                    });
+            }
         }
 
     };
-    useEffect(() => {
-        getShoppingCarts()
-    }, [cartQuantity]);
+
     // Get the shopping cart items for the user
     const getShoppingCarts = async () => {
         console.log('Getting shopping cart items');
@@ -249,14 +314,41 @@ export default function NuritionMenuCard() {
 
         setMeals(updatedMeals);
     };
-    //handle owl
-    const options = {
-        loop: true,
-        margin: 170,
-        dots: true,
-        items: 3,
 
+    const handleResize = () => {
+        const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+
+        if (screenWidth < 1200) {
+            setOptions({
+                loop: true,
+                margin: 10,
+                dots: true,
+                items: 1,
+                nav: true,
+            });
+        } else {
+            setOptions({
+                loop: true,
+                margin: 170,
+                dots: true,
+                items: 3,
+                nav: false,
+            });
+        }
     };
+    useEffect(() => {
+        handleResize();
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+   
     const handleShowDishInfoClick = (event) => {
         const dishContainerElement = event.target.closest('.dish-foods');
         const dishContent = event.target.closest('.dish').querySelector('.dish-info');
@@ -374,7 +466,7 @@ export default function NuritionMenuCard() {
                                     <li class="two"><a href="index.html"><i class="fa-solid fa-right-long"></i>Healthy Meal</a></li>
 
                                 </ul>
-                                <h2 data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">Personalized Nutrition Healthy Meal Recommendation </h2>
+                                <h2 data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">Personalized Nutrition Meal Recommendation </h2>
 
                             </div>
                         </div>
@@ -402,7 +494,11 @@ export default function NuritionMenuCard() {
 
                                     </div>
                                     <div class="like-meal">
-                                        <a href="#"><i class="fa-solid fa-heart"></i>Your Personalized Meals</a>
+                                        {user ? (
+                                            <a href="#"><i class="fa-solid fa-heart"></i>Your Personalized Meals</a>
+                                        ) : (
+                                            <a href="#"><i class="fas fa-sign-in"></i>Login To See Your Own Personalized Meals</a>
+                                        )}
                                     </div>
 
                                 </div>
@@ -432,12 +528,14 @@ export default function NuritionMenuCard() {
                                                             <div class="cafa-button">
                                                                 {m.meal_ingredients.map((meal_ingredient) => {
                                                                     const allergicIngredients = [];
-                                                                    allergies.forEach((allergy) => {
-                                                                        if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
-                                                                            allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
-                                                                        }
-                                                                    });
+                                                                    if (allergies) {
+                                                                        allergies.forEach((allergy) => {
+                                                                            if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
+                                                                                allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
+                                                                            }
 
+                                                                        });
+                                                                    }
                                                                     return (
                                                                         <div key={meal_ingredient.id}>
                                                                             {allergicIngredients.length > 0 && (
@@ -451,7 +549,7 @@ export default function NuritionMenuCard() {
                                                                     );
                                                                 })}
 
-                                                                {user.BMI <= 30 && (
+                                                                {user && user.BMI <= 30 && (
                                                                     m.total_calorie <= user.BMR && m.meal_ingredients.every((meal_ingredient) => {
                                                                         const allergicIngredients = [];
                                                                         allergies.forEach((allergy) => {
@@ -471,7 +569,7 @@ export default function NuritionMenuCard() {
                                                                     )
                                                                 )}
 
-                                                                {user.BMI <= 30 && (
+                                                                {user && user.BMI <= 30 && (
                                                                     m.total_calorie > user.BMR && m.meal_ingredients.every((meal_ingredient) => {
                                                                         const allergicIngredients = [];
                                                                         allergies.forEach((allergy) => {
@@ -493,7 +591,7 @@ export default function NuritionMenuCard() {
 
 
 
-                                                                {user.BMI >= 30 && m.total_calorie <= 1000 && m.meal_ingredients.every((meal_ingredient) => {
+                                                                {user && user.BMI >= 30 && m.total_calorie <= 1000 && m.meal_ingredients.every((meal_ingredient) => {
                                                                     const allergicIngredients = [];
                                                                     allergies.forEach((allergy) => {
                                                                         if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
@@ -512,7 +610,7 @@ export default function NuritionMenuCard() {
                                                                     )}
 
 
-                                                                {user.BMI >= 30 && m.total_calorie > 1000 && m.meal_ingredients.every((meal_ingredient) => {
+                                                                {user && user.BMI >= 30 && m.total_calorie > 1000 && m.meal_ingredients.every((meal_ingredient) => {
                                                                     const allergicIngredients = [];
                                                                     allergies.forEach((allergy) => {
                                                                         if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
@@ -577,7 +675,8 @@ export default function NuritionMenuCard() {
                                                     </div>
                                                     <div class="dish-info" style={{ display: 'none' }}>
                                                         <i class="info2 fa-solid fa-xmark" onClick={handleHideDishInfoClick}></i>
-                                                        <h5>
+
+                                                        <h5 className="meal">
                                                             {m.meal_name}
                                                         </h5>
 
@@ -594,7 +693,7 @@ export default function NuritionMenuCard() {
                                                             ))}
 
                                                         </ul>
-                                                        <h5>
+                                                        <h5 class="rating">
                                                             Rating And Review
                                                         </h5>
 

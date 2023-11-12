@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-
+import { Link } from "react-router-dom";
 
 import axiosClient from "../axios-client.js";
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel';
+import { useStateContext } from "../contexts/ContextProvider";
 import OwlCarousel from 'react-owl-carousel2';
+import { useNotificationContext } from "../contexts/NotificationProvider.jsx";
 import 'react-owl-carousel2/src/owl.carousel.css'; // Import the CSS file
 export default function Index() {
 
@@ -15,44 +17,77 @@ export default function Index() {
         const boxButton2 = document.getElementById("foodShowBox2");
         const searchBar = document.getElementById("search");
         const resultBox = document.getElementById("resultBox");
-        boxButton1.style.top = "0px";
-        boxButton2.style.top = "80px";
-        boxButton1.addEventListener("mouseover", function () {
-            if (boxButton1.style.top == "0px") {
-                boxButton1.style.top = "80px";
-                boxButton2.style.top = "0px";
-            }
-        });
-        boxButton2.addEventListener("mouseover", function () {
-            if (boxButton2.style.top == "0px") {
-                boxButton2.style.top = "80px";
-                boxButton1.style.top = "0px";
-            }
-        });
+        let stylesApplied = false;
+
         searchBar.addEventListener("keydown", function () {
-            if (searchBar.value != "") {
+            if (searchBar.value !== "") {
                 resultBox.style.display = "block";
             } else {
                 resultBox.style.display = "none";
             }
         });
 
+        const handleResize = () => {
+            if (window.innerWidth > 1200 && !stylesApplied) {
+                boxButton1.style.top = "0px";
+                boxButton2.style.top = "80px";
+                boxButton1.addEventListener("mouseover", function () {
+                    if (boxButton1.style.top === "0px") {
+                        boxButton1.style.top = "80px";
+                        boxButton2.style.top = "0px";
+                    }
+                });
+                boxButton2.addEventListener("mouseover", function () {
+                    if (boxButton2.style.top === "0px") {
+                        boxButton2.style.top = "80px";
+                        boxButton1.style.top = "0px";
+                    }
+                });
+                stylesApplied = true;
+            } else if (window.innerWidth <= 1200 && stylesApplied) {
+                // Reset styles when window size is smaller than or equal to 1200px
+                boxButton1.style.top = "";
+                boxButton2.style.top = "";
+                boxButton1.removeEventListener("mouseover", null);
+                boxButton2.removeEventListener("mouseover", null);
+                stylesApplied = false;
+            }
+        };
+
+        // Initial setup
+        handleResize();
+
+        // Add event listener for window resize
+        window.addEventListener("resize", handleResize);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
 
 
-
     //react declaration
+    const { user, setUser, setNotification, setCartQuantity, cartQuantity } = useStateContext();
     const [searchTerm, setSearchTerm] = useState('');
     const [contactUs, setContactUs] = useState([]);
     const [meals, setMeals] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedMeal, setSelectedMeal] = useState(null);
+    const [popup, setPopUp] = useState(false);
+    const [shoppingCarts, setShoppingCarts] = useState([]);
+    const [quantity, setQuantity] = useState(1); // Assuming initial quantity is 1
+    const { setWarningNotification, setFailNotification, setSuccessNotification } = useNotificationContext();
     //fetch contact us data
     useEffect(() => {
         getContactUs();
-
+        getShoppingCarts();
     }, [])
-
+    if (user) {
+        useEffect(() => {
+            getShoppingCarts();
+        }, [quantity, cartQuantity]);
+    }
 
     //user search meal...
     const handleSearchChange = (e) => {
@@ -105,13 +140,18 @@ export default function Index() {
 
 
     const handleMealClick = (meal) => {
+
         setSelectedMeal(meal);
         document.body.classList.add('active');
+        setPopUp(true)
     };
     const handleMenuCloseBtnClick = () => {
+        // Remove 'active' class from body
         document.body.classList.remove('active');
 
-    }
+        setPopUp(false)
+
+    };
 
     const closePopup = () => {
         setSelectedMeal(null);
@@ -120,23 +160,87 @@ export default function Index() {
     const options = {
         loop: true,
         margin: 10,
-        nav: false,
-        dots: true,
+        nav: true,
+        dots: false,
         items: 1,
         dotsEach: 1,
         autoplay: true,
         autoplayTimeout: 5000,
     };
 
+    // This function checks if a meal with a specific `mealId` is already in the cart
+    const isMealInCart = (shoppingCart, mealId) => {
+        return shoppingCart.some((cartItem) => cartItem.id === mealId);
+    };
 
 
+    const addToCart = (meal) => {
+        // Make an API request here to add the meal to the cart
+        // Use axios.post to send a POST request to the API endpoint
+        // Include the `mealId` and the `quantity` in the request body
+
+
+        const mealId = meal.id;
+        // Check if the meal is already in the cart
+        if (!user) {
+            setFailNotification('Unable To Add Cart', 'You Need To Login First!.');
+        } else if (isMealInCart(shoppingCarts, mealId)) {
+            // Meal is already in the cart, show a warning message or handle it as needed
+            setWarningNotification('Meal Already in Cart', 'You cannot add the same meal to the cart multiple times.');
+        }
+
+        else {
+            // The meal is not in the cart, proceed to add it
+            const payload = {
+                meal_id: mealId,
+                shopping_cart_qty: quantity,
+                user_id: user.id
+            };
+
+            axiosClient
+                .post('/shoppingCart', payload)
+                .then(({ data }) => {
+                    console.log(data);
+                    setSuccessNotification('Shopping Cart Added Successfully');
+                    // Update the cart quantity in the layout
+                    setQuantity(1);
+                    setCartQuantity(data);
+
+                })
+                .catch((error) => {
+                    const response = error.response;
+                    console.log(response);
+                });
+        }
+
+    };
+    // Get the shopping cart items for the user
+    const getShoppingCarts = async () => {
+        console.log('Getting shopping cart items');
+
+        try {
+            const { data } = await axiosClient.get(`/shoppingCart/${user.id}`);
+            console.log(data);
+            setShoppingCarts(data); // This sets the original data if needed.
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            return []; // Return an empty array in case of an error
+        }
+    };
+
+
+    const handleQuantityChange = (e) => {
+        const newQuantity = parseInt(e.target.value, 10);
+        setQuantity(isNaN(newQuantity) ? 0 : newQuantity);
+    };
     return (
 
         <div>
             <section className="hero-section gap" style={{ backgroundImage: 'url(../assets/img/background-1.png)' }}>
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
+                        <div class="col-lg-6 col-12" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
                             <div class="restaurant">
                                 <br />
                                 <h1>The Best restaurants
@@ -181,9 +285,9 @@ export default function Index() {
 
                         </div>
 
-                        <div class="col-lg-6 mainpageShow" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
+                        <div class="col-lg-6 col-12 mainpageShow" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
                             <div class="img-restaurant">
-                                <a href="/nutritionMenuCard/8" class="foodShowBox" id="foodShowBox1">
+                                <Link to="/nutritionMenuCard/8" class="foodShowBox" id="foodShowBox1">
                                     <img width="120" height="120"
                                         src="assets/img/healthy-food.jpg"
 
@@ -196,8 +300,8 @@ export default function Index() {
                                         Personalized Nutrition Recommendation Meal Here!!
                                     </div>
 
-                                </a>
-                                <a href="/categoryMenuCard" class="foodShowBox" id="foodShowBox2">
+                                </Link>
+                                <Link to="/categoryMenuCard" class="foodShowBox" id="foodShowBox2">
                                     <img width="120" height="160"
                                         src="assets/img/dim-sum-spare-ribs-PhotoRoom.png-PhotoRoom.png"
 
@@ -206,7 +310,7 @@ export default function Index() {
                                     <div class="discription">
                                         Enjoy Dimsum Receipt And Many More Receipt Here!!
                                     </div>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -214,13 +318,24 @@ export default function Index() {
 
             </section>
             {selectedMeal && (
-                <div class="menu-wrap">
-                    <div class="menu-inner ps ps--active-x ps--active-y">
+                <div class={`menu-wrap ${selectedMeal ? 'active' : ''}`}>
+
+
+                    {popup &&
+                        <div class="custompopup-overlay"></div>
+                    }
+
+                    <div
+                        class={`menu-inner custom ps ps--active-x ps--active-y ${selectedMeal ? 'active' : ''}`}
+
+                    >
                         <span class="menu-cls-btn" onClick={handleMenuCloseBtnClick}><i class="cls-leftright"></i><i class="cls-rightleft"></i></span>
                         <div class="checkout-order">
+                            <br /> <br /> <br />
                             <div class="title-checkout">
                                 <h2>Search Item</h2>
                             </div>
+                            <br />
                             <ul>
 
 
@@ -237,7 +352,7 @@ export default function Index() {
                                                 <h4>{selectedMeal.meal_name}</h4>
                                             </div>
                                             <div class="col-lg-3">
-                                                <h3>RM{selectedMeal.meal_price}</h3>
+                                                <h3>RM{selectedMeal.meal_price * quantity}</h3>
                                             </div>
                                         </div>
                                         <div class="price">
@@ -251,7 +366,7 @@ export default function Index() {
                                                         className="qty-count qty-count--minus"
                                                         data-action="minus"
                                                         type="button"
-                                                    // onClick={() => decreaseQuantity(m.pivot.id)}
+                                                        onClick={() => setQuantity(Math.max(quantity - 1, 0))}
                                                     >
                                                         -
                                                     </button>
@@ -259,8 +374,8 @@ export default function Index() {
                                                         class="product-qty"
                                                         type="number"
                                                         name="product-qty"
-                                                        min="0"
-                                                    // value={m.pivot.shopping_cart_qty}
+                                                        value={quantity} // Assuming quantity is a state variable
+                                                        onChange={(e) => handleQuantityChange(e)}
 
 
                                                     ></input>
@@ -270,7 +385,7 @@ export default function Index() {
                                                         className="qty-count qty-count--add"
                                                         data-action="add"
                                                         type="button"
-                                                    // onClick={() => increaseQuantity(m.pivot.id, 1)}
+                                                        onClick={() => setQuantity(quantity + 1)}
                                                     >
                                                         +
                                                     </button>
@@ -284,9 +399,9 @@ export default function Index() {
 
                                 </div>
                             </ul>
+                            <br /> <br />
 
-
-                            <button class="button-price" onClick={ev => onNavigateClick()}>Checkout</button>
+                            <button class="button-price" onClick={ev => addToCart(selectedMeal)}>Add To Cart</button>
 
 
                         </div>

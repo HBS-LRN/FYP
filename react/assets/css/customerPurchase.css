@@ -5,7 +5,7 @@
 .all {
     background-color: #f7f7f7;
     padding-bottom: 190px;
-   
+
 }
 
 
@@ -31,16 +31,10 @@
     text-align: center;
 }
 
-h2 {
-    color: black;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    font-weight: 400;
-}
 
 .customerPurchaseContent {
     margin: 0%;
-   
+
     font-family: 'Poppins', sans-serif;
     font-size: 17px;
     background-color: #f7f7f7;
@@ -80,7 +74,7 @@ h2 {
 }
 
 .purchaseContent {
-    flex-basis:69%;
+    flex-basis: 69%;
     border: 1px solid white;
 
     padding-right: 50px;
@@ -91,7 +85,7 @@ h2 {
     width: 60%;
     background-color: white;
     padding-left: 20px;
-  
+
     border-radius: 20px;
 }
 
@@ -99,7 +93,7 @@ h2 {
 .button-container {
     display: flex;
     width: 100%;
-    
+
     margin: 30px 36px 15px 27px;
     cursor: pointer;
     justify-content: center;
@@ -212,7 +206,7 @@ a {
 .product-items .item-total p {
     color: red;
     font-size: 25px;
-    padding-top:30px;
+    padding-top: 30px;
 }
 
 .product-items .cancelButton {
@@ -260,8 +254,10 @@ a {
 
 .scroll-wrap {
     height: 450px;
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    overflow-y: auto; /* Only vertical overflow */
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+    overflow-y: auto;
+    /* Only vertical overflow */
 }
 
 /* .scroll-wrap::-webkit-scrollbar {
@@ -345,11 +341,11 @@ a {
 
 #btn {
     top: 301px;
-    
+
     position: absolute;
     width: 20%;
     height: 7.2%;
-    left:34%;
+    left: 34%;
     transition: .5s;
     background: linear-gradient(to right, #ff105f, #ffad06);
     border-radius: 15px;
@@ -420,9 +416,9 @@ a {
     display: none;
 }
 
-.star{
-    margin-right:80px;
-    margin-left:80px;
+.star {
+    margin-right: 80px;
+    margin-left: 80px;
 }
 
 
@@ -640,7 +636,7 @@ input#rate-5:checked~label {
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
-} 
+}
 
 
 .custom-auth-gap {
@@ -656,17 +652,46 @@ input#rate-5:checked~label {
 
 }
 
-.item-status.completed{
+.item-status.completed {
     margin-top: 0;
 }
 
-input[type="radio"]:checked ~ .checked {
+input[type="radio"]:checked~.checked {
     color: #fe7;
     text-shadow: 0 0 20px #952;
 }
 
-.comment p{
-    color:red;
-    font-size:17px;
+.comment p {
+    color: red;
+    font-size: 17px;
     margin-right: 3px;
+}
+
+
+.dropdown.toggleicon {
+    display: none;
+}
+
+@media all and (max-width: 1200px) {
+    .purchaseContent {
+
+        flex-basis: 100%;
+
+    }
+
+    .customerAcc {
+        margin-left: 0px;
+    }
+
+    .all {
+        padding-bottom: 130px;
+    }
+
+    .dropdown.toggleicon {
+        display: block;
+    }
+    #btn{
+        display:none;
+    }
+
 }

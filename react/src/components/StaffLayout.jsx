@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Navigate, Outlet } from "react-router-dom";
-
+import { useStateContext } from "../contexts/ContextProvider";
 
 import '../../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css';
 
@@ -17,6 +17,10 @@ import '../../assets/css/app.min.css';
 
 export default function StaffLayout() {
 
+    const { user, token, setToken, setCartQuantity } = useStateContext()
+    if (!user && !token) {
+        return <Navigate to="/authRequired" />;
+    }
 
     return (
         <div>
@@ -232,7 +236,7 @@ export default function StaffLayout() {
 
                                     <li>
                                         <a href="/staffDashboard" className="waves-effect">
-                                        
+
                                             <i className="ri-dashboard-line"></i>
                                             <span className="badge rounded-pill bg-success float-end">3</span>
                                             <span>Dashboard</span>
@@ -242,15 +246,15 @@ export default function StaffLayout() {
 
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-utensils"></i>
-                                            
+                                            <i class="fas fa-utensils"></i>
+
                                             <span>Manage Meal</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
                                             <li>
                                                 <a href="/mealList">Meal List</a>
                                             </li>
-                            
+
                                             <li>
                                                 <a href="/addMeal">Add Meal</a>
                                             </li>
@@ -264,8 +268,8 @@ export default function StaffLayout() {
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-user-edit"></i>
-                                            
+                                            <i class="fas fa-user-edit"></i>
+
                                             <span> Manage Customer</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
@@ -279,12 +283,17 @@ export default function StaffLayout() {
                                             <li>
                                                 <a href="/addCustomer">Add Customer</a>
                                             </li>
+                                            <li>
+                                                <a href="/activateCustomer">Activate Customer</a>
+                                            </li>
+
+                                            
                                         </ul>
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-user-edit"></i>
-                                            
+                                            <i class="fas fa-user-edit"></i>
+
                                             <span> Manage Staff</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
@@ -299,8 +308,8 @@ export default function StaffLayout() {
                                     </li>
                                     <li>
                                         <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-shipping-fast"></i>
-                                            
+                                            <i class="fas fa-shipping-fast"></i>
+
                                             <span> Manage Delivery</span>
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
@@ -315,7 +324,7 @@ export default function StaffLayout() {
                                     </li>
                                     <li>
                                         <a href="/ratingList" className="waves-effect">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
                                             <span>Meal Rating</span>
                                         </a>
                                     </li>
@@ -346,17 +355,17 @@ export default function StaffLayout() {
                                             <li>
                                                 <a href="/addCustomer">Staff Report</a>
                                             </li>
-                                           
+
                                             <li>
                                                 <a href="charts-knob.html">Menu Report</a>
                                             </li>
-                                           
+
                                         </ul>
                                     </li>
 
-                                  
 
-                                   
+
+
                                 </ul>
                             </div>
                         </div>

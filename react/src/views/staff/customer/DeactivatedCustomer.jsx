@@ -12,11 +12,11 @@ import { useNotificationContext } from "../../../contexts/NotificationProvider.j
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
 
-export default function DeliveryList() {
+export default function ActivateCustomer() {
 
     const tableRef = useRef(null);
     const { setWarningNotification, setFailNotification, setSuccessNotification } = useNotificationContext();
-    const [deliveries, setDeliveries] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const isDataTableInitialized = useRef(false);
     //react declaration
@@ -27,9 +27,9 @@ export default function DeliveryList() {
 
     const fetchData = async () => {
         try {
-            const response = await axiosClient.get('/userDelivery');
+            const response = await axiosClient.get('/deactivatedCustomer');
 
-            setDeliveries(response.data);
+            setUsers(response.data);
 
             if (!isDataTableInitialized.current) {
 
@@ -53,11 +53,10 @@ export default function DeliveryList() {
         }
     };
 
+
+    //fetch data from api
     useEffect(() => {
-
         fetchData();
-
-
     }, []);
 
     const tableStyle = {
@@ -66,80 +65,52 @@ export default function DeliveryList() {
         width: "100%",
     };
 
-    const onUpdateDeliveryClick = async (delivery, status) => {
+    const onActivateUserClick = async (user) => {
         // Display notification using sweet alert
-        setWarningNotification("Are You Sure?", "That Is Not Regret After You Click The Yes Button To Change The Delivery Status").then(async (value) => {
-            if (value) {
-                const payload = {
-                    status: status,
-                    delivery_man_id: user.id
-                };
 
-                try {
-                    const response = await axiosClient.put(`/updateDeliveryStatus/${delivery.order_id}`, payload);
-                    console.log(response.data.order_status)
-                    setSuccessNotification("Delivery Status Updated Sucessfully");
-                    if (response.data && response.data.order_status === "delivering") {
-                        window.open('/realTimeDeliveryTracking/' + delivery.order_id, '_blank');
-                    }
-                    fetchData();
-                } catch (error) {
-                    setFailNotification(error);
-                }
+        try {
+            const response = await axiosClient.put(`/setActiveMember/${user.id}`);
+         
+            console.log(response)
+            setSuccessNotification("Customer Have Been Activated");
+            fetchData();
+        } catch (error) {
+            setFailNotification(error);
+        }
 
-            }
-        });
+
+
     };
 
 
-    var deliveryDetail = "";
-    deliveryDetail = deliveries.map((delivery, index) => {
-        console.log(user.id)
-        console.log(delivery.delivery_man_id)
-        if (delivery.order.order_status === "pending") {
-            return (
-                <tr key={delivery.order_id}>
-                    <td>{delivery.order_id}</td>
-                    <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
-                    <td>{delivery.username}</td>
-                    <td>{delivery.userphone}</td>
-                    <td id={"tooltip-container" + index}>
+    var deactivatedCustomerDetail = "";
+    deactivatedCustomerDetail = users.map((deactivateUser, index) => {
 
-                        <button
-                            type="button"
-                            onClick={ev => onUpdateDeliveryClick(delivery, "delivering")}
-                            className="btn btn-primary waves-effect waves-light"
-                        >
-                            Pick Up Order <i className="ri-arrow-right-line align-middle ms-2"></i>
-                        </button>
 
-                    </td>
-                </tr>
-            );
+        return (
+            <tr key={deactivateUser.id}>
+                <td>{deactivateUser.id}</td>
+                <td>{deactivateUser.name}</td>
+                <td>{deactivateUser.email}</td>
+                <td>{deactivateUser.phone ? deactivateUser.phone : 'N/A'}</td>
+                <td id={"tooltip-container" + index}>
 
-        } else if (user.id === delivery.delivery_man_id && delivery.order.order_status === "delivering") {
+                    <button
+                        type="button"
+                        onClick={ev => onActivateUserClick(deactivateUser)}
+                        className="btn btn-primary waves-effect waves-light"
+                    >
+                        Activate User
+                    </button>
 
-            return (
+                </td>
+            </tr>
+        );
 
-                <tr key={delivery.order_id}>
-                    <td>{delivery.order_id}</td>
-                    <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
-                    <td>{delivery.username}</td>
-                    <td>{delivery.userphone}</td>
-                    <td id={"tooltip-container" + index}>
-                        {delivery.order.order_status === "delivering" && (
-                            <button type="button" onClick={ev => onUpdateDeliveryClick(delivery, "completed")} className="btn btn-warning waves-effect waves-light">
-                                <i className="fas fa-shipping-fast"></i> In Delivering
-                            </button>
-                        )}
-                    </td>
-                    {console.log(user.id)}
-                </tr>
 
-            );
-        }
-        return null; // Return null if the condition is not met
-    });
+    }
+
+    );
 
     return (
         <div>
@@ -152,7 +123,7 @@ export default function DeliveryList() {
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Deliveries</h4>
+                                    <h4 class="mb-sm-0">Deacti</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -176,10 +147,10 @@ export default function DeliveryList() {
                                                 <thead class="thead-light">
                                                     <tr>
 
-                                                        <th>Order ID</th>
-                                                        <th style={{ whiteSpace: 'pre-line' }}>Delivery To</th>
-                                                        <th>Recipient's Name</th>
-                                                        <th>Recipient's Phone Number</th>
+                                                        <th>Customer ID</th>
+                                                        <th>Customer Name</th>
+                                                        <th>Customer Email</th>
+                                                        <th>Customer's Phone Number</th>
                                                         <th style={{ width: "120px" }}>Action</th>
                                                     </tr>
                                                 </thead>
@@ -189,7 +160,7 @@ export default function DeliveryList() {
                                                             <td colSpan="4">Loading...</td>
                                                         </tr>
                                                     ) : (
-                                                        deliveryDetail
+                                                        deactivatedCustomerDetail
                                                     )}
                                                 </tbody>
                                             </table>

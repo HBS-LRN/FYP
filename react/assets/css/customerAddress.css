@@ -29,12 +29,6 @@
     text-align: center;
 }
 
-h2 {
-    color: black;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    font-weight: 400;
-}
 
 .customerAccContent {
     margin: 0%;
@@ -78,7 +72,7 @@ h2 {
 
 
 .addressContent {
-    flex-basis:67%;
+    flex-basis: 67%;
     border: 1px solid white;
 
     padding-right: 50px;
@@ -123,7 +117,7 @@ h2 {
 
 .userInfo {
     font-size: 14px;
-    padding-left:24px;
+    padding-left: 24px;
 }
 
 /* .userAddress {
@@ -176,30 +170,31 @@ h2 {
     /* float: right; */
 
     /* margin-left:310px; */
-    padding-top:10px;
+    padding-top: 10px;
     /* padding-left:120px;
     padding-right: 90px; */
 }
-.actionLink{
-    margin-bottom:12px;
-    margin-top:7px;
- 
+
+.actionLink {
+    margin-bottom: 12px;
+    margin-top: 7px;
+
 }
 
 
 .editLink {
-    
-    
+
+
     border: 1px solid black;
     border-radius: 5px;
     background-color: #95adbe;
     padding: 3px;
-    margin-left:24px;
-    width:73px;
-    
- 
-   
-   
+    margin-left: 24px;
+    width: 73px;
+
+
+
+
     text-align: center;
 }
 
@@ -207,22 +202,23 @@ h2 {
     text-decoration: none;
     color: white;
 }
-.default{
-    margin-top:17px;
-    margin-left:10px;
+
+.default {
+    margin-top: 17px;
+    margin-left: 10px;
 }
 
 .deleteLink {
-    
-   
-   
+
+
+
     border: 1px solid black;
     border-radius: 5px;
     background-color: #f17163;
-    width:73px;
+    width: 73px;
     text-align: center;
     padding: 3px;
-    margin-left:10px;
+    margin-left: 10px;
 }
 
 .deleteLink a {
@@ -289,11 +285,11 @@ h2 {
     width: 80%;
     height: 42px;
     text-decoration: none;
-    
+
 }
 
 .currentUsedAddress {
-    
+
 
     border: 1px solid #d4d4d4;
     background-color: white;
@@ -301,7 +297,7 @@ h2 {
     height: 42px;
     text-decoration: none;
     color: red;
-    
+
 }
 
 .customerAccContent .sideNavigation {
@@ -348,8 +344,10 @@ h2 {
 
 .scroll-wrap {
     height: 450px;
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    overflow-y: auto; /* Only vertical overflow */
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+    overflow-y: auto;
+    /* Only vertical overflow */
 }
 
 /* .scroll-wrap::-webkit-scrollbar {
@@ -371,4 +369,27 @@ h2 {
     border-radius: 20px;
     border: 6px solid transparent;
     background-clip: content-box;
+}.dropdown.toggleicon {
+    display: none;
+}
+
+@media all and (max-width: 1200px) {
+    .addressContent  {
+
+        flex-basis: 100%;
+
+    }
+    .addressForm{
+        padding-right: 0px;
+    }
+    .customerAcc {
+        margin-left: 0px;
+    }
+    .addAddress{
+        width:37%;
+    }
+    .dropdown.toggleicon {
+        display: block;
+    }
+
 }

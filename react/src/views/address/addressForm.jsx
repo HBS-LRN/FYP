@@ -194,9 +194,9 @@ export default function AddressForm() {
                         <CustomerSideBar />
                         <div class="col-lg-2 addAddressContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                             <div class="addAddressTitle">
-                                {address.id && <h3 class="profileTitle">Update Address</h3>}
-                                {!address.id && <h3 class="profileTitle">New Address</h3>}
-                                <p class="subTitle">Add Your Address Here</p>
+                                {address.id && <h3 class="profileTitle">Update Address (KL Or Selangor Only)</h3>}
+                                {!address.id && <h3 class="profileTitle">New Address (KL Or Selangor Only)</h3>}
+                                <p class="subTitle">Our Currently Support Address Is KL Or Selangor Only</p>
                             </div>
 
                             <form action="#" method="POST" className="needs-validation" enctype="multipart/form-data"

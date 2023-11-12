@@ -93,12 +93,28 @@ export default function Addresses() {
                     <div class="col-lg-2 addressContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                         <div class="addressTitle">
                             <h3 class="profileTitle">My Addresses</h3>
+
                             <p class="subTitle">Manage Your Shipping Address Here!</p>
 
                             <div class="addAddress">
-                                <div class="addAddressFont"><a href="/addressForm">+ Add New Address</a></div>
+                                <div class="addAddressFont"><Link to="/addressForm">+ Add New Address</Link></div>
+
                             </div>
 
+                            <div className="dropdown toggleicon float-end">
+                                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                </a>
+                                <div className="dropdown-menu dropdown-menu-end">
+                                    <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                    <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                    <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                    <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                    <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                    <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                    <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                    <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
+                                </div>
+                            </div>
                         </div>
                         {loading &&
                             <div class="text-center">
@@ -112,7 +128,7 @@ export default function Addresses() {
 
 
                                 <div class="row userAddress">
-                                    <div class="col-lg-9 userInfo">
+                                    <div class="col-lg-9 col-sm-6 userInfo">
                                         <div class="name">
 
                                             <label for="nameLabel">Full Name</label>
@@ -140,7 +156,7 @@ export default function Addresses() {
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 buttonType">
+                                    <div class="col-lg-3 col-sm-6  buttonType">
                                         <div class="row actionLink">
                                             <div class="col-lg-3 editLink">
                                                 <Link className="btn-edit" to={'/addressForm/' + address.id}>Edit</Link>

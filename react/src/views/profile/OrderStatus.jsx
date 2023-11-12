@@ -94,7 +94,7 @@ export default function OrderStatus() {
             rating_star: rating,
             rating_comment: comment,
             id: mealId,
-            user_id:user.id
+            user_id: user.id
         };
         try {
             await axiosClient
@@ -172,6 +172,20 @@ export default function OrderStatus() {
 
                             <div id="btn">
                             </div>
+                            <div className="dropdown toggleicon float-end">
+                                    <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                    </a>
+                                    <div className="dropdown-menu dropdown-menu-end">
+                                        <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                        <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                        <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                        <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                        <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                        <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                        <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                        <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
+                                    </div>
+                                </div>
                             <div class="button-container">
 
 
@@ -182,17 +196,12 @@ export default function OrderStatus() {
                                 <button type="button" class="toggle-btn" onClick={completeProd}>
                                     Completed Order<span class="quantityProduct">({completedCount})</span>
                                 </button>
-
-                                {/* <button type="button" class="toggle-btn" onclick="pendingProd()">
-                            Preparing<span class="quantityProduct">(2)</span></button>
-                        <button type="button" class="toggle-btn" onclick="shipProd()">
-                            To Delivery <span class="quantityProduct">(3)</span></button>
-                        <button type="button" class="toggle-btn" onclick="completeProd()">
-                            Completed Order<span class="quantityProduct">(4)</span>
-                        </button> */}
+                             
+                           
 
 
                             </div>
+                            
 
                             {loading &&
                                 <div class="text-center">
@@ -252,7 +261,7 @@ export default function OrderStatus() {
                                                                     </div>
                                                                     <div className="item-status">
                                                                         Product Status:
-                                                                        <span className="item-currentStatus">Pending</span>
+                                                                        <span className="item-currentStatus">Delivering</span>
                                                                     </div>
                                                                 </div>
                                                             ))

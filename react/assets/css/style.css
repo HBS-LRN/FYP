@@ -1947,6 +1947,8 @@ header.two {
     align-items: center;
     justify-content: end;
     overflow: hidden;
+    min-width: 120px;
+    width: 150px;
 }
 
 .qty-input .product-qty,
@@ -1984,7 +1986,9 @@ header.two {
     border: 1px solid #F29F05;
     border-radius: 8px;
 }
-
+.qty-count.qty-count--minus{
+margin-left: 5px;
+}
 .qty-input .qty-count:before,
 .qty-input .qty-count:after {
     content: "";
@@ -2030,7 +2034,16 @@ header.two {
     justify-content: space-between;
     padding: 30px 0;
 }
-
+.priceList{
+    flex-basis: 50%;
+}
+.priceButton{
+    padding-left: 5px;
+    display:flex;
+    flex-direction: column;
+    flex-basis: 50%;
+    align-items:end;
+}
 .price h2 {
     font-weight: bold;
 }
@@ -2319,7 +2332,7 @@ ul.food-dishes li {
 
 /*-------------------         error-section         -------------------*/
 .error-section {
-    padding: 150px 0 100px 0;
+    
     text-align: center;
 }
 
@@ -3504,7 +3517,41 @@ body.active .menu-inner {
     box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
     -webkit-box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
     -moz-box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
-    overflow: auto;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-y: auto; /* Only vertical overflow */
+}
+
+body.active .menu-inner::-webkit-scrollbar {
+    width: 20px;
+}
+body.active .menu-inner::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+body.active .menu-inner::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+
+body.active .menu-inner.custom {
+    visibility: visible;
+    opacity: 1;
+    right: 0;
+    box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
+    -webkit-box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
+    -moz-box-shadow: -50px 1px 25px 2px rgba(168, 168, 168, 0.14);
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-y: auto; /* Only vertical overflow */
+    
+}
+.custompopup-overlay {
+    background-color: rgba(0, 0, 0, 0.575);
+    height: 100pc;
+    width: 100pc;
+    top: 0px;
+    position: absolute;
 }
 
 body.menu-layer:before {
@@ -4293,7 +4340,7 @@ li.menu-item-has-children.active {
     /* top: 0%; */
     height: 40vh;
     background-color: rgb(255, 255, 255);
-    /* z-index: 9999; */
+    z-index: 1;
   
     display: none;
 }
@@ -4576,4 +4623,38 @@ form.checkout-form button.button-price {
     padding-top:7px;
     border-radius:6px;
     margin-top:15px;
+}
+.price-list{
+    margin-top:13px;
+}
+.closeButton {
+    cursor: pointer;
+}
+
+
+
+@media all and (max-width: 500px) {
+   
+    .checkout-form .button-price.changeAddress{
+        margin-left:-15px;
+    }
+    
+    
+}
+@media all and (max-width: 1200px) {
+   
+   
+    .dish .dish-info .rating .rating-review img{
+        margin-left:36px;
+        margin-bottom:10px;
+    }
+    .dish-info h5.meal {
+        padding-left:80px;
+    }
+    .dish-info h5.rating {
+      display:none;
+    }
+    .overallRating{
+        padding-top:60px;
+    }
 }

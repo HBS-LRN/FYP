@@ -5,15 +5,16 @@ import { useStateContext } from "../../contexts/ContextProvider.jsx";
 import { createRef } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
+import { Link } from "react-router-dom";
 export default function Login() {
 
   const emailRef = createRef();
   const passwordRef = createRef();
-  const { user, setUser, setToken, setAuthUser, setCartQuantity} = useStateContext()
+  const { user, setUser, setToken, setAuthUser, setCartQuantity } = useStateContext()
   const [error, setError] = useState({ email: '', password: '' }); // Initialize error as an object with fields
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
-  const { setFailNotification } = useNotificationContext();
+  const { setFailNotification, setWarningNotification, setSuccessNotification } = useNotificationContext();
   const navigate = useNavigate();
 
 
@@ -49,10 +50,37 @@ export default function Login() {
 
       try {
         const { data } = await axiosClient.post('/login', payload);
+
         if (data.message) {
+          setFailNotification("Account Deactivated", "Contact admin to reactivate.");
+          setLoading(false);
+        }
+        else if (!data.user) {
           // Handle concurrent login message
-          setFailNotification("Concurrent Login Detected!", data.message);
-          // Optionally, redirect to the login page
+
+
+          setWarningNotification(
+            "Duplicated Login Detected!",
+            "You are only allowed to log in once the device has been logged out. Please click Ok Button if you want to deactivated your account"
+          ).then(async (value) => {
+
+            console.log(data)
+            if (value) {
+              try {
+                await axiosClient.put(`/setNonActiveMember/${data.id}`).then(() => {
+                  setSuccessNotification(
+                    "Account deactivated. Others will be logged out immediately. Contact admin to reactivate."
+                  );
+                });
+              } catch (error) {
+                const response = error.response;
+                console.log(response);
+                if (response && response.status === 422) {
+                  setError(response.data.errors);
+                }
+              }
+            }
+          });
           setLoading(false);
         } else {
           // Set the data to session
@@ -176,7 +204,7 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="forgetPassword">
-                  <a href="/forgetPassword">Forget Password?</a>
+                  <Link to="/forgetPassword">Forget Password?</Link>
                 </div>
 
                 {loading ? (

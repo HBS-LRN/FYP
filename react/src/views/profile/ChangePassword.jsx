@@ -103,9 +103,24 @@ export default function ChangePassword() {
                             <div class="col-lg-2 passwordContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                                 <div class="accountTitle">
                                     <h3 class="profileTitle"><b>Change Password</b></h3>
+                                    <div className="dropdown toggleicon float-end">
+                                        <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-end">
+                                            <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                            <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                            <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                            <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                            <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                            <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                            <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                            <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
+                                        </div>
+                                    </div>
                                     <p class="subTitle">For your account's security, do not share your password with anyone else</p>
 
                                 </div>
+
                                 <div class="userProfile">
                                     <div class="scroll-wrap">
                                         <div class="text">

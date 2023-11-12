@@ -5,6 +5,8 @@ import { createRef, useEffect, useState, useRef } from "react";
 import { Helmet } from 'react-helmet';
 import { useDropzone } from 'react-dropzone';
 import React from 'react';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
 
 
@@ -12,6 +14,8 @@ import CustomerSideBar from "../../components/CustomerSideBar";
 
 
 export default function UserChat() {
+
+
 
 
 
@@ -31,22 +35,62 @@ export default function UserChat() {
     });
 
 
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    };
+    // Scroll to the bottom of the chat container when component mounts
+    useEffect(() => {
+        scrollToBottom();
+    }, [chats]);
+    useEffect(() => {
+        var pusher = new Pusher('2124f91a86a5182a0c5d', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('chat-channel');
+        channel.bind('chat-event', function (data) {
+
+            console.log(data.message)
+            //if it is admin id
+            if (data.message.user_id === user.id || data.message.admin_id === user.id) {
+                setChats((prevChats) => [...prevChats, data.message]);
+            }
+
+            scrollToBottom();
+        });
+    }, []);
+
     //fetch user address data
     useEffect(() => {
         getChats();
-    }, [])
+    }, []);
+
 
     const getChats = async () => {
 
         console.log("getting")
         setLoading(true)
         try {
-            await axiosClient.get(`/chat/${user.id}`)
-                .then(({ data }) => {
-                    console.log(data)
-                    setLoading(false)
-                    setChats(data)
-                });
+
+            const response = await axiosClient.get(`/chat/${user.id}`);
+            console.log(response.data);
+
+            if (Array.isArray(response.data)) {
+                // Filter the data based on conditions
+
+                const filteredChats = response.data.filter(
+                    (chat) => chat.user_id === user.id || chat.admin_id === user.id
+                );
+
+                console.log(filteredChats);
+                setChats(filteredChats);
+
+                setLoading(false); // Assuming this is how you intended to complete the function
+
+
+            }
         } catch (error) {
             const response = error.response;
             console.log(response);
@@ -73,6 +117,11 @@ export default function UserChat() {
             formData.append('date', formattedDate);
             formData.append('time', formattedTime);
 
+            //delete, just show for bs
+            if (user.id === 1) {
+                formData.append('admin_id', 2);
+            }
+
             if (chat.image) {
                 formData.append('image', chat.image);
             }
@@ -86,7 +135,7 @@ export default function UserChat() {
 
                     console.log(response.data)
 
-                    setChats(prevChats => [...prevChats, response.data]);
+
                     setChat({
                         id: null,
                         image: "",
@@ -146,7 +195,7 @@ export default function UserChat() {
 
                     <div class="customerAccHeader">
                         <div class="customerAccBar"></div>
-                        <span class="customerAcc">My Profile</span>
+                        <span class="customerAcc">Chat</span>
                     </div>
 
                     <div class="container custom-auth-gap" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
@@ -167,8 +216,22 @@ export default function UserChat() {
                                                     <div class="flex-1">
                                                         <h5 class="font-size-15 mb-1">{user && user.name}</h5>
                                                         <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active</p>
-                                                    </div>
 
+                                                    </div>
+                                                    <div className="dropdown toggleicon float-end">
+                                                        <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        </a>
+                                                        <div className="dropdown-menu dropdown-menu-end">
+                                                            <Link to="/profile" className="dropdown-item">My Profile</Link>
+                                                            <Link to="/allergic" className="dropdown-item">My Allergies</Link>
+                                                            <a href="/orderStatus" className="dropdown-item">My Purchases</a>
+                                                            <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                                            <Link to="/addresses" className="dropdown-item">My Addresses</Link>
+                                                            <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
+                                                            <Link to="/changePassword" className="dropdown-item">Change Password</Link>
+                                                            <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -215,7 +278,7 @@ export default function UserChat() {
                                             <div class="p-3 px-lg-4 user-chat-border">
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 col-center">
-                                                      
+
                                                         <img src="../assets/img/GrandImperialGroupLogo.png" class="rounded-circle avatar-xs" alt="avatar-2" width="135" hegith="135" />
                                                         <h5 class="font-size-15 mb-1 text-truncate">Grands Imperial</h5>
 

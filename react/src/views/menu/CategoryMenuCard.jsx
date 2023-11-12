@@ -7,7 +7,6 @@ import 'aos/dist/aos.css';
 
 
 
-
 export default function CategoryMenuCard() {
 
 
@@ -89,7 +88,9 @@ export default function CategoryMenuCard() {
                                             {loading &&
                                                 <div class="text-center">
                                                     <div class="loaderCustom2"></div>
+                                                    <br/>  <br/>  <br/>  <br/>  <br/>  <br/>
                                                 </div>
+                                              
                                             }
 
                                             {!loading && categories
@@ -97,9 +98,9 @@ export default function CategoryMenuCard() {
                                                 .map((category) => (
                                                     <div class="col-xl-4 col-lg-6 custom-menu-margin" data-aos="flip-up" data-aos-delay="200" data-aos-duration="300">
                                                         <div class="dish category">
-                                                            <a href={`/orderMenuCard/${category.id}`}>
+                                                            <Link to={`/orderMenuCard/${category.id}`}>
                                                                 <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${category.image}`} width="300" height="340" />
-                                                            </a>
+                                                            </Link>
                                                             <div class="dish-foods">
                                                                 <h3>{category.name} Menu</h3>
                                                             </div>

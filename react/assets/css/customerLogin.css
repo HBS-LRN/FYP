@@ -98,7 +98,7 @@
     padding-left: 50px;
     padding-top: 20px;
     /* margin-top: 0px;*/
-    height: 80vh; 
+    height: 80vh;
 
 }
 
@@ -232,9 +232,10 @@ label {
 /* CSS to remove the green checkmark */
 .no-validation-mark:valid {
     box-shadow: none !important;
-  }
+}
 
 
-  .error-border {
-  border-color: red !important; /* !important is used to ensure this style takes precedence */
+.error-border {
+    border-color: red !important;
+    /* !important is used to ensure this style takes precedence */
 }
