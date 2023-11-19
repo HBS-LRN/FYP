@@ -48,9 +48,10 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
-
-        return response(new UserResource($user), 201);
+        
+        //call user repository interface to create data 
+        $newUser = $this->userRepositoryInterface->create($data);
+        return response(new UserResource($newUser), 201);
     }
 
     /**
@@ -109,7 +110,7 @@ class UserController extends Controller
     {
         // Check if the user has a gender, height, and weight
         if ($gender && $height && $weight) {
-            // Define calorie calculation formulas based on gender
+            // Define Basal Metabolic Rate calculation formulas based on gender
             $calorie = ($gender === 'Male')
                 ? 66.5 + (13.75 * $weight) + (5.003 * $height) - (6.75 * $this->age($user->birthdate))
                 : 655.1 + (9.563 * $weight) + (1.850 * $height) - (4.676 * $this->age($user->birthdate));
@@ -244,7 +245,7 @@ class UserController extends Controller
             return response(new UserResource($user), 201);
         }
     }
- 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -297,10 +298,8 @@ class UserController extends Controller
     public function deactivatedCustomer()
     {
 
-          // Retrieve all deactivated user 
-        $deactivateUser = User::where('active_member','N')->get();
+        // Retrieve all deactivated user 
+        $deactivateUser = User::where('active_member', 'N')->get();
         return response()->json($deactivateUser);
     }
-
-  
 }

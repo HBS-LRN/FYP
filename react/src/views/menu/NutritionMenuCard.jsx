@@ -582,7 +582,7 @@ export default function NuritionMenuCard() {
                                                                         <div class="not-recommended float">
                                                                             <div class="bold">
                                                                                 <a href="#">Not Recommended Meal For You.</a>
-                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI.</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI And BMR</a>
                                                                                 <a href="#">No Ingredients Cause You Allergies.</a>
                                                                             </div>
                                                                         </div>
@@ -622,7 +622,7 @@ export default function NuritionMenuCard() {
                                                                         <div class="not-recommended float">
                                                                             <div class="bold">
                                                                                 <a href="#">Not Recommended Meal For You.</a>
-                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI.</a>
+                                                                                <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI And BMR</a>
                                                                                 <a href="#">No Ingredients Cause You Allergies.</a>
                                                                             </div>
                                                                         </div>

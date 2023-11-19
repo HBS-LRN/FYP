@@ -61,7 +61,7 @@ export default function Login() {
 
           setWarningNotification(
             "Duplicated Login Detected!",
-            "You are only allowed to log in once the device has been logged out. Please click Ok Button if you want to deactivated your account"
+            "Please click Ok Button if you want to deactivated your account"
           ).then(async (value) => {
 
             console.log(data)

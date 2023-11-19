@@ -31,6 +31,8 @@ export default function Register() {
 
 
     const form = event.currentTarget;
+
+    //check client side validity before send it to server
     if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <= 10) {
       const payload = {
         name: nameRef.current.value,
@@ -41,7 +43,9 @@ export default function Register() {
 
       //set loading to true while post to server
       setLoading(true);
+
       try {
+        //after client-side no error, send it to server side
         await axiosClient
           .post("/signup", payload)
           .then(({ data }) => {

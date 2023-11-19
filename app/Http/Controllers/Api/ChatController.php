@@ -48,6 +48,8 @@ class ChatController extends Controller
         $chat->time = $data['time'];
         $chat->user_id = $data['user_id'];
         $chat->save();
+
+        // when having new message, using brodcast events to others 
         broadcast(new NewChatMessage($chat))->toOthers();
 
         return response()->json($chat);

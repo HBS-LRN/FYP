@@ -18,8 +18,12 @@ import '../../assets/css/app.min.css';
 export default function StaffLayout() {
 
     const { user, token, setToken, setCartQuantity } = useStateContext()
-    if (!user && !token) {
+
+    console.log(user.role)
+    if (!user || !token) {
         return <Navigate to="/authRequired" />;
+    } else if (parseInt(user.role) !== 1 && parseInt(user.role) !== 2) {
+        return <Navigate to="/accessProhibited" />;
     }
 
     return (
@@ -287,7 +291,7 @@ export default function StaffLayout() {
                                                 <a href="/activateCustomer">Activate Customer</a>
                                             </li>
 
-                                            
+
                                         </ul>
                                     </li>
                                     <li>

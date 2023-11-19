@@ -444,22 +444,22 @@ export default function Index() {
                 </div>
             </section>
 
-            <section class="your-favorite-food gap" style={{ backgroundImage: 'url(../assets/img/background-3.png)' }}>
+            <section class="your-favorite-food gap">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
                             <div class="food-photo-section">
                                 <img alt="img" src="../assets/img/GI-banner-2.jpg
                                 " />
-
                             </div>
                         </div>
                         <div class="col-lg-6 offset-lg-1" data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">
                             <div class="food-content-section">
                                 <h2>Reserve Your Table Today!</h2>
-                                <p>Make A Table Reservation Just By Clicking The Below Button To Enjoy A Brand New Floor Plan Mapping Reservation Technique,
+                                <p>Make A Table Reservation Just By Clicking The Below Button To Enjoy 
+                                    A Brand New Floor Plan Mapping Reservation Technique,
                                     Discover it Up!</p>
-                                <a href="#" class="button button-2">Make Reservation</a>
+                                <a href="/reservationForm" class="button button-2">Make Reservation</a>
                             </div>
                         </div>
                     </div>

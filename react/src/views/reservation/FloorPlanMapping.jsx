@@ -5,12 +5,13 @@ import axiosClient from "../../axios-client.js";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 import Swal from 'sweetalert2';
+import Pusher from 'pusher-js';
 export default function FloorPlanMaping() {
 
 
     const { reservation } = useLocation().state || {};
     // Add a state variable to manage the input field value
-const [remark, setRemark] = useState('');
+    const [remark, setRemark] = useState('');
     const [reservationData, setReservationData] = useState({});
     const [reservations, setReservations] = useState([]);
     const [tables, setTables] = useState([]);
@@ -62,6 +63,26 @@ const [remark, setRemark] = useState('');
         }
     }
 
+
+    useEffect(() => {
+        var pusher = new Pusher('2124f91a86a5182a0c5d', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('reservation-channel');
+        channel.bind('reservation-event', function (data) {
+
+         
+            console.log(data.reservation)
+            //if it is admin id
+            if (data.reservation.reservation_date === reservation.reservation_date && data.reservation.reservation_time  === reservation.reservation_time) {
+                setReservations((prevReservation) => [...prevReservation, data.reservation]);
+                isTableReserved(data.reservation.table_id)
+            }
+
+         
+        });
+    }, []);
 
     // Fetch tables data
     const getReservations = async () => {
@@ -149,7 +170,7 @@ const [remark, setRemark] = useState('');
     const handleBookNow = async () => {
         // Gather information from the state
         const selectedTableId = tables[tableId] ? tables[tableId].id : null;
-        
+
 
         if (selectedTableId) {
             const tableSeatCapacity = tables[selectedTableId - 1].seat_capacity;
@@ -206,6 +227,7 @@ const [remark, setRemark] = useState('');
             reservation_status: "Y"
         };
 
+        console.log(newReservationData)
         try {
             await axiosClient.post('/reservations', newReservationData).then(({ data }) => {
                 console.log("booked");
@@ -221,7 +243,7 @@ const [remark, setRemark] = useState('');
 
     const isTableReserved = (tableId) => {
 
-        console.log(tableId)
+
         // Find the table with the given ID
         const table = tables[tableId];
 
@@ -235,8 +257,8 @@ const [remark, setRemark] = useState('');
 
     const handleNavigation = () => {
         // Use the navigate function to redirect to the /reservationForm page
-      navigate("/reservationForm");
-      window.location.reload();
+        navigate("/reservationForm");
+        window.location.reload();
     };
 
     const incrementReservationCount = () => {

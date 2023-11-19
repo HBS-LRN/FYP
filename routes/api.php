@@ -67,6 +67,7 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::put('/setNonActiveMember/{id}', [AuthController::class, 'setNonActiveMember']);
     Route::get('/deactivatedCustomer', [UserController::class, 'deactivatedCustomer']);
     Route::put('/setActiveMember/{id}', [AuthController::class, 'setActiveMember']);
+    Route::apiResource('/users', UserController::class);
 });
 
 
@@ -74,10 +75,18 @@ Route::group(['middleware' => ['bearer_token']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('/users', UserController::class);
+
+
+
+
+
+
 Route::apiResource('/contactus', ContactUsController::class);
 
 Route::get('/searchMeal/{search}',[MealController::class, 'searchMeal']);

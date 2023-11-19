@@ -119,10 +119,11 @@ export default function UserChat() {
 
             //delete, just show for bs
             if (user.id === 1) {
-                formData.append('admin_id', 2);
+                formData.append('admin_id', 3);
             }
 
             if (chat.image) {
+                console.log(chat.image)
                 formData.append('image', chat.image);
             }
 
@@ -299,35 +300,38 @@ export default function UserChat() {
 
 
 
-                                                            <li>
-                                                                <div class="conversation-list">
-                                                                    <div class="chat-avatar">
-                                                                        <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
-                                                                    </div>
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="conversation-name">Grand Imperial Groups</div>
-                                                                        <div class="ctext-wrap-content">
-                                                                            <p class="mb-0">Hey What's I Can Help You?</p>
+                                                            {user.id !== 1 &&
+                                                                <>
+                                                                    <li>
+                                                                        <div class="conversation-list">
+                                                                            <div class="chat-avatar">
+                                                                                <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
+                                                                            </div>
+                                                                            <div class="ctext-wrap">
+                                                                                <div class="conversation-name">Grand Imperial Groups</div>
+                                                                                <div class="ctext-wrap-content">
+                                                                                    <p class="mb-0">Hey What's I Can Help You?</p>
+                                                                                </div>
+                                                                                <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
+                                                                            </div>
                                                                         </div>
-                                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="conversation-list">
-                                                                    <div class="chat-avatar">
-                                                                        <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
-                                                                    </div>
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="conversation-name">Grand Imperial Groups</div>
-                                                                        <div class="ctext-wrap-content">
-                                                                            <p class="mb-0">Please Be Patient. We May Took A Few Minutes To Reply You</p>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="conversation-list">
+                                                                            <div class="chat-avatar">
+                                                                                <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
+                                                                            </div>
+                                                                            <div class="ctext-wrap">
+                                                                                <div class="conversation-name">Grand Imperial Groups</div>
+                                                                                <div class="ctext-wrap-content">
+                                                                                    <p class="mb-0">Please Be Patient. We May Took A Few Minutes To Reply You</p>
+                                                                                </div>
+                                                                                <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
+                                                                            </div>
                                                                         </div>
-                                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-
+                                                                    </li>
+                                                                </>
+                                                            }
                                                             {!loading && chats.map((chatmessage) => (
                                                                 <React.Fragment key={chatmessage.id}>
                                                                     {parseInt(chatmessage.user_id) === user.id ? (

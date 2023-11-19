@@ -5,8 +5,8 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 
 
 
-import NotFound from "./views/NotFound";
-import AccessProhibited from "./views/accessProhibited";
+import NotFound from "./views/error/NotFound";
+
 import Index from "./views/Index";
 import CustomerLayout from "./components/CustomerLayout";
 import ContactUs from "./views/static/ContactUs";
@@ -62,6 +62,9 @@ import RatingList from "./views/staff/Rating/ratingList";
 import RatingForm from "./views/staff/Rating/RatingForm";
 import UserChat from "./views/profile/Chat";
 import ActivateCustomer from "./views/staff/customer/DeactivatedCustomer";
+import NonStaff from "./views/error/Non-Staff";
+import NonAdmin from "./views/error/Non-Admin";
+import AdminLayout from "./components/AdminLayout";
 
 
 
@@ -194,21 +197,23 @@ const router = createBrowserRouter([
           {
             path: '/userChat',
             element: <UserChat />
-          }, {
-            path: '/realTimeTracking/:id',
-            element: <RealTimeOrderTracking />
-
           },
-          {
-            path: '/floorPlanMapping',
-            element: <FloorPlanMapping />
 
-          },
         ]
       },
 
 
     ]
+  },
+
+  {
+    path: '/floorPlanMapping',
+    element: <FloorPlanMapping />
+
+  }, {
+    path: '/realTimeTracking/:id',
+    element: <RealTimeOrderTracking />
+
   },
 
   {
@@ -320,6 +325,18 @@ const router = createBrowserRouter([
         path: '/activateCustomer',
         element: <ActivateCustomer />
       },
+      //protected router, required login from user
+      {
+        path: '/',
+        element: <AdminLayout />,
+        children: [
+          {
+            path: '/customerReport',
+            element: <Profile />
+          },
+        ]
+      }
+
     ]
   },
   {
@@ -327,8 +344,8 @@ const router = createBrowserRouter([
     element: <NotFound />
   },
   {
-    path: "/accessProhibited",
-    element: <AccessProhibited />
+    path: "/accessRestricted",
+    element: <NonAdmin />
   },
   {
     path: "/index",
@@ -338,7 +355,10 @@ const router = createBrowserRouter([
     path: "/authRequired",
     element: <RequireAuth />
   },
-
+  {
+    path: "/accessProhibited",
+    element: <NonStaff />
+  },
 
 
 
