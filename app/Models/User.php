@@ -198,4 +198,9 @@ class User extends Authenticatable
             'meal_order_detail_id'
         );
     }
+     // Define the chats relationship
+     public function chats()
+     {
+         return $this->hasMany(Chat::class, 'user_id');
+     }
 }

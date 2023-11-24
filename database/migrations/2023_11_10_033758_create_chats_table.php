@@ -21,6 +21,7 @@ class CreateChatsTable extends Migration
             $table->string('message')->nullable();
             $table->string('date')->nullable();
             $table->string('time')->nullable();
+            $table->string('seen')->default('N'); // Set default value to N
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps(); // This line will add created_at and updated_at columns

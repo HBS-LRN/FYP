@@ -376,68 +376,68 @@ export default function CustomerLayout() {
                                             </div>
                                         }
 
-                                      
-                                            {!loading && shoppingCarts.map((m) => (
 
-                                                <li class="price-list">
-                                                    <i class="closeButton fa-solid fa-xmark" onClick={ev => onDeleteClick(m)}></i>
-                                                    <div class="counter-container">
-                                                        <div class="counter-food">
-                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="140"
-                                                                height="121" />
+                                        {!loading && shoppingCarts.map((m) => (
 
-                                                            <h4>{m.meal_name}</h4>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
-                                                        </div>
+                                            <li class="price-list">
+                                                <i class="closeButton fa-solid fa-xmark" onClick={ev => onDeleteClick(m)}></i>
+                                                <div class="counter-container">
+                                                    <div class="counter-food">
+                                                        <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="140"
+                                                            height="121" />
+
+                                                        <h4>{m.meal_name}</h4>
                                                     </div>
-                                                    <div class="price">
-                                                        <div class="priceList">
-                                                            <h2>RM {m.meal_price}</h2>
-                                                            <span>Sum</span>
-                                                        </div>
-                                                        <div class="priceButton">
-                                                            <div class="qty-input">
-                                                                <button
-                                                                    className="qty-count qty-count--minus"
-                                                                    data-action="minus"
-                                                                    type="button"
-                                                                    onClick={() => decreaseQuantity(m.pivot.id)}
-                                                                >
-                                                                    -
-                                                                </button>
-                                                                <input
-                                                                    class="product-qty"
-                                                                    type="number"
-                                                                    name="product-qty"
-                                                                    min="0"
-                                                                    value={m.pivot.shopping_cart_qty}
-
-
-                                                                ></input>
-
-
-                                                                <button
-                                                                    className="qty-count qty-count--add"
-                                                                    data-action="add"
-                                                                    type="button"
-                                                                    onClick={() => increaseQuantity(m.pivot.id, 1)}
-                                                                >
-                                                                    +
-                                                                </button>
-                                                            </div>
-                                                            <span>Quantity</span>
-                                                        </div>
+                                                    <div class="col-lg-3">
+                                                        <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
                                                     </div>
-                                                </li>
-                                            ))}
-                                        
+                                                </div>
+                                                <div class="price">
+                                                    <div class="priceList">
+                                                        <h2>RM {m.meal_price}</h2>
+                                                        <span>Sum</span>
+                                                    </div>
+                                                    <div class="priceButton">
+                                                        <div class="qty-input">
+                                                            <button
+                                                                className="qty-count qty-count--minus"
+                                                                data-action="minus"
+                                                                type="button"
+                                                                onClick={() => decreaseQuantity(m.pivot.id)}
+                                                            >
+                                                                -
+                                                            </button>
+                                                            <input
+                                                                class="product-qty"
+                                                                type="number"
+                                                                name="product-qty"
+                                                                min="0"
+                                                                value={m.pivot.shopping_cart_qty}
+
+
+                                                            ></input>
+
+
+                                                            <button
+                                                                className="qty-count qty-count--add"
+                                                                data-action="add"
+                                                                type="button"
+                                                                onClick={() => increaseQuantity(m.pivot.id, 1)}
+                                                            >
+                                                                +
+                                                            </button>
+                                                        </div>
+                                                        <span>Quantity</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        ))}
+
                                     </ul>
 
                                     {shoppingCarts.length !== 0 &&
                                         <>
-                                        <div class="totel-price">
+                                            <div class="totel-price">
                                                 <span>Total order:</span>
                                                 <h5>RM{calculateTotalPrice()}</h5>
                                             </div>
@@ -489,17 +489,26 @@ export default function CustomerLayout() {
 
                                 </li>
 
-
                                 <li><a href="/reservationForm">Reservation</a></li>
                                 <li><a href="/about">About Us</a></li>
                                 <li><a href="/faq">FAQ</a></li>
                                 <li><a href="/contact">Contacts</a></li>
+
                                 {user &&
                                     <>
+                                        <li><a href="/profile" className="dropdown-item">My Profile</a></li>
+                                        <li><a href="/allergic" className="dropdown-item">My Allergies</a></li>
                                         <li><a href="/orderStatus" className="dropdown-item">My Purchases</a></li>
+                                        <li><a href="/myReservation" className="dropdown-item">My Reservations</a></li>
+                                        <li><a href="/addresses" className="dropdown-item">My Addresses</a></li>
+                                        <li><a href="/myOrder" className="dropdown-item">Real Time Track My Order</a></li>
+                                        <li><a href="/changePassword" className="dropdown-item">Change Password</a></li>
+                                        <li><a href="/userChat" className="dropdown-item">Chat Grand Imperial!</a></li>
                                         <li><a onClick={onLogout} href="#">Logout</a></li>
                                     </>
                                 }
+
+
                             </ul>
 
                             <a href="#" id="res-cross"></a>

@@ -53,20 +53,7 @@ export default function MyOrder() {
                     <div class="col-lg-2 orderContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                         <div class="addressTitle">
                             <h3 class="profileTitle">My Orders</h3>
-                            <div className="dropdown toggleicon float-end">
-                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-end">
-                                <Link to="/profile" className="dropdown-item">My Profile</Link>
-                                <Link to="/allergic" className="dropdown-item">My Allergies</Link>
-                                <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-                                <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
-                                <Link to="/addresses" className="dropdown-item">My Addresses</Link>
-                                <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
-                                <Link to="/changePassword" className="dropdown-item">Change Password</Link>
-                                <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
-                            </div>
-                        </div>
+                        
                             <p class="subTitle">See Your Real Time Tracking Order Here</p>
 
 

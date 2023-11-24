@@ -74,7 +74,7 @@ export default function FloorPlanMaping() {
 
          
             console.log(data.reservation)
-            //if it is admin id
+            //if it is same reservation date
             if (data.reservation.reservation_date === reservation.reservation_date && data.reservation.reservation_time  === reservation.reservation_time) {
                 setReservations((prevReservation) => [...prevReservation, data.reservation]);
                 isTableReserved(data.reservation.table_id)

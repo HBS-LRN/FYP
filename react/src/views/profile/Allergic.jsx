@@ -97,20 +97,7 @@ export default function Allergic() {
                                 </div>
                             </div>
                         </div>
-                        <div className="dropdown toggleicon float-end">
-                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-end">
-                                <Link to="/profile" className="dropdown-item">My Profile</Link>
-                                <Link to="/allergic" className="dropdown-item">My Allergies</Link>
-                                <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-                                <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
-                                <Link to="/addresses" className="dropdown-item">My Addresses</Link>
-                                <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
-                                <Link to="/changePassword" className="dropdown-item">Change Password</Link>
-                                <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
-                            </div>
-                        </div>
+                  
                         {loading && (
                             <div className="text-center">
                                 <div className="loaderCustom2"></div>

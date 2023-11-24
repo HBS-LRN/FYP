@@ -336,7 +336,7 @@ export default function StaffLayout() {
 
 
                                     <li>
-                                        <a href="apps-chat.html" className="waves-effect">
+                                        <a href="/chat" className="waves-effect">
                                             <i className="ri-chat-1-line"></i>
                                             <span>Chat</span>
                                         </a>

@@ -26,7 +26,7 @@ export default function UserChat() {
     const [chats, setChats] = useState([]);
     const [error, setError] = useState({});
     const [enlargedImage, setEnlargedImage] = useState(null);
-
+    const [amountNewChat, setAmountNewChat] = useState(0);
     const [loading, setLoading] = useState(false);
     const [chat, setChat] = useState({
         id: null,
@@ -40,6 +40,7 @@ export default function UserChat() {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     };
+    scrollToBottom();
     // Scroll to the bottom of the chat container when component mounts
     useEffect(() => {
         scrollToBottom();
@@ -56,8 +57,12 @@ export default function UserChat() {
             //if it is admin id
             if (data.message.user_id === user.id || data.message.admin_id === user.id) {
                 setChats((prevChats) => [...prevChats, data.message]);
+
             }
 
+            if (data.message.admin_id === user.id) {
+                getCustomerChats();
+            }
             scrollToBottom();
         });
     }, []);
@@ -65,8 +70,54 @@ export default function UserChat() {
     //fetch user address data
     useEffect(() => {
         getChats();
+        getCustomerChats();
     }, []);
 
+    const handleBackgroundClick = async () => {
+
+
+        setAmountNewChat(0);
+        const payload = {
+
+            user_id: user.id
+        };
+        try {
+            await axiosClient.post(`/customerSeen`, payload
+            ).then((response) => {
+                console.log(response.data)
+
+            });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            if (response && response.status === 422) {
+                setError(response.data.errors);
+            }
+        }
+    };
+    const getCustomerChats = async () => {
+
+        console.log("getting")
+
+        try {
+
+            const response = await axiosClient.get(`/customerChat/${user.id}`);
+            console.log(response.data);
+
+
+
+            setAmountNewChat(response.data);
+
+
+
+
+
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+
+        }
+    }
 
     const getChats = async () => {
 
@@ -117,10 +168,7 @@ export default function UserChat() {
             formData.append('date', formattedDate);
             formData.append('time', formattedTime);
 
-            //delete, just show for bs
-            if (user.id === 1) {
-                formData.append('admin_id', 3);
-            }
+       
 
             if (chat.image) {
                 console.log(chat.image)
@@ -219,20 +267,7 @@ export default function UserChat() {
                                                         <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active</p>
 
                                                     </div>
-                                                    <div className="dropdown toggleicon float-end">
-                                                        <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        </a>
-                                                        <div className="dropdown-menu dropdown-menu-end">
-                                                            <Link to="/profile" className="dropdown-item">My Profile</Link>
-                                                            <Link to="/allergic" className="dropdown-item">My Allergies</Link>
-                                                            <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-                                                            <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
-                                                            <Link to="/addresses" className="dropdown-item">My Addresses</Link>
-                                                            <Link to="/myOrder" className="dropdown-item">Real Time Track My Order</Link>
-                                                            <Link to="/changePassword" className="dropdown-item">Change Password</Link>
-                                                            <Link to="/userChat" className="dropdown-item">Chat Grand Imperial!</Link>
-                                                        </div>
-                                                    </div>
+                                                  
 
                                                 </div>
                                             </div>
@@ -242,7 +277,7 @@ export default function UserChat() {
                                                 <div class="tab-pane show active" id="chat">
                                                     <div>
 
-                                                        <ul class="list-unstyled chat-list" data-simplebar style={{ maxHeight: "345px" }}>
+                                                        <ul class="list-unstyled chat-list chatcustom" style={{ maxHeight: "345px" }}>
                                                             <li class="active">
                                                                 <a href="#">
                                                                     <div class="d-flex">
@@ -256,19 +291,14 @@ export default function UserChat() {
                                                                             <h5 class="text-truncate font-size-14 mb-1">Grands Imperial Group</h5>
                                                                             <p class="text-truncate mb-0">Hey! message us if you have any queries</p>
                                                                         </div>
+                                                                     
 
+                                                                        {amountNewChat > 0 &&
+                                                                            < div class="font-size-11"><b>{amountNewChat}</b> New Chats!</div>
+                                                                        }
                                                                     </div>
                                                                 </a>
                                                             </li>
-
-
-
-
-
-
-
-
-
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -296,7 +326,7 @@ export default function UserChat() {
                                                         </div>
                                                     }
                                                     {!loading &&
-                                                        <ul ref={chatContainerRef} class="list-unstyled mb-0 pe-3 chatcustom" style={{ maxHeight: "450px" }}>
+                                                        <ul ref={chatContainerRef} class="list-unstyled mb-0 pe-3 chatcustom"  onClick={() => handleBackgroundClick()}  style={{ maxHeight: "450px" }}>
 
 
 
@@ -452,13 +482,13 @@ export default function UserChat() {
                         </div>
                     )}
                 </div>
-            </form>
+            </form >
 
             <Helmet>
                 <link rel="stylesheet" href="../../../assets/css/chat.css" />
                 <link rel="stylesheet" href="../../../assets/css/customerSideBar.css" />
             </Helmet>
-        </div>
+        </div >
 
 
 

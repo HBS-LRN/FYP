@@ -68,6 +68,10 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/deactivatedCustomer', [UserController::class, 'deactivatedCustomer']);
     Route::put('/setActiveMember/{id}', [AuthController::class, 'setActiveMember']);
     Route::apiResource('/users', UserController::class);
+    Route::get('/customerChats', [ChatController::class, 'customerChats']);
+    Route::post('/customerSeens', [ChatController::class, 'customerSeens']);
+    Route::post('/customerSeen', [ChatController::class, 'customerSeen']);
+    Route::get('/customerChat/{id}', [ChatController::class, 'customerChat']);
 });
 
 
