@@ -94,7 +94,10 @@ export default function Login() {
           //check if user is customer
           if (data.user.role == 0) {
             navigate("/dashboard");
-          } else {
+          } else if(data.user.role==3){
+
+            navigate("/deliveryList");
+          }else{
             navigate("/staffDashboard");
           }
 
