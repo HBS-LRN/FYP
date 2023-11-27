@@ -48,7 +48,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
-        
+
         //call user repository interface to create data 
         $newUser = $this->userRepositoryInterface->create($data);
         return response(new UserResource($newUser), 201);
@@ -164,6 +164,16 @@ class UserController extends Controller
         /** @var \App\Models\User $user */
         $user = User::find($id);
         $data = $request->all();
+
+        // Explicitly cast height and weight to float
+        $height = (float) $data['height'];
+        $weight = (float) $data['weight'];
+        $defaultGender = 'Male';
+        // Pass the user's gender, height, and weight to the bmr function
+        $this->calculateBMR($defaultGender, $height, $weight, $user);
+
+        // Pass the user's height and weight to the bmi function
+        $this->calculateBMI($weight, $height, $user);
         $user->update($data);
 
         return new UserResource($user);

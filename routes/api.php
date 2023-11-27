@@ -126,7 +126,7 @@ Route::get('/mealSearch',[MealController::class, 'adminSearchMeals']);
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 
 Route::apiResource('/allergic', AllergicController::class);
-Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
+
 
 
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

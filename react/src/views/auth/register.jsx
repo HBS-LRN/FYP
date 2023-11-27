@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import axiosClient from '../../axios-client.js';
 import { useStateContext } from '../../contexts/ContextProvider.jsx';
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -114,7 +114,7 @@ export default function Register() {
                 <div className="login-form">
                   <h3>User Registration</h3>
                   <p>
-                    Has an account? <a href="/login">Login Here</a>
+                    Has an account? <Link to="/login">Login Here</Link>
                   </p>
                 </div>
 

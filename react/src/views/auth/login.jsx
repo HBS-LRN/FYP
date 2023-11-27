@@ -84,12 +84,12 @@ export default function Login() {
           setLoading(false);
         } else {
           // Set the data to session
-
+          setLoading(false);
           console.log(data.user.meals)
           setUser(data.user);
           setToken(data.token);
           setCartQuantity(data.cartQuantity);
-          setLoading(false);
+          
 
           //check if user is customer
           if (data.user.role == 0) {
@@ -144,7 +144,7 @@ export default function Login() {
                 <div className="login-form">
                   <h3>User Login</h3>
                   <p>
-                    New User? <a href="/register">Register Here</a>
+                    New User? <Link to="/register">Register Here</Link>
                   </p>
                 </div>
                 <div className={`text email ${validated && !error.email ? 'was-validated' : ''}`}>

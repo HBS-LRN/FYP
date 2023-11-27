@@ -12,8 +12,8 @@ import '../../assets/css/nice-select.css';
 import '../../assets/css/aos.css';
 import '../../assets/css/responsive.css';
 import '../../assets/css/color.css';
-
-
+import Swal from 'sweetalert2';
+import Pusher from 'pusher-js';
 export default function CustomerLayout() {
 
 
@@ -28,6 +28,61 @@ export default function CustomerLayout() {
         const pathArray = Array.isArray(paths) ? paths : [paths];
         return pathArray.some((path) => location.pathname.startsWith(path)) ? 'active' : '';
     };
+
+
+    useEffect(() => {
+        var pusher = new Pusher('2124f91a86a5182a0c5d', {
+            cluster: 'ap1'
+        });
+       
+            var channel = pusher.subscribe('login-channel');
+            channel.bind('login-event', function (data) {
+
+
+                console.log(data)
+                console.log(user)
+                //if it is login user id
+                if (data.loginUser.id === user.id) {
+
+                    const payload = {
+                        user_id: user.id
+
+                    };
+                    axiosClient.post('/logout', payload)
+                        .then(() => {
+
+                            let timerInterval;
+                            Swal.fire({
+                                title: "Account Deactivated,System Sign Out Forced.",
+                                html: "You will be redirect to login page in <b></b> milliseconds.",
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                }
+                            }).then((result) => {
+                                setUser(null);
+                                setToken(null);
+                                setCartQuantity(null);
+                                navigate("/login");
+                                window.location.reload();
+
+                            });
+
+                        });
+                }
+
+
+            });
+        
+    }, [user]);
     const isHomeActive = () => {
         // Check if the current path is not in the specified paths
         return !isActive(['/nutritionMenuCard/', '/categoryMenuCard', '/orderMenuCard/', '/reservationForm', '/about', '/faq', '/contact']) ? 'active' : '';
