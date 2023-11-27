@@ -46,7 +46,7 @@ export default function NuritionMenuCard() {
         }, []);
     }
 
-    
+
     const getCategoryMenu = async () => {
 
         try {
@@ -78,15 +78,31 @@ export default function NuritionMenuCard() {
         }
     };
     const isMealRecommended = (meal) => {
-        return meal.total_calorie <= user.BMR && meal.meal_ingredients.every((meal_ingredient) => {
-            const allergicIngredients = [];
-            allergies.forEach((allergy) => {
-                if (allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()) {
-                    allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
-                }
-            });
-            return allergicIngredients.length === 0;
-        });
+        return (
+            meal.total_calorie <= user.BMR &&
+            !(user.BMI > 30 && meal.total_calorie > 1000) &&
+            meal.meal_ingredients.every((meal_ingredient) => {
+                const allergicIngredients = [];
+                allergies.forEach((allergy) => {
+                    if (
+                        allergy.ingredient_name.toLowerCase() ===
+                        meal_ingredient.ingredient.ingredient_name.toLowerCase()
+                    ) {
+                        allergicIngredients.push(
+                            meal_ingredient.ingredient.ingredient_name
+                        );
+                    }
+                });
+
+                // Check if the cookMethod is "spicy" or "deep_fried"
+                const isSpicyOrDeepFried =
+                    meal_ingredient.cookMethod &&
+                    (meal_ingredient.cookMethod.toLowerCase() === "spicy" ||
+                        meal_ingredient.cookMethod.toLowerCase() === "deep_fried");
+
+                return allergicIngredients.length === 0 && !isSpicyOrDeepFried;
+            })
+        );
     };
 
     const hasAllergicIngredients = (meal) => {
@@ -617,16 +633,23 @@ export default function NuritionMenuCard() {
                                                                             allergicIngredients.push(meal_ingredient.ingredient.ingredient_name);
                                                                         }
                                                                     });
-                                                                    return allergicIngredients.length === 0;
+
+                                                                    const isSpicyOrDeepFried =
+                                                                        meal_ingredient.cookMethod &&
+                                                                        (meal_ingredient.cookMethod.toLowerCase() === "spicy" ||
+                                                                            meal_ingredient.cookMethod.toLowerCase() === "deep_fried");
+
+                                                                    return allergicIngredients.length === 0 && !isSpicyOrDeepFried;
                                                                 }) && (
                                                                         <div class="recommended float">
                                                                             <div class="bold">
-                                                                                <a href="#">Recommended Meal Just For You (Obese).</a>
+                                                                                <a href="#">Recommended Meal For You (Obese).</a>
                                                                                 <a href="#">{m.total_calorie}-Calorie Diet Aligns With Your BMI.</a>
                                                                                 <a href="#">No Ingredients Cause You Allergies.</a>
                                                                             </div>
                                                                         </div>
                                                                     )}
+
 
 
                                                                 {user && user.BMI >= 30 && m.total_calorie > 1000 && m.meal_ingredients.every((meal_ingredient) => {
@@ -637,17 +660,40 @@ export default function NuritionMenuCard() {
                                                                         }
                                                                     });
                                                                     return allergicIngredients.length === 0;
-                                                                }) && (
+                                                                }) && !m.meal_ingredients.some((meal_ingredient) =>
+                                                                    meal_ingredient.cookMethod &&
+                                                                    (meal_ingredient.cookMethod.toLowerCase() === "spicy" ||
+                                                                        meal_ingredient.cookMethod.toLowerCase() === "deep_fried")
+                                                                ) && (
                                                                         <div class="not-recommended float">
                                                                             <div class="bold">
-                                                                                <a href="#">Not Recommended Meal For You.</a>
+                                                                                <a href="#">Not Recommended Meal For You (Obese)</a>
                                                                                 <a href="#">{m.total_calorie}-Calorie Not Align With Your BMI.</a>
                                                                                 <a href="#">No Ingredients Cause You Allergies.</a>
                                                                             </div>
                                                                         </div>
                                                                     )}
 
-
+                                                                {user && user.BMI >= 30 && m.meal_ingredients.some((meal_ingredient) =>
+                                                                    meal_ingredient.cookMethod &&
+                                                                    (meal_ingredient.cookMethod.toLowerCase() === "spicy" ||
+                                                                        meal_ingredient.cookMethod.toLowerCase() === "deep_fried")
+                                                                ) && !m.meal_ingredients.some((meal_ingredient) =>
+                                                                    allergies.some((allergy) =>
+                                                                        allergy.ingredient_name.toLowerCase() === meal_ingredient.ingredient.ingredient_name.toLowerCase()
+                                                                    )
+                                                                ) && (
+                                                                        <div class="not-recommended float">
+                                                                            <div class="bold">
+                                                                                <a href="#">
+                                                                                    Not Recommended Meal For You (Obese)
+                                                                                </a>
+                                                                                <a href="#">Have Spicy or Deep Fried Cook Method.</a>
+                                                                               
+                                                                                <a href="#">No Ingredients Cause You Allergies.</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
                                                             </div>
 
 
