@@ -53,7 +53,7 @@ export default function UserChat() {
         var channel = pusher.subscribe('chat-channel');
         channel.bind('chat-event', function (data) {
 
-            console.log(data.message)
+            console.log(data.message,"newmessage")
             //if it is admin id
             if (data.message.user_id === user.id || data.message.admin_id === user.id) {
                 setChats((prevChats) => [...prevChats, data.message]);

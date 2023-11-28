@@ -111,7 +111,7 @@ const RatingForm = () => {
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Meal</a></li>
-                                            <li class="breadcrumb-item active">Add Ingredient</li>
+                                            <li class="breadcrumb-item active">Reply Customer</li>
                                         </ol>
                                     </div>
 
@@ -199,7 +199,7 @@ const RatingForm = () => {
                                                         </div>
                                                         <ul class="pager wizard twitter-bs-wizard-pager-link">
 
-                                                            <li class="next"><button type='submit'>Add Ingredient</button></li>
+                                                            <li class="next"><button type='submit'>Reply Customer</button></li>
                                                         </ul>
                                                     </form>
 

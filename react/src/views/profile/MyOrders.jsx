@@ -83,7 +83,7 @@ export default function MyOrder() {
 
                                             <label for="nameLabel">Order Number</label>
                                             <span>
-                                                {order.id}
+                                                OD{order.id}#
                                                 {/* {{ $address->address_username }} */}
                                             </span>
                                         </div>

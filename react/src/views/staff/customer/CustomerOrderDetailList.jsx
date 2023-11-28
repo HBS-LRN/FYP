@@ -10,7 +10,6 @@ import Select from 'react-select';
 
 export default function CustomerOrderDetailList() {
    const [customerOrderDetailList, setCustomerOrderDetailList] = useState([]);
-   const [selectedOption, setSelectedOption] = useState([]);
    const [mealOptions, setMealOptions] = useState([]);
    let { id } = useParams(); 
     useEffect(() => {
@@ -107,6 +106,7 @@ export default function CustomerOrderDetailList() {
                 console.error('Error fetching meal options:', error);
             });
     }
+    
     return (
 
         <div>
