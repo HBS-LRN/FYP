@@ -197,4 +197,15 @@ class User extends Authenticatable
             'meal_order_detail_id'
         );
     }
+    public function mealOrderDetails()
+    {
+        return $this->hasManyThrough(
+            MealOrderDetail::class,
+            Order::class,
+            'user_id', // Foreign key on orders table
+            'order_id', // Foreign key on meal_order_details table
+            'id', // Local key on users table
+            'id' // Local key on orders table
+        );
+    }
 }

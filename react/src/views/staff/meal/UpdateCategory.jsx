@@ -5,10 +5,12 @@ import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
+import { useDropzone } from 'react-dropzone';
 export default function UpdateCategory() {
-    const [ingredient, setIngredient] = useState({
-        ingredient_name: '',
-        calorie:''
+    const [category, setCategory] = useState({
+            name: '',
+            iconImage:null,
+            image: null,
 
     })
     const [errors, setErrors] = useState({});
@@ -16,62 +18,127 @@ export default function UpdateCategory() {
     const [redirect, setRedirect] = useState(false); // Add redirect state
      // Get the ingredient ID from the URL using useParams
      let { id } = useParams(); 
+     const handleInput = (e) => {
+        const { name, value } = e.target;
+        setCategory({
+            ...category,
+            [name]: value
+        });
+    }
+     const onImageDrop = (acceptedFiles) => {
+        setCategory({
+            ...category,
+            image: acceptedFiles[0],
+        });
+    }
 
+    const onIconImageDrop = (acceptedFiles) => {
+        setCategory({
+            ...category,
+            iconImage: acceptedFiles[0],
+        });
+    }
+    // const onImageDrop = (acceptedFiles) => {
+    //     setCategory(prevCategory => ({
+    //         ...prevCategory,
+    //         image: acceptedFiles[0],
+    //     }));
+    // }
+    
+    // const onIconImageDrop = (acceptedFiles) => {
+    //     setCategory(prevCategory => ({
+    //         ...prevCategory,
+    //         iconImage: acceptedFiles[0],
+    //     }));
+    // // }
+    // const onImageDrop = (acceptedFiles) => {
+    //     if (acceptedFiles.length > 0) {
+    //         const imageFile = acceptedFiles[0];
+    //         setCategory({
+    //             ...category,
+    //             image: imageFile,
+    //         });
+    //     }
+    // }
+    
+    // const onIconImageDrop = (acceptedFiles) => {
+    //     if (acceptedFiles.length > 0) {
+    //         const iconImageFile = acceptedFiles[0];
+    //         setCategory({
+    //             ...category,
+    //             iconImage: iconImageFile,
+    //         });
+    //     }
+    // }
      // Function to retrieve ingredient data based on ID
-    const getIngredientData = async () => {
+    const getCategorytData = async () => {
         try {
-            const response = await axiosClient.get(`/ingredients/${id}`);
-            const { ingredient_name, calorie } = response.data;
-            setIngredient({
-                ingredient_name,
-                calorie,
+            const response = await axiosClient.get(`/category/${id}`);
+            const { name,iconImage,image } = response.data;
+            setCategory({
+                name,
+                iconImage,
+                image,
             });
         } catch (error) {
-            // Handle error, e.g., display an error message or redirect
+            console.error("Error fetching category data:", error.response);
         }
     }
 
      // Call getIngredientData when the component mounts
      useEffect(() => {
-        getIngredientData();
+        getCategorytData();
     }, [id]);
 
-    const handleInput = (e) => {
-        const { name, value } = e.target;
-        setIngredient({
-            ...ingredient,
-            [name]: value
-        });
-    }
-
+    
+    // console.log("Category state:", category);
     const validateForm = () => {
         let valid = true;
         const newErrors = {};
 
-        if (!ingredient.ingredient_name) {
-            newErrors.ingredient_name = "Ingredient Name is required";
+        if (!category.name) {
+            newErrors.name = "Ingredient Name is required";
             valid = false;
         }
 
-        if (!ingredient.calorie) {
-            newErrors.calorie = "Calorie is required";
+        if (!category.iconImage) {
+            newErrors.iconImage = "Icon image is required";
             valid = false;
         }
-
+        if (!category.image) {
+            newErrors.image = "Image is required";
+            valid = false;
+        }
         setErrors(newErrors);
         return valid;
     }
 
-    const updateIngredient  = (e) => {
+    const updateCategory  = (e) => {
         e.preventDefault();
         if (!validateForm()) {
             return;
         }
+        console.log("Name:", category.name);
+        console.log("Icon Image:", category.iconImage);
+        console.log("Image:", category.image);
         setLoading(true);
-        const data = {
-            ingredient_name: ingredient.ingredient_name,
-            calorie: ingredient.calorie,
-        }
+        const formData = new FormData();
+         
+        formData.append('id', id);
+        formData.append('name', category.name);
+        formData.append('iconImage', category.iconImage); 
+        formData.append('image', category.image); 
+       
+        // const data = {
+        //     name: category.name,
+        //     iconImage: category.iconImage,
+        //     image: category.image,
+
+        // }
+        // console.log("name:"+data.name+", iconImage:"+data.iconImage+" image:"+data.image);
+        // console.log("Name:", data.name);
+        // console.log("Icon Image:", data.iconImage);
+        // console.log("Image:", data.image);
         Swal.fire({
             title: 'Are you sure to update?',
             text: "You won't be able to revert this!",
@@ -87,15 +154,19 @@ export default function UpdateCategory() {
                     'Your data has been updated.',
                     'success'
                 )
-                axiosClient.put(`/ingredients/${id}`, data)
+               
+                axiosClient.post(`/updateCategory`, formData)
                     .then(res => {
                         setLoading(false);
                         setRedirect(true);
+                        console.log('Updated Data:', res); 
                     })
                     .catch(function (error) {
-                        alert(error);
+                        console.log("Validation Errors:", error.response.data.errors);
+                        console.log("Error Response:", error.response);
                         setLoading(false);
                     });
+        
             }
           })
         
@@ -104,102 +175,137 @@ export default function UpdateCategory() {
         });
         
     }
-    if (redirect) {
-        return <Navigate to="/ingredientList" />;
-    }
- 
+    // if (redirect) {
+    //     return <Navigate to="/categoryList"/>;
+    // }
+    const redirectComponent = redirect ? <Navigate to="/categoryList"/> : null;
+    const { getRootProps: getImageRootProps, getInputProps: getImageInputProps } = useDropzone({ onDrop: onImageDrop });
+    const { getRootProps: getIconRootProps, getInputProps: getIconInputProps } = useDropzone({ onDrop: onIconImageDrop });
 
     return(
         <div>
-              <Helmet>
-                <link rel="stylesheet" href="../../../assets/libs/twitter-bootstrap-wizard/prettify.css"/>
-                <link href="../../../assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
-                <link href="../../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css"/>
-                <link href="../../../assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-                <link href="../../../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-                <link href="../../../assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-                <link rel="stylesheet" href="../../../assets/css/addIngredient.css" />
-            </Helmet>
-            <div class="main-content">
+            {redirectComponent}
+        <Helmet>
+          <link rel="stylesheet" href="../../../assets/libs/twitter-bootstrap-wizard/prettify.css"/>
+          <link href="../../../assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+          <link href="../../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css"/>
+          <link href="../../../assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+          <link href="../../../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+          <link href="../../../assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+          <link rel="stylesheet" href="../../../assets/css/addIngredient.css" />
+      </Helmet>
+      <div class="main-content">
 
 <div class="page-content">
-    <div class="container-fluid">
-
-     
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Add Ingredient</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Meal</a></li>
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ingredient List</a></li>
-                            <li class="breadcrumb-item active">Update Ingredient</li>
-                        </ol>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        
-                        <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard">
-                            <ul class="twitter-bs-wizard-nav">
-                                <li class="nav-item">
-                                    <a href="#basic-info" class="nav-link" data-toggle="tab">
-                                        <span class="step-number">01</span>
-                                        <span class="step-title">Update Information</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <div class=" twitter-bs-wizard-tab-content">
-                                <div class="tab-pane" id="basic-info">
-                                    <h4 class="card-title">Update Information</h4>
-                                    <p class="card-title-desc">update Ingredient ID: {id}</p>
-
-                                    <form onSubmit={updateIngredient}>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="ingredient_name">Ingredient Name</label>
-                                            <input id="ingredient_name" name="ingredient_name" value={ingredient.ingredient_name} onChange={handleInput} type="text" class="form-control"/>
-                                            {errors.ingredient_name && <div className="text-danger">{errors.ingredient_name}</div>}
-                                        </div>
+<div class="container-fluid">
 
 
-                                        <div class="mb-3">
-                                            <label class="form-label" for="calorie">Calorie</label>
-                                            <input id="Calorie" name="calorie" value={ingredient.calorie} onChange={handleInput} type="Number" class="form-control"/>
-                                            {errors.calorie && <div className="text-danger">{errors.calorie}</div>}
-                                        </div>
-                                        <ul class="pager wizard twitter-bs-wizard-pager-link">
-                               
-                                <li class="next"><button type='submit'>Update Ingredient</button></li>
-                            </ul>
-                                    </form>
-    
-                                </div>
-                           
-                                
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      
+  <div class="row">
+      <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Update Category</h4>
 
-    </div>
+              <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                      <li class="breadcrumb-item"><a href="javascript: void(0);">Meal</a></li>
+                      <li class="breadcrumb-item active">Update Category</li>
+                  </ol>
+              </div>
+
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="card">
+              <div class="card-body">
+                  
+                  <div id="addproduct-nav-pills-wizard" class="twitter-bs-wizard">
+                      <ul class="twitter-bs-wizard-nav">
+                          <li class="nav-item">
+                              <a href="#basic-info" class="nav-link" data-toggle="tab">
+                                  <span class="step-number">01</span>
+                                  <span class="step-title">Basic Information</span>
+                              </a>
+                          </li>
+
+                      </ul>
+                      <div class=" twitter-bs-wizard-tab-content">
+                          <div class="tab-pane" id="basic-info">
+                              <h4 class="card-title">Basic Information</h4>
+                              <p class="card-title-desc">Fill all information below</p>
+
+                              <form method="POST" action="#" onSubmit={updateCategory} enctype="multipart/form-data">
+                                  <div class="mb-3">
+                                      <label class="form-label" for="name">Category Name</label>
+                                      <input id="name" name="name" placeholder='Enter category name here.......' value={category.name} onChange={handleInput} type="text" class="form-control"/>
+                                      {errors.name && <div className="text-danger">{errors.name}</div>}
+                                  </div>
+
+
+                                  <div className="mb-3">
+                                  <label class="form-label" for="image">Category Image</label>
+                                              <div className="dropzone" {...getImageRootProps()}>
+                                                  <div className="fallback">
+                                                      <input {...getImageInputProps()}/>
+                                                  </div>
+                                                  {category.image && category.image.name ? (
+                                                    <p>Selected file: {category.image.name}</p>
+
+                                                          ) : (
+                                                            <div className="currentImage">
+                                                <p>Drop the new Image here..........</p>
+                                             Current Image：
+                                                 <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${category.image}`} alt="img-1" height="100px" width="100px"/>
+                                             </div>
+                                                          )}
+
+                                              </div>
+                                              {errors.image && <div className="text-danger">{errors.image}</div>}
+                                  </div>
+                                  <div className="mb-3">
+                                      <label class="form-label" for="image">Category Icon Image</label>
+                                      <div className="dropzone" {...getIconRootProps()}>
+                                          <div className="fallback">
+                                              <input {...getIconInputProps()}/>
+                                              </div>
+                                              {category.iconImage && category.iconImage.name ? (
+                                                  <p>Selected file: {category.iconImage.name}</p>
+                                              ) : (
+                                                <div className="currentImage">
+                                                <p>Drop the new Image here..........</p>
+                                             Current Image：
+                                                 <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${category.iconImage}`} alt="img-1" height="100px" width="100px"/>
+                                             </div>
+                                              )}          
+                                  </div>
+                                      {errors.iconImage && <div className="text-danger">{errors.iconImage}</div>}
+                                  </div>
+                                  <ul class="pager wizard twitter-bs-wizard-pager-link">
+                         
+                          <li class="next"><button type='submit'>Update Category</button></li>
+                      </ul>
+                              </form>
+
+                          </div>
+                     
+                          
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+</div>
 </div>
 
 
 
 
 </div>
-        </div>
-    );
+  </div>
+);
 }

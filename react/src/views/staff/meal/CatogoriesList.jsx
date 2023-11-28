@@ -74,7 +74,7 @@ export default function CategoryList() {
             <td><img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.iconImage}`}  alt="" srcset="" height="20px" width="20px" /></td>
             <td><img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.image}`}  alt="" srcset="" height="100px" width="100px" /></td>
             <td id={"tooltip-container"+index}>
-                <a href={"/updateingredient/"+item.id} class="me-3 text-primary" data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                <a href={"/updatecategory/"+item.id} class="me-3 text-primary" data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
                 <button class="text-danger" onClick={en => deleteCategory(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
             </td>
         </tr>

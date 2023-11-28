@@ -14,6 +14,8 @@ use App\Models\User;
 use App\Repository\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
@@ -236,4 +238,93 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+    public function searchCustomerOrderList(Request $request)
+    {
+        $query = Order::query();
+
+        if ($request->has('order_date')) {
+            // Use LIKE for a partial match
+            $query->where('order_date', 'LIKE', '%' . $request->input('order_date') . '%');
+        }
+
+        $orders = $query->get();
+
+        return response()->json($orders);
+    }
+    public function deleteCustomerOrder($orderId)
+    {
+        try {
+            // Find the order by ID
+            $order = Order::findOrFail($orderId);
+
+            // Assuming you want to delete associated records in Delivery and MealOrderDetail tables
+            $order->delivery()->delete();
+            $order->mealOrderDetails()->delete();
+
+            // Delete the order
+            $order->delete();
+
+            return response()->json(['message' => 'Order deleted successfully']);
+        } catch (\Exception $e) {
+            // Handle exceptions (e.g., order not found)
+            return response()->json(['error' => 'Failed to delete order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function showMealOrderDetails($orderId)
+    {
+        try {
+            // Retrieve meal order details for the specified order with joins
+            $mealOrderDetails = DB::table('meal_order_details')
+                ->join('meals', 'meal_order_details.meal_id', '=', 'meals.id')
+                ->join('orders', 'meal_order_details.order_id', '=', 'orders.id')
+                ->join('users', 'orders.user_id', '=', 'users.id')
+                ->select(
+                    'meal_order_details.*',
+                    'meals.meal_name as meal_name',
+                    'meals.meal_image as meal_image',
+                    'orders.user_id',
+                    'users.name as user_name',
+                    // Add other columns you need from the users table
+                )
+                ->where('meal_order_details.order_id', $orderId)
+                ->get();
+
+            return response()->json($mealOrderDetails);
+        } catch (\Exception $e) {
+            // Handle exceptions (e.g., order not found)
+            return response()->json(['error' => 'Failed to retrieve meal order details'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public function updateCustomerOrder(Request $request, $orderId)
+{
+    try {
+        // Find the existing order by ID
+        $order = Order::findOrFail($orderId);
+
+        // Get the new data from the request
+        $data = $request->all();
+
+        // Update the order with the new information
+        $order->update([
+            'user_id' => $data['user_id'],
+            'order_total' => $data['order_total'],
+            'delivery_fee' => $data['delivery_fee'],
+            'order_status' => $data['order_status'],
+            'payment_status' => $data['payment_status'],
+            'payment_method' => $data['payment_method'],
+            'order_date' => Carbon::parse($data['order_date'])->format('Y-m-d'),
+        ]);
+
+        // Return the updated order
+        return response()->json(['message' => 'Order updated successfully', 'order' => $order]);
+    } catch (\Exception $e) {
+        // Handle exceptions (e.g., order not found)
+        return response()->json(['error' => 'Failed to update order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+}
+
+
 }

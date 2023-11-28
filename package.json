@@ -30,11 +30,8 @@
         "owl.carousel": "^2.3.4",
         "react": "^16.14.0",
         "react-dropzone": "^14.2.3",
-<<<<<<< HEAD
         "react-owl-carousel2": "^0.3.0",
-=======
         "react-image-lightbox": "^5.1.4",
->>>>>>> bcad831c55daee423965e256421046c8a562e5f9
         "react-paypal-button-v2": "^2.6.3",
         "sweetalert2": "^11.7.32"
     }

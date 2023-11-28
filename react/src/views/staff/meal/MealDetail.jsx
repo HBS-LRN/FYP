@@ -2,17 +2,183 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client.js";
 import { useEffect, useState } from "react";
-
-
+import { useParams } from 'react-router-dom'; 
+import React from 'react';
 import { Helmet } from 'react-helmet';
 
 
 
 
-export default function MealsList() {
+export default function MealDetail() {
+    const [meal, setMeal] = useState({
+        meal_price: 0,
+        meal_name: '',
+        meal_desc: '',
+        total_calorie: 0,
+        meal_image: null,
 
+    }); 
+    const [category, setcategory] = useState({
+        name: '',
+        iconImage: null,
+        Image: null,
+    }); 
+    const [mealIngredient, setMealIngredient] = useState([]); 
+    const [mealOrderDetail, setMealOrderDetail] = useState([]); 
+    const [commandModes, setCommandModes] = useState([]);
+   
+    const [loading, setLoading] = useState(true);
+    // New state to track the command text
+    const [commandText, setCommandText] = useState('');
+    let { id } = useParams(); 
+    useEffect(() => {
+        getMeal();
+        getIngredient();
+        getMealOrderDetail();
+       
+      }, [id, commandModes]);
+
+    const getMeal = () => {
+        axiosClient.get(`/meal/${id}`)
+            .then(({ data }) => {
+                console.log('API Response:', data); // Add this line
+                setLoading(false);
+                setMeal(data);
+                axiosClient.get(`/category/${data.category_id}`)
+            .then(({ data }) => {
+                console.log('API Response:', data); // Add this line
+                setLoading(false);
+                setcategory(data);
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+    }
+    
+    const getIngredient =()=>{
+        axiosClient.get(`/getMealIngredient/${id}`)
+            .then(({ data }) => {
+                console.log('API Response Meal Ingredient:', data); // Add this line
+                setLoading(false);
+                setMealIngredient(data);
+               
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+    }
+    var CurrentTotalOrder=0;
+    var totalCommands=0;
+    const getMealOrderDetail = ()=>{
+        axiosClient.get(`/getMealOrder/${id}`)
+            .then(({ data }) => {
+                console.log('API Response Meal Order:', data); // Add this line
+                setLoading(false);
+                setMealOrderDetail(data);
+                
+                
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+            
+    }
+    const submitCommand = (itemId) => {
+        // Call your API to update MealOrderDetail with the commandText for the specific itemId
+        axiosClient.put(`/mealOrderDetail/${itemId}`, { reply_comment: commandText })
+            .then(response => {
+                console.log(response.data);  // Log the response
+                // If the command submission was successful, you might want to update the UI accordingly
+                getMealOrderDetail();
+                setCommandModes((prevModes) => {
+                    const newModes = [...prevModes];
+                    newModes[itemId] = false;
+                    return newModes;
+                  });
+            })
+            .catch(error => {
+                console.error('Error submitting command:', error);
+                // Handle error, show a message to the user, etc.
+            });
+
+        
+        
+    };
+    const toggleCommandMode = (itemId) => {
+  setCommandModes((prevModes) => {
+    const newModes = [...prevModes];
+    newModes[itemId] = !newModes[itemId];
+    return newModes;
+  });
+};
+    const reviews = mealOrderDetail.map((item) => {
+        CurrentTotalOrder += item.order_quantity;
+        if(item.rating_comment!=null){
+            totalCommands+=1;
+        }
+        return (
+          item.rating_comment ? (
+            <div className="d-flex border-bottom pb-3" key={item.id}>
+              <div className="flex-1">
+                <React.Fragment>
+                  <h5 className="font-size-15 mb-3">James</h5>
+                  <p className="text-muted mb-2">{item.rating_comment}</p>
+      
+                  <ul className="list-inline product-review-link mb-0">
+                    <li className="list-inline-item">
+                      <a href="#">
+                        <i className="mdi mdi-thumb-up align-middle me-1" /> Like
+                      </a>
+                    </li>
+                    <li className="list-inline-item">
+                      <a onClick={() => toggleCommandMode(item.id)}>
+                        <i className="mdi mdi-message-text align-middle me-1" style={{ color: commandModes[item.id] ? 'blue' : '' }} /> Comment
+                      </a>
+                    </li>
+                  </ul>
+                  {item.reply_comment && (
+                    <div className="commandBox Flex">
+                      <img src="../../../assets/img/GrandImperialGroupLogoHeader.png" alt="" height="45px" width="45px" />
+                      <p className="text-muted mb-2">{item.reply_comment}</p>
+                    </div>
+                  )}
+                  {commandModes[item.id] && (
+                    <div className="commandBox">
+                      <textarea
+                        placeholder="Enter Your Command Here......"
+                        name="reply_comment"
+                        className="reply_comment"
+                        id={`reply_comment_${item.id}`}
+                        onChange={(e) => setCommandText(e.target.value)}
+                      />
+                      <button className="rate_commandBtn" onClick={() => submitCommand(item.id)}>Command</button>
+                    </div>
+                  )}
+                </React.Fragment>
+              </div>
+              <p className="float-sm-end font-size-12">{item.created_at}</p>
+            </div>
+          ) : (
+            <p className="text-muted">No comment available</p>
+          )
+        );
+        
+      });
+    
+  
     return (
         <div>
+            <Helmet>
+                <link rel="stylesheet" href="../../../assets/css/addMeal.css" />
+            </Helmet>
             <div className="main-content">
                 <div className="page-content">
                     <div className="container-fluid">
@@ -39,69 +205,10 @@ export default function MealsList() {
                                     <div className="card-body">
                                         <div className="row">
                                             <div className="col-xl-5">
-                                                <div className="product-detail">
+                                         
+                                                       <div className="product-detail">
                                                     <div className="row">
-                                                        <div className="col-3">
-                                                            <div
-                                                                className="nav flex-column nav-pills"
-                                                                id="v-pills-tab"
-                                                                role="tablist"
-                                                                aria-orientation="vertical"
-                                                            >
-                                                                <a
-                                                                    className="nav-link active"
-                                                                    id="product-1-tab"
-                                                                    data-bs-toggle="pill"
-                                                                    href="#product-1"
-                                                                    role="tab"
-                                                                >
-                                                                    <img
-                                                                        src="../assets/img/product/img-1.png"
-                                                                        alt="img-1"
-                                                                        className="img-fluid mx-auto d-block tab-img rounded"
-                                                                    />
-                                                                </a>
-                                                                <a
-                                                                    className="nav-link"
-                                                                    id="product-2-tab"
-                                                                    data-bs-toggle="pill"
-                                                                    href="#product-2"
-                                                                    role="tab"
-                                                                >
-                                                                    <img
-                                                                        src="../assets/img/product/img-5.png"
-                                                                        alt="img-5"
-                                                                        className="img-fluid mx-auto d-block tab-img rounded"
-                                                                    />
-                                                                </a>
-                                                                <a
-                                                                    className="nav-link"
-                                                                    id="product-3-tab"
-                                                                    data-bs-toggle="pill"
-                                                                    href="#product-3"
-                                                                    role="tab"
-                                                                >
-                                                                    <img
-                                                                        src="../assets/img/product/img-3.png"
-                                                                        alt="img-3"
-                                                                        className="img-fluid mx-auto d-block tab-img rounded"
-                                                                    />
-                                                                </a>
-                                                                <a
-                                                                    className="nav-link"
-                                                                    id="product-4-tab"
-                                                                    data-bs-toggle="pill"
-                                                                    href="#product-4"
-                                                                    role="tab"
-                                                                >
-                                                                    <img
-                                                                        src="../assets/img/product/img-4.png"
-                                                                        alt="img-4"
-                                                                        className="img-fluid mx-auto d-block tab-img rounded"
-                                                                    />
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                        
                                                         <div className="col-md-8 col-9">
                                                             <div className="tab-content" id="v-pills-tabContent">
                                                                 <div
@@ -110,89 +217,27 @@ export default function MealsList() {
                                                                     role="tabpanel"
                                                                 >
                                                                     <div className="product-img">
-                                                                        <img
-                                                                            src="../assets/img/product/img-1.png"
-                                                                            alt="img-1"
-                                                                            className="img-fluid mx-auto d-block"
-                                                                            data-zoom="../assets/img/product/img-1.png"
-                                                                        />
+                                                                        <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`}  alt="" srcset=""/>
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    className="tab-pane fade"
-                                                                    id="product-2"
-                                                                    role="tabpanel"
-                                                                >
-                                                                    <div className="product-img">
-                                                                        <img
-                                                                            src="../assets/img/product/img-5.png"
-                                                                            alt="img-5"
-                                                                            className="img-fluid mx-auto d-block"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div
-                                                                    className="tab-pane fade"
-                                                                    id="product-3"
-                                                                    role="tabpanel"
-                                                                >
-                                                                    <div className="product-img">
-                                                                        <img
-                                                                            src="../assets/img/product/img-3.png"
-                                                                            alt="img-3"
-                                                                            className="img-fluid mx-auto d-block"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div
-                                                                    className="tab-pane fade"
-                                                                    id="product-4"
-                                                                    role="tabpanel"
-                                                                >
-                                                                    <div className="product-img">
-                                                                        <img
-                                                                            src="../assets/img/product/img-4.png"
-                                                                            alt="img-4"
-                                                                            className="img-fluid mx-auto d-block"
-                                                                        />
-                                                                    </div>
-                                                                </div>
+                                                                
+                                                               
+                                                                
                                                             </div>
-                                                            <div className="row text-center mt-2">
-                                                                <div className="col-sm-6">
-                                                                    <div className="d-grid">
-                                                                        <button
-                                                                            type="button"
-                                                                            className="btn btn-primary waves-effect waves-light mt-2"
-                                                                        >
-                                                                            <i className="mdi mdi-cart me-2" /> Add to cart
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-sm-6">
-                                                                    <div className="d-grid">
-                                                                        <button
-                                                                            type="button"
-                                                                            className="btn btn-light waves-effect  mt-2 waves-light"
-                                                                        >
-                                                                            <i className="mdi mdi-shopping me-2" />
-                                                                            Buy now
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                           
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    </div>
+                                             
                                                 {/* end product img */}
                                             </div>
                                             <div className="col-xl-7">
                                                 <div className="mt-4 mt-xl-3">
                                                     <a href="#" className="text-primary">
-                                                        T-shirt
+                                                        {category.name}
                                                     </a>
                                                     <h5 className="mt-1 mb-3">
-                                                        Full sleeve Blue color t-shirt
+                                                       {meal.meal_name}
                                                     </h5>
                                                     <div className="d-inline-flex">
                                                         <div className="text-muted me-3">
@@ -202,150 +247,36 @@ export default function MealsList() {
                                                             <span className="mdi mdi-star text-warning" />
                                                             <span className="mdi mdi-star" />
                                                         </div>
-                                                        <div className="text-muted">( 132 )</div>
+                                                        <div className="text-muted">({totalCommands})</div>
                                                     </div>
                                                     <h5 className="mt-2">
-                                                        <del className="text-muted me-2">$252</del>$240
-                                                        <span className="text-danger font-size-12 ms-2">
-                                                            25 % Off
-                                                        </span>
+                                                       RM {meal.meal_price}
+                                                        
                                                     </h5>
-                                                    <p className="mt-3">
-                                                        To achieve this, it would be necessary to have uniform
-                                                        pronunciation
-                                                    </p>
+                                                   
                                                     <hr className="my-4" />
                                                     <div className="row">
                                                         <div className="col-md-6">
-                                                            <div>
-                                                                <h5 className="font-size-14">
-                                                                    <i className="mdi mdi-location" /> Delivery location
-                                                                </h5>
-                                                                <div className="d-flex flex-wrap">
-                                                                    <div className="input-group mb-3 w-auto">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            placeholder="Enter Delivery pincode"
-                                                                        />
-                                                                        <button className="btn btn-light" type="button">
-                                                                            Check
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                                <h5 className="font-size-14">Specification :</h5>
-                                                                <ul className="list-unstyled product-desc-list">
-                                                                    <li>
-                                                                        <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                        Full Sleeve
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                        Cotton
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                        All Sizes available
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                        4 Different Color
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <h5 className="font-size-14">Services :</h5>
+
+                                                        <div>
+                                                            <h5 className="font-size-14">Ingredient :</h5>
                                                             <ul className="list-unstyled product-desc-list">
-                                                                <li>
-                                                                    <i className="mdi mdi-sync text-primary me-1 align-middle font-size-16" />{" "}
-                                                                    10 Days Replacement
-                                                                </li>
-                                                                <li>
-                                                                    <i className="mdi mdi-currency-usd-circle text-primary me-1 align-middle font-size-16" />
-                                                                    Cash on Delivery available
-                                                                </li>
+                                                                {mealIngredient ? (
+                                                                mealIngredient.map((item) => (
+                                                                    <li>
+                                                                    <i className="mdi mdi-circle-medium me-1 align-middle" />
+                                                                    {item.ingredient.ingredient_name} <span>{"{"+item.meal_ingredient.cookMethod+"}"}</span>
+                                                                    </li>
+                                                                    
+                                                                ))
+                                                                ) : <div></div>}
                                                             </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <div className="product-color mt-3">
-                                                                <h5 className="font-size-14">Color :</h5>
-                                                                <a href="#" className="active">
-                                                                    <div className="product-color-item">
-                                                                        <img
-                                                                            src="../assets/img/product/img-1.png"
-                                                                            alt="img-1"
-                                                                            className="avatar-md"
-                                                                        />
-                                                                    </div>
-                                                                    <p>Blue</p>
-                                                                </a>
-                                                                <a href="#">
-                                                                    <div className="product-color-item">
-                                                                        <img
-                                                                            src="../assets/img/product/img-5.png"
-                                                                            alt="img-5"
-                                                                            className="avatar-md"
-                                                                        />
-                                                                    </div>
-                                                                    <p>Cyan</p>
-                                                                </a>
-                                                                <a href="#">
-                                                                    <div className="product-color-item">
-                                                                        <img
-                                                                            src="../assets/img/product/img-3.png"
-                                                                            alt="img-3"
-                                                                            className="avatar-md"
-                                                                        />
-                                                                    </div>
-                                                                    <p>Green</p>
-                                                                </a>
                                                             </div>
+
                                                         </div>
-                                                        <div className="col-md-6">
-                                                            <div className="product-color mt-3">
-                                                                <h5 className="font-size-14">Size :</h5>
-                                                                <a href="#" className="active">
-                                                                    <div className="product-color-item">
-                                                                        <div className="avatar-xs">
-                                                                            <span className="avatar-title bg-transparent text-body">
-                                                                                S
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a href="#">
-                                                                    <div className="product-color-item">
-                                                                        <div className="avatar-xs">
-                                                                            <span className="avatar-title bg-transparent text-body">
-                                                                                M
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a href="#">
-                                                                    <div className="product-color-item">
-                                                                        <div className="avatar-xs">
-                                                                            <span className="avatar-title bg-transparent text-body">
-                                                                                L
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <a href="#">
-                                                                    <div className="product-color-item">
-                                                                        <div className="avatar-xs">
-                                                                            <span className="avatar-title bg-transparent text-body">
-                                                                                XL
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                        
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -380,31 +311,7 @@ export default function MealsList() {
                                                 <div className="tab-content border border-top-0 p-4">
                                                     <div className="tab-pane fade" id="desc" role="tabpanel">
                                                         <div>
-                                                            <p>
-                                                                If several languages coalesce, the grammar of the
-                                                                resulting language is more simple and regular than
-                                                                that of the individual{" "}
-                                                            </p>
-                                                            <p>
-                                                                To achieve this, it would be necessary to have uniform
-                                                                grammar, pronunciation and more common several
-                                                                languages coalesce, the grammar of the resulting.
-                                                            </p>
-                                                            <p>It will be as simple as occidental in fact.</p>
-                                                            <div>
-                                                                <p className="mb-2">
-                                                                    <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                    If several languages coalesce
-                                                                </p>
-                                                                <p className="mb-2">
-                                                                    <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                    To an English person, it will seem like simplified
-                                                                </p>
-                                                                <p className="mb-0">
-                                                                    <i className="mdi mdi-circle-medium me-1 align-middle" />{" "}
-                                                                    These cases are perfectly simple.
-                                                                </p>
-                                                            </div>
+                                                           {meal.meal_desc}
                                                         </div>
                                                     </div>
                                                     <div
@@ -419,15 +326,15 @@ export default function MealsList() {
                                                                         <th scope="row" style={{ width: 400 }}>
                                                                             Category
                                                                         </th>
-                                                                        <td>T-Shirt</td>
+                                                                        <td>{category.name}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">Brand</th>
-                                                                        <td>Jack &amp; Jones</td>
+                                                                        <th scope="row">Total Calorie</th>
+                                                                        <td>{meal.total_calorie} gram</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th scope="row">Color</th>
-                                                                        <td>Blue</td>
+                                                                        <th scope="row">Current Total Order </th>
+                                                                        <td>{CurrentTotalOrder}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th scope="row">Material</th>
@@ -443,6 +350,10 @@ export default function MealsList() {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="updateMealBtnBox">
+                                            <a className="updateMealBtn" href={`/updateMeal/${id}`}>Update Meal</a>
+                                            </div>
+                                            
                                         </div>
                                         <div className="mt-4">
                                             <h5 className="font-size-14">Reviews : </h5>
@@ -454,81 +365,12 @@ export default function MealsList() {
                                                     <span className="mdi mdi-star text-warning" />
                                                     <span className="mdi mdi-star" />
                                                 </div>
-                                                <div className="text-muted">( 132 customer Review)</div>
+                                                <div className="text-muted">( {totalCommands} customer Review)</div>
                                             </div>
                                             <div className="border p-4 rounded">
-                                                <div className="d-flex border-bottom pb-3">
-                                                    <div className="flex-1">
-                                                        <p className="text-muted mb-2">
-                                                            To an English person, it will seem like simplified
-                                                            English, as a skeptical Cambridge
-                                                        </p>
-                                                        <h5 className="font-size-15 mb-3">James</h5>
-                                                        <ul className="list-inline product-review-link mb-0">
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-thumb-up align-middle me-1" />{" "}
-                                                                    Like
-                                                                </a>
-                                                            </li>
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-message-text align-middle me-1" />{" "}
-                                                                    Comment
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <p className="float-sm-end font-size-12">11 Feb, 2020</p>
-                                                </div>
-                                                <div className="d-flex border-bottom py-3">
-                                                    <div className="flex-1">
-                                                        <p className="text-muted mb-2">
-                                                            Everyone realizes why a new common language would be
-                                                            desirable
-                                                        </p>
-                                                        <h5 className="font-size-15 mb-3">David</h5>
-                                                        <ul className="list-inline product-review-link mb-0">
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-thumb-up align-middle me-1" />{" "}
-                                                                    Like
-                                                                </a>
-                                                            </li>
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-message-text align-middle me-1" />{" "}
-                                                                    Comment
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <p className="float-sm-end font-size-12">22 Jan, 2020</p>
-                                                </div>
-                                                <div className="d-flex py-3">
-                                                    <div className="flex-1">
-                                                        <p className="text-muted mb-2">
-                                                            If several languages coalesce, the grammar of the
-                                                            resulting{" "}
-                                                        </p>
-                                                        <h5 className="font-size-15 mb-3">Scott</h5>
-                                                        <ul className="list-inline product-review-link mb-0">
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-thumb-up align-middle me-1" />{" "}
-                                                                    Like
-                                                                </a>
-                                                            </li>
-                                                            <li className="list-inline-item">
-                                                                <a href="#">
-                                                                    <i className="mdi mdi-message-text align-middle me-1" />{" "}
-                                                                    Comment
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <p className="float-sm-end font-size-12">04 Jan, 2020</p>
-                                                </div>
+                                               {reviews}
+                                               
+                                               
                                             </div>
                                         </div>
                                     </div>

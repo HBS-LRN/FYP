@@ -250,10 +250,6 @@ export default function StaffLayout() {
                                             <li>
                                                 <a href="/mealList">Meal List</a>
                                             </li>
-                            
-                                            <li>
-                                                <a href="/addMeal">Add Meal</a>
-                                            </li>
                                             <li>
                                                 <a href="/categoryList">Category List</a>
                                             </li>
@@ -270,12 +266,12 @@ export default function StaffLayout() {
                                         </a>
                                         <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="/orders">Customers Orders</a>
+                                                <a href="/customerOrderList">Customers Orders List</a>
                                             </li>
                                             <li>
                                                 <a href="/reservation">Add Reservation</a>
                                             </li>
-
+                                            
                                             <li>
                                                 <a href="/addCustomer">Add Customer</a>
                                             </li>

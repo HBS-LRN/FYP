@@ -54,16 +54,18 @@ import UpdateCategory from "./views/staff/meal/UpdateCategory"
 import CategoryList from "./views/staff/meal/CatogoriesList"
 
 import MealDetail from "./views/staff/meal/MealDetail";
-import Customers from "./views/staff/customer/CustomersList";
 import Deliverylist from "./views/staff/delivery/DeliveryList"
 import RealTimeDeliveryTracking from "./views/staff/delivery/RealTimeDeliveryTrack"
-import Orders from "./views/staff/Orders";
+import CustomerOrderList from "./views/staff/customer/CustomerOrderList";
+import CustomerOrderDetailList from "./views/staff/customer/CustomerOrderDetailList";
 import AddMeal from "./views/staff/meal/AddMeal";
+import UpdateMeal from "./views/staff/meal/UpdateMeal";
 import FloorPlanMapping from "./views/reservation/FloorPlanMapping";
 import RequestBMI from "./views/auth/Request-BMI";
 import LoginSample from "./views/Login";
 import ReservationForm from "./views/reservation/ReservationForm";
-import CustomersList from "./views/staff/customer/CustomersList";
+import CustomersList from "./views/staff/customer/CustomerOrderList";
+import VerifyCustomer from "./views/staff/customer/verifyAccount";
 
 import AddCustomer from "./views/staff/customer/AddCustomer";
 import CompletedDeliveryList from "./views/staff/delivery/CompletedList";
@@ -120,6 +122,9 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />
+      },{
+        path: '/verifyAccount/:id',
+        element: <VerifyCustomer/>
       },
 
       {
@@ -164,7 +169,7 @@ const router = createBrowserRouter([
             path: '/allergicForm',
             element: <AllergicForm />
 
-          },
+          }
         ]
       },
 
@@ -289,7 +294,7 @@ const router = createBrowserRouter([
         element:<UpdateCategory/>
       },
       {
-        path:"categoryList",
+        path:"/categoryList",
         element:<CategoryList/>
       },
       {
@@ -301,8 +306,8 @@ const router = createBrowserRouter([
         element:<UpdateCategory/>
       },
       {
-        path:"categoryList",
-        element:<CategoryList/>
+        path:"/mealList",
+        element:<MealsList/>
       },
       {
         path: '/mealDetail/:id',
@@ -313,8 +318,16 @@ const router = createBrowserRouter([
         element: <AddMeal />
       },
       {
-        path: '/orders',
-        element: <Orders />
+        path: '/updateMeal/:id',
+        element: <UpdateMeal/>
+      },
+      {
+        path: '/customerOrderList',
+        element: <CustomerOrderList />
+      },
+      {
+        path: '/customerOrderDetailList/:id',
+        element: <CustomerOrderDetailList/>
       },
       {
         path: '/customers',

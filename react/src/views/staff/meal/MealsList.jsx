@@ -2,7 +2,7 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client.js";
 import { useEffect, useState } from "react";
-
+import Swal from 'sweetalert2';
 
 import { Helmet } from 'react-helmet';
 
@@ -169,6 +169,35 @@ export default function MealsList() {
                 console.error('API request error:', error);
             });
     }
+    const handleDelete = (mealId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Are you sure to delete this meal?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+            axiosClient.delete(`/meal/${mealId}`)
+            .then((response) => {
+                console.log('Meal deleted successfully:', response.data);
+                Swal.fire({
+                    title: "Deleted!",
+                    text: response.data.meal_name + " has been deleted.",
+                    icon: "success"
+                  });
+                getMeal();
+            })
+            .catch((error) => {
+                console.error('Error deleting meal:', error);
+            });
+             
+            }
+          });
+        
+    };
 
     return (
 
@@ -311,26 +340,30 @@ export default function MealsList() {
                                             ) : (filteredMeals.length > 0) ? (                   
                                                  // Render the filtered meals
                                                  filteredMeals.map((item) => (
-                                                    <a className="col-xl-4 col-sm-6" href={"/mealDetail/"+item.id}>
-                                                        <div className="product-box">
+                                                    
+                                                        <div className="product-box col-xl-4 col-sm-6">
+                                                            
                                                             <div className="product-img">
-
+                                                            <div className="product-like" >
+                                                                        <a onClick={() => handleDelete(item.id)}>
+                                                                        <i class="fa-solid fa-trash"></i>
+                                                                            </a>
+                                                                            </div>
+                                                                            <a className="" href={"/mealDetail/"+item.id}>
                                                                 {/* <div className="product-ribbon badge bg-primary">
                                                                     - 25 %
                                                                 </div> */}                                                                                                    
-                                                                <div className="product-like">
-                                                                        <a href="#">
-                                                                            <i className="mdi mdi-heart-outline" />
-                                                                            </a>
-                                                                            </div>
+                                                                
                                                                                 <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${item.meal_image}`} alt="img-1" height="250px" width="100%"  />
-                                                                            </div>
+                                                                            
                                                                             <div className="text-center">
                                                                                 <h5 className="font-size-15"><a href="#" className="text-dark">{item.meal_name}</a></h5>
                                                                                 <h5 className="mt-3 mb-0">RM {item.meal_price}</h5>
                                                                             </div>
+                                                                            </a> </div>
+                                                                            
                                                                             </div>
-                                                                            </a>
+                                                                            
                                                  ))
                                             ): (
                                                 <div>No results found.</div>

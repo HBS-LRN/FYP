@@ -88,8 +88,9 @@ Route::delete('/ingredients/{id}', [IngredientController::class, 'destroy']);
 
 //category
 Route::get('/category', [CategoryController::class, 'index']);
+Route::get('/category/{id}', [CategoryController::class, 'show']);
 Route::post('/category', [CategoryController::class, 'store']);
-Route::put('/category/{id}', [CategoryController::class, 'update']);
+Route::post('/updateCategory', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
 //ingredientMeal
@@ -100,13 +101,26 @@ Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 
 //meal
 Route::get('/meal',[MealController::class, 'index']);
-
+Route::get('/meal/{id}',[MealController::class, 'show']);
 Route::post('/meal', [MealController::class, 'store']);
-Route::put('/meal/{id}', [MealController::class, 'update']);
+Route::post('/updateMeal/{id}', [MealController::class, 'update']);
 Route::delete('/meal/{id}', [MealController::class, 'destroy']);
 Route::get('/mealSearch',[MealController::class, 'adminSearchMeals']);
+Route::get('/getMealIngredient/{id}',[MealController::class, 'getMealIngredient']);
+Route::get('/getMealOrder/{id}',[MealController::class, 'getMealOrderDetail']);
+Route::put('/mealOrderDetail/{id}', [MealController::class, 'updateMealOrderDetail']);
 
+//admin customer
+Route::post('/createUser', [UserController::class, 'createCustomer']);
+Route::get('/getUser/{id}',[UserController::class, 'showUser']);
+Route::post('/varifyAccount/{id}', [UserController::class, 'verifyAccount']);
 
+//customer order
+Route::get('/customerOrder', [OrderController::class, 'index']);
+Route::get('/searchCustomerOrder', [OrderController::class, 'searchCustomerOrderList']);
+Route::delete('/deleteCustomerOrders/{orderId}', [OrderController::class, 'deleteCustomerOrder']);
+Route::get('/mealOrderDetails/{orderId}', [OrderController::class, 'showMealOrderDetails']);
+Route::post('/updateOrderDetail/{orderId}', [OrderController::class, 'updateCustomerOrder']);
 
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 

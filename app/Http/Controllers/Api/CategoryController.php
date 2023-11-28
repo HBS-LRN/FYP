@@ -23,20 +23,6 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         try {
-            
-            // // Generate a unique image name
-            // $iconImageName = Str::random(32) . "." . $request->iconImage->getClientOriginalExtension();
-            // $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
-            // // Specify the absolute path
-
-            // $absolutePath = public_path('../react/assets/img/icon');
-            
-            // // Ensure the directory exists
-            // if (!File::exists($absolutePath)) {
-            //     File::makeDirectory($absolutePath, 0755, true);
-            // }
-
-            // Create Product
 
             $data = $request->validated();
             if ($request->hasFile('iconImage')) {
@@ -47,17 +33,8 @@ class CategoryController extends Controller
                 $data['image'] = $request->file('image')->store('images', 'public');
                
             }
-            Category::create($data);
+            Category::create($data);     
 
-            // // Specify the relative path
-            // $relativePathIcon = '../react/assets/img/icon/' . $iconImageName;
-            // $relativePath = '../react/assets/img/icon/' . $imageName;
-
-            // // Save Image using file_put_contents
-            // file_put_contents($relativePathIcon, file_get_contents($request->iconImage));
-            // file_put_contents($relativePath, file_get_contents($request->imageName));
-            
-          
             // Return Json Response
             return response()->json([
                 'message' => "Category successfully created."
@@ -70,63 +47,80 @@ class CategoryController extends Controller
         }
     }
     
-
-    public function update(Request $request, $id)
+    public function show($id)
     {
-        try {
-            // Find product
-            $category = Category::find($id);
-            if(!$category){
-              return response()->json([
-                'message'=>'Category Not Found.'
-              ],404);
-            }
-      
-            //echo "request : $request->image";
-            $category->name = $request->name;
+        $category = Category::find($id);
         
-      
-            if($request->image) {
- 
-                // Public storage
-                $storage = Storage::disk('../react/assets/img/icon/');
-      
-                // Old image delete
-                if($storage->exists($category->image))
-                    $storage->delete($category->image);
-                
-                // Generate a unique image name
-                $imageName = Str::random(32) . "." . $request->image->getClientOriginalExtension();
-                
-                // Specify the absolute path
-                $absolutePath = public_path('../react/assets/img/icon');
-                
-                // Ensure the directory exists
-                if (!File::exists($absolutePath)) {
-                    File::makeDirectory($absolutePath, 0755, true);
-                }
-
-                $relativePath = '../react/assets/img/icon/' . $imageName;
-
-                // Save Image using file_put_contents
-                file_put_contents($relativePath, file_get_contents($request->image));
-            }
-      
-            
-            $category->save();
-      
-            // Return Json Response
+        if (!$category) {
             return response()->json([
-                'message' => "Product successfully updated."
-            ],200);
-        } catch (\Exception $e) {
-            // Return Json Response
-            return response()->json([
-                'message' => "Something went really wrong!"
-            ],500);
+                'message' => 'Category not found.'
+            ], 404);
         }
 
-       
+        return response()->json($category);
+    }
+
+    public function update(CategoryStoreRequest $request)
+    {
+
+        try {
+
+            $data=$request->validated();
+            
+            // Find category
+            $category = Category::find($request->id);
+    
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Category Not Found.'
+                ], 404);
+            }
+
+            $category->name = $request->input('name');
+        
+            // Check if a new image is provided
+            if ($request->hasFile('image')) {
+                // Store the new image
+                $newImage = $request->file('image')->store('images', 'public');
+    
+                // Log the file details (you can check your Laravel logs for this)
+                \Log::info('New Image Details:', ['file' => $newImage]);
+    
+                // Delete the old image if it exists
+                Storage::disk('public')->delete($category->image);
+    
+                // Assign the new image path to the category
+                $category->image = $newImage;
+            }
+    
+            if ($request->hasFile('iconImage')) {
+                // Store the new icon image
+                $newIconImage = $request->file('iconImage')->store('images', 'public');
+    
+                // Log the file details (you can check your Laravel logs for this)
+                \Log::info('New Icon Image Details:', ['file' => $newIconImage]);
+    
+                // Delete the old icon image if it exists
+                Storage::disk('public')->delete($category->iconImage);
+    
+                // Assign the new icon image path to the category
+                $category->iconImage = $newIconImage;
+            }
+    
+            // Save the changes
+            $category->save();
+    
+            // Return Json Response
+            return response()->json([
+                'message' => $category
+            ], 200);
+        } catch (\Exception $e) {
+            
+            // Return Json Response
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy($id)

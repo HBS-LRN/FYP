@@ -30,13 +30,31 @@ class MealController extends Controller
 
     public function show($id)
     {
-        $meal = Meal::find($id);
+        try {
+            // Find the meal by ID
+            $meal = Meal::with(['mealIngredients', 'mealIngredients.ingredient'])->find($id);
 
-        if (!$meal) {
-            return response()->json(['message' => 'Meal not found'], 404);
+            if (!$meal) {
+                return response()->json(['message' => 'Meal not found'], 404);
+            }
+
+            // Transform the meal data to ensure ingredient_name is defined
+            $transformedMeal = $meal->toArray();
+
+            // Loop through mealIngredients and set ingredient_name to an empty string if not defined
+            if (isset($transformedMeal['mealIngredients'])) {
+                foreach ($transformedMeal['mealIngredients'] as &$mealIngredient) {
+                    if (isset($mealIngredient['ingredient']) && !isset($mealIngredient['ingredient']['ingredient_name'])) {
+                        $mealIngredient['ingredient']['ingredient_name'] = '';
+                    }
+                }
+            }
+
+            // Return the meal with its ingredients
+            return response()->json($transformedMeal);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong: ' . $e->getMessage()], 500);
         }
-
-        return response()->json($meal);
     }
 
 
@@ -77,7 +95,40 @@ class MealController extends Controller
         return response()->json($meals);
     }
 
+    public function getMealIngredient($meal_id)
+    {
+        try {
+            $meal = Meal::find($meal_id);
 
+            if (!$meal) {
+                return response()->json(['message' => 'Meal not found'], 404);
+            }
+
+            // Get MealIngredients for the specified meal
+            $mealIngredients = $meal->mealIngredients;
+
+            // Extract ingredient_ids
+            $ingredientIds = $mealIngredients->pluck('ingredient_id')->toArray();
+
+            // Get Ingredients using ingredient_ids
+            $ingredients = Ingredient::whereIn('id', $ingredientIds)->get();
+
+            // Combine MealIngredients and corresponding Ingredients
+            $result = $mealIngredients->map(function ($mealIngredient) use ($ingredients) {
+                $ingredient = $ingredients->where('id', $mealIngredient->ingredient_id)->first();
+                return [
+                    'meal_ingredient' => $mealIngredient,
+                    'ingredient' => $ingredient,
+                ];
+            });
+
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 
     public function store(MealStoreRequest $request)
     {
@@ -129,6 +180,20 @@ class MealController extends Controller
         }
     }
 
+    public function getMealOrderDetail($meal_id)
+    {
+        try {
+            $mealOrderDetails = MealOrderDetail::where('meal_id', $meal_id)->get();
+
+            return response()->json($mealOrderDetails);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
     function storeMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)
     {
 
@@ -173,64 +238,183 @@ class MealController extends Controller
         $meal->total_calorie = $totalCalorie;
         $meal->save();
     }
+    public function updateMealOrderDetail(MealStoreRequest $request, $id)
+    {
+        try {
+            // Find meal order detail
+            $mealOrderDetail = MealOrderDetail::find($id);
 
+            if (!$mealOrderDetail) {
+                return response()->json(['message' => 'Meal Order Detail not found'], 404);
+            }
 
+            // Validate request data
+            $request->validate([
+                'reply_comment' => 'required|string', // Update field name to 'rate_command'
+            ]);
+           
+            // Update rate_command
+            $mealOrderDetail->update([
+                'reply_comment' => $request->reply_comment, // Update field name to 'rate_command'
+            ]);
+            return response()->json(['message' => $request->reply_comment], 200);
+            // return response()->json(['message' => 'Meal Order Detail updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong: ' . $e->getMessage()], 500);
+        }
+    }
 
+    // public function update(MealStoreRequest $request, $id)
+    // {
+    //     try {
+    //         // Find meal
+    //         $meal = Meal::find($id);
+
+    //         if (!$meal) {
+    //             return response()->json(['message' => 'Meal Not Found.'], 404);
+    //         }
+
+    //         // Validate request data
+    //         $request->validate([
+    //             'meal_price' => 'required|numeric',
+    //             'meal_name' => 'required|string',
+    //             'meal_desc' => 'required|string',
+    //             'category_id' => 'required|exists:categories,id',
+    //             'meal_image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //             'ingredient_id' => 'required|array',
+    //         ]);
+
+    //         // Update meal attributes
+    //         $meal->meal_price = $request->meal_price;
+    //         $meal->meal_name = $request->meal_name;
+    //         $meal->meal_desc = $request->meal_desc;
+    //         $meal->category_id = $request->category_id;
+
+    //         // Handle meal image update
+    //         if ($request->hasFile('meal_image')) {
+    //             $image = $request->file('meal_image');
+    //             $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
+    //             $image->move(public_path('react/assets/img/icon'), $imageName);
+
+    //             // Delete the old image if it exists
+    //             $oldImage = $meal->meal_image;
+    //             if (File::exists(public_path('react/assets/img/icon/' . $oldImage))) {
+    //                 File::delete(public_path('react/assets/img/icon/' . $oldImage));
+    //             }
+
+    //             $meal->meal_image = $imageName;
+    //         }
+
+    //         // Save the updated meal
+    //         $meal->save();
+
+    //         // Update meal ingredients
+    //         $ingredientIds = $request->input('ingredient_id', []);
+    //         $this->updateMealIngredients($meal, $ingredientIds);
+
+    //         return response()->json(['message' => 'Meal successfully updated.'], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
+    //     }
+    // }
     public function update(MealStoreRequest $request, $id)
     {
         try {
+          
             // Find meal
             $meal = Meal::find($id);
+    
             if (!$meal) {
-                return response()->json([
-                    'message' => 'Meal Not Found.'
-                ], 404);
+                return response()->json(['message' => 'Meal Not Found.'], 404);
             }
-
+    
+            // Update meal attributes
             $meal->meal_price = $request->meal_price;
             $meal->meal_name = $request->meal_name;
             $meal->meal_desc = $request->meal_desc;
             $meal->category_id = $request->category_id;
-
+    
+            // Handle meal image update
             if ($request->hasFile('meal_image')) {
-                // Handle image update
-                $image = $request->file('meal_image');
-                $imageName = Str::random(32) . "." . $image->getClientOriginalExtension();
-
-                // Store the new image
-                $image->move(public_path('react/assets/img/icon'), $imageName);
-
-                // Delete the old image if it exists
-                $oldImage = $meal->meal_image;
-                if (File::exists(public_path('react/assets/img/icon/' . $oldImage))) {
-                    File::delete(public_path('react/assets/img/icon/' . $oldImage));
-                }
-
-                // Update the image name in the database
-                $meal->meal_image = $imageName;
+                $data['meal_image'] = $request->file('meal_image')->store('images', 'public');
+                $meal->meal_image =  $data['meal_image'];
             }
-
+    
+            // Save the updated meal
             $meal->save();
-            $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
-            $this->updateMealIngredients($meal, $ingredientIds);
-
-            return response()->json([
-                'message' => "Meal successfully updated."
-            ], 200);
+    
+            // Update meal ingredients
+            $ingredientIds = $request->input('ingredient_id', []);
+            $this->updateMealIngredients($meal, $ingredientIds, $request->unit, $request->cookMethod);
+    
+            return response()->json(['message' => 'Meal successfully updated.'], 200);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => "Something went really wrong! " . $e->getMessage(),
-            ], 500);
+            return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
         }
     }
-    // function updateMealIngredients(Meal $meal, array $ingredients)
+    // Function to update meal ingredients
+    // private function updateMealIngredients(Meal $meal, array $ingredients)
     // {
-    //     // Delete existing Meal Ingredients
-    //     MealIngredient::where('meal_id', $meal->id)->delete();
+    //     // // Delete existing Meal Ingredients
+    //     // MealIngredient::where('meal_id', $meal->id)->delete();
 
-    //     // Store new Meal Ingredients
-    //     $this->storeMealIngredients($meal, $ingredients);
+    //     // // Store new Meal Ingredients
+    //     // $this->storeMealIngredients($meal, $ingredients);
+    //     $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
+
+    // $this->storeMealIngredients($meal, $ingredientIds, $request->unit, $request->cookMethod);
     // }
+    private function updateMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)
+    {
+        try {
+            // Delete existing Meal Ingredients for the given meal
+            MealIngredient::where('meal_id', $meal->id)->delete();
+    
+            $cookMethodCalories = [
+                'water_boiled' => 0,
+                'fried' => 100,
+                'deep_fried' => 200,
+                'raw' => 0,
+                'saute' => 50,
+                'steam' => 20,
+                'spicy' => 150,
+            ];
+    
+            $totalCalorie = 0.00; // Initialize the total calorie to zero
+    
+            foreach ($ingredients as $key => $ingredient) {
+                $mealIngredient = new MealIngredient([
+                    'ingredient_id' => $ingredient,
+                    'meal_id' => $meal->id,
+                    'unit' => $unit[$key],
+                    'cookMethod' => $cookMethod[$key],
+                ]);
+    
+                // Retrieve the Ingredient model for the current ingredient
+                $ingredientModel = Ingredient::find($ingredient);
+    
+                // Add the calorie of the current ingredient to the total calorie
+                if ($ingredientModel) {
+                    $totalCalorie += $ingredientModel->calorie * $unit[$key];
+                }
+    
+                // Add the calorie based on the selected cook method
+                if (isset($cookMethodCalories[$cookMethod[$key]])) {
+                    $totalCalorie += $cookMethodCalories[$cookMethod[$key]];
+                }
+    
+                $mealIngredient->save();
+            }
+    
+            // Update the total_calorie attribute of the Meal model with the calculated total calorie
+            $meal->total_calorie = $totalCalorie;
+            $meal->save();
+        } catch (\Exception $e) {
+            // Handle exception if needed
+            // throw $e;
+            return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
+        }
+    }
 
     public function destroy($id)
     {
@@ -244,8 +428,9 @@ class MealController extends Controller
 
         // Delete associated Meal Ingredients
         MealIngredient::where('meal_id', $id)->delete();
+        MealOrderDetail::where('meal_id', $id)->delete(); 
 
-        return response()->json(['message' => 'Meal and associated ingredients deleted'], 200);
+        return response()->json(['message' => $meal], 200);
     }
 
 
@@ -310,4 +495,6 @@ class MealController extends Controller
         $meals = Meal::where('meal_name', 'like', '%' . $search . '%')->get();
         return response()->json($meals);
     }
+
+   
 }

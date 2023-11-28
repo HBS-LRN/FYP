@@ -23,7 +23,7 @@ class MealStoreRequest extends FormRequest
             return [
                 'meal_name' => 'required|string|max:258',
                 'meal_price' => 'required|numeric',
-                'meal_image' => 'required|image|mimes:jpeg,png,jpg|max:80000',
+                'meal_image' => 'required|max:80000',
                 'meal_desc' => 'required|string',
                 'category_id' => 'required|integer',
                 'ingredient_id' => 'array',
@@ -34,7 +34,7 @@ class MealStoreRequest extends FormRequest
             return [
                 'meal_name' => 'required|string|max:258',
                 'meal_price' => 'required|numeric',
-                'meal_image' => 'required|image|mimes:jpeg,png,jpg|max:80000',
+                'meal_image' => 'required|max:80000',
                 'meal_desc' => 'required|string',
                 'category_id' => 'required|integer',
             ];

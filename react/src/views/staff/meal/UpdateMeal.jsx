@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Nav } from 'react-bootstrap';
+import { useParams } from 'react-router-dom'; 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'select2/dist/css/select2.min.css';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
 import { useDropzone } from 'react-dropzone';
+import Swal from 'sweetalert2'
+import { Navigate } from 'react-router';
 
-const AddProduct = () => {
+const UpdateMeal = () => {
     const [activeTab, setActiveTab] = useState(0);
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
     const [errors, setErrors] = useState({});
-
+    const [redirect, setRedirect] = useState(false); 
     const [meal, setMeal] = useState({
         meal_name: '',
         meal_image: null,
@@ -23,8 +26,42 @@ const AddProduct = () => {
         unit: [],
         cookMethod: [],
     });
+    const [mealIngredients, setMealIngredients] = useState([]);
     const [loading, setLoading] = useState(false);
+    let { id } = useParams(); 
+    useEffect(() => {
+        getMeal();
+        getSelectionIngredient();
+        getCategory();
+    }, [id]);
+    const getMeal = () => {
+        axiosClient.get(`/meal/${id}`)
+            .then(({ data }) => {
+                console.log('API Response:', data); // Add this line
+                setLoading(false);
+            const currentMeal = {
+                meal_name: data.meal_name,
+                meal_image: data.meal_image,
+                meal_price: data.meal_price,
+                meal_desc: data.meal_desc,
+                category_id: data.category_id,
+                ingredient_id: data.meal_ingredients.map(item => item.ingredient_id),
+                unit: data.meal_ingredients.map(ingredient => ingredient.unit),
+                cookMethod: data.meal_ingredients.map(ingredient => ingredient.cookMethod),
+            } 
 
+                setMeal(currentMeal);
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error('API request error:', error);
+            });
+    }
+    // console.log("meal.meal_ingredients:",meal.meal_ingredients && meal.meal_ingredients[1]);
+    console.log("meal",meal);
+    
+    // console.log("mealIngredients",mealIngredients);
+    // console.log("meal.meal_ingredients.ingredient_id",meal.meal_ingredients.ingredient_id);
     const handleUnitInput = (e, index) => {
         const { value } = e.target;
         const updatedUnit = [...meal.unit];
@@ -87,12 +124,8 @@ const AddProduct = () => {
         setErrors(errors);
         return Object.keys(errors).length === 0;
     }
-
-    useEffect(() => {
-        getIngredient();
-        getCategory();
-    }, []);
-    const getIngredient = () => {
+   
+    const getSelectionIngredient = () => {
         // Make the API call to get ingredient data
         axiosClient.get('/ingredients')
             .then(({ data }) => {
@@ -122,11 +155,14 @@ const AddProduct = () => {
                 console.error('API request error:', error);
             });
     }
-    const saveMeal = (e) => {
+    const updateMeal = (e) => {
         e.preventDefault();
+        console.log("haha");
         if (!validateForm()) {
+            console.log("bukima");
             return;
         }
+        
         setLoading(true);
         const formData = new FormData();
         formData.append('meal_name', meal.meal_name);
@@ -138,48 +174,56 @@ const AddProduct = () => {
             formData.append('unit[]', meal.unit[index]);
             formData.append('cookMethod[]', meal.cookMethod[index]);
         });
-        formData.append('meal_image', meal.meal_image);
-
+       
+        if (meal.meal_image) {
+            formData.append('meal_image', meal.meal_image);
+        } else {
+            formData.append('meal_image', '');
+        }
 
         // Log the data before making the API call
         for (var pair of formData.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
+        Swal.fire({
+            title: "Are you sure to update?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, update it!"
+          }).then((result) => {
 
-        axiosClient.post('/meal', formData)
-            .then(res => {
-                // setMeal({
-                //     meal_name: '',
-                //     meal_image: null,
-                //     meal_price: '',
-                //     meal_desc: '',
-                //     category_id: '',
-                //     ingredient_id: [],
-                // });
-                console.log(res.message);
-                // Show SweetAlert success message
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'New Meal Had Been Successfully Added!',
-                    showConfirmButton: false,
-                    timer: 1500
+            if (result.isConfirmed) {
+                axiosClient.post(`/updateMeal/${id}`, formData)
+                .then(res => {
+                    console.log(res.message);
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        title: "Update!",
+                        text: "Your file has been Update.",
+                        icon: "success"
+                      });
+                      setRedirect(true);
+                })
+                .catch(function (error) {
+                    if (error.response) {
+                        console.log("error:",error.response.data); // This will log the response data from the server.
+                        console.log("error:",error.response.status); // This will log the HTTP status code.
+                    } else if (error.request) {
+                        console.log("error:",error.request); // This will log the request made but no response was received.
+                    } else {
+                        console.log('Error', error.message);
+                    }
+                    console.log(error); // This will log the Axios request config.
+                    setLoading(false);
                 });
-            })
-            .catch(function (error) {
-                if (error.response) {
-                    console.log(error.response.data); // This will log the response data from the server.
-                    console.log(error.response.status); // This will log the HTTP status code.
-                } else if (error.request) {
-                    console.log(error.request); // This will log the request made but no response was received.
-                } else {
-                    console.log('Error', error.message);
-                }
-                console.log(error); // This will log the Axios request config.
-                setLoading(false);
-            });
+            }
+          });
+        
     }
-
+   
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
@@ -191,9 +235,10 @@ const AddProduct = () => {
         setActiveTab((prevTab) => prevTab + 1);
     };
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+    const redirectComponent = redirect ? <Navigate to={`/mealDetail/${id}`} /> : null;
     return (
         <div>
+            {redirectComponent}
             <Helmet>
                 <link rel="stylesheet" href="../../../assets/css/addMeal.css" />
 
@@ -213,7 +258,7 @@ const AddProduct = () => {
                             <div className="col-lg-12">
                                 <div className="card">
                                     <div className="card-body">
-                                        <form onSubmit={saveMeal}>
+                                        <form>
                                             <div id="addproduct-nav-pills-wizard" className="twitter-bs-wizard nav-pills nav-justified">
                                                 <Nav className="twitter-bs-wizard-nav">
                                                     <Nav.Item>
@@ -283,10 +328,10 @@ const AddProduct = () => {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Category</label>
                                                                     <Select
-                                                                        id='category_id'
-                                                                        name='category_id'
-                                                                        value={categoryOptions.find(option => option.value === meal.category_id)}
-                                                                        onChange={(selectedOption) => handleInput({ target: { name: 'category_id', value: selectedOption.value } })} // Update this line
+                                                                        id="category_id"
+                                                                        name="category_id"
+                                                                        value={categoryOptions.find((option) => option.value === meal.category_id)}
+                                                                        onChange={(selectedOption) => setMeal({ ...meal, category_id: selectedOption.value })}
                                                                         options={categoryOptions}
                                                                     />
                                                                     {errors.category_id && <div className="text-danger">{errors.category_id}</div>}
@@ -296,19 +341,17 @@ const AddProduct = () => {
                                                                 <div className="mb-3">
                                                                     <label className="form-label">Ingredient</label>
                                                                     <Select
-                                                                        id='ingredient_id'
-                                                                        name='ingredient_id'
-                                                                        value={ingredientOptions.filter(option => meal.ingredient_id.includes(option.value))}
-                                                                        onChange={(selectedOptions) => handleInput({ target: { name: 'ingredient_id', value: selectedOptions.map(option => option.value) } })} // Update this line
+                                                                        id="ingredient_id"
+                                                                        name="ingredient_id"
+                                                                        value={ingredientOptions.filter(option => meal.ingredient_id && meal.ingredient_id.includes(option.value))}
+                                                                        onChange={(selectedOptions) => handleInput({ target: { name: 'ingredient_id', value: selectedOptions.map(option => option.value) } })}
                                                                         options={ingredientOptions}
-                                                                        isMulti
+                                                                        isMulti  // Set to true for multi-selection
                                                                     />
                                                                     {errors.ingredient_id && <div className="text-danger">{errors.ingredient_id}</div>}
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
 
 
                                                         {meal.ingredient_id &&
@@ -325,8 +368,9 @@ const AddProduct = () => {
                                                                                 value={ingredientOptions.find((option) => option.value === ingredientId)?.label || ''}
                                                                                 className="form-control"
                                                                                 onChange={handleInput}
+                                                                                readOnly
                                                                             />
-                                                                            {errors.ingredient_id && <div className="text-danger">{errors.ingredient_id}</div>}
+                                                                               {errors[`ingredient_id_${index}`] && <div className="text-danger">{errors[`ingredient_id_${index}`]}</div>}
                                                                         </div>
                                                                     </div>
                                                                     <div className="col-md-4">
@@ -402,10 +446,14 @@ const AddProduct = () => {
                                                             <div className="fallback">
                                                                 <input {...getInputProps()} />
                                                             </div>
-                                                            {meal.meal_image ? (
+                                                            {meal.meal_image && meal.meal_image.name ? (
                                                                 <p>Selected file: {meal.meal_image.name}</p>
                                                             ) : (
-                                                                <p>Drag 'n' drop an image here, or click to select one</p>
+                                                                <div className="currentImage">
+                                                                <p>Drop the new Image here..........</p>
+                                                             Current Image：
+                                                                 <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${meal.meal_image}`} alt="img-1" height="100px" width="100px"/>
+                                                             </div>
                                                             )}
 
                                                         </div>
@@ -424,12 +472,11 @@ const AddProduct = () => {
                                                     </button>
 
                                                     <button
-                                                        type={activeTab === 1 ? "submit" : "button"}
+                                                        type="button"
                                                         className="btn btn-primary me-2 waves-effect waves-light"
-                                                        onClick={activeTab === 1 ? null : handleNextClick}
+                                                        onClick={activeTab === 1 ? updateMeal : handleNextClick}
                                                     >
-
-                                                        {activeTab === 1 ? "Create Meal" : "Next"}
+                                                        {activeTab === 1 ? "Update Meal" : "Next"}
                                                     </button>
                                                 </div>
                                             </div>
@@ -445,4 +492,4 @@ const AddProduct = () => {
     );
 };
 
-export default AddProduct;
+export default UpdateMeal;

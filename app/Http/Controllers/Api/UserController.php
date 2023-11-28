@@ -16,6 +16,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use App\Repository\UserRepositoryInterface;
 use DateTime;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail; 
+use App\Mail\VerifyAccountMail;
+
 
 class UserController extends Controller
 {
@@ -265,6 +269,7 @@ class UserController extends Controller
     }
 
 
+
     private function saveImage($image)
     {
         // Check if image is valid base64 string
@@ -299,4 +304,92 @@ class UserController extends Controller
 
         return $relativePath;
     }
+
+    public function createCustomer(Request $request)
+    {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
+            'gender' => 'required|in:Male,Female', // Assuming gender can only be Male or Female
+            'birthdate' => 'required|date',
+            'password' => 'required|string|min:8', // You might want to customize the password validation
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+        // Create the user without a password
+        $user = User::create([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'gender' => $request->input('gender'),
+            'email' => $request->input('email'),
+            'birthdate' => $request->input('birthdate'),
+            'role' => 0,
+            'password' => bcrypt($request->input('password')),
+            'active_member' =>'N'
+        ]);
+
+        // Send verification email
+        $this->sendVerificationEmail($user);
+
+        // You can customize the response as needed
+        return response(new UserResource($user), 201);
+    }
+
+    /**
+     * Send verification email to the user.
+     *
+     * @param \App\Models\User $user
+     */
+    private function sendVerificationEmail(User $user)
+    {
+        // Generate a verification token
+      
+
+        // Send the verification email
+        Mail::to($user->email)->send(new VerifyAccountMail($user, $verificationToken));
+    }
+
+    public function showUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+
+            return response()->json(['user' => $user], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    }
+
+    public function verifyAccount(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        // Validate request data
+        $request->validate([
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
+        // Generate a new verification token
+        $verificationToken = Str::random(40);
+
+        // Update user's record with the new data and verification token
+        $user->update([
+            'email' => $request->input('email'),
+            'name' => $request->input('name'),
+            'password' => bcrypt($request->input('password')),
+            'token' => $verificationToken,
+        ]);
+
+
+        // Update user's verification status
+        $user->update(['verified_at' => now(), 'verification_token' => null]);
+
+        return response()->json(['message' => 'Account verified successfully'], 200);
+    }
+    
 }

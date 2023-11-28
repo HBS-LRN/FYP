@@ -40,16 +40,14 @@ class CategoryStoreRequest extends FormRequest
   
     public function messages()
     {
-        if(request()->isMethod('post')) {
-            return [
-                'name.required' => 'Name is required!',
-                'iconImage.required' => 'Image is required!',
-                'image.required' => 'Image is required!'
-            ];
-        } else {
-            return [
-                'name.required' => 'Name is required!'
-            ];   
-        }
+        return [
+            'name.required' => 'The category name is required.',
+            'iconImage.required' => 'The icon image is required.',
+            'iconImage.image' => 'The icon image must be an image.',
+            'iconImage.mimes' => 'The icon image must be a file of type: jpeg, png, jpg.',
+            'image.required' => 'The image is required.',
+            'image.image' => 'The image must be an image.',
+            'image.mimes' => 'The image must be a file of type: jpeg, png, jpg.',
+        ];
     }
 }
