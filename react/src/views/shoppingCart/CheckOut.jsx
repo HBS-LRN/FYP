@@ -309,10 +309,10 @@ export default function CheckOut() {
                         <div class="col-lg-12">
                             <div class="about-text pricing-table">
                                 <ul class="crumbs d-flex" data-aos="fade-up" data-aos-delay="200" data-aos-duration="300">
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="/">Home</a></li>
 
-                                    <li><a href="index.html"><i class="fa-solid fa-right-long"></i>My Cart</a></li>
-                                    <li class="two"><a href="index.html"><i class="fa-solid fa-right-long"></i>Checkout</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-right-long"></i>My Cart</a></li>
+                                    <li class="two"><a href="#"><i class="fa-solid fa-right-long"></i>Checkout</a></li>
                                 </ul>
                                 <h2 data-aos="fade-up" data-aos-delay="300" data-aos-duration="400">Checkout</h2>
 
@@ -436,11 +436,11 @@ export default function CheckOut() {
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6 col-sm-5">
+                                    <div class="col-lg-6 col-sm-5 col-6">
                                         <h4 class="two">Delivery addresses</h4>
 
                                     </div>
-                                    <div class="col-lg-6 col-sm-6">
+                                    <div class="col-lg-6 col-sm-6 col-6">
                                         <button class="button-price changeAddress" onClick={ev => onNavigateClick()}>Edit/Change Address</button>
                                     </div>
                                 </div>

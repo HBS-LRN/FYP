@@ -263,3 +263,31 @@
 .main-popup .popup-content .submitBtnBox .submitBtn:hover {
     background-color: rgb(250, 60, 60);
 }
+@media all and (max-width: 1200px) {
+    .img-restaurant {
+        margin: 0px 20px;
+        display: block;
+    }
+
+    .mainpageShow .img-restaurant{
+        display: none;
+    }
+    /* }
+    .img-restaurant img{
+        width:180px;
+        height:190px;
+    }
+    .mainpageShow .img-restaurant .foodShowBox{
+        margin:0px;
+        margin-top:14px;
+    }
+    .mainpageShow .img-restaurant .foodShowBox .title{
+        font-size:30px;
+    }
+    .reviews-img img {
+        display:none;
+    }
+    .reviews-img i {
+        display:none;
+    } */
+}

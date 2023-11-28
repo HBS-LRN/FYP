@@ -9,5 +9,10 @@ class Chat extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'image', 'message', 'date', 'time'];
+    protected $fillable = ['user_id', 'image', 'message', 'date', 'time', 'seen'];
+    // Define the user relationship
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

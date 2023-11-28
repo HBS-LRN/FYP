@@ -135,7 +135,7 @@ export default function RealTimeDeliveryTrack() {
             //refresh location data in an interval
             setInterval(() => {
                 navigator.geolocation.getCurrentPosition(getPosition)
-            }, 10000);
+            }, 20000);
         }
         var marker, circle;
         function getPosition(position) {

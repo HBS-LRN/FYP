@@ -64,7 +64,14 @@ Route::group(['middleware' => ['bearer_token']], function () {
     Route::get('/showRating/{id}', [MealController::class, 'showRatingForm']);
     Route::post('/submitRating', [MealController::class, 'submitRating']);
     Route::apiResource('/chat', ChatController::class);
-    
+    Route::put('/setNonActiveMember/{id}', [AuthController::class, 'setNonActiveMember']);
+    Route::get('/deactivatedCustomer', [UserController::class, 'deactivatedCustomer']);
+    Route::put('/setActiveMember/{id}', [AuthController::class, 'setActiveMember']);
+    Route::apiResource('/users', UserController::class);
+    Route::get('/customerChats', [ChatController::class, 'customerChats']);
+    Route::post('/customerSeens', [ChatController::class, 'customerSeens']);
+    Route::post('/customerSeen', [ChatController::class, 'customerSeen']);
+    Route::get('/customerChat/{id}', [ChatController::class, 'customerChat']);
 });
 
 
@@ -72,10 +79,18 @@ Route::group(['middleware' => ['bearer_token']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('/users', UserController::class);
+
+
+
+
+
+
 Route::apiResource('/contactus', ContactUsController::class);
 
 Route::get('/searchMeal/{search}',[MealController::class, 'searchMeal']);
@@ -92,7 +107,7 @@ Route::get('/category/{id}', [CategoryController::class, 'show']);
 Route::post('/category', [CategoryController::class, 'store']);
 Route::post('/updateCategory', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
-
+Route::get('/category/{id}', [CategoryController::class, 'show']);
 //ingredientMeal
 // Route::get('/ingredientMeal',[IngredientMealController::class, 'index']);
 // Route::post('/ingredientMeal', [IngredientMealController::class, 'store']);
@@ -125,7 +140,7 @@ Route::post('/updateOrderDetail/{orderId}', [OrderController::class, 'updateCust
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 
 Route::apiResource('/allergic', AllergicController::class);
-Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
+
 
 
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);

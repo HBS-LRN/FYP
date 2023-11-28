@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewReservationBrodcast;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Models\User;
@@ -41,10 +42,11 @@ class ReservationController extends Controller
     {
         $data = $request->validated();
 
-
+      
+        broadcast(new NewReservationBrodcast($data))->toOthers();
         //call address repository interface to create data 
-        $reservation = $this->reservationRepositoryInterface->create($data);
-        return response()->json($reservation);
+        $returnReservation = $this->reservationRepositoryInterface->create($data);
+        return response()->json($returnReservation);
     }
 
     /**
@@ -78,7 +80,7 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-       
+
 
         //call reservation repository interface to delete data 
         $this->reservationRepositoryInterface->delete($reservation);

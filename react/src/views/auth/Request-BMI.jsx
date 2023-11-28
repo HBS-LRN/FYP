@@ -68,6 +68,7 @@ export default function RequestBMI() {
         weight: weightRef.current.value,
 
       };
+      console.log(payload)
 
 
       const selectedIngredients = category.map((option) => option.value);
@@ -147,19 +148,6 @@ export default function RequestBMI() {
       setCategory(value);
     }
   };
-
-
-
-  //i want this to loop from the ingredients that i get
-  // const options = [
-  //   { value: 'TO', label: 'Egg' },
-  //   { value: 'CF', label: 'Peanuts' },
-  //   { value: 'NO', label: 'Wheat', selected: true },
-  //   { value: 'FI', label: 'Three nuts', selected: true },
-  //   { value: 'OU', label: 'Shrimp' },
-  //   { value: 'SC', label: 'Scallops' },
-  //   { value: 'AV', label: 'Avocado' },
-  // ];
 
   return (
     <div className="custom-gap">

@@ -217,8 +217,9 @@ label {
         display: inline-block;
         align-items: center;
         border-radius: 20px;
+        padding-top: 50px;
         width: 100%;
-        height: 80vh;
+        height: 100vh;
         padding: 0;
         background: white;
         font-family: 'Poppins', sans-serif;
@@ -226,5 +227,11 @@ label {
         margin-top: 100px;
         padding-bottom:40px;
 
+    }
+    .custom-login-margin{
+        height:200%;
+    }
+    .login-form {
+        padding-top:20px;
     }
 }

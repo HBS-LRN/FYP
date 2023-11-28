@@ -1,4 +1,4 @@
-import { Link, Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client.js";
 import { useEffect, useState } from "react";
@@ -12,16 +12,81 @@ import '../../assets/css/nice-select.css';
 import '../../assets/css/aos.css';
 import '../../assets/css/responsive.css';
 import '../../assets/css/color.css';
-
-
+import Swal from 'sweetalert2';
+import Pusher from 'pusher-js';
 export default function CustomerLayout() {
 
 
     const { user, setUser, setToken, setCartQuantity, cartQuantity } = useStateContext()
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [loading, setLoading] = useState(false);
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const { setWarningNotification } = useNotificationContext();
+    const isActive = (paths) => {
+        const pathArray = Array.isArray(paths) ? paths : [paths];
+        return pathArray.some((path) => location.pathname.startsWith(path)) ? 'active' : '';
+    };
+
+
+    useEffect(() => {
+        var pusher = new Pusher('2124f91a86a5182a0c5d', {
+            cluster: 'ap1'
+        });
+       
+            var channel = pusher.subscribe('login-channel');
+            channel.bind('login-event', function (data) {
+
+
+                console.log(data)
+                console.log(user)
+                //if it is login user id
+                if (data.loginUser.id === user.id) {
+
+                    const payload = {
+                        user_id: user.id
+
+                    };
+                    axiosClient.post('/logout', payload)
+                        .then(() => {
+
+                            let timerInterval;
+                            Swal.fire({
+                                title: "Account Deactivated,System Sign Out Forced.",
+                                html: "You will be redirect to login page in <b></b> milliseconds.",
+                                timer: 4000,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                }
+                            }).then((result) => {
+                                setUser(null);
+                                setToken(null);
+                                setCartQuantity(null);
+                                navigate("/login");
+                                window.location.reload();
+
+                            });
+
+                        });
+                }
+
+
+            });
+        
+    }, [user]);
+    const isHomeActive = () => {
+        // Check if the current path is not in the specified paths
+        return !isActive(['/nutritionMenuCard/', '/categoryMenuCard', '/orderMenuCard/', '/reservationForm', '/about', '/faq', '/contact']) ? 'active' : '';
+    };
     const onLogout = ev => {
         ev.preventDefault();
 
@@ -42,8 +107,14 @@ export default function CustomerLayout() {
 
     //this is to handle item cart
     const handleMenuBtnClick = () => {
-        document.body.classList.add('active');
-        getShoppingCarts();
+
+        if (!user) {
+            setWarningNotification('Login First', 'You Are Required To Login To See Your Cart');
+            navigate('login')
+        } else {
+            document.body.classList.add('active');
+            getShoppingCarts();
+        }
     };
 
     const handleMenuCloseBtnClick = () => {
@@ -221,7 +292,7 @@ export default function CustomerLayout() {
 
                                 </a>
                                 <div class="extras bag">
-                                    <a href="#" class="menu-btn">
+                                    <a href="#" class="menu-btn" onClick={handleMenuBtnClick}>
                                         <i class="fa-solid fa-bag-shopping"></i>
                                     </a>
                                     <div class="bar-menu">
@@ -234,36 +305,34 @@ export default function CustomerLayout() {
                         <div class="col-lg-7">
                             <nav class="navbar">
                                 <ul class="navbar-links">
-                                    <li class="navbar-dropdown active">
+                                    <li className={`navbar-dropdown ${isHomeActive()}`}>
                                         <a href="/">Home</a>
                                     </li>
-                                    <li class="navbar-dropdown">
+                                    <li className={`navbar-dropdown ${isActive(['/nutritionMenuCard/', '/orderMenuCard/', '/categoryMenuCard'])}`}>
                                         <a href="#">Order</a>
                                         <div class="dropdown">
-                                            <a href="#">Healthy Recipe</a>
-                                            <a href="#">Dimsum Recipe</a>
-                                            <a href="#">Appertizer Receipt</a>
-                                            <a href="#">Chicken Receipt</a>
-                                            <a href="#">Noodle Receipt</a>
-                                            <a href="#">Rice Receipt</a>
-                                            <a href="#">Beverage Receipt</a>
+                                            <Link to="/nutritionMenuCard/8">Healthy Recipe</Link>
+                                            <Link to="/orderMenuCard/1">Appertize Recipe</Link>
+                                            <Link to="/orderMenuCard/2">Dimsum Receipt</Link>
+                                            <Link to="/orderMenuCard/3">Noodle Receipt</Link>
+                                            <Link to="/orderMenuCard/4">Rice Receipt</Link>
+                                            <Link to="/orderMenuCard/5">Chicken Receipt</Link>
+                                            <Link to="/orderMenuCard/6">Beverage Receipt</Link>
 
                                         </div>
                                     </li>
-                                    <li class="navbar-dropdown">
-                                        <a href="/reservationForm">Reservation</a>
+                                    <li className={`navbar-dropdown ${isActive('/reservationForm')}`}>
+                                        <Link to="/reservationForm">Reservation</Link>
                                     </li>
 
-                                    <li class="navbar-dropdown">
-                                        <a href="/about">About Us</a>
+                                    <li className={`navbar-dropdown ${isActive('/about')}`}>
+                                        <Link to="/about">About Us</Link>
                                     </li>
-
-                                    <li class="navbar-dropdown">
-                                        <a href="/faq">FAQ</a>
-
+                                    <li className={`navbar-dropdown ${isActive('/faq')}`}>
+                                        <Link to="/faq">FAQ</Link>
                                     </li>
-                                    <li class="navbar-dropdown">
-                                        <a href="/contact">Contacts</a>
+                                    <li className={`navbar-dropdown ${isActive('/contact')}`}>
+                                        <Link to="/contact">Contacts</Link>
                                     </li>
                                 </ul>
                             </nav>
@@ -311,11 +380,11 @@ export default function CustomerLayout() {
                                                 <div className="dropdown-menu dropdown-menu-end">
 
 
-                                                    <a href="/profile" className="dropdown-item">My Profile</a>
+                                                    <Link to="/profile" className="dropdown-item">My Profile</Link>
 
                                                     <a href="/orderStatus" className="dropdown-item">My Purchases</a>
-                                                    <a href="/myReservation" className="dropdown-item">My Reservations</a>
-                                                    <a href="/addresses" className="dropdown-item">My Addresses</a>
+                                                    <Link to="/myReservation" className="dropdown-item">My Reservations</Link>
+                                                    <Link to="/addresses" className="dropdown-item">My Addresses</Link>
 
                                                     <a onClick={onLogout} href="#" className="dropdown-item">Log Out</a>
 
@@ -362,96 +431,63 @@ export default function CustomerLayout() {
                                             </div>
                                         }
 
-                                        <div class="scroll-wrap">
-                                            {!loading && shoppingCarts.map((m) => (
 
-                                                <li class="price-list">
-                                                    <i class="closeButton fa-solid fa-xmark" onClick={ev => onDeleteClick(m)}></i>
-                                                    <div class="counter-container">
-                                                        <div class="counter-food">
-                                                            <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="140"
-                                                                height="121" />
+                                        {!loading && shoppingCarts.map((m) => (
 
-                                                            <h4>{m.meal_name}</h4>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price">
-                                                        <div>
-                                                            <h2>RM {m.meal_price}</h2>
-                                                            <span>Sum</span>
-                                                        </div>
-                                                        <div>
-                                                            <div class="qty-input">
-                                                                <button
-                                                                    className="qty-count qty-count--minus"
-                                                                    data-action="minus"
-                                                                    type="button"
-                                                                    onClick={() => decreaseQuantity(m.pivot.id)}
-                                                                >
-                                                                    -
-                                                                </button>
-                                                                <input
-                                                                    class="product-qty"
-                                                                    type="number"
-                                                                    name="product-qty"
-                                                                    min="0"
-                                                                    value={m.pivot.shopping_cart_qty}
-
-
-                                                                ></input>
-
-
-                                                                <button
-                                                                    className="qty-count qty-count--add"
-                                                                    data-action="add"
-                                                                    type="button"
-                                                                    onClick={() => increaseQuantity(m.pivot.id,1)}
-                                                                >
-                                                                    +
-                                                                </button>
-                                                            </div>
-                                                            <span>Quantity</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-
-                                            {/* <li class="price-list">
-                                                <i class="closeButton fa-solid fa-xmark"></i>
+                                            <li class="price-list">
+                                                <i class="closeButton fa-solid fa-xmark" onClick={ev => onDeleteClick(m)}></i>
                                                 <div class="counter-container">
                                                     <div class="counter-food">
-                                                        <img alt="food" src="../assets/img/order-2.png"></img>
-                                                        <h4>Rice with shrimps and kiwi</h4>
+                                                        <img alt="food-dish" src={`${import.meta.env.VITE_API_BASE_URL}/storage/${m.meal_image}`} width="140"
+                                                            height="121" />
+
+                                                        <h4>{m.meal_name}</h4>
                                                     </div>
-                                                    <h3>RM49</h3>
+                                                    <div class="col-lg-3">
+                                                        <h3>RM{m.meal_price * m.pivot.shopping_cart_qty}</h3>
+                                                    </div>
                                                 </div>
                                                 <div class="price">
-                                                    <div>
-                                                        <h2>RM49</h2>
+                                                    <div class="priceList">
+                                                        <h2>RM {m.meal_price}</h2>
                                                         <span>Sum</span>
                                                     </div>
-                                                    <div>
+                                                    <div class="priceButton">
                                                         <div class="qty-input">
-                                                            <button class="qty-count qty-count--minus" data-action="minus"
-                                                                type="button">-</button>
+                                                            <button
+                                                                className="qty-count qty-count--minus"
+                                                                data-action="minus"
+                                                                type="button"
+                                                                onClick={() => decreaseQuantity(m.pivot.id)}
+                                                            >
+                                                                -
+                                                            </button>
                                                             <input
                                                                 class="product-qty"
                                                                 type="number"
                                                                 name="product-qty"
                                                                 min="0"
-                                                                defaultValue="1" // Use defaultValue instead of value
+                                                                value={m.pivot.shopping_cart_qty}
+
+
                                                             ></input>
-                                                            <button class="qty-count qty-count--add" data-action="add"
-                                                                type="button">+</button>
+
+
+                                                            <button
+                                                                className="qty-count qty-count--add"
+                                                                data-action="add"
+                                                                type="button"
+                                                                onClick={() => increaseQuantity(m.pivot.id, 1)}
+                                                            >
+                                                                +
+                                                            </button>
                                                         </div>
                                                         <span>Quantity</span>
                                                     </div>
                                                 </div>
-                                            </li> */}
-                                        </div>
+                                            </li>
+                                        ))}
+
                                     </ul>
 
                                     {shoppingCarts.length !== 0 &&
@@ -486,37 +522,47 @@ export default function CustomerLayout() {
 
                             <ul>
 
-                                <li><a href="index.html">Home</a>
+                                <li><a href="/">Home</a>
                                 </li>
 
-                                <li><a href="about.html">About Us</a></li>
 
-                                <li class="menu-item-has-children"><a href="#">Restaurants</a>
+
+                                <li class="menu-item-has-children"><a href="#">Order</a>
 
                                     <ul class="sub-menu">
 
-                                        <li><a href="restaurants.html">Restaurants</a></li>
-                                        <li><a href="restaurant-card.html">Restaurant Card</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                    </ul>
 
-                                </li>
-                                <li class="menu-item-has-children"><a href="#">Pages</a>
+                                        <li> <a href="/nutritionMenuCard/8">Healthy Recipe</a></li>
+                                        <li> <a href="/orderMenuCard/1">Appertize Recipe</a></li>
+                                        <li> <a href="/orderMenuCard/2">Dimsum Receipt</a></li>
+                                        <li> <a href="/orderMenuCard/3">Noodle Receipt</a></li>
+                                        <li> <a href="/orderMenuCard/4">Rice Receipt</a></li>
+                                        <li> <a href="/orderMenuCard/5">Chicken Receipt</a></li>
+                                        <li> <a href="/orderMenuCard/6">Beverage Receipt</a></li>
 
-                                    <ul class="sub-menu">
-
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="single-blog.html">Single Blog</a></li>
-                                        <li><a href="services.html">Services</a></li>
-                                        <li><a href="faq.html">FAQ</a></li>
-                                        <li><a href="pricing-table.html">Pricing Table</a></li>
-                                        <li><a href="become-partner.html">Become A Partner</a></li>
-                                        <li><a href="404.html">404</a></li>
                                     </ul>
 
                                 </li>
 
-                                <li><a href="contact.html">contacts</a></li>
+                                <li><a href="/reservationForm">Reservation</a></li>
+                                <li><a href="/about">About Us</a></li>
+                                <li><a href="/faq">FAQ</a></li>
+                                <li><a href="/contact">Contacts</a></li>
+
+                                {user &&
+                                    <>
+                                        <li><a href="/profile" className="dropdown-item">My Profile</a></li>
+                                        <li><a href="/allergic" className="dropdown-item">My Allergies</a></li>
+                                        <li><a href="/orderStatus" className="dropdown-item">My Purchases</a></li>
+                                        <li><a href="/myReservation" className="dropdown-item">My Reservations</a></li>
+                                        <li><a href="/addresses" className="dropdown-item">My Addresses</a></li>
+                                        <li><a href="/myOrder" className="dropdown-item">Real Time Track My Order</a></li>
+                                        <li><a href="/changePassword" className="dropdown-item">Change Password</a></li>
+                                        <li><a href="/userChat" className="dropdown-item">Chat Grand Imperial!</a></li>
+                                        <li><a onClick={onLogout} href="#">Logout</a></li>
+                                    </>
+                                }
+
 
                             </ul>
 
@@ -567,9 +613,9 @@ export default function CustomerLayout() {
                                 <a href="callto:+14253261627"><i class="fa-solid fa-phone"></i>+03-2110 2913</a>
                             </div>
                             <ul class="social-media">
-                                <li><a href="https://www.facebook.com/GrandImperialGroup/"><i class="fa-brands fa-facebook-f"></i></a></li>
-                                <li><a href="https://www.instagram.com/grandimperialgroup/?hl=en"><i class="fa-brands fa-instagram"></i></a></li>
-                                <li><a href="https://web.whatsapp.com/"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><Link to="https://www.facebook.com/GrandImperialGroup/"><i class="fa-brands fa-facebook-f"></i></Link></li>
+                                <li><Link to="https://www.instagram.com/grandimperialgroup/?hl=en"><i class="fa-brands fa-instagram"></i></Link></li>
+                                <li><Link to="https://web.whatsapp.com/"><i class="fa-brands fa-twitter"></i></Link></li>
                             </ul>
                         </div>
                     </div>

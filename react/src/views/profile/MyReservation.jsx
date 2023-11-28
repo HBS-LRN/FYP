@@ -73,20 +73,21 @@ export default function MyReservation() {
                             <CustomerSideBar />
 
 
-                           
-                                <div className="col-lg-8 accountContent">
-                                    {loading ? (
-                                        <div class="text-center">
-                                            <div class="loaderCustom2"></div>
-                                        </div>
-                                    ):(
-                                    
 
-                                  
+                            <div className="col-lg-8 accountContent">
+                                &nbsp;
+                                {loading ? (
+                                    <div class="text-center">
+                                        <div class="loaderCustom2"></div>
+                                    </div>
+                                ) : (
+
+
+
                                     <EventCalendar reservations={reservations} onDeleteReservation={deleteReservation} />
-                                    )}
-                                </div>
-                           
+                                )}
+                            </div>
+
                         </div>
                     </div>
 

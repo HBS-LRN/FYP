@@ -29,7 +29,7 @@ export default function Profile() {
         phone: "",
         gender: "",
         birthdate: "",
-       
+
     });
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function Profile() {
                 ...user,
                 image: null,
             });
-           
+
         } else {
             setUpdateUser(user);
         }
@@ -58,10 +58,10 @@ export default function Profile() {
             // if (payload.image) {
             //     payload.image = payload.image_url;
             // }
-        
+
             if (payload.image === null) {
                 delete payload.image; // Remove the 'image' property if it's null
-              }
+            }
             console.log(payload)
             try {
                 await axiosClient
@@ -145,6 +145,7 @@ export default function Profile() {
                             <div class="col-lg-2 accountContent">
                                 <div class="accountTitle">
                                     <h3 class="profileTitle">My Profile</h3>
+                                 
                                     <p class="subTitle">Manage and protect your account</p>
 
                                 </div>

@@ -52,9 +52,10 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
 
-        return response(new UserResource($user), 201);
+        //call user repository interface to create data 
+        $newUser = $this->userRepositoryInterface->create($data);
+        return response(new UserResource($newUser), 201);
     }
 
     /**
@@ -113,7 +114,7 @@ class UserController extends Controller
     {
         // Check if the user has a gender, height, and weight
         if ($gender && $height && $weight) {
-            // Define calorie calculation formulas based on gender
+            // Define Basal Metabolic Rate calculation formulas based on gender
             $calorie = ($gender === 'Male')
                 ? 66.5 + (13.75 * $weight) + (5.003 * $height) - (6.75 * $this->age($user->birthdate))
                 : 655.1 + (9.563 * $weight) + (1.850 * $height) - (4.676 * $this->age($user->birthdate));
@@ -167,6 +168,16 @@ class UserController extends Controller
         /** @var \App\Models\User $user */
         $user = User::find($id);
         $data = $request->all();
+
+        // Explicitly cast height and weight to float
+        $height = (float) $data['height'];
+        $weight = (float) $data['weight'];
+        $defaultGender = 'Male';
+        // Pass the user's gender, height, and weight to the bmr function
+        $this->calculateBMR($defaultGender, $height, $weight, $user);
+
+        // Pass the user's height and weight to the bmi function
+        $this->calculateBMI($weight, $height, $user);
         $user->update($data);
 
         return new UserResource($user);
@@ -248,13 +259,6 @@ class UserController extends Controller
             return response(new UserResource($user), 201);
         }
     }
-    public function shoppingCart(Request $request, $id)
-    {
-        /** @var \App\Models\User $user */
-        $user = User::find($id);
-        return response($user->meals);
-    }
-
 
     /**
      * Remove the specified resource from storage.
@@ -303,6 +307,13 @@ class UserController extends Controller
         file_put_contents($relativePath, $image);
 
         return $relativePath;
+    }
+    public function deactivatedCustomer()
+    {
+
+        // Retrieve all deactivated user 
+        $deactivateUser = User::where('active_member', 'N')->get();
+        return response()->json($deactivateUser);
     }
 
     public function createCustomer(Request $request)

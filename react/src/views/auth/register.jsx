@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import axiosClient from '../../axios-client.js';
 import { useStateContext } from '../../contexts/ContextProvider.jsx';
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -31,6 +31,8 @@ export default function Register() {
 
 
     const form = event.currentTarget;
+
+    //check client side validity before send it to server
     if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <= 10) {
       const payload = {
         name: nameRef.current.value,
@@ -41,7 +43,9 @@ export default function Register() {
 
       //set loading to true while post to server
       setLoading(true);
+
       try {
+        //after client-side no error, send it to server side
         await axiosClient
           .post("/signup", payload)
           .then(({ data }) => {
@@ -110,7 +114,7 @@ export default function Register() {
                 <div className="login-form">
                   <h3>User Registration</h3>
                   <p>
-                    Has an account? <a href="/login">Login Here</a>
+                    Has an account? <Link to="/login">Login Here</Link>
                   </p>
                 </div>
 

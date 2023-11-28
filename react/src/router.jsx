@@ -1,23 +1,19 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import Users from "./views/Users";
-import ShoppingCart from "./views/shoppingCart";
-import Singup from "./views/SignUp";
 
 
 
 
-import NotFound from "./views/NotFound";
-import GuestLayout from "./components/StaffLayout";
-import AccessProhibited from "./views/accessProhibited";
+
+
+import NotFound from "./views/error/NotFound";
+
 import Index from "./views/Index";
 import CustomerLayout from "./components/CustomerLayout";
-
 import ContactUs from "./views/static/ContactUs";
 import FAQ from "./views/static/FAQ";
 import Service from "./views/static/service";
 import Profile from "./views/profile/Profile";
 import Allergic from "./views/profile/Allergic";
-
 import AllergicForm from "./views/profile/AllergicForm";
 import ChangePassword from "./views/profile/ChangePassword";
 import Dashboard from "./views/profile/Dashboard";
@@ -30,7 +26,6 @@ import ResetPassword from "./views/auth/ResetPassword";
 import Addresses from "./views/address/addresses";
 import AddressForm from "./views/address/addressForm";
 import CheckOut from "./views/shoppingCart/CheckOut";
-
 import MyReservation from "./views/profile/MyReservation";
 import RealTimeOrderTracking from "./views/profile/RealTimeOrderTracking";
 import MyOrder from "./views/profile/MyOrders";
@@ -48,11 +43,9 @@ import StaffReservation from "./views/staff/customer/reservation";
 import AddIngredient from "./views/staff/meal/AddIngredients";
 import UpdateIngredient from "./views/staff/meal/UpdateIngredients"
 import IngredientList from "./views/staff/meal/IngredientsList"
-
 import AddCategory from "./views/staff/meal/AddCategory";
 import UpdateCategory from "./views/staff/meal/UpdateCategory"
 import CategoryList from "./views/staff/meal/CatogoriesList"
-
 import MealDetail from "./views/staff/meal/MealDetail";
 import Deliverylist from "./views/staff/delivery/DeliveryList"
 import RealTimeDeliveryTracking from "./views/staff/delivery/RealTimeDeliveryTrack"
@@ -62,25 +55,22 @@ import AddMeal from "./views/staff/meal/AddMeal";
 import UpdateMeal from "./views/staff/meal/UpdateMeal";
 import FloorPlanMapping from "./views/reservation/FloorPlanMapping";
 import RequestBMI from "./views/auth/Request-BMI";
-import LoginSample from "./views/Login";
 import ReservationForm from "./views/reservation/ReservationForm";
 import CustomersList from "./views/staff/customer/CustomerOrderList";
 import VerifyCustomer from "./views/staff/customer/verifyAccount";
 
 import AddCustomer from "./views/staff/customer/AddCustomer";
 import CompletedDeliveryList from "./views/staff/delivery/CompletedList";
-
-
-
-
-
-import DefaultLayout from "./components/DefaultLayout";
-
-import UserForm from "./views/UserForm";
-import Signup from "./views/SignUp";
 import RatingList from "./views/staff/Rating/ratingList";
 import RatingForm from "./views/staff/Rating/RatingForm";
 import UserChat from "./views/profile/Chat";
+import ActivateCustomer from "./views/staff/customer/DeactivatedCustomer";
+import NonStaff from "./views/error/Non-Staff";
+import NonAdmin from "./views/error/Non-Admin";
+import AdminLayout from "./components/AdminLayout";
+
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -122,11 +112,35 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />
-      },{
+      },
+      {
         path: '/verifyAccount/:id',
         element: <VerifyCustomer/>
       },
+      {
+        path: '/forgetPassword',
+        element: <VerifyEmail />
+      },
+      {
+        path: '/resetPassword',
+        element: <ResetPassword />
+      },
 
+      {
+        path: '/nutritionMenuCard/:id',
+        element: <NuritionMenuCard />
+      },
+      {
+        path: '/orderMenuCard/:id',
+        element: <OrderMenuCard />
+      },
+      {
+        path: '/categoryMenuCard',
+        element: <CategoryMenuCard />
+      },
+
+
+      //protected router, required login from user
       {
         path: '/',
         element: <AuthCustomer />,
@@ -169,87 +183,46 @@ const router = createBrowserRouter([
             path: '/allergicForm',
             element: <AllergicForm />
 
-          }
+          },
+          {
+            path: '/addresses',
+            element: <Addresses />
+          },
+          {
+            path: '/addressForm',
+            element: <AddressForm key="addressCreate" />
+          },
+          {
+            path: '/addressForm/:id',
+            element: <AddressForm key="addressUpdate" />
+          },
+
+          {
+            path: '/checkOut',
+            element: <CheckOut />
+          },
+          {
+            path: '/userChat',
+            element: <UserChat />
+          },
+
         ]
       },
 
 
-      {
-        path: '/forgetPassword',
-        element: <VerifyEmail />
-      },
-      {
-        path: '/resetPassword',
-        element: <ResetPassword />
-      },
-      {
-        path: '/addresses',
-        element: <Addresses />
-      },
-      {
-        path: '/addressForm',
-        element: <AddressForm key="addressCreate" />
-      },
-      {
-        path: '/addressForm/:id',
-        element: <AddressForm key="addressUpdate" />
-      },
-
-      {
-        path: '/checkOut',
-        element: <CheckOut />
-      },
-      {
-        path: '/nutritionMenuCard/:id',
-        element: <NuritionMenuCard />
-      },
-      {
-        path: '/orderMenuCard/:id',
-        element: <OrderMenuCard />
-      },
-      {
-        path: '/categoryMenuCard',
-        element: <CategoryMenuCard />
-      },
-
-      {
-        path: '/userChat',
-        element: <UserChat />
-      },
-
-
-
-
-
-      // {
-      //   path: '/purchaseStatus',
-      //   element: <PurchaseStatus/>
-      // },
-
-      // {
-      //   path: '/users/new',
-      //   element: <UserForm key="userCreate" />
-      // },
-      // {
-      //   path: '/users/:id',
-      //   element: <UserForm key="userUpdate" />
-      // },
-      // {
-      //   path: '/shoppingCart',
-      //   element: <ShoppingCart/>
-      // }
     ]
   },
-  {
-    path: '/realTimeTracking/:id',
-    element: <RealTimeOrderTracking />
 
-  },
   {
     path: '/floorPlanMapping',
     element: <FloorPlanMapping />
 
+  }, {
+    path: '/realTimeTracking/:id',
+    element: <RealTimeOrderTracking />
+
   },
+
   {
     path: '/',
     element: <StaffLayout />,
@@ -279,7 +252,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/updateingredient/:id",
-        element:<UpdateIngredient/>
+        element: <UpdateIngredient />
       },
       {
         path: "ingredientList",
@@ -287,11 +260,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/addcategory",
-        element:<AddCategory/>
+        element: <AddCategory />
       },
       {
         path: "/updatecategory/:id",
-        element:<UpdateCategory/>
+        element: <UpdateCategory />
       },
       {
         path:"/categoryList",
@@ -299,11 +272,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/addcategory",
-        element:<AddCategory/>
+        element: <AddCategory />
       },
       {
         path: "/updatecategory/:id",
-        element:<UpdateCategory/>
+        element: <UpdateCategory />
       },
       {
         path:"/mealList",
@@ -344,7 +317,7 @@ const router = createBrowserRouter([
       {
         path: '/realTimeDeliveryTracking/:id',
         element: <RealTimeDeliveryTracking />
-    
+
       },
       {
         path: '/completedDeliveryList',
@@ -353,7 +326,7 @@ const router = createBrowserRouter([
       {
         path: '/customerList',
         element: <CustomersList />
-    
+
       },
       {
         path: '/ratingList',
@@ -363,6 +336,22 @@ const router = createBrowserRouter([
         path: '/ratingForm/:id',
         element: <RatingForm />
       },
+      {
+        path: '/activateCustomer',
+        element: <ActivateCustomer />
+      },
+      //protected router, required login from user
+      {
+        path: '/',
+        element: <AdminLayout />,
+        children: [
+          {
+            path: '/customerReport',
+            element: <Profile />
+          },
+        ]
+      }
+
     ]
   },
   {
@@ -370,8 +359,8 @@ const router = createBrowserRouter([
     element: <NotFound />
   },
   {
-    path: "/accessProhibited",
-    element: <AccessProhibited />
+    path: "/accessRestricted",
+    element: <NonAdmin />
   },
   {
     path: "/index",
@@ -381,49 +370,13 @@ const router = createBrowserRouter([
     path: "/authRequired",
     element: <RequireAuth />
   },
-
-
-
-  //sample  
-
-
   {
-    path: "/loginSample",
-    element: <LoginSample />
-  },
-
-  {
-    path: "/registerSample",
-    element: <Signup />
+    path: "/accessProhibited",
+    element: <NonStaff />
   },
 
 
-  {
-    path: '/',
-    element: <DefaultLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to="/users" />
-      },
-      {
-        path: '/dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: '/users',
-        element: <Users />
-      },
-      {
-        path: '/users/new',
-        element: <UserForm key="userCreate" />
-      },
-      {
-        path: '/users/:id',
-        element: <UserForm key="userUpdate" />
-      }
-    ]
-  },
+
 
 ])
 export default router;

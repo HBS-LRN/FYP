@@ -21,22 +21,10 @@ export default function DeliveryList() {
     const isDataTableInitialized = useRef(false);
     //react declaration
     const { user, setUser, setNotification } = useStateContext();
-    // useEffect(() => {
-    //     const table = $(tableRef.current).DataTable({
-    //         "paging": true,
-    //         "lengthMenu": [5, 10, 25, 50],
-    //         "info": true,
-    //     });
 
-    //     return () => {
-    //         table.destroy();
-    //     };
-    // }, []);
-    // const tableStyle = {
-    //     borderCollapse: "collapse",
-    //     borderSpacing: 0,
-    //     width: "100%",
-    // };
+
+
+
     const fetchData = async () => {
         try {
             const response = await axiosClient.get('/userDelivery');
@@ -112,7 +100,7 @@ export default function DeliveryList() {
             return (
                 <tr key={delivery.order_id}>
                     <td>{delivery.order_id}</td>
-                    <td>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
+                    <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
                     <td>{delivery.username}</td>
                     <td>{delivery.userphone}</td>
                     <td id={"tooltip-container" + index}>
@@ -135,7 +123,7 @@ export default function DeliveryList() {
 
                 <tr key={delivery.order_id}>
                     <td>{delivery.order_id}</td>
-                    <td>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
+                    <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
                     <td>{delivery.username}</td>
                     <td>{delivery.userphone}</td>
                     <td id={"tooltip-container" + index}>
@@ -189,7 +177,7 @@ export default function DeliveryList() {
                                                     <tr>
 
                                                         <th>Order ID</th>
-                                                        <th>Delivery To</th>
+                                                        <th style={{ whiteSpace: 'pre-line' }}>Delivery To</th>
                                                         <th>Recipient's Name</th>
                                                         <th>Recipient's Phone Number</th>
                                                         <th style={{ width: "120px" }}>Action</th>

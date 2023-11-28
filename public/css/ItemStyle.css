@@ -1,25 +1,27 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap%27');
+
 /* page design */
 section {
     display: flex;
     padding-left: 70px;
 }
 
-    section .priceFilterAndCategories {
-        flex-basis: 35%;
-        padding: 20px 15px;
-    }
+section .priceFilterAndCategories {
+    flex-basis: 35%;
+    padding: 20px 15px;
+}
 
-    section .ItemBlock {
-        flex-basis: 130%;
-    }
+section .ItemBlock {
+    flex-basis: 130%;
+}
 
-    section .priceFilterAndCategories .priceFilter {
-        margin-top: 50px;
-        padding: 20px 30px 50px 30px;
-        border-radius: 20px;
-        box-shadow: 0px 0px 15px grey;
-    }
+section .priceFilterAndCategories .priceFilter {
+    margin-top: 50px;
+    padding: 20px 30px 50px 30px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px grey;
+}
+
 /* burget filter design */
 .priceFilterAndCategories .priceFilter .processBar {
     height: 5px;
@@ -27,81 +29,81 @@ section {
     background-color: rgba(87, 87, 87, 0.534);
 }
 
-    .priceFilterAndCategories .priceFilter .processBar #process {
-        height: 5px;
-        border-radius: 5px;
-        position: relative;
-        margin: 0%;
-        background-color: rgb(46, 11, 139);
-    }
+.priceFilterAndCategories .priceFilter .processBar #process {
+    height: 5px;
+    border-radius: 5px;
+    position: relative;
+    margin: 0%;
+    background-color: rgb(46, 11, 139);
+}
 
-    .priceFilterAndCategories .priceFilter .processBar .inputRange {
-        position: relative;
-    }
+.priceFilterAndCategories .priceFilter .processBar .inputRange {
+    position: relative;
+}
 
-        .priceFilterAndCategories .priceFilter .processBar .inputRange input {
-            height: 5px;
-            width: 100%;
-            top: -7px;
-            background: none;
-            position: absolute;
-            pointer-events: none;
-           
-        }
+.priceFilterAndCategories .priceFilter .processBar .inputRange input {
+    height: 5px;
+    width: 100%;
+    top: -7px;
+    background: none;
+    position: absolute;
+    pointer-events: none;
 
-            .priceFilterAndCategories .priceFilter .processBar .inputRange input[type="range"]::-webkit-slider-thumb {
-                height: 30px;
-                width: 8px;
-                border-radius: 20px;
-                pointer-events: auto;
-                -webkit-appearance: none;
-                background-color: rgb(46, 11, 139);
-            }
+}
 
-            .priceFilterAndCategories .priceFilter .processBar .inputRange input[type="range"]::-moz-range-thumb {
-                height: 30px;
-                width: 8px;
-                border: none;
-                border-radius: 20px;
-                pointer-events: auto;
-                -moz-appearance: none;
-                background-color: rgb(46, 11, 139);
-            }
+.priceFilterAndCategories .priceFilter .processBar .inputRange input[type="range"]::-webkit-slider-thumb {
+    height: 30px;
+    width: 8px;
+    border-radius: 20px;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    background-color: rgb(46, 11, 139);
+}
+
+.priceFilterAndCategories .priceFilter .processBar .inputRange input[type="range"]::-moz-range-thumb {
+    height: 30px;
+    width: 8px;
+    border: none;
+    border-radius: 20px;
+    pointer-events: auto;
+    -moz-appearance: none;
+    background-color: rgb(46, 11, 139);
+}
 
 section .priceFilterAndCategories .priceFilter .price {
     padding-top: 20px;
 }
 
-    section .priceFilterAndCategories .priceFilter .price .TotalBudget {
-        color: gray;
-        flex-basis: 80%;
-        margin-bottom: 20px;
-    }
+section .priceFilterAndCategories .priceFilter .price .TotalBudget {
+    color: gray;
+    flex-basis: 80%;
+    margin-bottom: 20px;
+}
 
-        section .priceFilterAndCategories .priceFilter .price .TotalBudget span {
-            color: black;
-        }
+section .priceFilterAndCategories .priceFilter .price .TotalBudget span {
+    color: black;
+}
 
-    section .priceFilterAndCategories .priceFilter .price .filterButton {
-        flex-basis: 20%;
-        float: right;
-    }
+section .priceFilterAndCategories .priceFilter .price .filterButton {
+    flex-basis: 20%;
+    float: right;
+}
 
-        section .priceFilterAndCategories .priceFilter .price .filterButton .button {
-            color: white;
-            background-color: #95adbe;
-            border: none;
-            margin: 10px 0px;
-            font-size: 15px;
-            font-weight: bolder;
-            padding: 7px 20px;
-            border-radius: 10px;
-        }
+section .priceFilterAndCategories .priceFilter .price .filterButton .button {
+    color: white;
+    background-color: #95adbe;
+    border: none;
+    margin: 10px 0px;
+    font-size: 15px;
+    font-weight: bolder;
+    padding: 7px 20px;
+    border-radius: 10px;
+}
 
-            section .priceFilterAndCategories .priceFilter .price .filterButton .button:hover {
-                background-color: rgb(136, 136, 136);
-                box-shadow: 0px 0px 6px rgb(136, 136, 136);
-            }
+section .priceFilterAndCategories .priceFilter .price .filterButton .button:hover {
+    background-color: rgb(136, 136, 136);
+    box-shadow: 0px 0px 6px rgb(136, 136, 136);
+}
 
 header .linkBar {
     padding-left: 480px;
@@ -112,11 +114,11 @@ form header .linkBar .a {
     color: black;
 }
 
-    form header .linkBar .a .fa-arrow-left {
-        background-color: rgb(230, 228, 228);
-        padding: 10px;
-        border-radius: 10px;
-    }
+form header .linkBar .a .fa-arrow-left {
+    background-color: rgb(230, 228, 228);
+    padding: 10px;
+    border-radius: 10px;
+}
 
 form header .linkBar .pagelink {
     color: grey;
@@ -125,9 +127,10 @@ form header .linkBar .pagelink {
     font-size: 17px;
 }
 
-    form header .linkBar .pagelink:last-child {
-        color: black;
-    }
+form header .linkBar .pagelink:last-child {
+    color: black;
+}
+
 /* Categories list Design */
 .categories {
     box-shadow: 0px 0px 15px rgb(218, 218, 218);
@@ -139,76 +142,77 @@ form header .linkBar .pagelink {
     font-family: 'Cormorant SC', serif;
 }
 
-    .categories .ul {
-        list-style: none;
-        padding: 10px;
-        width: 280px;
-        height: 480px;
-        font-family: 'Nunito Sans', sans-serif;
-        /* font-family: 'Poppins', sans-serif; */
-        overflow-y: auto;
-        height: 400px;
-    }
+.categories .ul {
+    list-style: none;
+    padding: 10px;
+    width: 280px;
+    height: 480px;
+    font-family: 'Nunito Sans', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
+    overflow-y: auto;
+    height: 400px;
+}
 
-        .categories .ul::-webkit-scrollbar {
-            -webkit-appearance: none;
-        }
+.categories .ul::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
 
-        .categories .ul .li .span {
-            display: flex;
-            text-decoration: none;
-            color: rgb(68, 67, 67);
-            align-items: center;
-            font-size: 18px;
-        }
+.categories .ul .li .span {
+    display: flex;
+    text-decoration: none;
+    color: rgb(68, 67, 67);
+    align-items: center;
+    font-size: 18px;
+}
 
-            .categories .ul .li .span .img {
-                margin-right: 10px;
-            }
+.categories .ul .li .span .img {
+    margin-right: 10px;
+}
 
-        .categories .ul .li a{
-            font-family: 'Nunito Sans', sans-serif;
+.categories .ul .li a {
+    font-family: 'Nunito Sans', sans-serif;
 
-            padding-bottom: 10px;
-            display: flex;
-            font-size: 18px;
-            padding: 10px 20px;
-            align-items: center;
-            text-decoration: none;
-            color: black;
-        }
+    padding-bottom: 10px;
+    display: flex;
+    font-size: 18px;
+    padding: 10px 20px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
 
-            .categories .ul .li:hover {
-                box-shadow: 0px 0px 20px grey;
-                border-radius: 10px;
-                background-color: rgb(245, 247, 247);
-            }
+.categories .ul .li:hover {
+    box-shadow: 0px 0px 20px grey;
+    border-radius: 10px;
+    background-color: rgb(245, 247, 247);
+}
 
-                .categories .ul .li:hover .ul {
-                    display: initial;
-                }
+.categories .ul .li:hover .ul {
+    display: initial;
+}
 
-        .categories .ul .ul {
-            padding-bottom: 10px;
-            padding-left: 30px;
-            display: none;
-        }
+.categories .ul .ul {
+    padding-bottom: 10px;
+    padding-left: 30px;
+    display: none;
+}
 
-            .categories .ul .ul li {
-                border-radius: 15px;
-                padding-bottom: 5px;
-                padding: 10px 20px;
-                font-size: 15px;
-            }
+.categories .ul .ul li {
+    border-radius: 15px;
+    padding-bottom: 5px;
+    padding: 10px 20px;
+    font-size: 15px;
+}
 
-                .categories .ul .ul li:hover {
-                    background-color: rgb(212, 212, 212);
-                }
+.categories .ul .ul li:hover {
+    background-color: rgb(212, 212, 212);
+}
 
-                .categories .ul .ul li a {
-                   
-                    /* color: rgb(103, 129, 123); */
-                }
+.categories .ul .ul li a {
+
+    /* color: rgb(103, 129, 123); */
+}
+
 /* Design Item Block */
 .ItemBlock .sortBar {
     float: right;
@@ -216,13 +220,14 @@ form header .linkBar .pagelink {
     padding-right: 200px;
 }
 
-    .ItemBlock .sortBar select {
-        outline: none;
-        border: none;
-        font-size: 18px;
-        border-bottom: 1px gray solid;
-        padding-bottom: 6px;
-    }
+.ItemBlock .sortBar select {
+    outline: none;
+    border: none;
+    font-size: 18px;
+    border-bottom: 1px gray solid;
+    padding-bottom: 6px;
+}
+
 /* Item bar design */
 .itemBar::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -241,46 +246,46 @@ form header .linkBar .pagelink {
     margin-bottom: 100px;
 }
 
-    .itemBar .item {
-        float: left;
-        padding: 15px;
-        border-radius: 20px;
-        margin-bottom: 50px;
-        width: 270px;
-        /* box-shadow: 0px 0px 10px rgb(168, 167, 167); */
-        margin-left: 30px;
-        box-shadow: 0px 0px 15px rgb(218, 218, 218);
-    }
+.itemBar .item {
+    float: left;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    width: 270px;
+    /* box-shadow: 0px 0px 10px rgb(168, 167, 167); */
+    margin-left: 30px;
+    box-shadow: 0px 0px 15px rgb(218, 218, 218);
+}
 
-        .itemBar .item a {
-            text-align: center;
-            text-decoration: none;
-            color: rgb(0, 0, 0);
-        }
+.itemBar .item a {
+    text-align: center;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
 
-            .itemBar .item a .price {
-                color: goldenrod;
-                font-size: 25px;
-                font-weight: bolder;
-                text-align: center;
-            }
+.itemBar .item a .price {
+    color: goldenrod;
+    font-size: 25px;
+    font-weight: bolder;
+    text-align: center;
+}
 
-            .itemBar .item a img {
-                width: 270px;
-                height: 270px;
-                border-radius: 20px;
-            }
+.itemBar .item a img {
+    width: 270px;
+    height: 270px;
+    border-radius: 20px;
+}
 
-        .itemBar .item .itemDetail {
-            margin: 10px 0px 0px 0px;
-            float: left;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            white-space: nowrap;
-            width: 270px;
-            padding: 5px;
-            text-overflow: ellipsis;
-        }
+.itemBar .item .itemDetail {
+    margin: 10px 0px 0px 0px;
+    float: left;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    white-space: nowrap;
+    width: 270px;
+    padding: 5px;
+    text-overflow: ellipsis;
+}
 
 .ItemBlock .sortBar {
     float: right;
@@ -288,13 +293,13 @@ form header .linkBar .pagelink {
     padding-right: 200px;
 }
 
-    .ItemBlock .sortBar select {
-        outline: none;
-        border: none;
-        font-size: 18px;
-        border-bottom: 1px gray solid;
-        padding-bottom: 6px;
-    }
+.ItemBlock .sortBar select {
+    outline: none;
+    border: none;
+    font-size: 18px;
+    border-bottom: 1px gray solid;
+    padding-bottom: 6px;
+}
 
 /* Item category bar design */
 .itemCategoryBar::-webkit-scrollbar {
@@ -313,45 +318,46 @@ form header .linkBar .pagelink {
     margin-bottom: 100px;
 }
 
-    .itemCategoryBar .item {
-        float: left;
-        padding: 15px;
-        border-radius: 20px;
-        margin-bottom: 50px;
-        width: 250px;
-        box-shadow: 0px 0px 10px rgb(221, 221, 221);
-        margin-left: 40px;
-    }
+.itemCategoryBar .item {
+    float: left;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    width: 250px;
+    box-shadow: 0px 0px 10px rgb(221, 221, 221);
+    margin-left: 40px;
+}
 
-        .itemCategoryBar .item a {
-            text-align: center;
-            text-decoration: none;
-            color: rgb(0, 0, 0);
-        }
+.itemCategoryBar .item a {
+    text-align: center;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
 
-            .itemCategoryBar .item a .price {
-                color: #b14436;
-                font-size: 40px;
-                font-weight: bolder;
-                text-align: center;
-            }
+.itemCategoryBar .item a .price {
+    color: #b14436;
+    font-size: 40px;
+    font-weight: bolder;
+    text-align: center;
+}
 
-            .itemCategoryBar .item a img {
-                width: 250px;
-                height: 250px;
-                border-radius: 20px;
-            }
+.itemCategoryBar .item a img {
+    width: 250px;
+    height: 250px;
+    border-radius: 20px;
+}
 
-        .itemCategoryBar .item .itemDetail {
-            margin: 20px 0% 0px 0px;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            white-space: nowrap;
-            width: 250px;
-            padding: 5px;
-            text-overflow: ellipsis;
-        }
+.itemCategoryBar .item .itemDetail {
+    margin: 20px 0% 0px 0px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    white-space: nowrap;
+    width: 250px;
+    padding: 5px;
+    text-overflow: ellipsis;
+}
+
 /* slide pop up window */
 .popup {
     position: absolute;
@@ -389,25 +395,25 @@ form header .linkBar .pagelink {
     transform: translateX(100%);
 }
 
-    .main-popup .popup-content .imgbox {
-        padding-top: 0px;
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
+.main-popup .popup-content .imgbox {
+    padding-top: 0px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
 
-        .main-popup .popup-content .imgbox .img {
-            width: 375px;
-            height: 220px;
-            border-radius: 30px;
-        }
+.main-popup .popup-content .imgbox .img {
+    width: 375px;
+    height: 220px;
+    border-radius: 30px;
+}
 
-    .main-popup .popup-content .detail .foodName {
-        font-family: 'Poppins', sans-serif;
-        text-align: center;
-        font-size: 25px;
-        margin: 10px 0px 10px 0%;
-    }
+.main-popup .popup-content .detail .foodName {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 25px;
+    margin: 10px 0px 10px 0%;
+}
 
 .close-btn {
     border-radius: 10px;
@@ -422,9 +428,9 @@ form header .linkBar .pagelink {
     transition: .5s ease all;
 }
 
-    .close-btn:hover {
-        background: white;
-    }
+.close-btn:hover {
+    background: white;
+}
 
 .popup-content p {
     font-size: 1.5rem;
@@ -450,6 +456,7 @@ form header .linkBar .pagelink {
         transform: translateX(100%);
     }
 }
+
 /* pop up qty selection design */
 .main-popup .popup-content .qtySelection {
     padding: 10px 0px;
@@ -461,29 +468,30 @@ form header .linkBar .pagelink {
     margin: 10px 0px 20px 0px;
 }
 
-    .main-popup .popup-content .qtySelection .label {
-        font-family: 'Poppins', sans-serif;
-        padding-right: 30px;
-        flex-basis: 20%;
-        text-align: right;
-    }
+.main-popup .popup-content .qtySelection .label {
+    font-family: 'Poppins', sans-serif;
+    padding-right: 30px;
+    flex-basis: 20%;
+    text-align: right;
+}
 
-    .main-popup .popup-content .qtySelection #qty {
-        font-family: 'Poppins', sans-serif;
-        text-align: center;
-        border: none;
-        background: none;
-        display: flex;
-        align-content: center;
-        justify-content: center;
-        outline: none;
-        width: 20%;
-        flex-basis: 10%;
-        align-items: center;
-        float: left;
-    }
+.main-popup .popup-content .qtySelection #qty {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    border: none;
+    background: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    outline: none;
+    width: 20%;
+    flex-basis: 10%;
+    align-items: center;
+    float: left;
+}
 
-.qtySelection #qty::-webkit-inner-spin-button, .qtySelection #qty::-webkit-outer-spin-button {
+.qtySelection #qty::-webkit-inner-spin-button,
+.qtySelection #qty::-webkit-outer-spin-button {
     -webkit-appearance: none;
 }
 
@@ -495,9 +503,9 @@ form header .linkBar .pagelink {
     border-radius: 10px;
 }
 
-    .main-popup .popup-content .qtySelection .fas:hover {
-        background-color: gold;
-    }
+.main-popup .popup-content .qtySelection .fas:hover {
+    background-color: gold;
+}
 
 .main-popup .popup-content .price {
     display: flex;
@@ -509,10 +517,10 @@ form header .linkBar .pagelink {
     font-weight: bold;
 }
 
-    .main-popup .popup-content .price .label {
-        flex-basis: 50%;
-        text-align: right;
-    }
+.main-popup .popup-content .price .label {
+    flex-basis: 50%;
+    text-align: right;
+}
 
 .main-popup .popup-content #price {
     background: none;
@@ -523,36 +531,37 @@ form header .linkBar .pagelink {
     width: 25%;
     color: rgb(227, 202, 43);
 }
+
 /* additional List Design */
 .main-popup .popup-content .additionalList {
     font-family: 'Poppins', sans-serif;
 }
 
-    .main-popup .popup-content .additionalList .flex {
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        height: 60px;
-    }
+.main-popup .popup-content .additionalList .flex {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 60px;
+}
 
-        .main-popup .popup-content .additionalList .flex .label {
-            flex-basis: 20%;
-            font-weight: bolder;
-        }
+.main-popup .popup-content .additionalList .flex .label {
+    flex-basis: 20%;
+    font-weight: bolder;
+}
 
-        .main-popup .popup-content .additionalList .flex #size {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-basis: 1%;
-        }
+.main-popup .popup-content .additionalList .flex #size {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 1%;
+}
 
-        .main-popup .popup-content .additionalList .flex .fSizeD {
-            line-height: 0.7cm;
-            word-break: break-all;
-            flex-basis: 40%;
-            font-size: 16px;
-        }
+.main-popup .popup-content .additionalList .flex .fSizeD {
+    line-height: 0.7cm;
+    word-break: break-all;
+    flex-basis: 40%;
+    font-size: 16px;
+}
 
 .main-popup .popup-content .submitBtnBox {
     display: flex;
@@ -562,21 +571,21 @@ form header .linkBar .pagelink {
     justify-content: center;
 }
 
-    .main-popup .popup-content .submitBtnBox .submitBtn {
-        border: 1px solid grey;
-        border-radius: 10px;
-        padding: 5px 155px;
-        font-size: 20px;
-        font-weight: bolder;
-        color: white;
-        background-color: rgb(255, 86, 86);
-        border: 1px solid white;
-        /* background-image: linear-gradient(to left,gold,rgb(188, 155, 44),rgb(168, 141, 54)); */
-    }
+.main-popup .popup-content .submitBtnBox .submitBtn {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 5px 155px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: white;
+    background-color: rgb(255, 86, 86);
+    border: 1px solid white;
+    /* background-image: linear-gradient(to left,gold,rgb(188, 155, 44),rgb(168, 141, 54)); */
+}
 
-        .main-popup .popup-content .submitBtnBox .submitBtn:hover {
-            background-color: rgb(250, 60, 60);
-        }
+.main-popup .popup-content .submitBtnBox .submitBtn:hover {
+    background-color: rgb(250, 60, 60);
+}
 
 .categories .ul {
     list-style: none;
@@ -588,22 +597,24 @@ form header .linkBar .pagelink {
     height: 400px;
 }
 
-    .categories .ul .li {
-        font-family: 'Nunito Sans', sans-serif;
-        padding-bottom: 10px;
-        font-size: 18px;
-        padding: 10px 20px;
-    }
+.categories .ul .li {
+    font-family: 'Nunito Sans', sans-serif;
+    padding-bottom: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+}
 
-        .categories .ul .li .span {
-            display: flex;
-            text-decoration: none;
-            color: rgb(68, 67, 67);
-            align-items: center;
-            font-size: 15px;
-        }
+.categories .ul .li .span {
+    display: flex;
+    text-decoration: none;
+    color: rgb(68, 67, 67);
+    align-items: center;
+    font-size: 15px;
+}
+
 /* review box design */
-.additionalList .fa-angle-up, .additionalList .fa-angle-down {
+.additionalList .fa-angle-up,
+.additionalList .fa-angle-down {
     display: flex;
     justify-content: center;
     justify-items: center;
@@ -616,10 +627,11 @@ form header .linkBar .pagelink {
     display: none;
 }
 
-    .additionalList .fa-angle-up:hover, .additionalList .fa-angle-down:hover {
-        cursor: pointer;
-        color: aliceblue;
-    }
+.additionalList .fa-angle-up:hover,
+.additionalList .fa-angle-down:hover {
+    cursor: pointer;
+    color: aliceblue;
+}
 
 .reviewsBar .RankNav {
     width: 440px;
@@ -653,29 +665,29 @@ form header .linkBar .pagelink {
     margin-bottom: 10px;
 }
 
-    .reviewsBar .overallReview .reviewPercent {
-        flex-basis: 60%;
-        display: flex;
-        align-items: center;
-    }
+.reviewsBar .overallReview .reviewPercent {
+    flex-basis: 60%;
+    display: flex;
+    align-items: center;
+}
 
-        .reviewsBar .overallReview .reviewPercent .percentCount {
-            font-weight: bolder;
-            font-size: 18px;
-            color: black;
-        }
+.reviewsBar .overallReview .reviewPercent .percentCount {
+    font-weight: bolder;
+    font-size: 18px;
+    color: black;
+}
 
-    .reviewsBar .overallReview .totalReview {
-        flex-basis: 40%;
-        text-align: right;
-    }
+.reviewsBar .overallReview .totalReview {
+    flex-basis: 40%;
+    text-align: right;
+}
 
 .reviewsBar .RankNav .rankButton:hover {
     box-shadow: 0px 0px 5px rgb(231, 210, 16);
     cursor: pointer;
 }
 
-.reviewsBar .RankNav > .rankButton {
+.reviewsBar .RankNav>.rankButton {
     float: left;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 15px;
@@ -688,9 +700,10 @@ form header .linkBar .pagelink {
     text-align: center;
 }
 
-    .reviewsBar .RankNav > .rankButton:nth-child(1) p {
-        margin-top: 0%;
-    }
+.reviewsBar .RankNav>.rankButton:nth-child(1) p {
+    margin-top: 0%;
+}
+
 /* .reviewsBar .rank5{
     display: block;
 } */
@@ -718,131 +731,133 @@ form header .linkBar .pagelink {
     z-index: 3;
 }
 
-    .additionalList .reviewsBar .rank .customerReview {
-        max-width: 385px;
-    }
+.additionalList .reviewsBar .rank .customerReview {
+    max-width: 385px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .reviewRange {
-            margin: 0px 0px;
-        }
+.additionalList .reviewsBar .rank .customerReview .reviewRange {
+    margin: 0px 0px;
+}
 
-            .additionalList .reviewsBar .rank .customerReview .reviewRange .fa-star {
-                color: rgb(224, 193, 13);
-                font-size: 10px;
-            }
+.additionalList .reviewsBar .rank .customerReview .reviewRange .fa-star {
+    color: rgb(224, 193, 13);
+    font-size: 10px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .people {
-            color: rgb(145, 145, 145);
-            margin: 0%;
-        }
+.additionalList .reviewsBar .rank .customerReview .people {
+    color: rgb(145, 145, 145);
+    margin: 0%;
+}
 
-            .additionalList .reviewsBar .rank .customerReview .people .userName {
-                font-size: 13px;
-            }
+.additionalList .reviewsBar .rank .customerReview .people .userName {
+    font-size: 13px;
+}
 
-    .additionalList .reviewsBar .rank div {
-        margin-top: 10px;
-        font-size: 15px;
-    }
+.additionalList .reviewsBar .rank div {
+    margin-top: 10px;
+    font-size: 15px;
+}
 
-    .additionalList .reviewsBar .rank .comments {
-        margin-top: 10px;
-        display: inline-block;
-    }
+.additionalList .reviewsBar .rank .comments {
+    margin-top: 10px;
+    display: inline-block;
+}
 
-        .additionalList .reviewsBar .rank .comments div {
-            float: left;
-            font-size: 20px;
-            margin-right: 10px;
-        }
+.additionalList .reviewsBar .rank .comments div {
+    float: left;
+    font-size: 20px;
+    margin-right: 10px;
+}
 
-            .additionalList .reviewsBar .rank .comments div span {
-                color: gray;
-                margin-left: 10px;
-            }
+.additionalList .reviewsBar .rank .comments div span {
+    color: gray;
+    margin-left: 10px;
+}
 
-        .additionalList .reviewsBar .rank .comments .likeComment .fa-thumbs-up, .additionalList .reviewsBar .rank .comments .likeComment .qtyLike {
-            font-size: 15px;
-            color: grey;
-        }
+.additionalList .reviewsBar .rank .comments .likeComment .fa-thumbs-up,
+.additionalList .reviewsBar .rank .comments .likeComment .qtyLike {
+    font-size: 15px;
+    color: grey;
+}
 
-        .additionalList .reviewsBar .rank .comments div i:hover {
-            cursor: pointer;
-        }
+.additionalList .reviewsBar .rank .comments div i:hover {
+    cursor: pointer;
+}
 
-    .additionalList .reviewsBar .rank .customerReview {
-        border-bottom: 1px solid gray;
-        width: 750px;
-        padding-left: 20px;
-        padding-bottom: 0px;
-    }
+.additionalList .reviewsBar .rank .customerReview {
+    border-bottom: 1px solid gray;
+    width: 750px;
+    padding-left: 20px;
+    padding-bottom: 0px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .userCommentTop {
-            display: flex;
-            height: 45px;
-        }
+.additionalList .reviewsBar .rank .customerReview .userCommentTop {
+    display: flex;
+    height: 45px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .content {
-            margin-left: 20%;
-            font-family: 'Poppins', sans-serif;
-            margin-top: 0%;
-            font-size: 15px;
-        }
+.additionalList .reviewsBar .rank .customerReview .content {
+    margin-left: 20%;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 0%;
+    font-size: 15px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .comments {
-            margin-left: 20%;
-            margin-top: 0;
-        }
+.additionalList .reviewsBar .rank .customerReview .comments {
+    margin-left: 20%;
+    margin-top: 0;
+}
 
-            .additionalList .reviewsBar .rank .customerReview .comments .arrow, .additionalList .reviewsBar .rank .customerReview .comments .span,
-            .additionalList .reviewsBar .rank .customerReview .comments .qtyComment {
-                font-size: 15px;
-            }
+.additionalList .reviewsBar .rank .customerReview .comments .arrow,
+.additionalList .reviewsBar .rank .customerReview .comments .span,
+.additionalList .reviewsBar .rank .customerReview .comments .qtyComment {
+    font-size: 15px;
+}
 
-            .additionalList .reviewsBar .rank .customerReview .comments .commentdisplayBox {
-                margin: 10px 0px;
-            }
+.additionalList .reviewsBar .rank .customerReview .comments .commentdisplayBox {
+    margin: 10px 0px;
+}
 
-                .additionalList .reviewsBar .rank .customerReview .comments .commentdisplayBox .adminComment {
-                    font-size: 15px;
-                }
+.additionalList .reviewsBar .rank .customerReview .comments .commentdisplayBox .adminComment {
+    font-size: 15px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .userCommentTop .userImage .img {
-            border-radius: 100%;
-            width: 50px;
-            height: 50px;
-        }
+.additionalList .reviewsBar .rank .customerReview .userCommentTop .userImage .img {
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .userCommentTop .userImage {
-            flex-basis: 20%;
-        }
+.additionalList .reviewsBar .rank .customerReview .userCommentTop .userImage {
+    flex-basis: 20%;
+}
 
-        .additionalList .reviewsBar .rank .customerReview .userCommentTop .nameAndRank {
-            flex: 70%;
-            margin: 0%;
-        }
+.additionalList .reviewsBar .rank .customerReview .userCommentTop .nameAndRank {
+    flex: 70%;
+    margin: 0%;
+}
 
-        .categories .ul {
-            list-style: none;
-            padding: 10px;
-            width: 280px;
-            height: 480px;
-            font-family: 'Nunito Sans', sans-serif;
-            overflow-y: auto;
-            height: 400px;
-        }
+.categories .ul {
+    list-style: none;
+    padding: 10px;
+    width: 280px;
+    height: 480px;
+    font-family: 'Nunito Sans', sans-serif;
+    overflow-y: auto;
+    height: 400px;
+}
 
-        .categories .ul .li {
-            font-family: 'Nunito Sans', sans-serif;
-            padding-bottom: 10px;
-            font-size: 18px;
-            padding: 10px 20px;
-        }
+.categories .ul .li {
+    font-family: 'Nunito Sans', sans-serif;
+    padding-bottom: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+}
 
-        .categories .ul .li .span {
-            display: flex;
-            text-decoration: none;
-            color: rgb(68, 67, 67);
-            align-items: center;
-            font-size: 15px;
-        }
+.categories .ul .li .span {
+    display: flex;
+    text-decoration: none;
+    color: rgb(68, 67, 67);
+    align-items: center;
+    font-size: 15px;
+}

@@ -5,6 +5,8 @@ import { createRef, useEffect, useState, useRef } from "react";
 import { Helmet } from 'react-helmet';
 import { useDropzone } from 'react-dropzone';
 import React from 'react';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
 
 
@@ -15,6 +17,8 @@ export default function UserChat() {
 
 
 
+
+
     //react declaration
     const chatContainerRef = useRef();
     const { user, setUser, setNotification } = useStateContext();
@@ -22,7 +26,7 @@ export default function UserChat() {
     const [chats, setChats] = useState([]);
     const [error, setError] = useState({});
     const [enlargedImage, setEnlargedImage] = useState(null);
-
+    const [amountNewChat, setAmountNewChat] = useState(0);
     const [loading, setLoading] = useState(false);
     const [chat, setChat] = useState({
         id: null,
@@ -31,22 +35,113 @@ export default function UserChat() {
     });
 
 
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    };
+    scrollToBottom();
+    // Scroll to the bottom of the chat container when component mounts
+    useEffect(() => {
+        scrollToBottom();
+    }, [chats]);
+    useEffect(() => {
+        var pusher = new Pusher('2124f91a86a5182a0c5d', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('chat-channel');
+        channel.bind('chat-event', function (data) {
+
+            console.log(data.message)
+            //if it is admin id
+            if (data.message.user_id === user.id || data.message.admin_id === user.id) {
+                setChats((prevChats) => [...prevChats, data.message]);
+
+            }
+
+            if (data.message.admin_id === user.id) {
+                getCustomerChats();
+            }
+            scrollToBottom();
+        });
+    }, []);
+
     //fetch user address data
     useEffect(() => {
         getChats();
-    }, [])
+        getCustomerChats();
+    }, []);
+
+    const handleBackgroundClick = async () => {
+
+
+        setAmountNewChat(0);
+        const payload = {
+
+            user_id: user.id
+        };
+        try {
+            await axiosClient.post(`/customerSeen`, payload
+            ).then((response) => {
+                console.log(response.data)
+
+            });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+            if (response && response.status === 422) {
+                setError(response.data.errors);
+            }
+        }
+    };
+    const getCustomerChats = async () => {
+
+        console.log("getting")
+
+        try {
+
+            const response = await axiosClient.get(`/customerChat/${user.id}`);
+            console.log(response.data);
+
+
+
+            setAmountNewChat(response.data);
+
+
+
+
+
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+
+        }
+    }
 
     const getChats = async () => {
 
         console.log("getting")
         setLoading(true)
         try {
-            await axiosClient.get(`/chat/${user.id}`)
-                .then(({ data }) => {
-                    console.log(data)
-                    setLoading(false)
-                    setChats(data)
-                });
+
+            const response = await axiosClient.get(`/chat/${user.id}`);
+            console.log(response.data);
+
+            if (Array.isArray(response.data)) {
+                // Filter the data based on conditions
+
+                const filteredChats = response.data.filter(
+                    (chat) => chat.user_id === user.id || chat.admin_id === user.id
+                );
+
+                console.log(filteredChats);
+                setChats(filteredChats);
+
+                setLoading(false); // Assuming this is how you intended to complete the function
+
+
+            }
         } catch (error) {
             const response = error.response;
             console.log(response);
@@ -73,7 +168,10 @@ export default function UserChat() {
             formData.append('date', formattedDate);
             formData.append('time', formattedTime);
 
+       
+
             if (chat.image) {
+                console.log(chat.image)
                 formData.append('image', chat.image);
             }
 
@@ -86,7 +184,7 @@ export default function UserChat() {
 
                     console.log(response.data)
 
-                    setChats(prevChats => [...prevChats, response.data]);
+
                     setChat({
                         id: null,
                         image: "",
@@ -146,7 +244,7 @@ export default function UserChat() {
 
                     <div class="customerAccHeader">
                         <div class="customerAccBar"></div>
-                        <span class="customerAcc">My Profile</span>
+                        <span class="customerAcc">Chat</span>
                     </div>
 
                     <div class="container custom-auth-gap" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
@@ -167,8 +265,9 @@ export default function UserChat() {
                                                     <div class="flex-1">
                                                         <h5 class="font-size-15 mb-1">{user && user.name}</h5>
                                                         <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active</p>
-                                                    </div>
 
+                                                    </div>
+                                                  
 
                                                 </div>
                                             </div>
@@ -178,7 +277,7 @@ export default function UserChat() {
                                                 <div class="tab-pane show active" id="chat">
                                                     <div>
 
-                                                        <ul class="list-unstyled chat-list" data-simplebar style={{ maxHeight: "345px" }}>
+                                                        <ul class="list-unstyled chat-list chatcustom" style={{ maxHeight: "345px" }}>
                                                             <li class="active">
                                                                 <a href="#">
                                                                     <div class="d-flex">
@@ -192,19 +291,14 @@ export default function UserChat() {
                                                                             <h5 class="text-truncate font-size-14 mb-1">Grands Imperial Group</h5>
                                                                             <p class="text-truncate mb-0">Hey! message us if you have any queries</p>
                                                                         </div>
+                                                                     
 
+                                                                        {amountNewChat > 0 &&
+                                                                            < div class="font-size-11"><b>{amountNewChat}</b> New Chats!</div>
+                                                                        }
                                                                     </div>
                                                                 </a>
                                                             </li>
-
-
-
-
-
-
-
-
-
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -215,7 +309,7 @@ export default function UserChat() {
                                             <div class="p-3 px-lg-4 user-chat-border">
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 col-center">
-                                                      
+
                                                         <img src="../assets/img/GrandImperialGroupLogo.png" class="rounded-circle avatar-xs" alt="avatar-2" width="135" hegith="135" />
                                                         <h5 class="font-size-15 mb-1 text-truncate">Grands Imperial</h5>
 
@@ -232,39 +326,42 @@ export default function UserChat() {
                                                         </div>
                                                     }
                                                     {!loading &&
-                                                        <ul ref={chatContainerRef} class="list-unstyled mb-0 pe-3 chatcustom" style={{ maxHeight: "450px" }}>
+                                                        <ul ref={chatContainerRef} class="list-unstyled mb-0 pe-3 chatcustom"  onClick={() => handleBackgroundClick()}  style={{ maxHeight: "450px" }}>
 
 
 
-                                                            <li>
-                                                                <div class="conversation-list">
-                                                                    <div class="chat-avatar">
-                                                                        <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
-                                                                    </div>
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="conversation-name">Grand Imperial Groups</div>
-                                                                        <div class="ctext-wrap-content">
-                                                                            <p class="mb-0">Hey What's I Can Help You?</p>
+                                                            {user.id !== 1 &&
+                                                                <>
+                                                                    <li>
+                                                                        <div class="conversation-list">
+                                                                            <div class="chat-avatar">
+                                                                                <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
+                                                                            </div>
+                                                                            <div class="ctext-wrap">
+                                                                                <div class="conversation-name">Grand Imperial Groups</div>
+                                                                                <div class="ctext-wrap-content">
+                                                                                    <p class="mb-0">Hey What's I Can Help You?</p>
+                                                                                </div>
+                                                                                <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
+                                                                            </div>
                                                                         </div>
-                                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="conversation-list">
-                                                                    <div class="chat-avatar">
-                                                                        <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
-                                                                    </div>
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="conversation-name">Grand Imperial Groups</div>
-                                                                        <div class="ctext-wrap-content">
-                                                                            <p class="mb-0">Please Be Patient. We May Took A Few Minutes To Reply You</p>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="conversation-list">
+                                                                            <div class="chat-avatar">
+                                                                                <img src="../assets/img/GrandImperialGroupLogo.png" alt="avatar-2" />
+                                                                            </div>
+                                                                            <div class="ctext-wrap">
+                                                                                <div class="conversation-name">Grand Imperial Groups</div>
+                                                                                <div class="ctext-wrap-content">
+                                                                                    <p class="mb-0">Please Be Patient. We May Took A Few Minutes To Reply You</p>
+                                                                                </div>
+                                                                                <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
+                                                                            </div>
                                                                         </div>
-                                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> {formattedTime}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-
+                                                                    </li>
+                                                                </>
+                                                            }
                                                             {!loading && chats.map((chatmessage) => (
                                                                 <React.Fragment key={chatmessage.id}>
                                                                     {parseInt(chatmessage.user_id) === user.id ? (
@@ -385,13 +482,13 @@ export default function UserChat() {
                         </div>
                     )}
                 </div>
-            </form>
+            </form >
 
             <Helmet>
                 <link rel="stylesheet" href="../../../assets/css/chat.css" />
                 <link rel="stylesheet" href="../../../assets/css/customerSideBar.css" />
             </Helmet>
-        </div>
+        </div >
 
 
 

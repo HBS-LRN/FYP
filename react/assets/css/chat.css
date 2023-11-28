@@ -16,7 +16,9 @@
     filter: blur(1px);
     -webkit-filter: blur(1px);
 }
-
+.font-size-11 {
+    font-size: 15px !important
+}
 .customerAcc {
     font-weight: 600;
     color: #e6e6e6;
@@ -29,13 +31,7 @@
     text-align: center;
 }
 
-/* try pull */
-h2 {
-    color: black;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    font-weight: 400;
-}
+
 
 .customerAccContent {
     margin: 0%;
@@ -463,13 +459,15 @@ a {
 
 
 }
-.ctext-wrap-content p{
-    color:white;
+
+.ctext-wrap-content p {
+    color: white;
 }
 
-.ctext-wrap-content .user{
-    color:black;
+.ctext-wrap-content .user {
+    color: black;
 }
+
 /* .scroll-wrap::-webkit-scrollbar {
     display: none;
 } */
@@ -502,22 +500,23 @@ a {
     justify-content: center;
     align-items: center;
     z-index: 999;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     position: relative;
     max-width: 36%;
     max-height: 100%;
-    background: #fff; /* Add a background color for better visibility */
-  }
-  
-  .modal-content img {
+    background: #fff;
+    /* Add a background color for better visibility */
+}
+
+.modal-content img {
     width: 100%;
     height: 30%;
     object-fit: contain;
-  }
-  
- 
+}
+
+
 .close-button {
     position: absolute;
     top: 0px;
@@ -525,13 +524,36 @@ a {
     cursor: pointer;
     font-size: 40px;
     color: #000000;
-    z-index: 1000; /* Ensure the close button is above the modal content */
-  }
+    z-index: 1000;
+    /* Ensure the close button is above the modal content */
+}
 
-  .col-center{
+.col-center {
     text-align: center;
-  }
-  .text-muted{
-    font-size:14px;
-  }
- 
+}
+
+.text-muted {
+    font-size: 14px;
+}
+
+.dropdown.toggleicon {
+    display: none;
+}
+
+@media all and (max-width: 1200px) {
+    .accountContent {
+
+        flex-basis: 100%;
+
+    }
+
+    .customerAcc {
+        margin-left: 0px;
+    }
+    .all{
+        padding-bottom:130px;
+    }
+    .dropdown.toggleicon {
+        display: block;
+    }
+}

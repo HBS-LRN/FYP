@@ -4,7 +4,7 @@
 .all {
     background-color: #f7f7f7;
     padding-bottom: 190px;
-   
+
 }
 
 .customerAccBar {
@@ -30,12 +30,7 @@
 }
 
 /* try pull */
-h2 {
-    color: black;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    font-weight: 400;
-}
+
 
 .customerAccContent {
     margin: 0%;
@@ -78,7 +73,7 @@ h2 {
 }
 
 .accountContent {
-    flex-basis:69%;
+    flex-basis: 69%;
     border: 1px solid white;
 
     padding-right: 50px;
@@ -89,7 +84,7 @@ h2 {
     width: 60%;
     background-color: white;
     padding-left: 20px;
-  
+
     border-radius: 20px;
 }
 
@@ -137,16 +132,18 @@ a {
     color: #636363;
     font-size: 14px;
 }
-.label{
+
+.label {
     display: flex;
     position: relative;
-    margin-bottom:4px;
+    margin-bottom: 4px;
 
 }
 
-.customTooltip{
-    left:130px;
+.customTooltip {
+    left: 130px;
 }
+
 .nameLabelInput .name {
     margin-left: 82px;
     margin-top: 0px;
@@ -166,7 +163,7 @@ a {
     padding-top: 7px;
     margin-top: 0px;
     padding-bottom: 7px;
-   
+
     width: 60%;
 }
 
@@ -178,6 +175,7 @@ a {
     color: #636363;
     font-size: 14px;
 }
+
 .weightLabelInput .weightLabel {
     color: #636363;
     font-size: 14px;
@@ -227,7 +225,7 @@ a {
     color: #636363;
     font-size: 14px;
     flex-basis: 13%;
-    
+
 }
 
 
@@ -277,8 +275,8 @@ a {
 .saveButton {
     position: relative;
     left: 250px;
-    bottom:56px;
-    
+    bottom: 56px;
+
     display: flex;
     justify-content: right;
     justify-items: right;
@@ -299,17 +297,18 @@ a {
 .userProfile .text {
     flex-basis: 75%;
 }
-.selectImage img{
-    margin-left:65px;
-    margin-bottom:30px;
+
+.selectImage img {
+    margin-left: 65px;
+    margin-bottom: 30px;
 }
 
 .userProfile .selectImage {
     flex-basis: 25%;
 }
 
-.file{
-    margin-left:26px;
+.file {
+    margin-left: 26px;
 }
 
 
@@ -317,7 +316,7 @@ a {
     color: #636363;
     flex-basis: 25%;
     font-size: 14px;
-    margin-right:2px;
+    margin-right: 2px;
 }
 
 .dateLabelInput .birthInput {
@@ -325,7 +324,7 @@ a {
     padding-top: 7px;
     padding-bottom: 7px;
     flex-basis: 60%;
-  
+
     width: 60%;
 }
 
@@ -337,7 +336,7 @@ a {
     color: #636363;
     font-size: 14px;
     flex-basis: 25%;
-    margin-right:2px;
+    margin-right: 2px;
 }
 
 .phoneNumberLabelInput .phoneNumber {
@@ -411,13 +410,95 @@ a {
 }
 
 
-.fc-event-title.fc-sticky{
-    padding-bottom:20px;
-    float:left;
+.fc-event-title.fc-sticky {
+    padding-bottom: 20px;
+    float: left;
     word-break: break-all;
 
 }
 
-.fc-daygrid-event{
+.fc-daygrid-event {
     white-space: normal;
+}
+
+.dropdown.toggleicon {
+    display: none;
+}
+
+
+
+@media all and (max-width: 1200px) {
+    .accountContent {
+
+        flex-basis: 100%;
+
+    }
+
+    .customerAcc {
+        margin-left: 0px;
+    }
+
+    .dashboard-block {
+        width: 39%;
+    }
+
+    .all {
+        padding-bottom: 100px;
+    }
+
+    .dropdown.toggleicon {
+        display: block;
+    }
+
+    .subTitle {
+        width: 500px;
+    }
+
+    .nameLabelInput .name {
+        margin-left: 16px;
+    }
+
+    .emailLabelInput .email {
+        margin-left: 16px;
+    }
+    .heightLabelInput .height {
+        margin-left: 22px;
+    }
+    .weightLabelInput .weight {
+        margin-left: 19px;
+    }
+    .heightLabel {
+        flex-basis: 18%;
+    }
+
+    .nameLabel {
+        flex-basis: 24%;
+    }
+    .emailLabel {
+        flex-basis: 23%;
+    }
+    .weightLabel {
+        flex-basis: 18%;
+    }
+    .genderLabelInput .genderLabel{
+        margin-right:10px;
+    }
+    .file{
+        margin-left:0px;
+    }
+    .selectImage img{
+        margin-left:19px;
+    }
+    .saveButton{
+        left:200px;
+    }
+    .phoneNumberLabelInput .phoneNumber{
+        margin-left:8px;
+    }
+    .dateLabelInput .birthInput{
+        margin-left:6px;
+    }
+    .customTooltip{
+        left:70px;
+    }
 }

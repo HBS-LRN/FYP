@@ -103,9 +103,11 @@ export default function ChangePassword() {
                             <div class="col-lg-2 passwordContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                                 <div class="accountTitle">
                                     <h3 class="profileTitle"><b>Change Password</b></h3>
+
                                     <p class="subTitle">For your account's security, do not share your password with anyone else</p>
 
                                 </div>
+
                                 <div class="userProfile">
                                     <div class="scroll-wrap">
                                         <div class="text">

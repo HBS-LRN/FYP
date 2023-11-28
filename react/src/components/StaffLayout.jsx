@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Navigate, Outlet } from "react-router-dom";
-
+import { useStateContext } from "../contexts/ContextProvider";
 
 import '../../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css';
 
@@ -17,6 +17,14 @@ import '../../assets/css/app.min.css';
 
 export default function StaffLayout() {
 
+    const { user, token, setToken, setCartQuantity } = useStateContext()
+
+    console.log(user.role)
+    if (!user || !token) {
+        return <Navigate to="/authRequired" />;
+    } else if (parseInt(user.role) !== 1 && parseInt(user.role) !== 2 && parseInt(user.role) !== 3) {
+        return <Navigate to="/accessProhibited" />;
+    }
 
     return (
         <div>
@@ -230,23 +238,43 @@ export default function StaffLayout() {
                                 <ul className="metismenu list-unstyled" id="side-menu">
                                     <li className="menu-title">Menu</li>
 
-                                    <li>
-                                        <a href="/staffDashboard" className="waves-effect">
-                                        
-                                            <i className="ri-dashboard-line"></i>
-                                            <span className="badge rounded-pill bg-success float-end">3</span>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
+
+                                    {user.role === 3 ? (
+                                        <li>
+                                            <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                <i class="fas fa-shipping-fast"></i>
+
+                                                <span> Manage Delivery</span>
+                                            </a>
+                                            <ul className="sub-menu" aria-expanded="false">
+                                                <li>
+                                                    <a href="/deliveryList">Delivery List</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/completedDeliveryList">Delivery Completed</a>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+                                    ) : (
+                                        <>
+                                            <li>
+                                                <a href="/staffDashboard" className="waves-effect">
+
+                                                    <i className="ri-dashboard-line"></i>
+                                                    <span className="badge rounded-pill bg-success float-end">3</span>
+                                                    <span>Dashboard</span>
+                                                </a>
+                                            </li>
 
 
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-utensils"></i>
-                                            
-                                            <span>Manage Meal</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
+                                            <li>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                    <i class="fas fa-utensils"></i>
+
+                                                    <span>Manage Meal</span>
+                                                </a>
+                                                <ul className="sub-menu" aria-expanded="false">
                                             <li>
                                                 <a href="/mealList">Meal List</a>
                                             </li>
@@ -257,102 +285,92 @@ export default function StaffLayout() {
                                                 <a href="/ingredientList">Ingredient List</a>
                                             </li>
                                         </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-user-edit"></i>
-                                            
-                                            <span> Manage Customer</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
+                                            </li>
                                             <li>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                    <i class="fas fa-user-edit"></i>
+
+                                                    <span> Manage Customer</span>
+                                                </a>
+                                                <ul className="sub-menu" aria-expanded="false">
+                                                <li>
                                                 <a href="/customerOrderList">Customers Orders List</a>
                                             </li>
-                                            <li>
-                                                <a href="/reservation">Add Reservation</a>
-                                            </li>
-                                            
-                                            <li>
-                                                <a href="/addCustomer">Add Customer</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-user-edit"></i>
-                                            
-                                            <span> Manage Staff</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="/orders">Add Staff</a>
+                                                    <li>
+                                                        <a href="/reservation">Add Reservation</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="/addCustomer">Add Customer</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/activateCustomer">Activate Customer</a>
+                                                    </li>
+
+
+                                                </ul>
                                             </li>
                                             <li>
-                                                <a href="/customers">Delete Staff</a>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                    <i class="fas fa-user-edit"></i>
+
+                                                    <span> Manage Staff</span>
+                                                </a>
+                                                <ul className="sub-menu" aria-expanded="false">
+                                                    <li>
+                                                        <a href="/orders">Add Staff</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/customers">Delete Staff</a>
+                                                    </li>
+
+                                                </ul>
                                             </li>
 
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                        <i class="fas fa-shipping-fast"></i>
-                                            
-                                            <span> Manage Delivery</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="/deliveryList">Delivery List</a>
+                                                <a href="/ratingList" className="waves-effect">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <span>Meal Rating</span>
+                                                </a>
                                             </li>
-                                            <li>
-                                                <a href="/completedDeliveryList">Delivery Completed</a>
-                                            </li>
-
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/ratingList" className="waves-effect">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                            <span>Meal Rating</span>
-                                        </a>
-                                    </li>
 
 
 
-                                    <li>
-                                        <a href="apps-chat.html" className="waves-effect">
-                                            <i className="ri-chat-1-line"></i>
-                                            <span>Chat</span>
-                                        </a>
-                                    </li>
-
-
-
-                                    <li>
-                                        <a href="javascript: void(0);" className="has-arrow waves-effect">
-                                            <i className="ri-bar-chart-line"></i>
-                                            <span>Report</span>
-                                        </a>
-                                        <ul className="sub-menu" aria-expanded="false">
                                             <li>
-                                                <a href="charts-apex.html">Annual Sale Report</a>
+                                                <a href="/chat" className="waves-effect">
+                                                    <i className="ri-chat-1-line"></i>
+                                                    <span>Chat</span>
+                                                </a>
                                             </li>
-                                            <li>
-                                                <a href="/customers">Customers Report</a>
-                                            </li>
-                                            <li>
-                                                <a href="/addCustomer">Staff Report</a>
-                                            </li>
-                                           
-                                            <li>
-                                                <a href="charts-knob.html">Menu Report</a>
-                                            </li>
-                                           
-                                        </ul>
-                                    </li>
 
-                                  
 
-                                   
+
+                                            <li>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                    <i className="ri-bar-chart-line"></i>
+                                                    <span>Report</span>
+                                                </a>
+                                                <ul className="sub-menu" aria-expanded="false">
+                                                    <li>
+                                                        <a href="charts-apex.html">Annual Sale Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/customers">Customers Report</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/addCustomer">Staff Report</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="charts-knob.html">Menu Report</a>
+                                                    </li>
+
+                                                </ul>
+                                            </li>
+
+                                        </>
+                                    )}
+
                                 </ul>
                             </div>
                         </div>

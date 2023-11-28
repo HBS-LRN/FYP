@@ -93,10 +93,12 @@ export default function Addresses() {
                     <div class="col-lg-2 addressContent" data-aos="flip-up" data-aos-delay="300" data-aos-duration="400">
                         <div class="addressTitle">
                             <h3 class="profileTitle">My Addresses</h3>
+
                             <p class="subTitle">Manage Your Shipping Address Here!</p>
 
                             <div class="addAddress">
-                                <div class="addAddressFont"><a href="/addressForm">+ Add New Address</a></div>
+                                <div class="addAddressFont"><Link to="/addressForm">+ Add New Address</Link></div>
+
                             </div>
 
                         </div>
@@ -112,7 +114,7 @@ export default function Addresses() {
 
 
                                 <div class="row userAddress">
-                                    <div class="col-lg-9 userInfo">
+                                    <div class="col-lg-9 col-sm-6 userInfo">
                                         <div class="name">
 
                                             <label for="nameLabel">Full Name</label>
@@ -140,7 +142,7 @@ export default function Addresses() {
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 buttonType">
+                                    <div class="col-lg-3 col-sm-6  buttonType">
                                         <div class="row actionLink">
                                             <div class="col-lg-3 editLink">
                                                 <Link className="btn-edit" to={'/addressForm/' + address.id}>Edit</Link>

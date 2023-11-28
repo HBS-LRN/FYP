@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\DuplicateLoginBroadcast;
+use App\Events\LoginBroadcast;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\SignupRequest;
@@ -112,13 +114,18 @@ class AuthController extends Controller
 
         // Check if the user has an active session to prevent concurrent login
 
+
+
+        if ($user->active_member == 'N') {
+            return response([
+                'message' => 'Your Account Have Been Deactivated'
+            ]);
+        }
         if ($user && $user->session_id && $user->session_id !== session()->getId()) {
             Auth::logoutOtherDevices($request->password);
             $user->session_id = session()->getId();
             $user->save();
-            return response([
-                'message' => 'You are only allowed to log in once the device has been logged out. Please contact the admin if this is not you.'
-            ]);
+            return response()->json($user);
         }
 
         //update session id 
@@ -150,5 +157,26 @@ class AuthController extends Controller
         session()->regenerateToken();
 
         return response('', 204);
+    }
+
+
+    public function setNonActiveMember($id)
+    {
+
+        /** @var \App\Models\User $user */
+        $user = User::find($id);
+        $user->update(['active_member' => 'N']);
+        broadcast(new DuplicateLoginBroadcast($user))->toOthers();
+        return response()->json($user);
+    }
+
+
+    public function setActiveMember($id)
+    {
+
+        /** @var \App\Models\User $user */
+        $user = User::find($id);
+        $user->update(['active_member' => 'Y']);
+        return response()->json($user);
     }
 }

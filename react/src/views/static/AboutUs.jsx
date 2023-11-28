@@ -53,7 +53,7 @@ export default function Aboutus() {
 		</div>
 	</section>
 
-	<section class="cards-section no-top">
+	<section class="cards-section gap no-top">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" data-aos="flip-up"  data-aos-delay="200" data-aos-duration="300">
@@ -100,55 +100,7 @@ export default function Aboutus() {
 
 	
 
-	<section class="service-shows gap" data-aos="fade-up"  data-aos-delay="200" data-aos-duration="300">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xl-4 col-lg-12">
-					<div class="good-taste">
-						<h2>Service shows good taste.</h2>
-						<p>This Is Our Overall Customer Reviews! Here are some of the outstanding reviews and testimonials shared by our valued customers: </p>
-					</div>
-				</div>
-				<div class="col-xl-8 col-lg-12">
-					<div class="comment-data comment-slide owl-carousel owl-theme">
-						<div class="author-text item">
-							<p>
-							Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-							<div class="thomas">
-								<img src="../assets/img/bungsenggg.jpg"  width="300" height="200"/>
 
-								<div>
-									<h6>Thomas Adamson</h6>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-								</div>
-							</div>
-						</div>
-						<div class="author-text item">
-							<p>
-							Service top notch! Restaurant was very comfortable to dine in. Gotta love the dim sum there! Will definitely go back again</p>
-							<div class="thomas">
-							<img src="../assets/img/bungsenggg.jpg"  width="300" height="200"/>
-
-								<div>
-									<h6>Thomas Adamson</h6>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-									<i class="fa-solid fa-star"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-	</section>
 	
         </div>
 

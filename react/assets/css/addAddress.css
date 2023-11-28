@@ -37,12 +37,6 @@
     text-align: center;
 }
 
-h2 {
-    color: black;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    font-weight: 400;
-}
 
 .customerAccContent {
     margin: 0%;
@@ -306,4 +300,22 @@ h2 {
 
 .customTooltip {
     left: 180px;
+}
+@media all and (max-width: 1200px) {
+    .addAddressContent  {
+
+        flex-basis: 100%;
+
+    }
+    .submitButtonaddAddress{
+        margin-top:55px;
+        margin-left:0px;
+    }
+    .customTooltip{
+        left:132px;
+    }
+    .streetAddressSetting textarea{
+
+        margin-left:38px;
+    }
 }

@@ -211,3 +211,10 @@
 .custom-menu-margin{
     margin-bottom: 10px;
 }
+
+
+@media all and (max-width: 1200px) {
+    .good-taste{
+        margin-top:0;
+    }
+}

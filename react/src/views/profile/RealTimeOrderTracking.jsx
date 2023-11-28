@@ -106,7 +106,7 @@ export default function RealTimeLocationTracker() {
       //refresh location data in an interval
       setInterval(() => {
         navigator.geolocation.getCurrentPosition(getPosition)
-      }, 10000);
+      }, 20000);
     }
 
 

@@ -217,3 +217,17 @@
     width:320px;
     height:270px;
 } 
+
+
+@media all and (max-width: 1200px) {
+    .good-taste{
+        margin-top:0;
+    }
+    .dish img{
+        margin-left:0;
+        width:360px;
+        height:310px;
+    }
+   
+    
+}
