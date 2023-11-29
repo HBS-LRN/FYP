@@ -81,7 +81,7 @@ export default function MealDetail() {
             .then(({ data }) => {
                 console.log('API Response Meal Order:', data); // Add this line
                 setLoading(false);
-                setMealOrderDetail(data);
+                setMealOrderDetail(data.meal_order_details);
                 
                 
             })
@@ -129,7 +129,7 @@ export default function MealDetail() {
             <div className="d-flex border-bottom pb-3" key={item.id}>
               <div className="flex-1">
                 <React.Fragment>
-                  <h5 className="font-size-15 mb-3">James</h5>
+                  <h5 className="font-size-15 mb-3">{item.username}</h5>
                   <p className="text-muted mb-2">{item.rating_comment}</p>
       
                   <ul className="list-inline product-review-link mb-0">

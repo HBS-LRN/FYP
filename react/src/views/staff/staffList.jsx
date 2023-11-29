@@ -59,6 +59,27 @@ export default function StaffList() {
             }
           })
       }
+      const getRoleLabel = (role) => {
+        switch (role) {
+            case 1:
+                return 'Staff';
+            case 2:
+                return 'Admin';
+            case 3:
+                return 'Delivery Man';
+            default:
+                return '';
+        }
+    };
+    
+      const handleRoleChange = (id, selectedOption) => {
+        
+        const updatedRole = staffList.map((staff) =>
+        staff.id === id ? { ...staff, role: selectedOption.value } : order
+        );
+    
+        setStaffList(updatedRole);
+    };
      
       var staffDetail = "";
       staffDetail = staffList.map((item,index) =>(
@@ -72,7 +93,23 @@ export default function StaffList() {
             <td>{item.email}</td>
             <td>{item.gender}</td>
             <td>{item.phone}</td>
-            <td>{item.active_member}</td>
+            <td id={"tooltip-container" + index}>
+            <Select
+                value={{
+                    value: item.role,
+                    label: getRoleLabel(item.role)
+                }}
+
+                onChange={() => handleRoleChange(item.id, selectedOption)}
+                options={[
+                    { value: 2, label: 'Admin' },
+                    { value: 1, label: 'Staff' },
+                    { value: 3, label: 'Delivery Man' },
+                    
+                ]}
+            />
+        </td>
+
             <td id={"tooltip-container"+index}>
                 <a href={"/updateingredient/"+item.id} class="me-3 text-primary" data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
                 <button class="text-danger" onClick={en => deleteStaff(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
@@ -127,7 +164,7 @@ export default function StaffList() {
                                         <th>Email</th>
                                         <th>Gender</th>
                                         <th>Phone</th>
-                                        <th>Account Active</th>
+                                        <th>Role</th>
                                         <th style={{width: "120px"}}>Action</th>
                                     </tr>
                                 </thead>

@@ -180,18 +180,54 @@ class MealController extends Controller
         }
     }
 
+    // public function getMealOrderDetail($meal_id)
+    // {
+    //     try {
+    //         $mealOrderDetails = MealOrderDetail::where('meal_id', $meal_id)->get();
+
+    //         return response()->json($mealOrderDetails);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'message' => 'Something went wrong: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
     public function getMealOrderDetail($meal_id)
     {
         try {
-            $mealOrderDetails = MealOrderDetail::where('meal_id', $meal_id)->get();
-
-            return response()->json($mealOrderDetails);
+            // Use join to get the order details along with user details
+            $mealOrderDetails = MealOrderDetail::join('orders', 'meal_order_details.order_id', '=', 'orders.id')
+                ->select(
+                    'meal_order_details.id as meal_order_detail_id',
+                    'meal_order_details.meal_id',
+                    'meal_order_details.order_id',
+                    'meal_order_details.order_quantity',
+                    'meal_order_details.rating_comment',
+                    'meal_order_details.rating_star',
+                    'meal_order_details.reply_comment',
+                    'meal_order_details.created_at',
+                    'orders.user_id as user_id'
+                    // Add other columns you need
+                )
+                ->where('meal_order_details.meal_id', $meal_id)
+                ->get();
+    
+            // Now, for each meal order detail, get the user details
+            foreach ($mealOrderDetails as $mealOrderDetail) {
+                $user = User::find($mealOrderDetail->user_id);
+                $mealOrderDetail->username = $user ? $user->name : null;
+            }
+    
+            return response()->json(['meal_order_details' => $mealOrderDetails]);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Something went wrong: ' . $e->getMessage(),
             ], 500);
         }
     }
+    
+
 
 
     function storeMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)

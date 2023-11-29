@@ -81,7 +81,17 @@ const AddCustomer = () => {
             gender: customer.gender.value,
             password: "securepassword123?"
         };
-
+        useEffect(() => {
+            if (customer.email) {
+                axiosClient.post('/checkEmailExists', { email: customer.email })
+                    .then(response => {
+                        setEmailExists(response.data.exists);
+                    })
+                    .catch(error => {
+                        console.error('Error checking email existence:', error);
+                    });
+            }
+        }, [customer.email]);
         console.log(data);
 
         // Move the useEffect here
@@ -182,6 +192,7 @@ const AddCustomer = () => {
                                                         />
                                                     </div>
                                                     {errors.email && <div className="invalid">{errors.email}</div>}
+                                                    {emailExists && <div className="invalid">This email is already in use.</div>}
                                                 </div>
                                                 <div className="col-lg-6">
                                                     <div className="mb-3">
