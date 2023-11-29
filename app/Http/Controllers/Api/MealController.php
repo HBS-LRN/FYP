@@ -300,59 +300,7 @@ class MealController extends Controller
         }
     }
 
-    // public function update(MealStoreRequest $request, $id)
-    // {
-    //     try {
-    //         // Find meal
-    //         $meal = Meal::find($id);
-
-    //         if (!$meal) {
-    //             return response()->json(['message' => 'Meal Not Found.'], 404);
-    //         }
-
-    //         // Validate request data
-    //         $request->validate([
-    //             'meal_price' => 'required|numeric',
-    //             'meal_name' => 'required|string',
-    //             'meal_desc' => 'required|string',
-    //             'category_id' => 'required|exists:categories,id',
-    //             'meal_image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //             'ingredient_id' => 'required|array',
-    //         ]);
-
-    //         // Update meal attributes
-    //         $meal->meal_price = $request->meal_price;
-    //         $meal->meal_name = $request->meal_name;
-    //         $meal->meal_desc = $request->meal_desc;
-    //         $meal->category_id = $request->category_id;
-
-    //         // Handle meal image update
-    //         if ($request->hasFile('meal_image')) {
-    //             $image = $request->file('meal_image');
-    //             $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-    //             $image->move(public_path('react/assets/img/icon'), $imageName);
-
-    //             // Delete the old image if it exists
-    //             $oldImage = $meal->meal_image;
-    //             if (File::exists(public_path('react/assets/img/icon/' . $oldImage))) {
-    //                 File::delete(public_path('react/assets/img/icon/' . $oldImage));
-    //             }
-
-    //             $meal->meal_image = $imageName;
-    //         }
-
-    //         // Save the updated meal
-    //         $meal->save();
-
-    //         // Update meal ingredients
-    //         $ingredientIds = $request->input('ingredient_id', []);
-    //         $this->updateMealIngredients($meal, $ingredientIds);
-
-    //         return response()->json(['message' => 'Meal successfully updated.'], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
-    //     }
-    // }
+ 
     public function update(MealStoreRequest $request, $id)
     {
         try {
@@ -388,18 +336,7 @@ class MealController extends Controller
             return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
         }
     }
-    // Function to update meal ingredients
-    // private function updateMealIngredients(Meal $meal, array $ingredients)
-    // {
-    //     // // Delete existing Meal Ingredients
-    //     // MealIngredient::where('meal_id', $meal->id)->delete();
-
-    //     // // Store new Meal Ingredients
-    //     // $this->storeMealIngredients($meal, $ingredients);
-    //     $ingredientIds = is_array($request->ingredient_id) ? $request->ingredient_id : [];
-
-    // $this->storeMealIngredients($meal, $ingredientIds, $request->unit, $request->cookMethod);
-    // }
+  
     private function updateMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)
     {
         try {

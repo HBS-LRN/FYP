@@ -1,6 +1,6 @@
 import React, { createRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useStateContext } from '../../contexts/ContextProvider.jsx';
 function getCurrentDate() {
     const today = new Date();
@@ -11,9 +11,14 @@ function getCurrentDate() {
 }
 export default function ReservationForm() {
 
-      //react declaration
+
+
+    //react declaration
     const [validated, setValidated] = useState(false);
     const { user, setUser, setNotification } = useStateContext();
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
     const navigate = useNavigate();
     const [reservation, setReservation] = useState({
         id: null,

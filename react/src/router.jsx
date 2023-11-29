@@ -118,7 +118,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/verifyAccount/:id',
-        element: <VerifyCustomer/>
+        element: <VerifyCustomer />
       },
       {
         path: '/forgetPassword',
@@ -141,7 +141,10 @@ const router = createBrowserRouter([
         path: '/categoryMenuCard',
         element: <CategoryMenuCard />
       },
-
+      {
+        path: '/reservationForm',
+        element: <ReservationForm />
+      },
 
       //protected router, required login from user
       {
@@ -168,10 +171,7 @@ const router = createBrowserRouter([
             path: '/myReservation',
             element: <MyReservation />
           },
-          {
-            path: '/reservationForm',
-            element: <ReservationForm />
-          },
+
           {
             path: '/myOrder',
             element: <MyOrder />
@@ -270,8 +270,8 @@ const router = createBrowserRouter([
         element: <UpdateCategory />
       },
       {
-        path:"/categoryList",
-        element:<CategoryList/>
+        path: "/categoryList",
+        element: <CategoryList />
       },
       {
         path: "/addcategory",
@@ -282,8 +282,8 @@ const router = createBrowserRouter([
         element: <UpdateCategory />
       },
       {
-        path:"/mealList",
-        element:<MealsList/>
+        path: "/mealList",
+        element: <MealsList />
       },
       {
         path: '/mealDetail/:id',
@@ -295,7 +295,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/updateMeal/:id',
-        element: <UpdateMeal/>
+        element: <UpdateMeal />
       },
       {
         path: '/customerOrderList',
@@ -303,7 +303,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/customerOrderDetailList/:id',
-        element: <CustomerOrderDetailList/>
+        element: <CustomerOrderDetailList />
       },
       {
         path: '/customers',
@@ -351,12 +351,12 @@ const router = createBrowserRouter([
           {
             path: '/customerReport',
             element: <Profile />
-          },{
+          }, {
             path: '/addStaff',
-            element: <AddStaff/>
-          },{
+            element: <AddStaff />
+          }, {
             path: '/staffList',
-            element:<StaffList/>
+            element: <StaffList />
           }
         ]
       }

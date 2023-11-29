@@ -74,7 +74,9 @@ const AddStaff = () => {
         if (staff.email) {
             axiosClient.post('/checkEmailExists', { email: staff.email })
                 .then(response => {
+                    console.log(response.data.exists);
                     setEmailExists(response.data.exists);
+                    
                 })
                 .catch(error => {
                     console.error('Error checking email existence:', error);
@@ -284,7 +286,7 @@ const AddStaff = () => {
                                             type="submit"
                                             className="btn btn-primary me-2 waves-effect waves-light"
                                         >
-                                            Create Customer
+                                            Create Staff
                                         </button>
                                       
                                     </div>
