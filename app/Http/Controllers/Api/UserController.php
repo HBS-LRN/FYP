@@ -348,6 +348,39 @@ class UserController extends Controller
         // You can customize the response as needed
         return response(new UserResource($user), 201);
     }
+    public function createStaff(Request $request)
+    {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
+            'gender' => 'required|in:Male,Female', // Assuming gender can only be Male or Female
+            'role' => 'required',
+            'birthdate' => 'required|date',
+            'password' => 'required|string|min:8', // You might want to customize the password validation
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+        // Create the user without a password
+        $user = User::create([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'gender' => $request->input('gender'),
+            'email' => $request->input('email'),
+            'birthdate' => $request->input('birthdate'),
+            'role' => $request->input('role'),
+            'password' => bcrypt($request->input('password')),
+            'active_member' =>'N'
+        ]);
+
+        // Send verification email
+        $this->sendVerificationEmail($user);
+
+        // You can customize the response as needed
+        return response(new UserResource($user), 201);
+    }
 
     /**
      * Send verification email to the user.
@@ -356,11 +389,9 @@ class UserController extends Controller
      */
     private function sendVerificationEmail(User $user)
     {
-        // Generate a verification token
-      
 
         // Send the verification email
-        Mail::to($user->email)->send(new VerifyAccountMail($user, $verificationToken));
+        Mail::to($user->email)->send(new VerifyAccountMail($user, ));
     }
 
     public function showUser($id)
@@ -373,7 +404,15 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
     }
+    public function checkEmailExists(Request $request)
+    {
+        $email = $request->input('email');
 
+        // Check if the email already exists in the database
+        $exists = User::where('email', $email)->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
     public function verifyAccount(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -401,6 +440,20 @@ class UserController extends Controller
         $user->update(['verified_at' => now(), 'verification_token' => null]);
 
         return response()->json(['message' => 'Account verified successfully'], 200);
+    }
+    public function getStaffByRoles()
+    {
+        try {
+            // Define the roles you want to retrieve (1, 2, 3 in this example)
+            $targetRoles = [1, 2, 3];
+
+            // Query users based on roles
+            $staffMembers = User::whereIn('role', $targetRoles)->get();
+
+            return response()->json(['staffMembers' => $staffMembers], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error retrieving staff members', 'error' => $e->getMessage()], 500);
+        }
     }
     
 }

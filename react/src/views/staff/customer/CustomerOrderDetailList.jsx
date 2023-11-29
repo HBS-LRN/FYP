@@ -54,17 +54,17 @@ export default function CustomerOrderDetailList() {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, Cancel it!"
           }).then((result) => {
             if (result.isConfirmed) {
-                axiosClient.delete(`/deleteCustomerOrders/${id}`)
+                axiosClient.delete(`/deleteCustomerOrdersDetail/${id}`)
             .then(response => {
                 Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
+                    title: "Canceled!",
+                    text: "Your meal has been Canceled.",
                     icon: "success"
                   });
-                  getCustomerOrder();
+                  getCustomerOrderDetail();
                 console.log("delete",response.data)
                 
             })
@@ -106,7 +106,38 @@ export default function CustomerOrderDetailList() {
                 console.error('Error fetching meal options:', error);
             });
     }
-    
+    const updateOrderDetail =(id) =>{
+        const orderToUpdate = customerOrderDetailList.find(order => order.id === id);
+        console.log("update",orderToUpdate)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Update it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                axiosClient.post(`/updateOrderDetailList/${id}`,orderToUpdate)
+            .then(response => {
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Customer's order has been updated.",
+                    icon: "success"
+                  });
+                  getCustomerOrderDetail();
+               
+                
+            })
+            .catch(error => {
+                console.error("delete error:",error);
+            });
+            
+            }
+          });
+        
+    }
     return (
 
         <div>
@@ -210,14 +241,12 @@ export default function CustomerOrderDetailList() {
                                                             />
                                                         </td>
                                                         <td>
-                                                           
-                                                                {item.rating_star}
-                                                          
+                                                            {item.rating_star != null ? item.rating_star : "no rating"}
                                                         </td>
                                                       
                                                         <td>
                                                             <a
-                                                                href="javascript:void(0);"
+                                                               onClick={()=>updateOrderDetail(item.id)}
                                                                 className="me-3 text-primary"
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"

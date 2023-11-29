@@ -127,8 +127,13 @@ Route::put('/mealOrderDetail/{id}', [MealController::class, 'updateMealOrderDeta
 
 //admin customer
 Route::post('/createUser', [UserController::class, 'createCustomer']);
+Route::post('checkEmailExists', [UserController::class, 'checkEmailExists']);
 Route::get('/getUser/{id}',[UserController::class, 'showUser']);
 Route::post('/varifyAccount/{id}', [UserController::class, 'verifyAccount']);
+
+//admin staff
+Route::post('/createStaff', [UserController::class, 'createStaff']);
+Route::get('/getStaff',[UserController::class, 'getStaffByRoles']);
 
 //customer order
 Route::get('/customerOrder', [OrderController::class, 'index']);
@@ -136,6 +141,8 @@ Route::get('/searchCustomerOrder', [OrderController::class, 'searchCustomerOrder
 Route::delete('/deleteCustomerOrders/{orderId}', [OrderController::class, 'deleteCustomerOrder']);
 Route::get('/mealOrderDetails/{orderId}', [OrderController::class, 'showMealOrderDetails']);
 Route::post('/updateOrderDetail/{orderId}', [OrderController::class, 'updateCustomerOrder']);
+Route::post('/updateOrderDetailList/{mealOrderDetailId}', [OrderController::class, 'updateCustomerOrderDetail']);
+Route::delete('/deleteCustomerOrdersDetail/{mealOrderDetailId}', [OrderController::class, 'deleteCustomerOrderDetail']);
 
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 

@@ -60,6 +60,9 @@ import CustomersList from "./views/staff/customer/CustomerOrderList";
 import VerifyCustomer from "./views/staff/customer/verifyAccount";
 
 import AddCustomer from "./views/staff/customer/AddCustomer";
+
+import AddStaff from "./views/staff/addStaff"
+import StaffList from "./views/staff/staffList"
 import CompletedDeliveryList from "./views/staff/delivery/CompletedList";
 import RatingList from "./views/staff/Rating/ratingList";
 import RatingForm from "./views/staff/Rating/RatingForm";
@@ -348,7 +351,13 @@ const router = createBrowserRouter([
           {
             path: '/customerReport',
             element: <Profile />
-          },
+          },{
+            path: '/addStaff',
+            element: <AddStaff/>
+          },{
+            path: '/staffList',
+            element:<StaffList/>
+          }
         ]
       }
 

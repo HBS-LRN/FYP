@@ -318,11 +318,12 @@ export default function StaffLayout() {
                                                 </a>
                                                 <ul className="sub-menu" aria-expanded="false">
                                                     <li>
-                                                        <a href="/orders">Add Staff</a>
+                                                        <a href="/addStaff">Add Staff</a>
                                                     </li>
                                                     <li>
-                                                        <a href="/customers">Delete Staff</a>
+                                                        <a href="/staffList">Staff List</a>
                                                     </li>
+                                                   
 
                                                 </ul>
                                             </li>
