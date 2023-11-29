@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
 import { useDropzone } from 'react-dropzone';
+import Swal from 'sweetalert2';
 
 const AddProduct = () => {
     const [activeTab, setActiveTab] = useState(0);

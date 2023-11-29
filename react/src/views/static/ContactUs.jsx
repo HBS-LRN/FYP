@@ -20,11 +20,11 @@ export default function ContactUs() {
 
 
 
-	
+
 
 	//when user click on submit button
 	const handleSubmit = async (event) => {
-	
+
 		event.preventDefault();
 		event.stopPropagation();
 		setValidated(true);
@@ -52,7 +52,9 @@ export default function ContactUs() {
 					.post("/contactus", payload)
 					.then((data) => {
 						console.log(data)
+					
 						setNotification("Your Message Has Been Succesfully Uploaded!");
+						
 
 					});
 			} catch (error) {
@@ -65,13 +67,13 @@ export default function ContactUs() {
 
 	useEffect(() => {
 		if (user) {
-		  setContactUs({
-			...contactus,
-			'username': user.name,
-			'email': user.email
-		  });
+			setContactUs({
+				...contactus,
+				'username': user.name,
+				'email': user.email
+			});
 		}
-	  }, []);
+	}, []);
 
 	//handle on change field
 	const handleChange = (e) => {

@@ -432,6 +432,7 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'name' => $request->input('name'),
             'password' => bcrypt($request->input('password')),
+            'active_member' =>'Y',
             'token' => $verificationToken,
         ]);
 
