@@ -19,7 +19,7 @@ export default function ResetPassword() {
     const { setFailNotification } = useNotificationContext();
 
     console.log(user)
-    if (!user) {
+    if (!token) {
         return <Navigate to="/authRequired" />;
     }
 
@@ -65,11 +65,12 @@ export default function ResetPassword() {
                 if (response && response.status === 422) {
                     setError(response.data.errors);
                 } else {
-
+                   
                     setFailNotification("Link Expired!", "Request A New Email To Reset Password!");
                     navigate("/forgetPassword");
                     setUser(null);
                     setToken(null);
+
                 }
             });
     }
@@ -98,7 +99,6 @@ export default function ResetPassword() {
                     setNotification("Login With Your New Password!");
                     navigate("/login");
                     setUser(null);
-                    setToken(null);
                     setLoading(false);
                 })
                 .catch((err) => {
@@ -215,9 +215,7 @@ export default function ResetPassword() {
 
 
 
-                                <br />
-                                <br />
-
+                            
 
                                 {loading ? (
                                     <div className="loaderCustom">

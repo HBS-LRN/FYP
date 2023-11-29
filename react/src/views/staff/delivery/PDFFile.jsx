@@ -136,7 +136,7 @@ const PDFFile = ({ user, delivery }) => {
                     {delivery.map((item, i) => (
                         <View style={styles.tableRow} key={i}>
                             <View style={styles.tableCell}>
-                                <Text style={styles.text}>{item.order_id}</Text>
+                                <Text style={styles.text}>OD{item.order_id}#</Text>
                             </View>
                             <View style={styles.tableCell}>
                                 <Text style={styles.text}>{item.order.order_date}</Text>

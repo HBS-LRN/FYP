@@ -360,7 +360,7 @@ class UserController extends Controller
       
 
         // Send the verification email
-        Mail::to($user->email)->send(new VerifyAccountMail($user, $verificationToken));
+        // Mail::to($user->email)->send(new VerifyAccountMail($user, $verificationToken));
     }
 
     public function showUser($id)

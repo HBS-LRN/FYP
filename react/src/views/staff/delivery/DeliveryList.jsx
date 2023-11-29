@@ -99,7 +99,7 @@ export default function DeliveryList() {
         if (delivery.order.order_status === "pending") {
             return (
                 <tr key={delivery.order_id}>
-                    <td>{delivery.order_id}</td>
+                    <td>OD{delivery.order_id}#</td>
                     <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
                     <td>{delivery.username}</td>
                     <td>{delivery.userphone}</td>
@@ -122,7 +122,7 @@ export default function DeliveryList() {
             return (
 
                 <tr key={delivery.order_id}>
-                    <td>{delivery.order_id}</td>
+                    <td>OD{delivery.order_id}#</td>
                     <td style={{ whiteSpace: 'pre-line' }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
                     <td>{delivery.username}</td>
                     <td>{delivery.userphone}</td>
