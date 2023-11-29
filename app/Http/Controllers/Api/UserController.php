@@ -455,5 +455,20 @@ class UserController extends Controller
             return response()->json(['message' => 'Error retrieving staff members', 'error' => $e->getMessage()], 500);
         }
     }
+    public function deleteUser($id)
+    {
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+
+            // Delete the user
+            $user->delete();
+
+            return response()->json(['message' => 'User deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error deleting user', 'error' => $e->getMessage()], 500);
+        }
+    }
+
     
 }

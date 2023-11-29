@@ -134,7 +134,7 @@ Route::post('/varifyAccount/{id}', [UserController::class, 'verifyAccount']);
 //admin staff
 Route::post('/createStaff', [UserController::class, 'createStaff']);
 Route::get('/getStaff',[UserController::class, 'getStaffByRoles']);
-
+Route::delete('/deleteUsers/{id}', [UserController::class, 'deleteUser']);
 //customer order
 Route::get('/customerOrder', [OrderController::class, 'index']);
 Route::get('/searchCustomerOrder', [OrderController::class, 'searchCustomerOrderList']);
@@ -147,8 +147,6 @@ Route::delete('/deleteCustomerOrdersDetail/{mealOrderDetailId}', [OrderControlle
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 
 Route::apiResource('/allergic', AllergicController::class);
-
-
 
 Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
 Route::post('/verifyEmail', [AuthController::class, 'verifyEmail']);

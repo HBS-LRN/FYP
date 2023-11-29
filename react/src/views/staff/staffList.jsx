@@ -34,7 +34,7 @@ export default function StaffList() {
            console.error('API request error:', error);
         });
       }
-      const deleteIngredient = ingredientID =>{
+      const deleteStaff = id =>{
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -45,15 +45,15 @@ export default function StaffList() {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              axiosClient.delete(`/ingredients/${ingredientID}`)
+              axiosClient.delete(`/deleteUsers/${id}`)
               .then(({data}) =>{
                 Swal.fire(
                     'Deleted!',
-                    data.ingredient_name+' has been deleted.',
+                    data.name+' account has been deleted.',
                     'success'
                   )
                   
-                  getIngredient()
+                  getStaff()
              })
             
             }
@@ -68,7 +68,6 @@ export default function StaffList() {
                    {index+1}
                 </div>
             </td>
-            
             <td>{item.name}</td>
             <td>{item.email}</td>
             <td>{item.gender}</td>
@@ -76,7 +75,7 @@ export default function StaffList() {
             <td>{item.active_member}</td>
             <td id={"tooltip-container"+index}>
                 <a href={"/updateingredient/"+item.id} class="me-3 text-primary" data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
-                <button class="text-danger" onClick={en => deleteIngredient(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
+                <button class="text-danger" onClick={en => deleteStaff(item.id)} data-bs-container={"#tooltip-container"+index} data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></button>
             </td>
         </tr>
      
@@ -153,20 +152,7 @@ export default function StaffList() {
 </div>
 
 
-<footer class="footer">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <script>document.write(new Date().getFullYear())</script> © Nazox.
-            </div>
-            <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block">
-                    Crafted with <i class="mdi mdi-heart text-danger"></i> by <a href="https://1.envato.market/themesdesign" target="_blank">Themesdesign</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+
 </div>
         </div>
     );
