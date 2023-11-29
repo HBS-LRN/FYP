@@ -251,6 +251,7 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
+
     public function deleteCustomerOrder($orderId)
     {
         try {
@@ -292,39 +293,129 @@ class OrderController extends Controller
 
             return response()->json($mealOrderDetails);
         } catch (\Exception $e) {
+            \Log::error('Error in showMealOrderDetails: ' . $e->getMessage());
             // Handle exceptions (e.g., order not found)
             return response()->json(['error' => 'Failed to retrieve meal order details'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    
 
     public function updateCustomerOrder(Request $request, $orderId)
-{
-    try {
-        // Find the existing order by ID
-        $order = Order::findOrFail($orderId);
+    {
+        try {
+            // Find the existing order by ID
+            $order = Order::findOrFail($orderId);
 
-        // Get the new data from the request
-        $data = $request->all();
+            // Get the new data from the request
+            $data = $request->all();
 
-        // Update the order with the new information
-        $order->update([
-            'user_id' => $data['user_id'],
-            'order_total' => $data['order_total'],
-            'delivery_fee' => $data['delivery_fee'],
-            'order_status' => $data['order_status'],
-            'payment_status' => $data['payment_status'],
-            'payment_method' => $data['payment_method'],
-            'order_date' => Carbon::parse($data['order_date'])->format('Y-m-d'),
-        ]);
+            // Update the order with the new information
+            $order->update([
+                'user_id' => $data['user_id'],
+                'order_total' => $data['order_total'],
+                'delivery_fee' => $data['delivery_fee'],
+                'order_status' => $data['order_status'],
+                'payment_status' => $data['payment_status'],
+                'payment_method' => $data['payment_method'],
+                'order_date' => Carbon::parse($data['order_date'])->format('Y-m-d'),
+            ]);
 
-        // Return the updated order
-        return response()->json(['message' => 'Order updated successfully', 'order' => $order]);
-    } catch (\Exception $e) {
-        // Handle exceptions (e.g., order not found)
-        return response()->json(['error' => 'Failed to update order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            // Return the updated order
+            return response()->json(['message' => 'Order updated successfully', 'order' => $order]);
+        } catch (\Exception $e) {
+            // Handle exceptions (e.g., order not found)
+            return response()->json(['error' => 'Failed to update order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
-}
+
+    public function updateCustomerOrderDetail(Request $request, $mealOrderDetailId)
+    {
+        try {
+            // Find the existing meal order detail by ID
+            $mealOrderDetail = MealOrderDetail::findOrFail($mealOrderDetailId);
+
+            // Get the new data from the request
+            $data = $request->all();
+
+            // Update the meal order detail with the new information
+            $mealOrderDetail->update([
+                'meal_id' => $data['meal_id'],
+                'order_quantity' => $data['order_quantity'],
+            ]);
+
+            // Find the associated order
+            $order = Order::findOrFail($mealOrderDetail->order_id);
+
+            // Recalculate the order_total based on updated order details
+            $orderTotal = $this->calculateOrderTotal($order);
+
+            // Update the order with the new order_total
+            $order->update([
+                'order_total' => $orderTotal,
+            ]);
+
+            // Return the updated order
+            return response()->json(['message' => 'Order details updated successfully', 'order' => $order]);
+        } catch (\Exception $e) {
+            // Handle exceptions (e.g., meal order detail not found)
+            return response()->json(['error' => 'Failed to update order details'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // Helper function to calculate order_total based on updated order details
+    private function calculateOrderTotal(Order $order)
+    {
+        $orderTotal = 0;
+
+        foreach ($order->mealOrderDetails as $mealOrderDetail) {
+            // Assuming meal_price is a column in the meals table
+            $mealPrice = $mealOrderDetail->meal->meal_price;
+            $orderQuantity = $mealOrderDetail->order_quantity;
+
+            // Calculate subtotal for each meal order detail
+            $subtotal = $mealPrice * $orderQuantity;
+
+            // Add subtotal to order_total
+            $orderTotal += $subtotal;
+        }
+
+        // Add delivery_fee to order_total
+        $orderTotal += $order->delivery_fee;
+
+        return $orderTotal;
+    }
+
+    public function deleteCustomerOrderDetail($mealOrderDetailId)
+    {
+        try {
+            // Find the meal order detail by ID
+            $mealOrderDetail = MealOrderDetail::findOrFail($mealOrderDetailId);
+
+            // Find the associated order
+            $order = Order::findOrFail($mealOrderDetail->order_id);
+
+            // Delete the meal order detail
+            $mealOrderDetail->delete();
+
+            // Recalculate the order_total based on updated order details
+            $orderTotal = $this->calculateOrderTotal($order);
+
+            if(($orderTotal - $order->delivery_fee) == 0){
+                $order->delete();
+            }else{
+                $order->update([
+                    'order_total' => $orderTotal,
+                ]);
+            }
+            
+
+            return response()->json(['message' => 'Meal order detail deleted successfully', 'order' => $order]);
+        } catch (\Exception $e) {
+            // Handle exceptions (e.g., meal order detail not found)
+            return response()->json(['error' => 'Failed to delete meal order detail'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

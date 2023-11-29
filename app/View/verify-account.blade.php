@@ -27,7 +27,7 @@
 </p>
 
 <p class="textCenter">
-    Thank you for joining our member! Please click the following link to verify your account:
+    Thank you for joining us! Please click the following link to verify your account:
 </p>
 
 <p class="textCenter">

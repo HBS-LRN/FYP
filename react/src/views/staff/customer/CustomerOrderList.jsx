@@ -249,7 +249,8 @@ export default function CustomerOrderList() {
                                                             value={item.payment_method ? { label: item.payment_method, value: item.payment_method } : null}
                                                             options={[
                                                                 { label: 'Pay On Delivery', value: 'Pay On Delivery' },
-                                                                { label: 'Paypal', value: 'Paypal' }
+                                                                { label: 'Paypal', value: 'Paypal' },
+                                                                {label: 'card', value: 'card'}
                                                             ]}
                                                             onChange={(selectedOption) => handlePaymentMethodChange(item.id, selectedOption ? selectedOption.value : null)}
                                                         />

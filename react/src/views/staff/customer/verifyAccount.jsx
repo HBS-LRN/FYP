@@ -144,10 +144,8 @@ console.log("id",id);
                 data-aos-duration="400"
               >
                 <div className="login-form">
-                  <h3>User Registration</h3>
-                  <p>
-                    Has an account? <a href="/login">Login Here</a>
-                  </p>
+                  <h3>Verify Account</h3>
+                 
                 </div>
 
                 <div className={`text username ${validated ? 'was-validated' : ''}`}>
