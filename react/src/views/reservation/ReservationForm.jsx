@@ -9,6 +9,20 @@ function getCurrentDate() {
     const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
+function convertTo24HourFormat(time) {
+    const [hour, period] = time.match(/(\d+)([A-Za-z]+)?/).slice(1, 3);
+    console.log(hour);
+    console.log(period);
+    
+    if (period && period.toLowerCase() === 'pm') {
+        
+        console.log((parseInt(hour, 10) + 12), "converted");
+        return (parseInt(hour, 10) + 12);
+    } else {
+   
+        return parseInt(hour, 10);
+    }
+}
 export default function ReservationForm() {
 
 
@@ -133,14 +147,28 @@ export default function ReservationForm() {
                                     <label htmlFor="Time">Time</label>
                                     <br />
                                     <div className="custom-form">
-                                        <i class="fa-solid fa-clock"></i>
-                                        <select name="reservation_time" class="form-control time-dropdown" required
-                                            onChange={handleChange} >
+                                        <i className="fa-solid fa-clock"></i>
+                                        <select name="reservation_time" className="form-control time-dropdown" required onChange={handleChange}>
                                             <option value="">Select A Time</option>
-                                            <option value="11AM - 1PM Section">11AM - 1PM Section</option>
-                                            <option value="1PM - 3PM Section">1PM - 3PM Section</option>
-                                            <option value="6PM - 8PM Section">6PM - 8PM Section</option>
-                                            <option value="8PM - 10PM Section">8PM - 10PM Section</option>
+                                            {["11AM - 1PM Section", "1PM - 3PM Section", "6PM - 8PM Section", "8PM - 10PM Section"].map((timeOption) => {
+                                                // Get the start hour from the option (e.g., "11AM - 1PM Section")
+                                                const startTime = convertTo24HourFormat(timeOption.split('-')[0]);
+
+                                                console.log(startTime,"starttime")
+                                                // Get the current hour in 24-hour format
+                                                const currentHour = new Date().getHours();
+
+                                                console.log(currentHour,"currentHour")
+                                                return (
+                                                    <option
+                                                        key={timeOption}
+                                                        value={timeOption}
+                                                        disabled={currentHour >= startTime}
+                                                    >
+                                                        {timeOption}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                         <div className="valid-tooltip">Looks good!</div>
                                         <div className="invalid-tooltip">
@@ -148,7 +176,6 @@ export default function ReservationForm() {
                                         </div>
                                     </div>
                                 </div>
-
                                 <br />
                                 <br />
 

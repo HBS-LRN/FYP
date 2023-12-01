@@ -20,7 +20,7 @@ export default function CustomerLayout() {
     const { user, setUser, setToken, setCartQuantity, cartQuantity } = useStateContext()
     const navigate = useNavigate();
     const location = useLocation();
-
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [shoppingCarts, setShoppingCarts] = useState([]);
     const { setWarningNotification } = useNotificationContext();
@@ -34,54 +34,54 @@ export default function CustomerLayout() {
         var pusher = new Pusher('2124f91a86a5182a0c5d', {
             cluster: 'ap1'
         });
-       
-            var channel = pusher.subscribe('login-channel');
-            channel.bind('login-event', function (data) {
+
+        var channel = pusher.subscribe('login-channel');
+        channel.bind('login-event', function (data) {
 
 
-                console.log(data)
-                console.log(user)
-                //if it is login user id
-                if (data.loginUser.id === user.id) {
+            console.log(data)
+            console.log(user)
+            //if it is login user id
+            if (data.loginUser.id === user.id) {
 
-                    const payload = {
-                        user_id: user.id
+                const payload = {
+                    user_id: user.id
 
-                    };
-                    axiosClient.post('/logout', payload)
-                        .then(() => {
+                };
+                axiosClient.post('/logout', payload)
+                    .then(() => {
 
-                            let timerInterval;
-                            Swal.fire({
-                                title: "Account Deactivated,System Sign Out Forced.",
-                                html: "You will be redirect to login page in <b></b> milliseconds.",
-                                timer: 4000,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                    Swal.showLoading();
-                                    const timer = Swal.getPopup().querySelector("b");
-                                    timerInterval = setInterval(() => {
-                                        timer.textContent = `${Swal.getTimerLeft()}`;
-                                    }, 100);
-                                },
-                                willClose: () => {
-                                    clearInterval(timerInterval);
-                                }
-                            }).then((result) => {
-                                setUser(null);
-                                setToken(null);
-                                setCartQuantity(null);
-                                navigate("/login");
-                                window.location.reload();
-
-                            });
+                        let timerInterval;
+                        Swal.fire({
+                            title: "Account Deactivated,System Sign Out Forced.",
+                            html: "You will be redirect to login page in <b></b> milliseconds.",
+                            timer: 4000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        }).then((result) => {
+                            setUser(null);
+                            setToken(null);
+                            setCartQuantity(null);
+                            navigate("/login");
+                            window.location.reload();
 
                         });
-                }
+
+                    });
+            }
 
 
-            });
-        
+        });
+
     }, [user]);
     const isHomeActive = () => {
         // Check if the current path is not in the specified paths
@@ -267,6 +267,32 @@ export default function CustomerLayout() {
 
 
     }
+
+
+    const getCategories = async () => {
+
+        console.log("getting")
+
+        try {
+            await axiosClient.get(`category`)
+                .then(({ data }) => {
+                    console.log(data)
+
+                    setCategories(data)
+                });
+        } catch (error) {
+            const response = error.response;
+            console.log(response);
+
+        }
+    }
+
+    //fetch categories data
+    useEffect(() => {
+        getCategories();
+
+    }, [])
+
     return (
         <body class="menu-layer">
             <div class="page-loader">
@@ -312,12 +338,14 @@ export default function CustomerLayout() {
                                         <a href="#">Order</a>
                                         <div class="dropdown">
                                             <Link to="/nutritionMenuCard/8">Healthy Recipe</Link>
-                                            <Link to="/orderMenuCard/1">Appertize Recipe</Link>
-                                            <Link to="/orderMenuCard/2">Dimsum Receipt</Link>
-                                            <Link to="/orderMenuCard/3">Noodle Receipt</Link>
-                                            <Link to="/orderMenuCard/4">Rice Receipt</Link>
-                                            <Link to="/orderMenuCard/5">Chicken Receipt</Link>
-                                            <Link to="/orderMenuCard/6">Beverage Receipt</Link>
+
+                                            {categories && categories.map((category) => (
+                                                category.id !== 8 && (
+                                                    <Link to={`/orderMenuCard/${category.id}`} key={category.id}>
+                                                        {category.name} Recipe
+                                                    </Link>
+                                                )
+                                            ))}
 
                                         </div>
                                     </li>
