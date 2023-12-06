@@ -40,7 +40,7 @@ export default function StaffLayout() {
             .then(() => {
                 setUser(null);
                 setToken(null);
-                setCartQuantity(null);
+          
 
                 navigate("/login");
                 window.location.reload();
