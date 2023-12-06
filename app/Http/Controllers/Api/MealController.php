@@ -85,12 +85,13 @@ class MealController extends Controller
         return $output;
     }
 
-    public function adminSearchMeals(Request $request){
+    public function adminSearchMeals(Request $request)
+    {
         $searchQuery = $request->get('searchQuery');
 
         $meals = Meal::query()
-        ->where('meal_name', 'LIKE', "%$searchQuery%")
-        ->get();
+            ->where('meal_name', 'LIKE', "%$searchQuery%")
+            ->get();
 
         return response()->json($meals);
     }
@@ -212,13 +213,13 @@ class MealController extends Controller
                 )
                 ->where('meal_order_details.meal_id', $meal_id)
                 ->get();
-    
+
             // Now, for each meal order detail, get the user details
             foreach ($mealOrderDetails as $mealOrderDetail) {
                 $user = User::find($mealOrderDetail->user_id);
                 $mealOrderDetail->username = $user ? $user->name : null;
             }
-    
+
             return response()->json(['meal_order_details' => $mealOrderDetails]);
         } catch (\Exception $e) {
             return response()->json([
@@ -226,7 +227,7 @@ class MealController extends Controller
             ], 500);
         }
     }
-    
+
 
 
 
@@ -288,7 +289,7 @@ class MealController extends Controller
             $request->validate([
                 'reply_comment' => 'required|string', // Update field name to 'rate_command'
             ]);
-           
+
             // Update rate_command
             $mealOrderDetail->update([
                 'reply_comment' => $request->reply_comment, // Update field name to 'rate_command'
@@ -300,49 +301,49 @@ class MealController extends Controller
         }
     }
 
- 
+
     public function update(MealStoreRequest $request, $id)
     {
         try {
-          
+
             // Find meal
             $meal = Meal::find($id);
-    
+
             if (!$meal) {
                 return response()->json(['message' => 'Meal Not Found.'], 404);
             }
-    
+
             // Update meal attributes
             $meal->meal_price = $request->meal_price;
             $meal->meal_name = $request->meal_name;
             $meal->meal_desc = $request->meal_desc;
             $meal->category_id = $request->category_id;
-    
+
             // Handle meal image update
             if ($request->hasFile('meal_image')) {
                 $data['meal_image'] = $request->file('meal_image')->store('images', 'public');
                 $meal->meal_image =  $data['meal_image'];
             }
-    
+
             // Save the updated meal
             $meal->save();
-    
+
             // Update meal ingredients
             $ingredientIds = $request->input('ingredient_id', []);
             $this->updateMealIngredients($meal, $ingredientIds, $request->unit, $request->cookMethod);
-    
+
             return response()->json(['message' => 'Meal successfully updated.'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Something went really wrong! ' . $e->getMessage()], 500);
         }
     }
-  
+
     private function updateMealIngredients(Meal $meal, array $ingredients, array $unit, array $cookMethod)
     {
         try {
             // Delete existing Meal Ingredients for the given meal
             MealIngredient::where('meal_id', $meal->id)->delete();
-    
+
             $cookMethodCalories = [
                 'water_boiled' => 0,
                 'fried' => 100,
@@ -352,9 +353,9 @@ class MealController extends Controller
                 'steam' => 20,
                 'spicy' => 150,
             ];
-    
+
             $totalCalorie = 0.00; // Initialize the total calorie to zero
-    
+
             foreach ($ingredients as $key => $ingredient) {
                 $mealIngredient = new MealIngredient([
                     'ingredient_id' => $ingredient,
@@ -362,23 +363,23 @@ class MealController extends Controller
                     'unit' => $unit[$key],
                     'cookMethod' => $cookMethod[$key],
                 ]);
-    
+
                 // Retrieve the Ingredient model for the current ingredient
                 $ingredientModel = Ingredient::find($ingredient);
-    
+
                 // Add the calorie of the current ingredient to the total calorie
                 if ($ingredientModel) {
                     $totalCalorie += $ingredientModel->calorie * $unit[$key];
                 }
-    
+
                 // Add the calorie based on the selected cook method
                 if (isset($cookMethodCalories[$cookMethod[$key]])) {
                     $totalCalorie += $cookMethodCalories[$cookMethod[$key]];
                 }
-    
+
                 $mealIngredient->save();
             }
-    
+
             // Update the total_calorie attribute of the Meal model with the calculated total calorie
             $meal->total_calorie = $totalCalorie;
             $meal->save();
@@ -401,7 +402,7 @@ class MealController extends Controller
 
         // Delete associated Meal Ingredients
         MealIngredient::where('meal_id', $id)->delete();
-        MealOrderDetail::where('meal_id', $id)->delete(); 
+        MealOrderDetail::where('meal_id', $id)->delete();
 
         return response()->json(['message' => $meal], 200);
     }
@@ -430,17 +431,20 @@ class MealController extends Controller
     }
     public function showRating()
     {
-        $mealRating = MealOrderDetail::with(['meal.orders.user'])
+        $mealRating = MealOrderDetail::with(['meal','order.user'])
             ->whereNotNull('rating_comment')
             ->whereNotNull('rating_star')
             ->whereNull('reply_comment')
             ->get();
 
         return response()->json($mealRating);
+
+
+      
     }
     public function showRatingForm($id)
     {
-        $mealRating = MealOrderDetail::with(['meal.orders.user'])
+        $mealRating = MealOrderDetail::with(['meal','order.user'])
             ->where('id', $id)
             ->whereNotNull('rating_comment')
             ->whereNotNull('rating_star')
@@ -468,6 +472,4 @@ class MealController extends Controller
         $meals = Meal::where('meal_name', 'like', '%' . $search . '%')->get();
         return response()->json($meals);
     }
-
-   
 }
