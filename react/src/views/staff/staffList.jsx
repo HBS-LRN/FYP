@@ -72,15 +72,33 @@ export default function StaffList() {
         }
     };
     
-      const handleRoleChange = (id, selectedOption) => {
-        
+    const handleRoleChange = (id, newRole) => {
         const updatedRole = staffList.map((staff) =>
-        staff.id === id ? { ...staff, role: selectedOption.value } : order
+            staff.id === id ? { ...staff, role: newRole } : staff
         );
     
         setStaffList(updatedRole);
     };
-     
+    
+    const handleSearchChange = (e) => {
+        const query = e.target.value;
+        console.log("cuqar:", query);
+        if(query==""){
+            getStaff(); 
+        }else{
+            axiosClient.get(`/searchStaff/${query}`)
+            .then((response) => {
+                console.log("search result:", response);
+                setStaffList(response.data.users);  // Assuming the response structure has a 'users' key
+            })
+            .catch((error) => {
+                console.error('Error searching meals:', error);
+            });
+        }
+        
+        
+    }
+    
       var staffDetail = "";
       staffDetail = staffList.map((item,index) =>(
             <tr>
@@ -99,13 +117,11 @@ export default function StaffList() {
                     value: item.role,
                     label: getRoleLabel(item.role)
                 }}
-
-                onChange={() => handleRoleChange(item.id, selectedOption)}
+                onChange={(selectedOption) => handleRoleChange(item.id, selectedOption.value)}
                 options={[
                     { value: 2, label: 'Admin' },
                     { value: 1, label: 'Staff' },
                     { value: 3, label: 'Delivery Man' },
-                    
                 ]}
             />
         </td>
@@ -150,6 +166,14 @@ export default function StaffList() {
                     <div class="card-body">
                         <div>
                             <a href="/addStaff" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Staff</a>
+                            <div className="searchBox">
+                            <input
+                                type="search"
+                                placeholder="Search by name......"
+                               
+                                onChange={handleSearchChange}
+                            />
+                            </div>
                         </div>
                         <div class="table-responsive mt-3">
                             <table class="table table-centered datatable dt-responsive nowrap" style={tableStyle}>

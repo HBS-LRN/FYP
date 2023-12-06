@@ -6,8 +6,10 @@ import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import Swal from 'sweetalert2'
 import axiosClient from "../../../axios-client.js";
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 const AddCustomer = () => {
+    const { user, token, setToken, setCartQuantity } = useStateContext()
     const [customer, setCustomer] = useState({
         name: '',
         email: '',
@@ -17,6 +19,7 @@ const AddCustomer = () => {
       });
       const [errors, setErrors] = useState({});
       const [loading, setLoading] = useState(false);
+      const [emailExists, setEmailExists] = useState(false);
       const validateForm = () => {
         const newErrors = {};
     
@@ -64,7 +67,18 @@ const AddCustomer = () => {
         return Object.keys(newErrors).length === 0;
       };
  
-
+      useEffect(() => {
+        if (customer.email) {
+            axiosClient.post('/checkEmailExists', { email: customer.email })
+                .then(response => {
+                    console.log("email",response.data.exists);
+                    setEmailExists(response.data.exists);
+                })
+                .catch(error => {
+                    console.error('Error checking email existence:', error);
+                });
+        }
+    }, [customer.email]);
        const createCustomer = (e) => {
         e.preventDefault();
         console.log("Form submitted");
@@ -81,31 +95,57 @@ const AddCustomer = () => {
             gender: customer.gender.value,
             password: "securepassword123?"
         };
-        useEffect(() => {
-            if (customer.email) {
-                axiosClient.post('/checkEmailExists', { email: customer.email })
-                    .then(response => {
-                        setEmailExists(response.data.exists);
-                    })
-                    .catch(error => {
-                        console.error('Error checking email existence:', error);
-                    });
-            }
-        }, [customer.email]);
+       
         console.log(data);
+        let timerInterval;
+        Swal.fire({
+        title: "Waiting process",
+        html: "Left <b></b> seconds.",
+        timer: 5000, // Set the timer to 5 seconds (5000 milliseconds)
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(0)}`;
+            }, 100);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("The alert was closed by the timer");
+        }
+        });
 
         // Move the useEffect here
         axiosClient.post('/createUser', data)
             .then(res => {
                 console.log("customer Data:", data);
-                
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'New customer had been successfully added!',
-                    showConfirmButton: false,
-                    timer: 1500
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Add New Customer", 
+                    ActionIcon:"fa-solid fa-pen"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'New customer had been successfully added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
                 });
+              
             })
             .catch(error => {
                 console.log(error);

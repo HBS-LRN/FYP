@@ -1,11 +1,10 @@
 .scollBoxReservation{
-
     margin: 0px auto;
     width: fit-content;
     height: fit-content;
     overflow: hidden;
 }
-
+html{background-color: white;}
 .fpmbg{
     margin: auto;
     float: left;
@@ -19,6 +18,10 @@
     background-repeat: no-repeat;
     background-size:cover;
     background-position: center;
+    
+}
+form{
+    background-color: white;
 }
 .fpmbg .table8:hover,.fpmbg .table4:hover,.fpmbg .table12:hover,.fpmbg .table2:hover{
     
@@ -37,7 +40,16 @@
     background-position: center;
     
 }
-
+.fpmbg .reservedTable8{
+    
+    background-image: url(../img/table8Reserved.png);
+    width: 130px;
+    height:130px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+    
+}
 
 .fpmbg .tableBox{
     float: left;
@@ -61,10 +73,29 @@
     width: 130px;
     height: 130px;
     position: relative;
-    bottom: 1px;
+  
     right: 0px;
     animation: circle 5s infinite linear;
     display:none;
+}
+.fpmbg .table8 .reselectBorder,.fpmbg .table4 .reselectBorder,.fpmbg .table12 .reselectBorder,.fpmbg .table2 .reselectBorder  {
+    background:url(../img/reselectBorder.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 130px;
+    height: 130px;
+    position: relative;
+    bottom: 1px;
+    right: 0px;
+    animation: circle 5s infinite linear;
+    display:block;
+}
+.bottom1{
+    bottom: 1px;
+}
+.bottom130{
+    bottom: 130px;
 }
 .fpmbg .table8:hover .selectedBorder,.fpmbg .table4:hover .selectedBorder,.fpmbg .table12:hover .selectedBorder,.fpmbg .table2:hover .selectedBorder   
 {
@@ -74,10 +105,34 @@
 .fpmbg .table4 .selectedBorder{
     width: 80px;
     height: 80px;
+    left: 0px;
+}
+.bottom0{
+    bottom: 0px;
+}
+.bottom80{
+    bottom: 80px;
+}
+.fpmbg .table4 .reselectBorder{
+    width: 80px;
+    height: 80px;
     bottom: 0px;
     left: 0px;
 }
 .fpmbg .table12 .selectedBorder{
+    width: 80px;
+    height: 80px;
+
+    
+    left: 60px;
+}
+.top0{
+    top:0px;
+}
+.topMinus80{
+    top:-80px;
+}
+.fpmbg .table12 .reselectBorder{
     width: 80px;
     height: 80px;
     top: 0px;
@@ -86,10 +141,21 @@
 .fpmbg .table2 .selectedBorder{
     width: 50px;
     height: 50px;
-    top: 20px;
     right: 5px;
 }
 
+.top20{
+    top: 20px;
+}
+.topMinus30{
+    top: -30px;
+}
+.fpmbg .table2 .reselectBorder{
+    width: 50px;
+    height: 50px;
+    top: 20px;
+    right: 5px;
+}
 @keyframes circle{
     0%{
         transform:rotate(0);
@@ -109,6 +175,14 @@
 }
 .fpmbg .table4{
     background-image: url(../img/table4.png);
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+.fpmbg .reservedTable4{
+    background-image: url(../img/table4Reserved.png);
     width: 80px;
     height: 80px;
     background-repeat: no-repeat;
@@ -142,6 +216,15 @@
     background-size:cover;
     background-position: center;
 }
+.fpmbg .reservedTable12{
+    
+    background-image: url(../img/table12Reserved.png);
+    width: 202px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
 .fpmbg .table12Left{
     margin-bottom: 5%;
 }
@@ -158,9 +241,22 @@
 .fpmbg .table2Left{
     margin-right: 8px;
 }
+.error{
+    box-shadow: 0px 0px 5px red;
+}
 .fpmbg .table2{
     
     background-image: url(../img/table2.png);
+    width: 40px;
+   
+    height: 90px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+.fpmbg .reservedTable2{
+    
+    background-image: url(../img/table2Reserved.png);
     width: 40px;
    
     height: 90px;
@@ -189,7 +285,7 @@ fieldset {
   fieldset legend{
       
       color: #4c4a4a;
-      font-size: 18px;
+      font-size: 13px;
   }
   fieldset p,fieldset span{
     font-size: 15px;
@@ -252,45 +348,25 @@ fieldset {
     justify-content: center;
     text-align: center;
 }
-.popUpBoxRight .tableInforBox .fa-map-marker-alt{
-    font-size: 40px;
-    color: green;
-    border-radius: 100px;
-    border:10px green solid;
-    padding: 20px 25px;
-}
-.popUpBoxRight .tableInforBox .tableNum{
-    padding-top: 20px;
-    font-weight: bolder;
-    font-size: 25px;
-    margin: 0%;
-}
-.popUpBoxRight .paxBox{
+
+
+.popUpBoxLeft .paxBox{
     margin-top: 10px;
     text-align: left;
 }
-.popUpBoxRight .paxBox p{
+.popUpBoxLeft .paxBox p{
     padding: 0px;
 }
+.popUpBoxRight .paxBox .title{
+    font-size: 13px;
+}
 
-.popUpBoxRight .dateTimeBox{
-    margin-top: 10px;
-    display: flex;
-}
-.popUpBoxRight .dateTimeBox legend{
-    font-size: 18px;
-}
-.popUpBoxRight .dateTimeBox .currentDateBox .date,.popUpBoxRight .dateTimeBox .currentTimeBox .time{
-    font-size: 125%;
-    margin: 0%;
-    font-weight: bolder;
-}
 .popUpBoxRight .custNameBox, .popUpBoxRight .custContactBox{
     margin-top: 10px;
 }
-.popUpBoxRight .custNameBox input, .popUpBoxRight .custContactBox input{
+.popUpBoxRight .genderBox input,.popUpBoxRight .custNameBox input, .popUpBoxRight .custContactBox input{
     padding: 5px;
-    width: 90%;
+    width: 95%;
     outline: none;
     
 }
@@ -302,10 +378,13 @@ fieldset {
     resize: none;
     outline: none;
     padding: 10px;
-    width: 90%;
-    height: 100px;
+    width: 100%;
+    height: 37px;
     font-weight: bold;
     border-radius: 5px;
+}
+.popUpBoxLeft .remarkBox #remark::-webkit-scrollbar{
+    width: 0px;
 }
 .popUpBoxRight .bookBtnBox{
     position: fixed;
@@ -330,6 +409,21 @@ fieldset {
     text-decoration: none;
     color: white;
 }
+.popUpBoxRight .bookBtnBox .changeBtn:hover{
+    background-color: rgb(2, 135, 165);
+}
+.popUpBoxRight .bookBtnBox .changeBtn{
+    flex-basis: 100%;
+    font-size: 20px;
+    font-weight: bolder;
+    background-color: rgb(0, 157, 192);
+    text-decoration: none;
+    padding: 10px 8.2vh;
+    float: right;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
 
 /* left pop up style */
 .popUpBoxLeft .userInforBox{
@@ -337,35 +431,68 @@ fieldset {
     justify-content: center;
     text-align: center;
 }
-.popUpBoxLeft .userInforBox .inforBox .fa-user{
-    font-size: 40px;
+.popUpBoxLeft .userInforBox .inforBox .fa-user,.popUpBoxRight .tableInforBox .fa-map-marker-alt {
+    font-size: 25px;
     color: green;
     border-radius: 100px;
     border:3px green solid;
     padding: 20px 25px;
 }
-.popUpBoxLeft .userInforBox .inforBox .name{
-    margin-top: 10px;
-   font-size: 25px;
-   font-weight: bolder;
+.popUpBoxRight .tableInforBox .tableNum,.popUpBoxLeft .userInforBox .inforBox .name{
+    padding-top: 10px;
+    font-weight: bolder;
+    font-size: 20px;
+    margin: 0%;
+}
+.popUpBoxRight .tableInforBox .tableNum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.popUpBoxRight .tableInforBox .tableNum .fa-trash{
+    color: rgb(155, 6, 6);
+    margin-left: 10px;
+    font-size: 15px;;
+    border: rgb(167, 17, 17) solid 2px;
+    padding: 6px 8px;
+    border-radius: 50px;
+}
+.popUpBoxRight .tableInforBox .tableNum .fa-trash:hover{
+    color: rgb(234, 110, 110);
+    border: rgb(234, 110, 110) solid 2px;
+}
+.popUpBoxRight .tableInforBox .tableNum input{
+    margin-left: 2px;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid grey;
+    margin-bottom: 5px;
+    text-align: center;
+    width: 40%;
 }
 .popUpBoxLeft .numOfReserveSeatBox{ 
     margin-top: 10px;
 }
-.popUpBoxLeft .genderBox{
+.popUpBoxLeft .numOfReserveSeatBox .title{
+    display: flex;
+    align-items: center;
+}
+.popUpBoxLeft .numOfReserveSeatBox .num{
+    padding: 5px 10px;
+    width: 80%;
+    margin-left: 5px;
+    outline: 1px grey solid;
+    border: none;
+    
+}
+.popUpBoxRight .genderBox{
     margin-top: 10px;
 }
-.popUpBoxLeft .genderBox .gender{
-    margin: 0%;
-    font-weight: bolder;
 
-}
-.popUpBoxLeft i{
+.popUpBoxLeft i,.popUpBoxRight i{
     color: #000;
 }
-.popUpBoxLeft .genderBox .gender i{
-    margin-right: 10px;
-}
+
 .popUpBoxLeft .contactNumbox{
     margin-top: 10px;
 }
@@ -387,6 +514,16 @@ fieldset {
 }
 .popUpBoxLeft .dateTimeBox .timeBox{
     margin-top: 10px;
+}
+.popUpBoxLeft .dateTimeBox .timeBox .timeSelectBox{
+    display: flex;
+   justify-items: center;
+   align-items: center;
+}
+.popUpBoxLeft .dateTimeBox .timeBox .timeSelectBox .fa-clock{
+    position: relative;
+    right: 25px;
+    font-size: 15px;
 }
 .popUpBoxLeft .dateTimeBox .timeBox .sessionTime{
     display: flex;

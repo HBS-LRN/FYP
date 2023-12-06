@@ -21,6 +21,9 @@ class CreateReservationsTable extends Migration
             $table->string('reservation_time');
             $table->string('reservation_status');
             $table->integer('pax');
+            $table->string('cust_email')->nullable();
+            $table->string('cust_name')->nullable();
+            $table->string('cust_contact')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();
             $table->foreign('user_id')

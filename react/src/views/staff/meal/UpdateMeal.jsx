@@ -9,8 +9,10 @@ import axiosClient from "../../../axios-client.js";
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2'
 import { Navigate } from 'react-router';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 const UpdateMeal = () => {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [activeTab, setActiveTab] = useState(0);
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -200,12 +202,27 @@ const UpdateMeal = () => {
                 .then(res => {
                     console.log(res.message);
                     // Show SweetAlert success message
+                    const activeData = {
+                        user_id:user.id,
+                        Action: "Updated meal", 
+                        ActionIcon:"fa-solid fa-pen"
+                    }
+                    axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
                     Swal.fire({
                         title: "Update!",
-                        text: "Your file has been Update.",
+                        text: "Selected meal has been updated.",
                         icon: "success"
                       });
                       setRedirect(true);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+                    
                 })
                 .catch(function (error) {
                     if (error.response) {

@@ -6,8 +6,10 @@ import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import Swal from 'sweetalert2'
 import axiosClient from "../../axios-client";
+import { useStateContext } from "../../contexts/ContextProvider";
 
 const AddStaff = () => {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [staff, setStaff] = useState({
         name: '',
         email: '',
@@ -103,25 +105,62 @@ const AddStaff = () => {
         };
 
         console.log(data);
+        let timerInterval;
+        Swal.fire({
+        title: "Waiting process",
+        html: "Left <b></b> seconds.",
+        timer: 5000, // Set the timer to 5 seconds (5000 milliseconds)
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(0)}`;
+            }, 100);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("The alert was closed by the timer");
+        }
+        });
 
         // Move the useEffect here
         axiosClient.post('/createStaff', data)
             .then(res => {
-             setStaff({
-                name: '',
-                email: '',
-                phone: '',
-                birthdate: '',
-                gender: { value: '', label: '' }, 
-                role: { value: '', label: '' }, 
-              });
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'New staff had been successfully added!',
-                    showConfirmButton: false,
-                    timer: 1500
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Added new staff", 
+                    ActionIcon:"fa-solid fa-upload"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    setStaff({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        birthdate: '',
+                        gender: { value: '', label: '' }, 
+                        role: { value: '', label: '' }, 
+                      });
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'New staff had been successfully added!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
                 });
+
             })
             .catch(error => {
                 console.log(error);

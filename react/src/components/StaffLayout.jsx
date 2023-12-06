@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
-
+import axiosClient from "../axios-client.js";
+import { useNavigate } from "react-router-dom";
 import '../../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css';
 
 
@@ -17,20 +18,61 @@ import '../../assets/css/app.min.css';
 
 export default function StaffLayout() {
 
-    const { user, token, setToken, setCartQuantity } = useStateContext()
 
-    console.log(user.role)
+    const { user, token} = useStateContext();
+    const [notices, setNotices] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        fetchStaffNotice();
+
+    }, []);
+    //   const remind = () =>{
+    //     getSetNotice(setStaffNotice);
+    //   }
+    const onLogout = ev => {
+        ev.preventDefault();
+
+        const payload = {
+            user_id: user.id
+
+        };
+        axiosClient.post('/logout', payload)
+            .then(() => {
+                setUser(null);
+                setToken(null);
+                setCartQuantity(null);
+
+                navigate("/login");
+                window.location.reload();
+            });
+    };
+    const fetchStaffNotice = () => {
+
+        axiosClient.get(`/getNotification`)
+            .then(({ data }) => {
+                console.log(data,"data")
+                setNotices(data);
+            })
+            .catch((error) => {
+                console.error('API request error:', error);
+            });
+
+    };
+   
     if (!user || !token) {
         return <Navigate to="/authRequired" />;
     } else if (parseInt(user.role) !== 1 && parseInt(user.role) !== 2 && parseInt(user.role) !== 3) {
         return <Navigate to="/accessProhibited" />;
     }
 
+
     return (
         <div>
             <Helmet>
 
                 <link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+                <link rel="stylesheet" href="../assets/css/reportStyle.css" />
+
             </Helmet>
 
             <body data-sidebar="dark">
@@ -62,29 +104,10 @@ export default function StaffLayout() {
                                     </a>
                                 </div>
 
-                                <button
-                                    type="button"
-                                    className="btn btn-sm px-3 font-size-24 header-item waves-effect"
-                                    id="vertical-menu-btn"
-                                >
-                                    <i className="ri-menu-2-line align-middle"></i>
-                                </button>
-
-                                {/* App Search */}
-                                <form className="app-search d-none d-lg-block">
-                                    <div className="position-relative">
-                                        <input type="text" className="form-control" placeholder="Search..." />
-                                        <span className="ri-search-line"></span>
-                                    </div>
-                                </form>
                             </div>
 
                             <div className="d-flex">
-                                <div className="dropdown d-none d-lg-inline-block ms-1">
-                                    <button type="button" className="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
-                                        <i className="ri-fullscreen-line"></i>
-                                    </button>
-                                </div>
+                             
 
                                 <div className="dropdown d-inline-block">
                                     <button
@@ -95,93 +118,60 @@ export default function StaffLayout() {
                                         aria-expanded="false"
                                     >
                                         <i className="ri-notification-3-line"></i>
-                                        <span className="noti-dot"></span>
+                                        {notices.length > 0 ? <span className="noti-dot"></span> : ''}
+
                                     </button>
                                     <div
                                         className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                                        aria-labelledby="page-header-notifications-dropdown"
+                                       
                                     >
-                                        <div className="p-3">
+                                        <div className="p-4">
                                             <div className="row align-items-center">
                                                 <div className="col">
                                                     <h6 className="m-0"> Notifications </h6>
                                                 </div>
-                                                <div className="col-auto">
-                                                    <a href="#!" className="small">
-                                                        View All
-                                                    </a>
-                                                </div>
+
                                             </div>
                                         </div>
-                                        <div data-simplebar style={{ maxHeight: "230px" }}>
-                                            <a href="#" className="text-reset notification-item">
-                                                <div className="d-flex">
-                                                    <div className="avatar-xs me-3">
-                                                        <span className="avatar-title bg-primary rounded-circle font-size-16">
-                                                            <i className="ri-shopping-cart-line"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <h6 className="mb-1">Your order is placed</h6>
-                                                        <div className="font-size-12 text-muted">
-                                                            <p className="mb-1">If several languages coalesce the grammar</p>
-                                                            <p className="mb-0">
-                                                                <i className="mdi mdi-clock-outline"></i> 3 min ago
-                                                            </p>
+                                        <div className='notificationBox' style={{ maxHeight: "230px" }}>
+                                            {notices.length > 0 && notices ? (
+                                                notices.map((item) => (
+                                                    <a href="#" className="text-reset notification-item" key={item.id}>
+                                                        <div className="d-flex">
+                                                            <div className="avatar-xs me-3">
+                                                                <span className="avatar-title bg-primary rounded-circle font-size-16">
+                                                                    {item.user.image ? (
+                                                                        <img
+                                                                            src={`${import.meta.env.VITE_API_BASE_URL}/${item.user.image}`}
+                                                                            width="50"
+                                                                            height="50"
+                                                                            alt="user-avatar"
+                                                                        />
+                                                                    ) : (
+                                                                        <i className="fa-solid fa-user"></i>
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <h6 className="mb-1">{item.user.name}</h6>
+                                                                <div className="font-size-12 text-muted">
+                                                                    <p className="mb-1">{item.message}</p>
+                                                                    <p className="mb-0 font-size-12">
+                                                                        <i className="mdi mdi-clock-outline"></i> {item.time}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" className="text-reset notification-item">
-                                                <div className="d-flex">
-                                                    <img src="../assets/img/users/avatar-3.jpg" className="me-3 rounded-circle avatar-xs" alt="user-pic" />
-                                                    <div className="flex-1">
-                                                        <h6 className="mb-1">James Lemire</h6>
-                                                        <div className="font-size-12 text-muted">
-                                                            <p className="mb-1">It will seem like simplified English.</p>
-                                                            <p className="mb-0">
-                                                                <i className="mdi mdi-clock-outline"></i> 1 hours ago
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" className="text-reset notification-item">
-                                                <div className="d-flex">
-                                                    <div className="avatar-xs me-3">
-                                                        <span className="avatar-title bg-success rounded-circle font-size-16">
-                                                            <i className="ri-checkbox-circle-line"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <h6 className="mb-1">Your item is shipped</h6>
-                                                        <div className="font-size-12 text-muted">
-                                                            <p className="mb-1">If several languages coalesce the grammar</p>
-                                                            <p className="mb-0">
-                                                                <i className="mdi mdi-clock-outline"></i> 3 min ago
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a href="#" className="text-reset notification-item">
-                                                <div className="d-flex">
-                                                    <img src="../assets/img/users/avatar-4.jpg" className="me-3 rounded-circle avatar-xs" alt="user-pic" />
-                                                    <div className="flex-1">
-                                                        <h6 className="mb-1">Salena Layfield</h6>
-                                                        <div className="font-size-12 text-muted">
-                                                            <p className="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                                                            <p className="mb-0">
-                                                                <i className="mdi mdi-clock-outline"></i> 1 hours ago
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                                    </a>
+                                                ))
+                                            ) : (
+                                                <div>No Notification</div>
+                                            )}
+
                                         </div>
-                                        <div className="p-2 border-top">
-                                            <div className="d-grid">
-                                                <a className="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                                        <div className="noticeViewMoreCoverBox">
+                                            <div className="noticeViewMoreBox">
+                                                <a className="btn btn-sm btn-link font-size-14 text-center" href="/chat">
                                                     <i className="mdi mdi-arrow-right-circle me-1"></i> View More..
                                                 </a>
                                             </div>
@@ -198,31 +188,26 @@ export default function StaffLayout() {
                                         aria-haspopup="true"
                                         aria-expanded="false"
                                     >
-                                        <img
-                                            className="rounded-circle header-profile-user"
-                                            src="../assets/img/users/avatar-2.jpg"
-                                            alt="Header Avatar"
-                                        />
-                                        <span className="d-none d-xl-inline-block ms-1">Kevin</span>
+                                        {user && user.image ? (
+
+                                            <img
+                                                src={`${import.meta.env.VITE_API_BASE_URL}/${user.image}`}
+                                                width="50" height="50"
+                                            />
+
+                                        ) : (
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                        )}
+                                        <span className="d-none d-xl-inline-block ms-1">{user.name}</span>
                                         <i className="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                                     </button>
                                     <div className="dropdown-menu dropdown-menu-end">
                                         {/* item */}
-                                        <a className="dropdown-item" href="#">
+                                        <a className="dropdown-item" href="/staffProfile">
                                             <i className="ri-user-line align-middle me-1"></i> Profile
                                         </a>
-                                        <a className="dropdown-item" href="#">
-                                            <i className="ri-wallet-2-line align-middle me-1"></i> My Wallet
-                                        </a>
-                                        <a className="dropdown-item d-block" href="#">
-                                            <span className="badge bg-success float-end mt-1">11</span>
-                                            <i className="ri-settings-2-line align-middle me-1"></i> Settings
-                                        </a>
-                                        <a className="dropdown-item" href="#">
-                                            <i className="ri-lock-unlock-line align-middle me-1"></i> Lock screen
-                                        </a>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item text-danger" href="#">
+                                        <a className="dropdown-item text-danger" onClick={onLogout} >
                                             <i className="ri-shut-down-line align-middle me-1 text-danger"></i> Logout
                                         </a>
                                     </div>
@@ -275,16 +260,16 @@ export default function StaffLayout() {
                                                     <span>Manage Meal</span>
                                                 </a>
                                                 <ul className="sub-menu" aria-expanded="false">
-                                            <li>
-                                                <a href="/mealList">Meal List</a>
-                                            </li>
-                                            <li>
-                                                <a href="/categoryList">Category List</a>
-                                            </li>
-                                            <li>
-                                                <a href="/ingredientList">Ingredient List</a>
-                                            </li>
-                                        </ul>
+                                                    <li>
+                                                        <a href="/mealList">Meal List</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/categoryList">Category List</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/ingredientList">Ingredient List</a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                             <li>
                                                 <a href="javascript: void(0);" className="has-arrow waves-effect">
@@ -293,9 +278,9 @@ export default function StaffLayout() {
                                                     <span> Manage Customer</span>
                                                 </a>
                                                 <ul className="sub-menu" aria-expanded="false">
-                                                <li>
-                                                <a href="/customerOrderList">Customers Orders List</a>
-                                            </li>
+                                                    <li>
+                                                        <a href="/customerOrderList">Customers Orders List</a>
+                                                    </li>
                                                     <li>
                                                         <a href="/reservation">Add Reservation</a>
                                                     </li>
@@ -323,7 +308,7 @@ export default function StaffLayout() {
                                                     <li>
                                                         <a href="/staffList">Staff List</a>
                                                     </li>
-                                                   
+
 
                                                 </ul>
                                             </li>
@@ -353,18 +338,12 @@ export default function StaffLayout() {
                                                 </a>
                                                 <ul className="sub-menu" aria-expanded="false">
                                                     <li>
-                                                        <a href="charts-apex.html">Annual Sale Report</a>
+                                                        <a href="/mealRevenueReport">Meal Sale Report</a>
                                                     </li>
                                                     <li>
-                                                        <a href="/customers">Customers Report</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/addCustomer">Staff Report</a>
+                                                        <a href="/salesReport">Sales Analytic Report</a>
                                                     </li>
 
-                                                    <li>
-                                                        <a href="charts-knob.html">Menu Report</a>
-                                                    </li>
 
                                                 </ul>
                                             </li>

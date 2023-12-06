@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
+import { useStateContext } from "../../../contexts/ContextProvider";
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 export default function AddIngredient() {
@@ -10,6 +11,7 @@ export default function AddIngredient() {
         stock: ''
 
     })
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const handleInput = (e) => {
@@ -62,14 +64,29 @@ export default function AddIngredient() {
             ingredient_name: '',
             calorie: ''
           });
+          const activeData = {
+            user_id:user.id,
+            Action: "Added new ingredient", 
+            ActionIcon:"fa-solid fa-upload"
+        }
+        axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'New Ingredient Had Been Successfully Added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
           // Show SweetAlert success message
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'New Ingredient Had Been Successfully Added!',
-            showConfirmButton: false,
-            timer: 1500
-          });
+          
         })
         .catch(error => {
           console.log(error);

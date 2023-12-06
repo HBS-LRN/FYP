@@ -183,4 +183,23 @@ class ChatController extends Controller
     
         return response()->json($allChats);
     }
+    public function getUnseenChats()
+    {
+        try {
+            // Retrieve unseen chats where admin_id is 1
+            $unseenChats = Chat::with(['user' => function ($query) {
+                $query->select('id', 'name', 'image'); // Add any other user fields you want
+            }])
+                ->where('admin_id', 1)
+                ->where('seen', 'N')
+                ->get();
+    
+            return response()->json($unseenChats);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve unseen chats'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
 }

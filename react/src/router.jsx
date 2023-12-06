@@ -58,9 +58,10 @@ import RequestBMI from "./views/auth/Request-BMI";
 import ReservationForm from "./views/reservation/ReservationForm";
 import CustomersList from "./views/staff/customer/CustomerOrderList";
 import VerifyCustomer from "./views/staff/customer/verifyAccount";
-
+import StaffProfile from "./views/staff/staffProfile";
 import AddCustomer from "./views/staff/customer/AddCustomer";
-
+import SalesAnalyticReport from "./views/staff/report/salesAnalyticsReport";
+import MealTotalRevenueReport from "./views/staff/report/mealTotalRevenueReport";
 import AddStaff from "./views/staff/addStaff"
 import StaffList from "./views/staff/staffList"
 import CompletedDeliveryList from "./views/staff/delivery/CompletedList";
@@ -342,6 +343,9 @@ const router = createBrowserRouter([
       {
         path: '/activateCustomer',
         element: <ActivateCustomer />
+      },{
+        path: '/staffProfile',
+        element: <StaffProfile />
       },
       //protected router, required login from user
       {
@@ -357,7 +361,13 @@ const router = createBrowserRouter([
           }, {
             path: '/staffList',
             element: <StaffList />
-          }
+          },{
+            path: '/mealRevenueReport',
+            element :<MealTotalRevenueReport/>
+          },{
+            path: '/salesReport',
+            element :<SalesAnalyticReport/>
+          } 
         ]
       }
 

@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
 import Select from 'react-select';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export default function CustomerOrderList() {
+   const { user, token, setToken, setCartQuantity } = useStateContext();
    const [customerOrderList, setCustomerOrderList] = useState([]);
    const [filter, setFilter] = useState('all');
     useEffect(() => {
@@ -64,12 +66,27 @@ export default function CustomerOrderList() {
             if (result.isConfirmed) {
                 axiosClient.delete(`/deleteCustomerOrders/${id}`)
             .then(response => {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                  });
-                  getCustomerOrder();
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Deleted the customer's order", 
+                    ActionIcon:"fa-solid fa-trash"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Customer's order has been deleted.",
+                        icon: "success"
+                      });
+                      getCustomerOrder();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+              
                 console.log("delete",response.data)
                 
             })
@@ -106,12 +123,28 @@ export default function CustomerOrderList() {
             if (result.isConfirmed) {
                 axiosClient.post(`/updateOrderDetail/${id}`,orderToUpdate)
             .then(response => {
-                Swal.fire({
-                    title: "Updated!",
-                    text: "Customer's order has been updated.",
-                    icon: "success"
-                  });
-                  getCustomerOrder();
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Updated customer's Order", 
+                    ActionIcon:"fa-solid fa-pen"
+                }
+
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        title: "Updated!",
+                        text: "Customer's order has been updated.",
+                        icon: "success"
+                      });
+                      getCustomerOrder();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+                
                
                 
             })

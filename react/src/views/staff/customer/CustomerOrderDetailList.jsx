@@ -6,9 +6,10 @@ import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Helmet } from 'react-helmet';
 import Select from 'react-select';
-
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export default function CustomerOrderDetailList() {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
    const [customerOrderDetailList, setCustomerOrderDetailList] = useState([]);
    const [mealOptions, setMealOptions] = useState([]);
    let { id } = useParams(); 
@@ -59,9 +60,30 @@ export default function CustomerOrderDetailList() {
             if (result.isConfirmed) {
                 axiosClient.delete(`/deleteCustomerOrdersDetail/${id}`)
             .then(response => {
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Canceled the customer order", 
+                    ActionIcon:"fa-solid fa-trash"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        title: "Canceled!",
+                        text: "Your order has been Canceled.",
+                        icon: "success"
+                      });
+                      getCustomerOrderDetail();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+
                 Swal.fire({
                     title: "Canceled!",
-                    text: "Your meal has been Canceled.",
+                    text: "customer meal has been Canceled.",
                     icon: "success"
                   });
                   getCustomerOrderDetail();
@@ -121,13 +143,26 @@ export default function CustomerOrderDetailList() {
             if (result.isConfirmed) {
                 axiosClient.post(`/updateOrderDetailList/${id}`,orderToUpdate)
             .then(response => {
-                Swal.fire({
-                    title: "Updated!",
-                    text: "Customer's order has been updated.",
-                    icon: "success"
-                  });
-                  getCustomerOrderDetail();
-               
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Updated customer's order", 
+                    ActionIcon:"fa-solid fa-pen"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        title: "Updated!",
+                        text: "Customer's order has been updated.",
+                        icon: "success"
+                      });
+                      getCustomerOrderDetail();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });               
                 
             })
             .catch(error => {

@@ -7,8 +7,9 @@ import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
 import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2';
-
+import { useStateContext } from "../../../contexts/ContextProvider"; 
 const AddProduct = () => {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [activeTab, setActiveTab] = useState(0);
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -149,23 +150,30 @@ const AddProduct = () => {
 
         axiosClient.post('/meal', formData)
             .then(res => {
-                // setMeal({
-                //     meal_name: '',
-                //     meal_image: null,
-                //     meal_price: '',
-                //     meal_desc: '',
-                //     category_id: '',
-                //     ingredient_id: [],
-                // });
-                console.log(res.message);
-                // Show SweetAlert success message
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'New Meal Had Been Successfully Added!',
-                    showConfirmButton: false,
-                    timer: 1500
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Added new meal", 
+                    ActionIcon:"fa-solid fa-upload"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    console.log(res.message);
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'New Meal Had Been Successfully Added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
                 });
+                
             })
             .catch(function (error) {
                 if (error.response) {

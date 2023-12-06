@@ -6,7 +6,9 @@ import { Navigate } from 'react-router-dom';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 import { useDropzone } from 'react-dropzone';
+import { useStateContext } from "../../../contexts/ContextProvider"; 
 export default function UpdateCategory() {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [category, setCategory] = useState({
             name: '',
             iconImage:null,
@@ -38,39 +40,7 @@ export default function UpdateCategory() {
             iconImage: acceptedFiles[0],
         });
     }
-    // const onImageDrop = (acceptedFiles) => {
-    //     setCategory(prevCategory => ({
-    //         ...prevCategory,
-    //         image: acceptedFiles[0],
-    //     }));
-    // }
     
-    // const onIconImageDrop = (acceptedFiles) => {
-    //     setCategory(prevCategory => ({
-    //         ...prevCategory,
-    //         iconImage: acceptedFiles[0],
-    //     }));
-    // // }
-    // const onImageDrop = (acceptedFiles) => {
-    //     if (acceptedFiles.length > 0) {
-    //         const imageFile = acceptedFiles[0];
-    //         setCategory({
-    //             ...category,
-    //             image: imageFile,
-    //         });
-    //     }
-    // }
-    
-    // const onIconImageDrop = (acceptedFiles) => {
-    //     if (acceptedFiles.length > 0) {
-    //         const iconImageFile = acceptedFiles[0];
-    //         setCategory({
-    //             ...category,
-    //             iconImage: iconImageFile,
-    //         });
-    //     }
-    // }
-     // Function to retrieve ingredient data based on ID
     const getCategorytData = async () => {
         try {
             const response = await axiosClient.get(`/category/${id}`);
@@ -129,16 +99,7 @@ export default function UpdateCategory() {
         formData.append('iconImage', category.iconImage); 
         formData.append('image', category.image); 
        
-        // const data = {
-        //     name: category.name,
-        //     iconImage: category.iconImage,
-        //     image: category.image,
-
-        // }
-        // console.log("name:"+data.name+", iconImage:"+data.iconImage+" image:"+data.image);
-        // console.log("Name:", data.name);
-        // console.log("Icon Image:", data.iconImage);
-        // console.log("Image:", data.image);
+       
         Swal.fire({
             title: 'Are you sure to update?',
             text: "You won't be able to revert this!",
@@ -149,17 +110,33 @@ export default function UpdateCategory() {
             confirmButtonText: 'Yes, Update!'
           }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Update!',
-                    'Your data has been updated.',
-                    'success'
-                )
+             
                
                 axiosClient.post(`/updateCategory`, formData)
                     .then(res => {
-                        setLoading(false);
-                        setRedirect(true);
-                        console.log('Updated Data:', res); 
+                        const activeData = {
+                            user_id:user.id,
+                            Action: "Update Category", 
+                            ActionIcon:"fa-solid fa-pen"
+                        }
+                        axiosClient.post('/postStaffAtivitiFeed', activeData)
+                        .then(res => {
+                            Swal.fire(
+                                'Update!',
+                                'Your data has been updated.',
+                                'success'
+                            )
+                            setLoading(false);
+                            setRedirect(true);
+                            console.log('Updated Data:', res); 
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            setLoading(false); 
+                        });
+                       
                     })
                     .catch(function (error) {
                         console.log("Validation Errors:", error.response.data.errors);

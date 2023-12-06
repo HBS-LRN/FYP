@@ -4,6 +4,7 @@ import axiosClient from "../../../axios-client.js";
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 import { useDropzone } from 'react-dropzone';
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export default function AddCategory() {
     const [category, setCategory] = useState({
@@ -11,6 +12,7 @@ export default function AddCategory() {
         iconImage: null,
         image: null,
     });
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const handleInput = (e) => {
@@ -76,14 +78,29 @@ export default function AddCategory() {
                 iconImage: null,
                 image: null
             });
+            const activeData = {
+                user_id:user.id,
+                Action: "Added new Category", 
+                ActionIcon:"fa-solid fa-upload"
+            }
+            axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'New Category Had Been Successfully Added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
             // Show SweetAlert success message
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'New Category Had Been Successfully Added!',
-            showConfirmButton: false,
-            timer: 1500
-        });
+      
     })
     .catch(function (error) {
         console.log(error.response);

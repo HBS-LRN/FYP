@@ -7,9 +7,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 
-
-
 export default function MealDetail() {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [meal, setMeal] = useState({
         meal_price: 0,
         meal_name: '',
@@ -95,6 +94,23 @@ export default function MealDetail() {
         // Call your API to update MealOrderDetail with the commandText for the specific itemId
         axiosClient.put(`/mealOrderDetail/${itemId}`, { reply_comment: commandText })
             .then(response => {
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Reply the customer's command", 
+                    ActionIcon:"fa-solid fa-pen"
+                }
+
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+
                 console.log(response.data);  // Log the response
                 // If the command submission was successful, you might want to update the UI accordingly
                 getMealOrderDetail();

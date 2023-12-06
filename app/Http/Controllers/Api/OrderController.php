@@ -158,7 +158,6 @@ class OrderController extends Controller
 
     public function userOrder($id)
     {
-
         $orders = User::with(['orders' => function ($query) {
             $query->where('order_status', 'delivering');
         }, 'orders.delivery'])->find($id);
@@ -200,9 +199,6 @@ class OrderController extends Controller
 
     public function showOrderStatus($id)
     {
-
-
-
         //get all of the orders belong to that particular user 
         /** @var \App\Models\User $user */
         $user = User::with('orders.meals')->find($id);
@@ -293,7 +289,6 @@ class OrderController extends Controller
 
             return response()->json($mealOrderDetails);
         } catch (\Exception $e) {
-            \Log::error('Error in showMealOrderDetails: ' . $e->getMessage());
             // Handle exceptions (e.g., order not found)
             return response()->json(['error' => 'Failed to retrieve meal order details'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -413,9 +408,259 @@ class OrderController extends Controller
             return response()->json(['message' => 'Meal order detail deleted successfully', 'order' => $order]);
         } catch (\Exception $e) {
             // Handle exceptions (e.g., meal order detail not found)
-            return response()->json(['error' => 'Failed to delete meal order detail'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Failed to delete meal order detail',$e], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
+    public function getTotal()
+    {
+        try {
+            // Get the current year
+            $currentYear = date('Y');
+
+            // Get the total sales revenue for the current year
+            $salesRevenue = Order::whereYear('order_date', $currentYear)->sum('order_total');
+
+            // Get the number of sales for the current year
+            $numOfSales = MealOrderDetail::join('orders', 'meal_order_details.order_id', '=', 'orders.id')
+                ->whereYear('orders.order_date', $currentYear)
+                ->sum('meal_order_details.order_quantity');
+
+            // Calculate the average price
+            $averagePrice = $numOfSales > 0 ? $salesRevenue / $numOfSales : 0;
+
+            return response()->json([
+                'salesRevenue' => $salesRevenue,
+                'numOfSales' => $numOfSales,
+                'averagePrice' => $averagePrice,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve total sales information. ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getMealAnalytics()
+{
+    try {
+        // Get meal order details with associated meal and order data
+        $currentYear = date('Y');
+    
+        // Get meal order details with associated meal and order data for the current year
+        $mealAnalytics = DB::table('meal_order_details')
+            ->join('meals', 'meal_order_details.meal_id', '=', 'meals.id')
+            ->join('orders', 'meal_order_details.order_id', '=', 'orders.id')
+            ->select(
+                'meals.id as meal_id',
+                'meals.meal_name',
+                'orders.order_date',
+                DB::raw('SUM(meals.meal_price * meal_order_details.order_quantity) as total_order'),
+                DB::raw('SUM(meal_order_details.order_quantity) as total_order_quantity')
+            )
+            ->whereYear('orders.order_date', $currentYear)
+            ->groupBy('meals.id', 'meals.meal_name', 'orders.order_date')
+            ->get();
+
+        // Check if $mealAnalytics is not empty
+        if (!$mealAnalytics->isEmpty()) {
+            // Calculate the percentage of total sales for each meal
+            $totalSales = Order::whereYear('order_date', $currentYear)->sum('order_total');
+
+            $mealAnalytics = $mealAnalytics->map(function ($item) use ($totalSales) {
+                return [
+                    'meal_id' => $item->meal_id,
+                    'meal_name' => $item->meal_name,
+                    'order_date' => $item->order_date,
+                    'total_order' => $item->total_order,
+                    'percentage_of_sales' => $totalSales > 0 ? ($item->total_order / $totalSales) * 100 : 0,
+                    'total_order_quantity' => $item->total_order_quantity,
+                ];
+            });
+           
+            // Ensure the sum of percentages does not exceed 100
+            // $totalPercentage = $mealAnalytics->sum('percentage_of_sales');
+
+            // If the total exceeds 100%, adjust the percentages proportionally
+            // if ($totalPercentage > 100) {
+            //     $mealAnalytics = $mealAnalytics->map(function ($item) use ($totalPercentage) {
+            //         return [
+            //             'meal_id' => $item['meal_id'],
+            //             'meal_name' => $item['meal_name'],
+            //             'order_date' => $item['order_date'],
+            //             'total_order' => $item['total_order'],
+            //             'percentage_of_sales' => ($item['percentage_of_sales'] / $totalPercentage) * 100,
+            //             'total_order_quantity' => $item['total_order_quantity'],
+            //         ];
+            //     });
+            // } elseif ($totalPercentage < 100) {
+            //     // If the total is less than 100%, distribute the remaining percentage equally
+            //     $remainingPercentage = 100 - $totalPercentage;
+            //     $mealAnalytics->each(function (&$item) use ($remainingPercentage) {
+            //         $item['percentage_of_sales'] += ($remainingPercentage / count($mealAnalytics));
+            //     });
+            // }
+           
+        }
+
+        return response()->json($mealAnalytics);
+    } catch (\Exception $e) {
+        // Handle exceptions
+        return response()->json(['error' => 'Failed to retrieve meal analytics'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+}
+
+    public function getRevenueAnalytics()
+    {
+        try {
+            // Get the current year and previous year
+            $currentYear = date('Y');
+            $previousYear = $currentYear - 1;
+
+            // Get the order totals for each month in the previous year
+            $previousYearData = $this->getMonthlyOrderData($previousYear);
+
+            // Get the order totals for each month in the current year
+            $currentYearData = $this->getMonthlyOrderData($currentYear);
+
+            // Get the sum of order totals for the previous year
+            $previousYearTotal = Order::whereYear('order_date', $previousYear)->sum('order_total');
+
+            // Get the sum of order totals for the current year
+            $currentYearTotal = Order::whereYear('order_date', $currentYear)->sum('order_total');
+
+            return response()->json([
+                'previousYearData' => $previousYearData,
+                'currentYearData' => $currentYearData,
+                'previousYearTotal' => $previousYearTotal,
+                'currentYearTotal' => $currentYearTotal,
+                'previousYear' => $previousYear,
+                'currentYear' => $currentYear,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve revenue analytics'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private function getMonthlyOrderData($year)
+    {
+        // Define an array to store the sum of order totals for each month
+        $monthlyOrderData = [];
+
+        // Get the distinct months for the specified year
+        $distinctMonths = MealOrderDetail::join('orders', 'meal_order_details.order_id', '=', 'orders.id')
+            ->select(DB::raw('MONTH(orders.order_date) as month'))
+            ->whereYear('orders.order_date', $year)
+            ->distinct()
+            ->get();
+
+        // Loop through each distinct month and calculate the sum of order totals
+        foreach ($distinctMonths as $month) {
+            $monthNumber = $month->month;
+
+            // Calculate the sum of order totals for the current month
+            $sumOrderTotals = Order::whereYear('order_date', $year)
+                ->whereMonth('order_date', $monthNumber)
+                ->sum('order_total');
+
+            // Store the sum of order totals for the current month
+            $monthlyOrderData[$this->getMonthName($monthNumber)] = $sumOrderTotals;
+        }
+
+        return $monthlyOrderData;
+    }
+
+    private function getMonthName($monthNumber)
+    {
+        // Convert month number to month name
+        return date('M', mktime(0, 0, 0, $monthNumber, 1));
+    }
+
+    public function getDailyAndMonthlyOrderData()
+    {
+        try {
+            // Get the current date
+            $currentDate = now();
+    
+            // Get the current year, month, and day
+            $currentYear = $currentDate->year;
+            $currentMonth = $currentDate->month;
+            $currentDay = $currentDate->day;
+    
+            // Get the sum of order totals for the current day
+            $dailyOrderTotal = Order::whereYear('order_date', $currentYear)
+                ->whereMonth('order_date', $currentMonth)
+                ->whereDay('order_date', $currentDay)
+                ->sum('order_total');
+    
+            // Get the sum of order totals for the current month
+            $monthlyOrderTotal = Order::whereYear('order_date', $currentYear)
+                ->whereMonth('order_date', $currentMonth)
+                ->sum('order_total');
+    
+            return response()->json([
+                'dailyOrderTotal' => $dailyOrderTotal,
+                'monthlyOrderTotal' => $monthlyOrderTotal,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve daily and monthly order data' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getTotalMealPurchase()
+    {
+        try {
+            // Get all meals and their total purchase
+            $mealDetails = Meal::select('meals.*')
+                ->selectSub(
+                    function ($query) {
+                        $query->selectRaw('sum(meal_order_details.order_quantity * meals.meal_price)')
+                            ->from('orders')
+                            ->join('meal_order_details', 'orders.id', '=', 'meal_order_details.order_id')
+                            ->whereColumn('meal_order_details.meal_id', 'meals.id');
+                    },
+                    'total_purchase'
+                )
+                ->withSum('mealOrderDetails', 'order_quantity') // Assuming 'order_quantity' is the correct column
+                ->has('mealOrderDetails') // Ensure meals have associated orders
+                ->orderByDesc('total_purchase') // Order meals by total purchase
+                ->get();
+    
+            return response()->json([
+                'mealDetails' => $mealDetails,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve meal purchase: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+
+
+    public function dailyCustomerOrder()
+    {
+        try {
+            // Get the current date
+            $currentDate = now();
+
+            // Get orders placed today
+            $dailyOrders = Order::with(['user', 'mealOrderDetails.meal'])
+                ->whereDate('order_date', $currentDate->format('Y-m-d'))
+                ->get();
+
+            return response()->json([
+                'dailyOrders' => $dailyOrders,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json(['error' => 'Failed to retrieve daily customer orders: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    
+
+    
 
 }

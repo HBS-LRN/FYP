@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ShoppingCartController;
 use App\Http\Controllers\Api\TableReservationController;
-
+use App\Http\Controllers\Api\StaffActiveFeedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -108,11 +108,6 @@ Route::post('/category', [CategoryController::class, 'store']);
 Route::post('/updateCategory', [CategoryController::class, 'update']);
 Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 Route::get('/category/{id}', [CategoryController::class, 'show']);
-//ingredientMeal
-// Route::get('/ingredientMeal',[IngredientMealController::class, 'index']);
-// Route::post('/ingredientMeal', [IngredientMealController::class, 'store']);
-// Route::put('/ingredientMeal/{id}', [IngredientMealController::class, 'update']);
-// Route::delete('/ingredientMeal/{id}', [IngredientMealController::class, 'destroy']);
 
 //meal
 Route::get('/meal',[MealController::class, 'index']);
@@ -130,11 +125,20 @@ Route::post('/createUser', [UserController::class, 'createCustomer']);
 Route::post('checkEmailExists', [UserController::class, 'checkEmailExists']);
 Route::get('/getUser/{id}',[UserController::class, 'showUser']);
 Route::post('/varifyAccount/{id}', [UserController::class, 'verifyAccount']);
+Route::get('/getAlluser',[UserController::class, 'getAlluser']);
+Route::get('/filterUser/{filterdata}',[UserController::class, 'filterUsers']);
+Route::get('/reservations', [ReservationController::class, 'getAllReservation']);
+Route::post('/addReservations', [ReservationController::class, 'staffAddReservation']);
+Route::post('/updateReservations/{id}', [ReservationController::class, 'updateReservationTable']);
+Route::delete('/deleteReservations/{id}', [ReservationController::class, 'deleteReservation']);
 
 //admin staff
 Route::post('/createStaff', [UserController::class, 'createStaff']);
 Route::get('/getStaff',[UserController::class, 'getStaffByRoles']);
 Route::delete('/deleteUsers/{id}', [UserController::class, 'deleteUser']);
+Route::get('/searchStaff/{searchQuery}',[UserController::class, 'listOutStaff']);
+
+
 //customer order
 Route::get('/customerOrder', [OrderController::class, 'index']);
 Route::get('/searchCustomerOrder', [OrderController::class, 'searchCustomerOrderList']);
@@ -143,6 +147,7 @@ Route::get('/mealOrderDetails/{orderId}', [OrderController::class, 'showMealOrde
 Route::post('/updateOrderDetail/{orderId}', [OrderController::class, 'updateCustomerOrder']);
 Route::post('/updateOrderDetailList/{mealOrderDetailId}', [OrderController::class, 'updateCustomerOrderDetail']);
 Route::delete('/deleteCustomerOrdersDetail/{mealOrderDetailId}', [OrderController::class, 'deleteCustomerOrderDetail']);
+Route::post('/updateStaff/{id}', [UserController::class, 'updateStaff']);
 
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 
@@ -152,3 +157,15 @@ Route::put('/userBMI/{id}', [UserController::class, 'updateBMI']);
 Route::post('/verifyEmail', [AuthController::class, 'verifyEmail']);
 Route::post('/resetPassword', [UserController::class, 'resetPassword']);
 Route::post('/checkExpire', [UserController::class, 'checkExpire']);
+
+//adminDashboard
+Route::get('/getTotal', [OrderController::class, 'getTotal']);
+Route::get('/getMealTotal', [OrderController::class, 'getMealAnalytics']);
+Route::get('/getRevenueAnalytics', [OrderController::class, 'getRevenueAnalytics']);
+Route::get('/getMonthly',[OrderController::class, 'getDailyAndMonthlyOrderData']);
+Route::get('/getTotalMealPurchase',[OrderController::class, 'getTotalMealPurchase']);
+Route::post('/postStaffAtivitiFeed',[StaffActiveFeedController::class,'store']);
+Route::get('/getStaffActiveFeed',[StaffActiveFeedController::class, 'index']);
+Route::get('/getDailyCustomerOrder', [OrderController::class, 'dailyCustomerOrder']);
+Route::get('/getNotification', [ChatController::class, 'getUnseenChats']);
+

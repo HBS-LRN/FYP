@@ -7,9 +7,10 @@ import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
 import Swal from 'sweetalert2';
-
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 export default function IngredientList() {
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const tableStyle = {
         borderCollapse: "collapse",
         borderSpacing: 0,
@@ -46,13 +47,28 @@ export default function IngredientList() {
             if (result.isConfirmed) {
               axiosClient.delete(`/ingredients/${ingredientID}`)
               .then(({data}) =>{
-                Swal.fire(
-                    'Deleted!',
-                    data.ingredient_name+' has been deleted.',
-                    'success'
-                  )
-                  
-                  getIngredient()
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Deleted ingredient", 
+                    ActionIcon:"fa-solid fa-trash"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire(
+                        'Deleted!',
+                        data.ingredient_name+' has been deleted.',
+                        'success'
+                      )
+                      
+                      getIngredient();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
+               
              })
             
             }

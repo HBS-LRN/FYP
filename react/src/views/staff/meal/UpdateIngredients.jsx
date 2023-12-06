@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import axiosClient from "../../../axios-client.js";
 import { useParams } from 'react-router-dom'; 
 import { Navigate } from 'react-router-dom';
+import { useStateContext } from "../../../contexts/ContextProvider";
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 export default function UpdateIngredient() {
@@ -11,6 +12,7 @@ export default function UpdateIngredient() {
         calorie:''
         
     })
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [redirect, setRedirect] = useState(false); // Add redirect state
@@ -82,15 +84,31 @@ export default function UpdateIngredient() {
             confirmButtonText: 'Yes, Update!'
           }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Update!',
-                    'Your data has been updated.',
-                    'success'
-                )
+               
                 axiosClient.put(`/ingredients/${id}`, data)
                     .then(res => {
-                        setLoading(false);
-                        setRedirect(true);
+                        const activeData = {
+                            user_id:user.id,
+                            Action: "Updated Ingredient", 
+                            ActionIcon:"fa-solid fa-pen"
+                        }
+                        axiosClient.post('/postStaffAtivitiFeed', activeData)
+                        .then(res => {
+                            Swal.fire(
+                                'Update!',
+                                'Your data has been updated.',
+                                'success'
+                            )
+                            setLoading(false);
+                            setRedirect(true);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(() => {
+                            setLoading(false); 
+                        });
+                       
                     })
                     .catch(function () {
                         setLoading(false);

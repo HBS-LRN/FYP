@@ -13,7 +13,7 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
 
 export default function ActivateCustomer() {
-
+    
     const tableRef = useRef(null);
     const { setWarningNotification, setFailNotification, setSuccessNotification } = useNotificationContext();
     const [users, setUsers] = useState([]);
@@ -67,12 +67,27 @@ export default function ActivateCustomer() {
 
     const onActivateUserClick = async (user) => {
         // Display notification using sweet alert
-
+       
         try {
             const response = await axiosClient.put(`/setActiveMember/${user.id}`);
-         
+            
             console.log(response)
-            setSuccessNotification("Customer Have Been Activated");
+            const activeData = {
+                user_id:user.id,
+                Action: "Activated New Customer", 
+                ActionIcon:"fa-solid fa-pen"
+            }
+            axiosClient.post('/postStaffAtivitiFeed', activeData)
+                    .then(res => {
+                        setSuccessNotification("Customer Have Been Activated");
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .finally(() => {
+                        setLoading(false); 
+                    });
+            
             fetchData();
         } catch (error) {
             setFailNotification(error);

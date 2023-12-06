@@ -17,7 +17,7 @@ export default function MealsList() {
     const [maxPrice, setMaxPrice] = useState('');
     const [filteredMeals, setFilteredMeals] = useState([]); 
     const [searchQuery, setSearchQuery] = useState('');
-
+    const { user, token, setToken, setCartQuantity } = useStateContext();
     // Function to handle category selection
     const categoryClick = (categoryId) => {
         // If the selected category is the same as the currently selected category, clear the selection
@@ -47,25 +47,7 @@ export default function MealsList() {
         }
         setFilteredMeals(filterChange);
     };
-    // const filterMeals = (categoryId) => {
-
     
-    //     if (categoryId !== null) {
-    //         filterChange = mealList.filter((meal) =>
-    //             categoryId === null || meal.category_id === categoryId
-    //         );
-    //     }
-    //     setFilteredMeals(filterChange);
-    // };
-
-    // const applyPriceFilter = () => {
-    //     const filteredMeals = mealList.filter((meal) => {
-    //         const mealPrice = parseFloat(meal.meal_price);
-    //         return (isNaN(minPrice) || mealPrice >= parseFloat(minPrice)) && (isNaN(maxPrice) || mealPrice <= parseFloat(maxPrice));
-    //     });
-    //     setFilteredMeals(filteredMeals);
-    //     setIsFilterActive(true);
-    // }
     const applyPriceFilter = () => {
         let updatedFilteredMeals;
         if (selectedCategory !== null) {
@@ -182,13 +164,28 @@ export default function MealsList() {
             if (result.isConfirmed) {
             axiosClient.delete(`/meal/${mealId}`)
             .then((response) => {
+                const activeData = {
+                    user_id:user.id,
+                    Action: "Deleted the meal", 
+                    ActionIcon:"fa-solid fa-trash"
+                }
+                axiosClient.post('/postStaffAtivitiFeed', activeData)
+                .then(res => {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: response.data.meal_name + " has been deleted.",
+                        icon: "success"
+                      });
+                    getMeal();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    setLoading(false); 
+                });
                 console.log('Meal deleted successfully:', response.data);
-                Swal.fire({
-                    title: "Deleted!",
-                    text: response.data.meal_name + " has been deleted.",
-                    icon: "success"
-                  });
-                getMeal();
+                
             })
             .catch((error) => {
                 console.error('Error deleting meal:', error);

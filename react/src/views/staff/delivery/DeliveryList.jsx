@@ -78,7 +78,22 @@ export default function DeliveryList() {
                 try {
                     const response = await axiosClient.put(`/updateDeliveryStatus/${delivery.order_id}`, payload);
                     console.log(response.data.order_status)
-                    setSuccessNotification("Delivery Status Updated Sucessfully");
+                    const activeData = {
+                        user_id:user.id,
+                        Action: "Updated the delivery status", 
+                        ActionIcon:"fa-solid fa-pen"
+                    }
+                    axiosClient.post('/postStaffAtivitiFeed', activeData)
+                    .then(res => {
+                        setSuccessNotification("Delivery Status Updated Sucessfully");
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .finally(() => {
+                        setLoading(false); 
+                    });
+                  
                     if (response.data && response.data.order_status === "delivering") {
                         window.open('/realTimeDeliveryTracking/' + delivery.order_id, '_blank');
                     }

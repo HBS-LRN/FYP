@@ -471,5 +471,139 @@ class UserController extends Controller
         }
     }
 
+    public function listOutStaff($searchQuery)
+    {
+        try {
+
+            // Build the query to retrieve staff and admin users
+            $query = User::whereIn('role', [1, 2, 3]);
+
+            if($searchQuery!=null){
+                $query->where('name', 'like', '%' . $searchQuery . '%');
+            }
+            
+            // Execute the query and get the results
+            $users = $query->get();
+
+            // Return the users as JSON
+            return response()->json(['users' => $users], 200);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            return response()->json(['message' => 'Error retrieving staff members', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getAlluser()
+    {
+        try {
+            // Retrieve all users with role 0 (assuming 0 corresponds to customers)
+            $customers = User::where('role', 0)->get();
+    
+            return response()->json(['customers' => $customers], 200);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            return response()->json(['message' => 'Error retrieving customers', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function filterUsers($filterdata)
+    {
+        try {
+            $decodedData = json_decode(urldecode($filterdata), true);
+            // return response()->json(['filteredUsers' => $decodedData['name']], 200);
+            // Get the search queries from the request
+            $nameQuery = $decodedData['name'];
+            $emailQuery = $decodedData['email'];
+            $phoneQuery = $decodedData['phone'];
+            // return response()->json(['filteredUsers' => $filterdata], 200);
+          
+            $query = User::where('role', 0);
+
+            // Apply filters based on name, phone, and email
+            if ($nameQuery) {
+                $query->where('name', 'like', '%' . $nameQuery . '%');
+            }
+
+            if ($emailQuery) {
+                $query->where('email', 'like', '%' . $emailQuery . '%');
+            }
+
+            if ($phoneQuery) {
+                $query->where('phone', 'like', '%' . $phoneQuery . '%');
+            }
+
+            // Execute the query and get the results
+            $filteredUsers = $query->get();
+
+            // Return the filtered users as JSON
+            return response()->json(['filteredUsers' => $filteredUsers], 200);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            return response()->json(['message' => 'Error filtering users', 'error' => $e->getMessage()], 500);
+        }
+    }
+    public function updateStaff(Request $request, $id)
+    {
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($id);
+
+            // Validate the incoming request
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+           
+            // Update the user
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+            ]);
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $relativePath = $this->saveImage($image);
+                $user->update(['image' => $relativePath]);
+            }
+            return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating user', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function changeStaffPassword(Request $request, $id)
+    {
+        try {
+            // Find the staff member by ID
+            $staffMember = User::findOrFail($id);
+
+            // Validate the incoming request
+            $validator = Validator::make($request->all(), [
+                'newPassword' => 'required|string|min:8',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+
+            // Update the staff member's password
+            $staffMember->update([
+                'password' => Hash::make($request->input('newPassword')),
+            ]);
+
+            return response()->json(['message' => 'Password changed successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error changing password', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
     
 }

@@ -30,6 +30,9 @@ class StoreReservationRequest extends FormRequest
             'reservation_time' => 'required',
             'reservation_status' => 'required',
             'pax' => 'required|integer',
+            'cust_email' => 'nullable',
+            'cust_name' => 'nullable',
+            'cust_contact' => 'nullable',
             'remark' => 'nullable',
         ];
     }
