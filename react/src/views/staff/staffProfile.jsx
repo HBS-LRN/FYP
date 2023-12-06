@@ -18,6 +18,7 @@ export default function StaffProfile() {
         image: null,
     })
     const [validationErrors, setValidationErrors] = useState({});
+    const [imageError, setImageError] = useState("");
     const validateUpdateProfile = () => {
         const errors = {};
 
@@ -41,6 +42,7 @@ export default function StaffProfile() {
 
         return Object.keys(errors).length === 0;
     };
+    console.log("error",validationErrors);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUpdateUser((prevUser) => ({
@@ -51,10 +53,24 @@ export default function StaffProfile() {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setUpdateUser((prevUser) => ({
-            ...prevUser,
-            image: file,
-        }));
+
+        // Validate the image
+        if (file) {
+            const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+            const maxSize = 5 * 1024 * 1024; // 5 MB
+
+            if (!allowedTypes.includes(file.type)) {
+                setImageError("Invalid file type. Please choose a valid image file.");
+            } else if (file.size > maxSize) {
+                setImageError("File size exceeds the limit (5 MB). Please choose a smaller file.");
+            } else {
+                setUpdateUser((prevUser) => ({
+                    ...prevUser,
+                    image: file,
+                }));
+                setImageError("");
+            }
+        }
     };
 
     const handleFormSubmit = (e) => {
@@ -142,10 +158,16 @@ export default function StaffProfile() {
               
               <div class="field-body">
                 <div class="field file">
-              
+                <label class="label">Profile Picture</label>
                   <label class="upload control">
                    
-                    <input type="file" onChange={handleImageChange} name='image' value={updateUser.image}/>
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    name='image'
+                    accept="image/*"
+                />
+                     {imageError && <div className='error'>{imageError}</div>}
                   </label>
                 </div>
               </div>
@@ -161,9 +183,10 @@ export default function StaffProfile() {
                         value={updateUser.name}
                         onChange={handleInputChange}
                         className="input"
-                        required/>
+                        />
+                        {validationErrors.name?(<div className='error'>{validationErrors.name}</div>):""}
                   </div>
-              
+       
                 </div>
               </div>
             </div>
@@ -179,9 +202,10 @@ export default function StaffProfile() {
                     value={updateUser.email}
                     onChange={handleInputChange}
                     className="input"
-                    required />
+                    />
+                    {validationErrors.email?(<div className='error'>{validationErrors.name}</div>):""}
                   </div>
-    
+        
                 </div>
               </div>
             </div>
@@ -196,7 +220,8 @@ export default function StaffProfile() {
                     value={updateUser.phone}
                     onChange={handleInputChange}
                     className="input"
-                    required />
+                    />
+                    {validationErrors.phone?(<div className='error'>{validationErrors.phone}</div>):""}
                   </div>
     
                 </div>
@@ -232,7 +257,7 @@ export default function StaffProfile() {
                 />
 
                 ) : (
-                <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fa-solid fa-image-portrait"></i>
                 )}
           </div>
 

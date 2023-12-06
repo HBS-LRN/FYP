@@ -35,3 +35,6 @@
 .noticeViewMoreBox .btn{
     row-gap:20px;
 }
+.hover:hover{
+    cursor: pointer;
+}

@@ -551,7 +551,6 @@ class UserController extends Controller
             // Validate the incoming request
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
                 'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
                 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
@@ -563,7 +562,6 @@ class UserController extends Controller
             // Update the user
             $user->update([
                 'name' => $request->input('name'),
-                'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
             ]);
 

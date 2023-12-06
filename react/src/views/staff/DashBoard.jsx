@@ -248,9 +248,9 @@ export default function DashBoard() {
         },
         colors: Array.from({ length: filterSalesAnalyticsData.length }, () => getRandomColor())
     };
-
+console.log("donutChartOptions",donutChartOptions);
     const radialChartOptions = {
-        series: [(dailyOrderTotal/10000)*100],
+        series: [(dailyOrderTotal/1000)*100],
         chart: {
             type: "radialBar",
             width: 60,
@@ -283,7 +283,7 @@ export default function DashBoard() {
     };
 
     const radialChartOptions2 = {
-        series: [(monthlyOrderTotal/100000)*100],
+        series: [(monthlyOrderTotal/10000)*100],
         chart: {
             type: "radialBar",
             width: 60,
@@ -518,21 +518,7 @@ export default function DashBoard() {
 
                                 <div className="card">
                                     <div className="card-body">
-                                        <div className="dropdown float-end">
-                                            <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i className="mdi mdi-dots-vertical"></i>
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-end">
-                                                {/* item */}
-                                                <a href="javascript:void(0);" className="dropdown-item">Sales Report</a>
-                                                {/* item */}
-                                                <a href="javascript:void(0);" className="dropdown-item">Export Report</a>
-                                                {/* item */}
-                                                <a href="javascript:void(0);" className="dropdown-item">Profit</a>
-                                                {/* item */}
-                                                <a href="javascript:void(0);" className="dropdown-item">Action</a>
-                                            </div>
-                                        </div>
+                                      
 
                                         <h4 className="card-title mb-4">Earning Reports</h4>
                                         <div className="text-center">

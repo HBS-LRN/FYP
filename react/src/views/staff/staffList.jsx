@@ -164,7 +164,7 @@ export default function StaffList() {
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <div>
+                        <div className='Flex'>
                             <a href="/addStaff" class="btn btn-success mb-2"><i class="mdi mdi-plus me-2"></i> Add Staff</a>
                             <div className="searchBox">
                             <input

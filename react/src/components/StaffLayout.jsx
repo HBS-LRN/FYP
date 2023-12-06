@@ -22,13 +22,25 @@ export default function StaffLayout() {
     const { user, token,setToken,setUser} = useStateContext();
     const [notices, setNotices] = useState([]);
     const navigate = useNavigate();
+    const [menuVisibility, setMenuVisibility] = useState({
+        manageDelivery: false,
+        manageMeal: false,
+        manageCustomer: false,
+        manageStaff: false,
+        report: false,
+    });
     useEffect(() => {
         fetchStaffNotice();
 
     }, []);
-    //   const remind = () =>{
-    //     getSetNotice(setStaffNotice);
-    //   }
+
+    const toggleSubMenu = (menuKey) => {
+        setMenuVisibility((prevVisibility) => ({
+            ...prevVisibility,
+            [menuKey]: !prevVisibility[menuKey],
+        }));
+    };
+
     const onLogout = ev => {
         ev.preventDefault();
 
@@ -207,7 +219,7 @@ export default function StaffLayout() {
                                             <i className="ri-user-line align-middle me-1"></i> Profile
                                         </a>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item text-danger" onClick={onLogout} >
+                                        <a className="dropdown-item text-danger hover" onClick={onLogout} >
                                             <i className="ri-shut-down-line align-middle me-1 text-danger"></i> Logout
                                         </a>
                                     </div>
@@ -254,7 +266,7 @@ export default function StaffLayout() {
 
 
                                             <li>
-                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                <a href="javascript: void(0);" onClick={() => toggleSubMenu('manageMeal')} className="has-arrow waves-effect">
                                                     <i class="fas fa-utensils"></i>
 
                                                     <span>Manage Meal</span>
@@ -295,6 +307,7 @@ export default function StaffLayout() {
 
                                                 </ul>
                                             </li>
+                                            
                                             <li>
                                                 <a href="javascript: void(0);" className="has-arrow waves-effect">
                                                     <i class="fas fa-user-edit"></i>
