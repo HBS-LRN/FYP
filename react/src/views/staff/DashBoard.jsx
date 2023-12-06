@@ -511,7 +511,7 @@ export default function DashBoard() {
                                            </div>
 
                                         <div className="moreDetailBox">
-                                            <a className="moreDetailbtn" href="http://">More Detail</a>
+                                            <a className="moreDetailbtn" href="/salesReport">More Detail</a>
                                         </div>
                                     </div>
                                 </div>
