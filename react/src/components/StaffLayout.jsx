@@ -19,7 +19,7 @@ import '../../assets/css/app.min.css';
 export default function StaffLayout() {
 
 
-    const { user, token} = useStateContext();
+    const { user, token,setToken,setUser} = useStateContext();
     const [notices, setNotices] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
