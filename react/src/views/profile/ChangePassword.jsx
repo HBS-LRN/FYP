@@ -155,7 +155,7 @@ export default function ChangePassword() {
                                                 />
                                                 <div className="valid-tooltip customTooltip">Looks good!</div>
                                                 <div className="invalid-tooltip customTooltip">
-                                                    Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number.
+                                                    Password must contain at least 8 characters, one uppercase, one lowercase letter, one number.
                                                 </div>
 
                                             </div>

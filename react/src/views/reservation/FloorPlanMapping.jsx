@@ -49,7 +49,7 @@ export default function FloorPlanMaping() {
         } else {
             navigate("/reservationForm");
         }
-        // ... Rest of your code
+
     }, []);
     // Fetch tables data
     const getTables = async () => {
@@ -72,15 +72,15 @@ export default function FloorPlanMaping() {
         var channel = pusher.subscribe('reservation-channel');
         channel.bind('reservation-event', function (data) {
 
-         
+
             console.log(data.reservation)
             //if it is same reservation date
-            if (data.reservation.reservation_date === reservation.reservation_date && data.reservation.reservation_time  === reservation.reservation_time) {
+            if (data.reservation.reservation_date === reservation.reservation_date && data.reservation.reservation_time === reservation.reservation_time) {
                 setReservations((prevReservation) => [...prevReservation, data.reservation]);
                 isTableReserved(data.reservation.table_id)
             }
 
-         
+
         });
     }, []);
 
@@ -176,10 +176,28 @@ export default function FloorPlanMaping() {
             const tableSeatCapacity = tables[selectedTableId - 1].seat_capacity;
             const paxDifference = Math.abs(reservationData.pax - tableSeatCapacity);
 
+            console.log(selectedTableId)
+
+            // Check if the selected table is between table 3 and table 8
+            const isTableBetween3And8 = selectedTableId >= 3 && selectedTableId <= 8;
+
+            console.log(isTableBetween3And8)
+
+            console.log(reservationData.pax)
+
+            const parsedPax = parseInt(reservationData.pax, 10); // Assuming base 10
+            // Check if the pax is not 3 or 4 for tables 3-8
+            if (isTableBetween3And8 && (parsedPax !== 3 && parsedPax !== 4)) {
+                setFailNotification(
+                    "Opps, Invalid Pax for Selected Table!",
+                    "Please select a table where the guest count closely matches the table's seat capacity."
+                );
+                return;
+            }
             //handle the user where the guest count closely matches the table's seat capacity.
             if (paxDifference > 3) {
                 setFailNotification(
-                    "Opps, Reservation Error!",
+                    "Opps, Invalid Pax for Selected Table!",
                     "Please select a table where the guest count closely matches the table's seat capacity."
                 );
                 //if the pax is more than the table seat capacity
@@ -193,23 +211,23 @@ export default function FloorPlanMaping() {
             } else if (selectedTableId === 1 || selectedTableId === 2) {
                 setWarningNotification("FYI, This Is A Room Table", "Minimum Spend is RM500, Do You Agree?").then((value) => {
                     if (value) {
-                        if (reservationCount < 2) {
+                        if (reservationCount < 3) {
                             // User agreed, and the reservation count is below the limit, proceed with the reservation
                             makeReservation(selectedTableId, remark);
                             incrementReservationCount();
                         } else {
-                            setFailNotification("Reservation Limit Exceeded", "You cannot make more than 2 reservations.");
+                            setFailNotification("Reservation Limit Exceeded", "You cannot make more than 3 reservations a day.");
                         }
                     }
                 });
 
                 //if the daily reservation doesn't exceed 2 
             } else {
-                if (reservationCount < 2) {
+                if (reservationCount < 3) {
                     makeReservation(selectedTableId, remark);
                     incrementReservationCount();
                 } else {
-                    setFailNotification("Reservation Limit Exceeded", "You cannot make more than 2 reservations.");
+                    setFailNotification("Reservation Limit Exceeded", "You cannot make more than 3 reservations a day");
                 }
             }
         } else {

@@ -9,10 +9,33 @@ function getCurrentDate() {
     const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
+function convertTo24HourFormat(time) {
+    const [hour, period] = time.match(/(\d+)([A-Za-z]+)?/).slice(1, 3);
+    console.log(hour);
+    console.log(period);
+
+    if (period && period.toLowerCase() === 'pm') {
+
+        console.log((parseInt(hour, 10) + 12), "converted");
+        return (parseInt(hour, 10) + 12);
+    } else {
+
+        return parseInt(hour, 10);
+    }
+}
+
+
+const isTimeDisabled = (date, time) => {
+    const [hour, period] = time.match(/(\d+)([A-Za-z]+)?/).slice(1, 3);
+    const startTime = convertTo24HourFormat(hour + period);
+    return date > new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime);
+};
+const today = new Date();
+const currentHour = today.getHours();
 export default function ReservationForm() {
 
 
-
+    const [selectedDate, setSelectedDate] = useState(getCurrentDate());
     //react declaration
     const [validated, setValidated] = useState(false);
     const { user, setUser, setNotification } = useStateContext();
@@ -119,28 +142,40 @@ export default function ReservationForm() {
                                             min={getCurrentDate()} // Set the minimum date
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="top"
-                                            onChange={handleChange} // Attach the input change handler
+                                            onChange={(e) => {
+                                                setSelectedDate(e.target.value);
+                                                handleChange(e);
+                                            }} // Attach the input change handler
                                         />
                                         <div className="valid-tooltip">Looks good!</div>
                                         <div className="invalid-tooltip">
                                             Please Choose A Date (Today or After Today)
                                         </div>
                                     </div>
-                                    {/* <p className="error">*Invalid User Email And /Or Password.</p> */}
                                 </div>
                                 <br />
                                 <div className="text time">
                                     <label htmlFor="Time">Time</label>
                                     <br />
                                     <div className="custom-form">
-                                        <i class="fa-solid fa-clock"></i>
-                                        <select name="reservation_time" class="form-control time-dropdown" required
-                                            onChange={handleChange} >
+                                        <i className="fa-solid fa-clock"></i>
+                                        <select name="reservation_time" className="form-control time-dropdown" required onChange={handleChange}>
                                             <option value="">Select A Time</option>
-                                            <option value="11AM - 1PM Section">11AM - 1PM Section</option>
-                                            <option value="1PM - 3PM Section">1PM - 3PM Section</option>
-                                            <option value="6PM - 8PM Section">6PM - 8PM Section</option>
-                                            <option value="8PM - 10PM Section">8PM - 10PM Section</option>
+                                            {["11AM - 1PM Section", "1PM - 3PM Section", "6PM - 8PM Section", "8PM - 10PM Section"].map((timeOption) => {
+                                                const startTime = convertTo24HourFormat(timeOption.split('-')[0]);
+
+                                                console.log(startTime, "starttime");
+
+                                                return (
+                                                    <option
+                                                        key={timeOption}
+                                                        value={timeOption}
+                                                        disabled={selectedDate === getCurrentDate() && isTimeDisabled(today, timeOption)}
+                                                    >
+                                                        {timeOption}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                         <div className="valid-tooltip">Looks good!</div>
                                         <div className="invalid-tooltip">
