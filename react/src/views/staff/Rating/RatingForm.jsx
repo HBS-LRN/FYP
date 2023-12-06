@@ -141,7 +141,14 @@ const RatingForm = () => {
                                                     <form onSubmit={handleSubmit}>
                                                         <div class="mb-3">
                                                             <label class="form-label" for="order_id">Order ID</label>
-                                                            <input id="order_id" name="order_id" readOnly value={rating && rating.order_id} type="text" class="form-control" />
+                                                            <input
+                                                                id="order_id"
+                                                                name="order_id"
+                                                                readOnly
+                                                                value={`OD${rating && rating.order_id}#`}
+                                                                type="text"
+                                                                class="form-control"
+                                                            />
 
                                                         </div>
 
@@ -153,12 +160,12 @@ const RatingForm = () => {
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="form-label" for="customerName">Customer Name</label>
-                                                            <input id="customerName" name="customerName"  value={rating && rating.meal && rating.meal.orders && rating.meal.orders[0] && rating.meal.orders[0].user ? rating.meal.orders[0].user.name : ''} readOnly class="form-control" />
+                                                            <input id="customerName" name="customerName" value={rating && rating.meal && rating.order && rating.order && rating.order.user ? rating.order.user.name : ''} readOnly class="form-control" />
                                                             {/* {errors.stock && <div className="text-danger">{errors.stock}</div>} */}
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="form-label" for="customerName">Customer Email</label>
-                                                            <input id="customerName" name="customerName" value={rating && rating.meal && rating.meal.orders && rating.meal.orders[0] && rating.meal.orders[0].user ? rating.meal.orders[0].user.email : ''}readOnly class="form-control" />
+                                                            <input id="customerName" name="customerName" value={rating && rating.meal && rating.order && rating.order && rating.order.user ? rating.order.user.email : ''} readOnly class="form-control" />
                                                             {/* {errors.stock && <div className="text-danger">{errors.stock}</div>} */}
                                                         </div>
                                                         <div class="mb-3">

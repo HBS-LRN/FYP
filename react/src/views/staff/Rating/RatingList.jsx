@@ -76,12 +76,12 @@ export default function RatingList() {
 
 
         return (
-            <tr key={rating.meal.orders[0].id}>
-                <td>{rating.meal.orders[0].id}</td>
+            <tr key={rating.order.id}>
+                <td>{rating.order.id}</td>
                 <td> <img src={`${import.meta.env.VITE_API_BASE_URL}/storage/${rating.meal.meal_image}`} alt="" width="180" height="140" /></td>
                 <td>{rating.meal.meal_name},</td>
-                <td>{rating.meal.orders[0].user.name}</td>
-                <td>{rating.meal.orders[0].user.email}</td>
+                <td>{rating.order.user.name}</td>
+                <td>{rating.order.user.email}</td>
                 <td>   {[...Array(rating.rating_star || 0)].map((star, starIndex) => (
                     <i key={starIndex} className="fa-solid fa-star"></i>
                 ))}</td>
