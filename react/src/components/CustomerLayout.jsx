@@ -127,24 +127,39 @@ export default function CustomerLayout() {
     useEffect(() => {
         getShoppingCarts();
     }, [cartQuantity])
-
     const getShoppingCarts = async () => {
-
-        console.log("getting")
-        setLoading(true)
+        setLoading(true);
         try {
-            await axiosClient.get(`/userShoppingCart/${user.id}`)
-                .then(({ data }) => {
-                    console.log(data)
-                    setLoading(false)
-                    setShoppingCarts(data)
-                });
+            const response = await axiosClient.get(`/userShoppingCart/${user.id}`);
+            const data = response.data;
+    
+            // Filter out items with ingredients that have stock of 0
+            const filteredShoppingCarts = data.filter((meal) => {
+                const hasIngredientWithZeroStock = meal.meal_ingredients.some(
+                    (mealIngredient) => mealIngredient.ingredient.stock === 0
+                );
+    
+                return !hasIngredientWithZeroStock;
+            });
+    
+            setShoppingCarts(filteredShoppingCarts);
+    
+            // Calculate total cart quantity from filtered shopping carts
+            const totalCartQuantity = filteredShoppingCarts.reduce(
+                (total, meal) => total + meal.pivot.shopping_cart_qty,
+                0
+            );
+    
+            // Set the cart quantity state
+            setCartQuantity(totalCartQuantity);
+    
+            setLoading(false);
         } catch (error) {
             const response = error.response;
             console.log(response);
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
 
 
@@ -356,7 +371,7 @@ export default function CustomerLayout() {
                                     <li className={`navbar-dropdown ${isActive('/about')}`}>
                                         <Link to="/about">About Us</Link>
                                     </li>
-                                    <li className={`navbar-dropdown ${isActive('/faq')}`}>
+                                    <li cassName={`navbar-dropdown ${isActive('/faq')}`}>
                                         <Link to="/faq">FAQ</Link>
                                     </li>
                                     <li className={`navbar-dropdown ${isActive('/contact')}`}>

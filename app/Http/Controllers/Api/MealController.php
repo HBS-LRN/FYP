@@ -440,7 +440,7 @@ class MealController extends Controller
         return response()->json($mealRating);
 
 
-      
+    
     }
     public function showRatingForm($id)
     {

@@ -21,6 +21,7 @@ export default function OrderStatus() {
     const [pendingCount, setPendingCount] = useState(0);
     const [preparingCount, setPreparingCount] = useState(0);
     const [completedCount, setCompletedCount] = useState(0);
+    const maxWordCount = 255;
     const { setWarningNotification, setFailNotification } = useNotificationContext();
     //fetch user orders data
     useEffect(() => {
@@ -80,15 +81,40 @@ export default function OrderStatus() {
             ...formData,
             [name]: value,
         });
+
+        if (name === 'comment') {
+            // Word count validation
+            const wordCount = value.split(/\s+/).length;
+            if (wordCount > maxWordCount) {
+                // Display an error message or take any appropriate action
+                setFailNotification(
+                    "Opps!",
+                    "Message exceeds the maximum 255 word count."
+                );
+            }
+        }
     };
 
 
     //handle the rating submit button
     const handleRatingSubmit = async (e, mealId) => {
         e.preventDefault();
-
         // Access form data from the component's state
         const { rating, comment } = formData;
+
+
+        const wordCount = comment.split(/\s+/).length;
+
+        if (wordCount > maxWordCount) {
+            // Display an error message or take any appropriate action
+
+            setFailNotification(
+                "Opps!",
+                "Message exceeds the maximum 255 word count."
+            );
+
+            return; // Stop further execution if word count exceeds the limit
+        }
 
         const payload = {
             rating_star: rating,
@@ -172,7 +198,7 @@ export default function OrderStatus() {
 
                             <div id="btn">
                             </div>
-                           
+
                             <div class="button-container">
 
 
@@ -183,12 +209,12 @@ export default function OrderStatus() {
                                 <button type="button" class="toggle-btn" onClick={completeProd}>
                                     Completed Order<span class="quantityProduct">({completedCount})</span>
                                 </button>
-                             
-                           
+
+
 
 
                             </div>
-                            
+
 
                             {loading &&
                                 <div class="text-center">

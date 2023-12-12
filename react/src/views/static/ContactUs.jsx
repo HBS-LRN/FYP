@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import axiosClient from "../../axios-client.js";
-
+import { useNotificationContext } from "../../contexts/NotificationProvider.jsx";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function ContactUs() {
@@ -31,6 +31,19 @@ export default function ContactUs() {
 		const form = event.currentTarget;
 
 		if (form.checkValidity()) {
+
+			const wordCount = contactus.description.split(/\s+/).length;
+
+			if (wordCount > maxWordCount) {
+				// Display an error message or take any appropriate action
+			
+				setFailNotification(
+                    "Opps!",
+                    "Message exceeds the maximum 255 word count."
+                );
+
+				return; // Stop further execution if word count exceeds the limit
+			}
 			var payload
 			if (!user) {
 				payload = {
@@ -52,9 +65,9 @@ export default function ContactUs() {
 					.post("/contactus", payload)
 					.then((data) => {
 						console.log(data)
-					
+
 						setNotification("Your Message Has Been Succesfully Uploaded!");
-						
+
 
 					});
 			} catch (error) {
@@ -75,11 +88,32 @@ export default function ContactUs() {
 		}
 	}, []);
 
-	//handle on change field
-	const handleChange = (e) => {
-		setContactUs({ ...contactus, [e.target.name]: e.target.value })
+	const { setWarningNotification, setFailNotification } = useNotificationContext();
+	const handleChange = (event) => {
+		const { name, value } = event.target;
 
-	}
+		setContactUs((prevContactUs) => ({
+			...prevContactUs,
+			[name]: value,
+		}));
+
+		if (name === 'description') {
+			// Word count validation
+			const wordCount = value.split(/\s+/).length;
+			if (wordCount > maxWordCount) {
+				// Display an error message or take any appropriate action
+				setFailNotification(
+                    "Opps!",
+                    "Message exceeds the maximum 255 word count."
+                );
+			}
+		}
+	};
+
+
+	const maxWordCount = 255;
+
+
 
 	return (
 
@@ -195,7 +229,8 @@ export default function ContactUs() {
 												required
 												data-bs-toggle="tooltip"
 												data-bs-placement="top"
-												onChange={handleChange}
+												onChange={handleChange} // Update this line
+
 											/>
 										</div>
 										<div className="valid-tooltip customTooltip">Looks good!</div>
