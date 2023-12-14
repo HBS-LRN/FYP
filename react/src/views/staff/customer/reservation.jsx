@@ -63,10 +63,12 @@ const getUser = () => {
     axiosClient.get('/getAlluser')
         .then(({ data }) => {
             // console.log('user data:', data); 
-            const contact = data.customers.map(item => ({
-                value: item.phone,
-                label: item.phone,
-            }));
+            const contact = data.customers
+                .filter(item => item.phone !== null)
+                .map(item => ({
+                    value: item.phone,
+                    label: item.phone,
+                }));
             setCustContactOption(contact);
             const name = data.customers.map(item => ({
                 value: item.name,

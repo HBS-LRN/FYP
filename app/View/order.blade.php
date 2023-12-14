@@ -37,8 +37,8 @@
     <div class="textCenter">
         <h1>Order Information:</h1>
         <hr />
-        <p>Order ID: <b>{{ $order['order_id'] }}</b></p>
-        <p>Order Total: <b>{{ $order['order_total'] }}</b></p>
+        <p>Order ID: <b>OD{{ $order['order_id'] }}#</b></p>
+        <p>Order Total: <b>RM{{ $order['order_total'] }}</b></p>
         <p>Order Date: <b>{{ $order['order_date'] }}</b></p>
 
         <h2>Meal Details:</h2>
@@ -47,7 +47,7 @@
             <li>
                 <strong>{{ $item['meal_name'] }}</strong>
                 <br>
-                Price: {{ $item['meal_price'] }}, Quantity: {{ $item['order_quantity'] }}
+                Price:RM {{ $item['meal_price'] }}, Quantity: {{ $item['order_quantity'] }}
             </li>
             @endforeach
         </ul>

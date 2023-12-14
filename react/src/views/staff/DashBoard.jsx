@@ -633,7 +633,7 @@ console.log("donutChartOptions",donutChartOptions);
                                          
                                         </div>
 
-                                        <h4 className="card-title mb-4">Daily Staff Activity Feed</h4>
+                                        <h4 className="card-title mb-4">Monthly Staff Activity Feed</h4>
 
                                         <div data-simplebar style={{ maxHeight: '335px', height: '335px'}}>
                                             <ul className="list-unstyled activity-wid">
