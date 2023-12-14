@@ -70,7 +70,7 @@ export default function CompletedDeliveryList() {
 
         return (
             <tr key={delivery.order_id}>
-                <td>{delivery.order_id}</td>
+                <td>OD{delivery.order_id}#</td>
                 <td>{delivery.order.order_date}</td>
                 <td style={{ width: "900px", whiteSpace: "pre-wrap" }}>{delivery.street}, {delivery.city}, {delivery.postcode} {delivery.state}.</td>
                 <td>{delivery.username}</td>
