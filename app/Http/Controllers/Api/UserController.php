@@ -322,7 +322,7 @@ class UserController extends Controller
         // Validate the incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
+            'phone' => 'required|string',
             'gender' => 'required|in:Male,Female', // Assuming gender can only be Male or Female
             'birthdate' => 'required|date',
             'password' => 'required|string|min:8', // You might want to customize the password validation
@@ -354,7 +354,7 @@ class UserController extends Controller
         // Validate the incoming request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
+            'phone' => 'required|string',
             'gender' => 'required|in:Male,Female', // Assuming gender can only be Male or Female
             'role' => 'required',
             'birthdate' => 'required|date',

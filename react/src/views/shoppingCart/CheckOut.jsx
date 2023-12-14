@@ -259,6 +259,7 @@ export default function CheckOut() {
                     console.log(response);
                     navigate("/orderStatus");
                     window.scrollTo(0, 0);
+                    window.location.reload();
                     setCartQuantity(null);
                 } catch (error) {
                     console.log(error);
@@ -534,6 +535,7 @@ export default function CheckOut() {
                                                         navigate("/orderStatus");
                                                         // Scroll to the top of the screen window
                                                         window.scrollTo(0, 0);
+                                                        window.location.reload();
                                                         setCartQuantity(null);
                                                     } catch (error) {
                                                         console.log(error);

@@ -80,7 +80,7 @@ console.log("id",id);
       const response = axiosClient.post(`/varifyAccount/${id}`, payload);
       console.log('API Response Verify:', response.data);
       setLoading(false);
-      setUser(user);
+      setUser(null);
       Swal.fire({
         position: "center",
         icon: "success",
