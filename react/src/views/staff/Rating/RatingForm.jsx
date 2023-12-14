@@ -9,6 +9,7 @@ import { useDropzone } from 'react-dropzone';
 import Swal from 'sweetalert2'
 import { useNavigate, useParams } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import { useNotificationContext } from "../../../contexts/NotificationProvider.jsx";
 const RatingForm = () => {
     //react declaration
     const navigate = useNavigate();
@@ -19,8 +20,8 @@ const RatingForm = () => {
     const [loading, setLoading] = useState(false);
     const [states, setStates] = useState([]); // Initialize as an empty array
     const [rating, setRating] = useState({});
-
-
+    const { setWarningNotification, setFailNotification } = useNotificationContext();
+	const maxWordCount = 255;
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -49,6 +50,20 @@ const RatingForm = () => {
         const form = event.currentTarget;
 
         if (form.checkValidity()) {
+
+            
+			const wordCount = (rating.reply_comment ?? '').split(/\s+/).length;
+
+			if (wordCount > maxWordCount) {
+				// Display an error message or take any appropriate action
+			
+				setFailNotification(
+                    "Opps!",
+                    "Message exceeds the maximum 255 word count."
+                );
+
+				return; // Stop further execution if word count exceeds the limit
+			}
             const payload = {
                 id: rating.id,
                 reply_comment: rating.reply_comment,
@@ -81,9 +96,19 @@ const RatingForm = () => {
 
     //handle on change field
     const handleChange = (e) => {
-
+        const { name, value } = e.target;
         setRating({ ...rating, [e.target.name]: e.target.value })
-
+        if (name === 'reply_comment') {
+			// Word count validation
+			const wordCount = value.split(/\s+/).length;
+			if (wordCount > maxWordCount) {
+				// Display an error message or take any appropriate action
+				setFailNotification(
+                    "Opps!",
+                    "Message exceeds the maximum 255 word count."
+                );
+			}
+		}
     }
 
     return (
