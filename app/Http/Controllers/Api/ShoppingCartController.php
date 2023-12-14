@@ -95,9 +95,28 @@ class ShoppingCartController extends Controller
      */
     public function destroy(ShoppingCart $shoppingCart)
     {
-
         //call address repository interface to delete data 
         $this->shoppingCartRepositoryInterface->delete($shoppingCart);
         return response("", 204);
+    }
+    public function clearShoppingCart($userId)
+    {
+        // Find the user
+        $user = User::find($userId);
+
+        // Check if the user exists
+        if (!$user) {
+            return response(['message' => 'User not found'], 404);
+        }
+
+        // Get the shopping cart items for the user
+        $shoppingCartItems = ShoppingCart::where('user_id', $userId)->get();
+
+        // Delete the shopping cart items
+        foreach ($shoppingCartItems as $shoppingCartItem) {
+            $shoppingCartItem->delete();
+        }
+
+        return response(['message' => 'Shopping cart cleared successfully']);
     }
 }

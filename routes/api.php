@@ -138,7 +138,6 @@ Route::get('/getStaff',[UserController::class, 'getStaffByRoles']);
 Route::delete('/deleteUsers/{id}', [UserController::class, 'deleteUser']);
 Route::get('/searchStaff/{searchQuery}',[UserController::class, 'listOutStaff']);
 
-
 //customer order
 Route::get('/customerOrder', [OrderController::class, 'index']);
 Route::get('/searchCustomerOrder', [OrderController::class, 'searchCustomerOrderList']);
@@ -148,6 +147,10 @@ Route::post('/updateOrderDetail/{orderId}', [OrderController::class, 'updateCust
 Route::post('/updateOrderDetailList/{mealOrderDetailId}', [OrderController::class, 'updateCustomerOrderDetail']);
 Route::delete('/deleteCustomerOrdersDetail/{mealOrderDetailId}', [OrderController::class, 'deleteCustomerOrderDetail']);
 Route::post('/updateStaff/{id}', [UserController::class, 'updateStaff']);
+Route::post('/staffChangePassword/{id}', [UserController::class, 'changeStaffPassword']);
+Route::post('/checkPassword/{id}', [UserController::class, 'checkPassword']);
+Route::post('/adminOrder', [OrderController::class, 'adminAddCustomerOrder']);
+Route::delete('/clearShoppingCart/{id}', [ShoppingCartController::class, 'clearShoppingCart']);
 
 Route::get('/showCategoryMeal/{id}', [MealController::class, 'showCategoryMeal']);
 

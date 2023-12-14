@@ -9,8 +9,8 @@ import Swal from 'sweetalert2'
 export default function UpdateIngredient() {
     const [ingredient, setIngredient] = useState({
         ingredient_name: '',
-        calorie:''
-        
+        calorie:'',
+        stock: ''
     })
     const { user, token, setToken, setCartQuantity } = useStateContext();
     const [errors, setErrors] = useState({});
@@ -23,10 +23,11 @@ export default function UpdateIngredient() {
     const getIngredientData = async () => {
         try {
             const response = await axiosClient.get(`/ingredients/${id}`);
-            const { ingredient_name, calorie } = response.data;
+            const { ingredient_name, calorie,stock } = response.data;
             setIngredient({
                 ingredient_name,
                 calorie,
+                stock
             });
         } catch (error) {
             // Handle error, e.g., display an error message or redirect
@@ -60,6 +61,11 @@ export default function UpdateIngredient() {
             valid = false;
         }
 
+        if (!ingredient.stock) {
+            newErrors.calorie = "Existing Stock is required";
+            valid = false;
+        }
+
         setErrors(newErrors);
         return valid;
     }
@@ -73,6 +79,7 @@ export default function UpdateIngredient() {
         const data = {
             ingredient_name: ingredient.ingredient_name,
             calorie: ingredient.calorie,
+            stock: ingredient.stock
         }
         Swal.fire({
             title: 'Are you sure to update?',
@@ -191,6 +198,11 @@ export default function UpdateIngredient() {
                                             <label class="form-label" for="calorie">Calorie</label>
                                             <input id="Calorie" name="calorie" value={ingredient.calorie} onChange={handleInput} type="Number" class="form-control"/>
                                             {errors.calorie && <div className="text-danger">{errors.calorie}</div>}
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="stock">Existing Stock (Unit/G)</label>
+                                            <input id="stock" name="stock" value={ingredient.stock} onChange={handleInput} type="Number" class="form-control" />
+                                            {errors.stock && <div className="text-danger">{errors.stock}</div>}
                                         </div>
                                         <ul class="pager wizard twitter-bs-wizard-pager-link">
                                

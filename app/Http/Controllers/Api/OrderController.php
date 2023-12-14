@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Mail; 
 
 class OrderController extends Controller
 {
@@ -120,6 +122,174 @@ class OrderController extends Controller
 
 
         return $order;
+    }
+
+    public function adminAddCustomerOrder(Request $request)
+    {
+        $data = $request->all();
+    
+        // Check if user_id is null
+        if ($request->input('user_id') === null) {
+            // Save the order with admin_id as user_id
+            $adminOrder = Order::create([
+                'user_id' => $data['admin_id'], // Assuming admin_id is available in the request
+                'delivery_fee' => $data['delivery_fee']+0.5,
+                'order_total' => 0,
+                'order_status' => 'pending',
+                'payment_status' => 'paid',
+                'payment_method' => 'Pay On Delivery',
+                'order_date' => now('Asia/Kuala_Lumpur')->format('Y-m-d'),
+                'cust_email' => $data['useremail'],
+                'cust_name' => $data['username'],
+                'cust_contact' => $data['userphone']
+            ]);
+    
+            // Save the delivery details
+            Delivery::create([
+                'order_id' => $adminOrder->id,
+                'username' => $data['username'],
+                'userphone' => $data['userphone'],
+                'street' => $data['street'],
+                'city' => $data['city'],
+                'state' => $data['state'],
+                'postcode' => $data['postcode'],
+                'customer_longitude' => $data['customer_longitude'],
+                'customer_latitude' => $data['customer_latitude'],
+                'delivery_man_id' => 0, // default value
+            ]);
+    
+            $shoppingCartItems = ShoppingCart::where('user_id', $data['admin_id'])->get();
+    
+            // Calculate the order_total based on meal_price and shopping_cart_quantity
+            $orderTotal = 0;
+            $mealData = [];
+            foreach ($shoppingCartItems as $cartItem) {
+                $meal = Meal::find($cartItem->meal_id);
+    
+                // Calculate subtotal for each meal
+                $subtotal = $meal->meal_price * $cartItem->shopping_cart_qty;
+    
+                // Add subtotal to order_total
+                $orderTotal += $subtotal;
+    
+                // Create MealOrderDetail
+                MealOrderDetail::create([
+                    'order_id' => $adminOrder->id,
+                    'meal_id' => $cartItem->meal_id,
+                    'order_quantity' => $cartItem->shopping_cart_qty,
+                ]);
+                $mealData[] = [
+                    'meal_name' => $meal->meal_name,
+                    'meal_price' => $meal->meal_price,
+                    'order_quantity' => $cartItem->shopping_cart_qty,
+                ];
+                // Update meal and its ingredients
+                $this->updateMealAndIngredients($cartItem->meal_id, $cartItem->shopping_cart_qty);
+            }
+    
+            // Update the order_total for the admin order
+            $adminOrder->update(['order_total' => $orderTotal]);
+    
+            // Loop through the shopping cart items and delete them
+            foreach ($shoppingCartItems as $shoppingCartItem) {
+                $shoppingCartItem->delete();
+            }
+    
+            // Prepare the order data for sending mail
+            $orderData = [
+                'order_id' => $adminOrder->id,
+                'order_total' => $orderTotal,
+                'order_date'=>$adminOrder->order_date,
+                'user_name' => $adminOrder->cust_name,
+                'user_email' => $adminOrder->cust_email
+                ];
+    
+            // Send order confirmation email
+            $this->sendOrderMail($orderData,$mealData);
+        } else {
+            $order = Order::create([
+                'user_id' => $data['user_id'],
+                'delivery_fee' => $data['delivery_fee'] + 0.5,
+                'order_total' => 0, // You might want to calculate this based on order items
+                'order_status' => 'pending',
+                'payment_status' => 'paid',
+                'payment_method' => 'Pay On Delivery',
+                'order_date' => now('Asia/Kuala_Lumpur')->format('Y-m-d'),
+                'cust_email' => null,
+                'cust_name' => null,
+                'cust_contact' => null,
+            ]);
+    
+            // Save the delivery details
+            Delivery::create([
+                'order_id' => $order->id,
+                'username' => $data['username'],
+                'userphone' => $data['userphone'],
+                'street' => $data['street'],
+                'city' => $data['city'],
+                'state' => $data['state'],
+                'postcode' => $data['postcode'],
+                'customer_longitude' => $data['customer_longitude'],
+                'customer_latitude' => $data['customer_latitude'],
+                'delivery_man_id' => 0, // default value
+            ]);
+
+            $shoppingCartItems = ShoppingCart::where('user_id', $data['admin_id'])->get();
+            // Process order items and calculate order_total
+            $orderTotal = 0;
+            foreach ($shoppingCartItems as $cartItem) {
+                $meal = Meal::find($cartItem->meal_id);
+    
+                // Calculate subtotal for each meal
+                $subtotal = $meal->meal_price * $cartItem->shopping_cart_qty;
+    
+                // Add subtotal to order_total
+                $orderTotal += $subtotal;
+    
+                // Create MealOrderDetail
+                MealOrderDetail::create([
+                    'order_id' => $order->id,
+                    'meal_id' => $cartItem->meal_id,
+                    'order_quantity' => $cartItem->shopping_cart_qty,
+                ]);
+            
+                // Update meal and its ingredients
+                $this->updateMealAndIngredients($cartItem->meal_id, $cartItem->shopping_cart_qty);
+            }
+            $order->update(['order_total' => $orderTotal]);
+    
+            // Loop through the shopping cart items and delete them
+            foreach ($shoppingCartItems as $shoppingCartItem) {
+                $shoppingCartItem->delete();
+            }
+        }
+        return response()->json(['message' => 'Order created successfully']);
+    }
+
+    private function sendOrderMail(array $orderData, array $mealData)
+    {
+        Mail::to($orderData['user_email'])->send(new OrderMail($orderData, $mealData));
+    }
+
+
+    private function updateMealAndIngredients($mealId, $cartQuantity)
+    {
+        // Find the meal associated with the order item
+        $meal = Meal::find($mealId);
+
+        // Loop through the meal's ingredients and update the stock
+        foreach ($meal->mealIngredients as $mealIngredient) {
+            $ingredient = $mealIngredient->ingredient;
+            $newStock = $ingredient->stock - ($cartQuantity * $mealIngredient->unit);
+
+            // Ensure stock doesn't go negative
+            if ($newStock < 0) {
+                $newStock = 0;
+            }
+
+            // Update the ingredient's stock
+            $ingredient->update(['stock' => $newStock]);
+        }
     }
 
     /**
@@ -255,7 +425,10 @@ class OrderController extends Controller
             $order = Order::findOrFail($orderId);
 
             // Assuming you want to delete associated records in Delivery and MealOrderDetail tables
-            $order->delivery()->delete();
+            if ($order->delivery) {
+                $order->delivery->delete();
+            }
+
             $order->mealOrderDetails()->delete();
 
             // Delete the order
@@ -267,6 +440,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Failed to delete order'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function showMealOrderDetails($orderId)
     {
@@ -398,6 +572,11 @@ class OrderController extends Controller
 
             if(($orderTotal - $order->delivery_fee) == 0){
                 $order->delete();
+                if ($order->delivery) {
+                    $order->delivery->delete();
+                }
+    
+                return response()->json(['message' => 'Meal order detail deleted successfully, and order with delivery deleted']);
             }else{
                 $order->update([
                     'order_total' => $orderTotal,

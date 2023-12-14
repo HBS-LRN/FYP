@@ -331,7 +331,7 @@ export default function MealsList() {
                                                 </div>
                                             </div>
                                             {/* meal List Start */}
-                                            <div className="row g-0 mealListOverflow">
+                                            <div className=" mealListOverflow">
                                             {loading ? (
                                                 <div>Loading...</div>
                                             ) : (filteredMeals.length > 0) ? (                   

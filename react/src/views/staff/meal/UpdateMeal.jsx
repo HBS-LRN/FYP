@@ -94,12 +94,27 @@ const UpdateMeal = () => {
         }
     }
     const onDrop = (acceptedFiles) => {
-        setMeal({
-            ...meal,
-            meal_image: acceptedFiles[0],
+        const mealImageFile = acceptedFiles[0];
+    
+        // Reset the error message
+        setErrors({
+            ...errors,
+            meal_image: '',
         });
-        console.log(acceptedFiles[0].name);
-    }
+    
+        // Validate if the file is an image
+        if (mealImageFile && mealImageFile.type.startsWith('image/')) {
+            setMeal({
+                ...meal,
+                meal_image: mealImageFile,
+            });
+        } else {
+            setErrors({
+                ...errors,
+                meal_image: 'Please upload a valid image file.',
+            });
+        }
+    };
 
     const validateForm = () => {
         const errors = {};

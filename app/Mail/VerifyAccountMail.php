@@ -20,7 +20,8 @@ class VerifyAccountMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Verify Your Account')
+        return $this->from('noreply@gmail.com', 'Grand Imperial')
+                    ->subject('Verify Your Account')
                     ->view('verify-account');
     }
 }

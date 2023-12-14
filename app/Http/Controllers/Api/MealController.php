@@ -24,8 +24,14 @@ class MealController extends Controller
 
     public function index()
     {
-        $meal = Meal::all();
-        return response()->json($meal);
+        try {
+            // Eager load the 'mealIngredients' relationship along with the 'ingredient' relationship
+            $meals = Meal::with(['mealIngredients', 'mealIngredients.ingredient'])->get();
+    
+            return response()->json($meals);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong: ' . $e->getMessage()], 500);
+        }
     }
 
     public function show($id)
@@ -275,7 +281,7 @@ class MealController extends Controller
         $meal->total_calorie = $totalCalorie;
         $meal->save();
     }
-    public function updateMealOrderDetail(MealStoreRequest $request, $id)
+    public function updateMealOrderDetail(Request $request, $id)
     {
         try {
             // Find meal order detail

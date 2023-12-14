@@ -9,6 +9,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 
 export default function CustomerOrderList() {
    const { user, token, setToken, setCartQuantity } = useStateContext();
+   const [originalCustomerOrderList, setOriginalCustomerOrderList] = useState([]);
    const [customerOrderList, setCustomerOrderList] = useState([]);
    const [filter, setFilter] = useState('all');
     useEffect(() => {
@@ -21,8 +22,9 @@ export default function CustomerOrderList() {
             .then(({ data }) => {
                 console.log('API Response:', data);
                 
-                setCustomerOrderList(data);
-         
+                setOriginalCustomerOrderList(data);
+                applyFilter(data);
+                
             })
             .catch((error) => {
           
@@ -36,22 +38,19 @@ export default function CustomerOrderList() {
         axiosClient.get('/searchCustomerOrder', { params: { order_date: e.target.value } })
             .then(response => {
                 console.log("search result",response.data)
-                setCustomerOrderList(response.data);
+                applyFilter(response.data);
             })
             .catch(error => {
                 console.error("searching error:",error);
             });
     };
-    const handleFilterChange = (data) => {
-        setFilter(data);
-        if (data === 'all') {
-            setCustomerOrderList(customerOrderList);
-        } else if (data === 'paid') {
-            setCustomerOrderList(customerOrderList.filter(item => item.payment_status === 'paid'));
-        } else if (data === 'unpaid') {
-            setCustomerOrderList(customerOrderList.filter(item => item.payment_status === 'unpaid'));
+    const applyFilter = (orders) => {
+        if (filter === 'all') {
+            setCustomerOrderList(orders);
+        } else {
+            setCustomerOrderList(orders.filter(item => item.order_status === filter));
         }
-    };
+    }
 
     const deleteCustomerOrder = (id) =>{
         Swal.fire({
@@ -98,6 +97,10 @@ export default function CustomerOrderList() {
           });
         
     }
+    const handleFilterChange = (data) => {
+        setFilter(data);
+        applyFilter(originalCustomerOrderList);
+    };
     const handlePaymentMethodChange = (orderId, newPaymentMethod) => {
         console.log("payment method", newPaymentMethod);
     
@@ -185,22 +188,23 @@ export default function CustomerOrderList() {
                                 <div className="card">
                                     <div className="card-body  pt-0">
                                     <ul className="nav nav-tabs nav-tabs-custom mb-4 Flex">
-                                        <li className="nav-item">
-                                            <a className={`nav-link fw-bold p-3 ${filter === 'all' ? 'active' : ''}`} onClick={() => handleFilterChange('all')}>
-                                                All Orders
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className={`nav-link p-3 fw-bold ${filter === 'paid' ? 'active' : ''}`} onClick={() => handleFilterChange('paid')}>
-                                                Paid
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className={`nav-link p-3 fw-bold ${filter === 'unpaid' ? 'active' : ''}`} onClick={() => handleFilterChange('unpaid')}>
-                                                Unpaid
-                                            </a>
-                                        </li>
-                                        <li className='SearchBox'>
+                                    <li className="nav-item">
+                                                <a className={`nav-link fw-bold p-3 ${filter === 'all' ? 'active' : ''}`} onClick={() => handleFilterChange('all')}>
+                                                    All Orders
+                                                </a>
+                                            </li>
+                                            <li className="nav-item">
+                                                <a className={`nav-link p-3 fw-bold ${filter === 'delivering' ? 'active' : ''}`} onClick={() => handleFilterChange('delivering')}>
+                                                    Delivering
+                                                </a>
+                                            </li>
+                                            <li className="nav-item">
+                                                <a className={`nav-link p-3 fw-bold ${filter === 'completed' ? 'active' : ''}`} onClick={() => handleFilterChange('completed')}>
+                                                    Completed
+                                                </a>
+                                            </li>
+                                            <li className='SearchBox'>
+                                            <a href="/addCustomerOrder" className='addOrderBtn'>Add Order</a>
                                             <input type="search" placeholder='Search date here......' name="search" id="search" onChange={handleSearch}/>
                                         </li>
                                     </ul>

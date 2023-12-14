@@ -425,7 +425,7 @@ console.log("donutChartOptions",donutChartOptions);
                                         <div className="float-end d-none d-md-inline-block">
                                             
                                         </div>
-                                        <h4 className="card-title mb-4">Annual Sales Report</h4>
+                                        <h4 className="card-title mb-4">Annual Revenue Report</h4>
                                         <div>
                                             <ReactApexChart
                                                 options={lineColumnChartOptions}
@@ -494,7 +494,7 @@ console.log("donutChartOptions",donutChartOptions);
                                             <option value="12">Dec</option>
                                         </select>
                                     </div>
-                                        <h4 className="card-title mb-4">Sales Analytics</h4>
+                                        <h4 className="card-title mb-4">Meal Sales Analytics</h4>
                                         {filterSalesAnalyticsData.length > 0 ? (
                                             <ReactApexChart
                                                 options={donutChartOptions}

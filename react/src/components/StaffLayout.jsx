@@ -22,23 +22,43 @@ export default function StaffLayout() {
     const { user, token,setToken,setUser} = useStateContext();
     const [notices, setNotices] = useState([]);
     const navigate = useNavigate();
-    const [menuVisibility, setMenuVisibility] = useState({
-        manageDelivery: false,
-        manageMeal: false,
-        manageCustomer: false,
-        manageStaff: false,
-        report: false,
-    });
+
+    const [menuVisibilitymanageDelivery, setMenuVisibilitymanageDelivery] = useState(false)
+    const [menuVisibilitymanageMeal, setMenuVisibilitymanageMeal] = useState(false);
+    const [menuVisibilitymanageCustomer, setMenuVisibilitymanageCustomer] = useState(false);
+    const [menuVisibilitymanageStaff, setMenuVisibilitymanageStaff] = useState(false);
+    const [menuVisibilityreport, setMenuVisibilityreport] = useState(false);
+
     useEffect(() => {
         fetchStaffNotice();
 
     }, []);
+   
+    const handleClickMenu = (i) => {
+        switch (i) {
+            case 0:
+                menuVisibilitymanageDelivery?setMenuVisibilitymanageDelivery(false):setMenuVisibilitymanageDelivery(true)
+                
+                break;
+            case 1:
+                menuVisibilitymanageMeal?setMenuVisibilitymanageMeal(false):setMenuVisibilitymanageMeal(true)
 
-    const toggleSubMenu = (menuKey) => {
-        setMenuVisibility((prevVisibility) => ({
-            ...prevVisibility,
-            [menuKey]: !prevVisibility[menuKey],
-        }));
+                break;
+            case 2:
+                menuVisibilitymanageCustomer?setMenuVisibilitymanageCustomer(false):setMenuVisibilitymanageCustomer(true)
+
+                break;
+            case 3:
+                menuVisibilitymanageStaff?setMenuVisibilitymanageStaff(false):setMenuVisibilitymanageStaff(true)
+
+                break;
+            case 4:
+                menuVisibilityreport?setMenuVisibilityreport(false):setMenuVisibilityreport(true)
+
+                break;
+            default:
+                break;
+        }
     };
 
     const onLogout = ev => {
@@ -191,7 +211,7 @@ export default function StaffLayout() {
                                     </div>
                                 </div>
 
-                                <div className="dropdown d-inline-block user-dropdown">
+                                <div className="dropdown d-inline-block user-dropdown imgBox">
                                     <button
                                         type="button"
                                         className="btn header-item waves-effect"
@@ -238,12 +258,12 @@ export default function StaffLayout() {
 
                                     {user.role === 3 ? (
                                         <li>
-                                            <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                            <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={()=>handleClickMenu(0)}>
                                                 <i class="fas fa-shipping-fast"></i>
 
                                                 <span> Manage Delivery</span>
                                             </a>
-                                            <ul className="sub-menu" aria-expanded="false">
+                                            <ul className={menuVisibilitymanageDelivery?"sub-menu displayBlock":"sub-menu dipslayNone"} aria-expanded="false">
                                                 <li>
                                                     <a href="/deliveryList">Delivery List</a>
                                                 </li>
@@ -266,12 +286,12 @@ export default function StaffLayout() {
 
 
                                             <li>
-                                                <a href="javascript: void(0);" onClick={() => toggleSubMenu('manageMeal')} className="has-arrow waves-effect">
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={()=>handleClickMenu(1)}>
                                                     <i class="fas fa-utensils"></i>
 
                                                     <span>Manage Meal</span>
                                                 </a>
-                                                <ul className="sub-menu" aria-expanded="false">
+                                                <ul className={menuVisibilitymanageMeal?"sub-menu displayBlock":"sub-menu dipslayNone"} aria-expanded="false">
                                                     <li>
                                                         <a href="/mealList">Meal List</a>
                                                     </li>
@@ -284,12 +304,12 @@ export default function StaffLayout() {
                                                 </ul>
                                             </li>
                                             <li>
-                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={()=>handleClickMenu(2)}>
                                                     <i class="fas fa-user-edit"></i>
 
                                                     <span> Manage Customer</span>
                                                 </a>
-                                                <ul className="sub-menu" aria-expanded="false">
+                                                <ul className={menuVisibilitymanageCustomer?"sub-menu displayBlock":"sub-menu dipslayNone"} aria-expanded="false">
                                                     <li>
                                                         <a href="/customerOrderList">Customers Orders List</a>
                                                     </li>
@@ -307,14 +327,14 @@ export default function StaffLayout() {
 
                                                 </ul>
                                             </li>
-                                            
-                                            <li>
-                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                            {user.role ==2?(
+                                                <li>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={()=>handleClickMenu(3)}>
                                                     <i class="fas fa-user-edit"></i>
 
                                                     <span> Manage Staff</span>
                                                 </a>
-                                                <ul className="sub-menu" aria-expanded="false">
+                                                <ul className={menuVisibilitymanageStaff?"sub-menu displayBlock":"sub-menu dipslayNone"} aria-expanded="false">
                                                     <li>
                                                         <a href="/addStaff">Add Staff</a>
                                                     </li>
@@ -324,7 +344,9 @@ export default function StaffLayout() {
 
 
                                                 </ul>
-                                            </li>
+                                                </li>
+                                            ):''}
+                                         
 
                                             <li>
                                                 <a href="/ratingList" className="waves-effect">
@@ -343,13 +365,12 @@ export default function StaffLayout() {
                                             </li>
 
 
-
-                                            <li>
-                                                <a href="javascript: void(0);" className="has-arrow waves-effect">
+                                        {user.role==2?(<li>
+                                                <a href="javascript: void(0);" className="has-arrow waves-effect" onClick={()=>handleClickMenu(4)}>
                                                     <i className="ri-bar-chart-line"></i>
                                                     <span>Report</span>
                                                 </a>
-                                                <ul className="sub-menu" aria-expanded="false">
+                                                <ul className={menuVisibilityreport?"sub-menu displayBlock":"sub-menu dipslayNone"} aria-expanded="false">
                                                     <li>
                                                         <a href="/mealRevenueReport">Meal Sale Report</a>
                                                     </li>
@@ -359,7 +380,8 @@ export default function StaffLayout() {
 
 
                                                 </ul>
-                                            </li>
+                                            </li>):''}
+                                            
 
                                         </>
                                     )}

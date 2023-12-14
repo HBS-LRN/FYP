@@ -72,7 +72,7 @@ import ActivateCustomer from "./views/staff/customer/DeactivatedCustomer";
 import NonStaff from "./views/error/Non-Staff";
 import NonAdmin from "./views/error/Non-Admin";
 import AdminLayout from "./components/AdminLayout";
-
+import AddCustomerOrder from './views/staff/customer/addCustomerOrder'
 
 
 const router = createBrowserRouter([
@@ -346,6 +346,9 @@ const router = createBrowserRouter([
       },{
         path: '/staffProfile',
         element: <StaffProfile />
+      },{
+        path:'/addCustomerOrder',
+        element: <AddCustomerOrder/>
       },
       //protected router, required login from user
       {

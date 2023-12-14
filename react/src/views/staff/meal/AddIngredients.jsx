@@ -62,7 +62,8 @@ export default function AddIngredient() {
         .then(res => {
           setIngredient({
             ingredient_name: '',
-            calorie: ''
+            calorie: '',
+            stock: ''
           });
           const activeData = {
             user_id:user.id,

@@ -38,3 +38,12 @@
 .hover:hover{
     cursor: pointer;
 }
+.dipslayNone{
+    display: none;
+}
+.displayBlock{
+    display: block;
+}
+.imgBox img{
+    border-radius: 10px;
+}

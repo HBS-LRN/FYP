@@ -278,7 +278,7 @@ const isReselectedTable = (tableNum) => {
 };
 const makeReservation = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const contactRegex = /^\d{3}-\d{7}$/;
+    const contactRegex = /^\d{3}-\d{7}|\d{3}-\d{8}$/;
     if(!pax && !newCustomerName && !newCustomerEmail && !newCustomerContact){
         Swal.fire({
             icon: "error",
@@ -407,6 +407,28 @@ const makeReservation = async () => {
     }
     // console.log("newReservationData",newReservationData);
     try {
+        let timerInterval;
+        Swal.fire({
+        title: "Waiting process",
+        html: "Left <b></b> seconds.",
+        timer: 5000, // Set the timer to 5 seconds (5000 milliseconds)
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(0)}`;
+            }, 100);
+        },
+        willClose: () => {
+            clearInterval(timerInterval);
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("The alert was closed by the timer");
+        }
+        });
         await axiosClient.post('/addReservations', newReservationData).then(({ data }) => {
             console.log("booked",data);
             // Update the reservations state with the new reservation data
@@ -476,7 +498,11 @@ if(date){
     }
 }
 if(reservationTime && date ){
-
+    selectedIcon.forEach((icon, index) => {
+        if (index !== i) {
+            icon.style.display = "none";
+        }
+    });
     if(RightPopUp.style.display=="none"){
         RightPopUp.style.display="block";
         RightPopUp.style.cssText="animation: right-popUpOpen .6s ease;";

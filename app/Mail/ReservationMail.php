@@ -30,7 +30,8 @@ class ReservationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('reservation')
+        return $this->from('noreply@gmail.com', 'Grand Imperial')
+                    ->view('reservation')
                     ->subject('Reservation Information');
     }
 }

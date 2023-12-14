@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'order_total', 'delivery_fee', 'order_status', 'payment_status', 'payment_method', 'order_date'];
+    protected $fillable = ['user_id', 'order_total', 'delivery_fee', 'order_status', 'payment_status', 'payment_method', 'order_date','cust_name','cust_email','cust_contact'];
     public function delivery()
     {
         return $this->hasOne(Delivery::class, 'order_id', 'id');

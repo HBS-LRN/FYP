@@ -23,18 +23,50 @@ export default function AddCategory() {
         });
     }
     const onImageDrop = (acceptedFiles) => {
-        setCategory({
-            ...category,
-            image: acceptedFiles[0],
+        const imageFile = acceptedFiles[0];
+    
+        // Reset the error message
+        setErrors({
+            ...errors,
+            image: '',
         });
-    }
+    
+        // Validate if the file is an image
+        if (imageFile && imageFile.type.startsWith('image/')) {
+            setCategory({
+                ...category,
+                image: imageFile,
+            });
+        } else {
+            setErrors({
+                ...errors,
+                image: 'Please upload a valid image file.',
+            });
+        }
+    };
 
     const onIconImageDrop = (acceptedFiles) => {
-        setCategory({
-            ...category,
-            iconImage: acceptedFiles[0],
+        const iconImageFile = acceptedFiles[0];
+    
+        // Reset the error message
+        setErrors({
+            ...errors,
+            iconImage: '',
         });
-    }
+    
+        // Validate if the file is an image
+        if (iconImageFile && iconImageFile.type.startsWith('image/')) {
+            setCategory({
+                ...category,
+                iconImage: iconImageFile,
+            });
+        } else {
+            setErrors({
+                ...errors,
+                iconImage: 'Please upload a valid image file.',
+            });
+        }
+    };
 
     const validateForm = () => {
         let valid = true;

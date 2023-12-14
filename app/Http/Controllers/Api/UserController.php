@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
@@ -391,6 +392,7 @@ class UserController extends Controller
     {
 
         // Send the verification email
+
         Mail::to($user->email)->send(new VerifyAccountMail($user));
     }
 
@@ -436,11 +438,11 @@ class UserController extends Controller
             'token' => $verificationToken,
         ]);
 
-
+        $user->session_id = session()->getId();
         // Update user's verification status
         $user->update(['verified_at' => now(), 'verification_token' => null]);
-
-        return response()->json(['message' => 'Account verified successfully'], 200);
+        session()->regenerate();
+        return response()->json(['user' => $user], 200);
     }
     public function getStaffByRoles()
     {
@@ -510,14 +512,13 @@ class UserController extends Controller
     {
         try {
             $decodedData = json_decode(urldecode($filterdata), true);
-            // return response()->json(['filteredUsers' => $decodedData['name']], 200);
+
             // Get the search queries from the request
             $nameQuery = $decodedData['name'];
             $emailQuery = $decodedData['email'];
             $phoneQuery = $decodedData['phone'];
-            // return response()->json(['filteredUsers' => $filterdata], 200);
-          
-            $query = User::where('role', 0);
+
+            $query = User::with('addresses')->where('role', 0);
 
             // Apply filters based on name, phone, and email
             if ($nameQuery) {
@@ -542,63 +543,106 @@ class UserController extends Controller
             return response()->json(['message' => 'Error filtering users', 'error' => $e->getMessage()], 500);
         }
     }
+
     public function updateStaff(Request $request, $id)
     {
         try {
             // Find the user by ID
             $user = User::findOrFail($id);
-
+    
             // Validate the incoming request
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'phone' => 'required|string|regex:/^\d{3}-\d{7}$/',
-                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                'name' => 'nullable',
+                'phone' => 'nullable',
+                'image' => 'nullable'
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             }
-           
-            // Update the user
-            $user->update([
-                'name' => $request->input('name'),
-                'phone' => $request->input('phone'),
-            ]);
-
+    
+            // Update the user with available request values
+            $updateData = [];
+    
+            if ($request->filled('name')) {
+                $updateData['name'] = $request->input('name');
+            }
+    
+            if ($request->filled('phone')) {
+                $updateData['phone'] = $request->input('phone');
+            }
+    
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $relativePath = $this->saveImage($image);
-                $user->update(['image' => $relativePath]);
+                $relativePath = $this->saveStaffImage($image);
+                $updateData['image'] = $relativePath;
             }
+    
+            // Update the user
+            $user->update($updateData);
+    
             return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error updating user', 'error' => $e->getMessage()], 500);
         }
+    }private function saveStaffImage($image)
+    {
+        $type = $image->getClientOriginalExtension();
+        $dir = 'images/';
+        $file = Str::random() . '.' . $type;
+        $absolutePath = public_path($dir);
+        $relativePath = $dir . $file;
+    
+        if (!File::exists($absolutePath)) {
+            File::makeDirectory($absolutePath, 0755, true);
+        }
+    
+        $image->move($absolutePath, $file);
+    
+        return $relativePath;
     }
-
+    
     public function changeStaffPassword(Request $request, $id)
     {
         try {
             // Find the staff member by ID
             $staffMember = User::findOrFail($id);
-
+    
             // Validate the incoming request
             $validator = Validator::make($request->all(), [
-                'newPassword' => 'required|string|min:8',
+                'currentPassword' => 'required',
+                'newPassword' => 'required',
+                'confirmPassword' => 'required|same:newPassword',
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             }
-
+    
             // Update the staff member's password
             $staffMember->update([
                 'password' => Hash::make($request->input('newPassword')),
             ]);
-
+    
             return response()->json(['message' => 'Password changed successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error changing password', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    
+    public function checkPassword(Request $request, $id)
+    {
+        try {
+            // Find the staff member by ID
+            $staffMember = User::findOrFail($id);
+
+            // Check if the provided current password is correct
+            $isPasswordMatch = Hash::check($request->input('currentPassword'), $staffMember->password);
+
+            return response()->json(['isPasswordMatch' => $isPasswordMatch], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error checking password', 'error' => $e->getMessage()], 500);
         }
     }
 

@@ -7,41 +7,52 @@ import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 import axiosClient from "../../axios-client.js";
 import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../contexts/ContextProvider";
 
 export default function StaffProfile() {
-    const { user, token, setToken, setCartQuantity } = useStateContext();
+    const { user, token, setToken, setCartQuantity,setUser} = useStateContext();
     const [updateUser,setUpdateUser] = useState({
         name: "",
-        email: "",
         phone: "",
         image: null,
     })
+    const [editProfilePicture, setEditProfilePicture] = useState(false);
+    const [editName,setEditName] =useState(false);
+    const [editPhone,setEditPhone] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const [imageError, setImageError] = useState("");
+    const navigate = useNavigate();
     const validateUpdateProfile = () => {
         const errors = {};
 
-        if (!updateUser.name.trim()) {
-            errors.name = "Name is required";
+  
+        if(editPhone){
+            if (!isValidPhone(updateUser.phone)) {
+                errors.phone = "Invalid phone number format";
+            }
         }
-
-        if (!updateUser.email.trim()) {
-            errors.email = "Email is required";
-        } else if (!isValidEmail(updateUser.email)) {
-            errors.email = "Invalid email format";
-        }
-
-        if (!updateUser.phone.trim()) {
-            errors.phone = "Phone number is required";
-        } else if (!isValidPhone(updateUser.phone)) {
-            errors.phone = "Invalid phone number format";
-        }
+       
 
         setValidationErrors(errors);
 
         return Object.keys(errors).length === 0;
     };
+    const handleEditSelection = (i) =>{
+        switch (i) {
+            case 0:
+                editProfilePicture?setEditProfilePicture(false):setEditProfilePicture(true)
+                break;
+            case 1:
+                editName?setEditName(false):setEditName(true)
+                break;
+            case 2:
+                editPhone?setEditPhone(false):setEditPhone(true)
+                break;
+            default:
+                break;
+        }
+    }
     console.log("error",validationErrors);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -56,7 +67,7 @@ export default function StaffProfile() {
 
         // Validate the image
         if (file) {
-            const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+            const allowedTypes = ["image/jpeg", "image/png", "image/gif","image/jpg"];
             const maxSize = 5 * 1024 * 1024; // 5 MB
 
             if (!allowedTypes.includes(file.type)) {
@@ -64,6 +75,14 @@ export default function StaffProfile() {
             } else if (file.size > maxSize) {
                 setImageError("File size exceeds the limit (5 MB). Please choose a smaller file.");
             } else {
+                // const reader = new FileReader();
+                // reader.readAsDataURL(file);
+                // reader.onload = () => {
+                //     setUpdateUser((prevUser) => ({
+                //         ...prevUser,
+                //         image: reader.result,
+                //     }));
+                // };
                 setUpdateUser((prevUser) => ({
                     ...prevUser,
                     image: file,
@@ -77,39 +96,111 @@ export default function StaffProfile() {
         e.preventDefault();
         updateUserProfile();
     };
-    const isValidEmail = (email) => {
-        // Regular expression for a simple email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+ 
     
     const isValidPhone = (phone) => {
-        // Regular expression for a simple phone number validation
-        // This regex allows for numbers with optional spaces, hyphens, or parentheses
         const phoneRegex = /^\d{11}$|^\d{3}-\d{7}$/;
         return phoneRegex.test(phone);
     };
-    const updateUserProfile = () =>{
-
-        if (validateUpdateProfile()){
+    function isValidPassword(password) {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(password);
+    }
+    const changePassword = async (e) => {
+        e.preventDefault();
+    
+        // Retrieve values from the form
+        const currentPassword = e.target.elements.password_current.value;
+        const newPassword = e.target.elements.password.value;
+        const confirmPassword = e.target.elements.password_confirmation.value;
+    
+        // Validate input
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            Swal.fire({
+                title: "Error!",
+                text: "All password fields are required.",
+                icon: "error"
+            });
             return;
         }
+    
+        try {
+            const isPasswordMatch = await axiosClient.post(`/checkPassword/${user.id}`, {
+            currentPassword,
+            });
+
+            if (!isPasswordMatch.data.isPasswordMatch) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Current password is incorrect.",
+                    icon: "error"
+                });
+                return;
+            }
+            if(!isValidPassword(newPassword)){
+                Swal.fire({
+                    title: "Error!",
+                    text: "Current password is incorrect. The password must contain 8 characters,with at least 1 upper & lowercase letter & 1 number",
+                    icon: "error"
+                });
+                return;
+            }
+            if(newPassword != confirmPassword){
+                Swal.fire({
+                    title: "Error!",
+                    text: "Confirm password are no match with new password.",
+                    icon: "error"
+                });
+                return;
+            }
+           // Send request to change password
+            const res = await axiosClient.post(`/staffChangePassword/${user.id}`, {
+                currentPassword,
+                newPassword,
+                confirmPassword,
+            });
+
+            setUser(res.data.user);
+
+            Swal.fire({
+                title: "Update!",
+                text: "Your password has been changed.",
+                icon: "success"
+            });
+            navigate("/login");
+            // Reset the form
+            e.target.reset();
+        } catch (error) {
+            console.log(error);
+    
+            Swal.fire({
+                title: "Error!",
+                text: error.data.message,
+                icon: "error"
+            });
+        }
+    }
+    const updateUserProfile = () =>{
+        
+        if (!validateUpdateProfile()){
+            return;
+        }
+        console.log('image',updateUser.image);
         const formData = new FormData();
         formData.append('name', updateUser.name);
-        formData.append('email', updateUser.email);
         formData.append('phone', updateUser.phone);
         formData.append('image', updateUser.image);
     
-        axiosClient.post(`/updateStaff/${id}`, formData)
+        axiosClient.post(`/updateStaff/${user.id}`, formData)
         .then(res => {
-            console.log(res.message);
-         
+            console.log("update",res.data.user);
+            setUser(res.data.user);
             Swal.fire({
                 title: "Update!",
-                text: "Selected meal has been updated.",
+                text: "Your profile has been updated.",
                 icon: "success"
               });
-              setRedirect(true);
+             
         })
         .catch(function (error) {
             console.log(error); // This will log the Axios request config.
@@ -158,71 +249,60 @@ export default function StaffProfile() {
               
               <div class="field-body">
                 <div class="field file">
-                <label class="label">Profile Picture</label>
-                  <label class="upload control">
+                <label class="label">Profile Picture<i class={editProfilePicture?"fa-solid fa-rectangle-xmark":"fa-solid fa-pen-to-square"} onClick={()=>handleEditSelection(0)}></i></label>
+                  {editProfilePicture?( <label class="upload control">
                    
-                  <input
-                    type="file"
-                    onChange={handleImageChange}
-                    name='image'
-                    accept="image/*"
-                />
-                     {imageError && <div className='error'>{imageError}</div>}
-                  </label>
+                   <input
+                     type="file"
+                     onChange={handleImageChange}
+                     name='image'
+                     accept="image/*"
+                 />
+                      {imageError && <div className='error'>{imageError}</div>}
+                   </label>):''}
+                 
                 </div>
               </div>
             </div>
   
             <div class="field">
-              <label class="label">Name</label>
+              <label class="label">Name <i class={editName?"fa-solid fa-rectangle-xmark":"fa-solid fa-pen-to-square"} onClick={()=>handleEditSelection(1)}></i></label>
               <div class="field-body">
                 <div class="field">
-                  <div class="control">
-                    <input  type="text"
-                        name="name"
-                        value={updateUser.name}
-                        onChange={handleInputChange}
-                        className="input"
-                        />
-                        {validationErrors.name?(<div className='error'>{validationErrors.name}</div>):""}
-                  </div>
-       
+                    {editName?(
+                         <div class="control">
+                         <input  type="text"
+                             name="name"
+                             value={updateUser.name}
+                             onChange={handleInputChange}
+                             className="input"
+                             />
+                             {validationErrors.name?(<div className='error'>{validationErrors.name}</div>):""}
+                       </div>
+                    ):''}
+                 
                 </div>
               </div>
             </div>
      
+         
             <div class="field">
-              <label class="label">E-mail</label>
+              <label class="label">Contact Number <i class={editPhone?"fa-solid fa-rectangle-xmark":"fa-solid fa-pen-to-square"} onClick={()=>handleEditSelection(2)}></i></label>
               <div class="field-body">
                 <div class="field">
-                  <div class="control">
-                  <input 
-                    type="email"
-                    name="email"
-                    value={updateUser.email}
-                    onChange={handleInputChange}
-                    className="input"
-                    />
-                    {validationErrors.email?(<div className='error'>{validationErrors.name}</div>):""}
-                  </div>
-        
-                </div>
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Contact Number</label>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                  <input 
-                    type="tel"
-                    name="phone"
-                    value={updateUser.phone}
-                    onChange={handleInputChange}
-                    className="input"
-                    />
-                    {validationErrors.phone?(<div className='error'>{validationErrors.phone}</div>):""}
-                  </div>
+                    {editPhone?(
+                        <div class="control">
+                        <input 
+                          type="tel"
+                          name="phone"
+                          value={updateUser.phone}
+                          onChange={handleInputChange}
+                          className="input"
+                          />
+                          {validationErrors.phone?(<div className='error'>{validationErrors.phone}</div>):""}
+                        </div>
+                    ):''}
+                  
     
                 </div>
               </div>
@@ -292,13 +372,13 @@ export default function StaffProfile() {
         </p>
       </header>
       <div class="card-content">
-        <form className='field'>
+        <form className='field' onSubmit={changePassword}>
           <div class="field">
             <div className="pasword">
             <label class="label">Current password</label>
             </div>
             <div class="control">
-              <input type="password" name="password_current" placeholder='Enter your Current password here.....' class="input" required/>
+              <input type="password" name="password_current" placeholder='Enter your Current password here.....' class="input"/>
             </div>
             
           </div>
@@ -306,14 +386,14 @@ export default function StaffProfile() {
           <div class="field">
             <label class="label">New password</label>
             <div class="control">
-              <input type="password" autocomplete="new-password" placeholder='Enter your new password here.....' name="password" class="input" required/>
+              <input type="password" autocomplete="new-password" placeholder='Enter your new password here.....' name="password" class="input"/>
             </div>
             
           </div>
           <div class="field">
             <label class="label">Confirm password</label>
             <div class="control">
-              <input type="password" autocomplete="new-password" placeholder='Enter your confirm password here.....' name="password_confirmation" class="input"  required/>
+              <input type="password" autocomplete="new-password" placeholder='Enter your confirm password here.....' name="password_confirmation" class="input"/>
             </div>
         
           </div>

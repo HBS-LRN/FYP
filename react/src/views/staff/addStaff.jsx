@@ -28,7 +28,9 @@ const AddStaff = () => {
         if (!staff.name) {
           newErrors.name = 'Please enter a name.';
         }
-    
+        
+        
+
         if (!staff.email) {
           newErrors.email = 'Please enter an email address.';
         } else {
@@ -42,7 +44,7 @@ const AddStaff = () => {
             newErrors.phone = 'Please enter a phone number.';
         } else {
             // Allowing either 10 digits without dashes or 3 digits, a dash, and 7 digits
-            const phoneRegex = /^\d{3}-\d{7}$/;
+            const phoneRegex = /^\d{3}-\d{7}|\d{3}-\d{8}$/;
             if (!phoneRegex.test(staff.phone)) {
                 newErrors.phone = 'Please enter a valid phone number in the format 012-3456789.';
             }
@@ -53,9 +55,18 @@ const AddStaff = () => {
         } else {
           const currentDate = new Date();
           const selectedDate = new Date(staff.birthdate);
+          const ageDifferenceInMilliseconds = currentDate - selectedDate;
+          const ageInYears = ageDifferenceInMilliseconds / (365.25 * 24 * 60 * 60 * 1000);
+          
           if (selectedDate > currentDate) {
             newErrors.birthdate = 'Birthdate cannot be in the future.';
+          }else if (ageInYears < 18) {
+            newErrors.birthdate = 'Age must be 18 or older.';
           }
+          
+          
+           
+          
         }
     
         if (!staff.gender) {

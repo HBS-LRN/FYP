@@ -23,6 +23,9 @@ class CreateOrdersTable extends Migration
             $table->string('payment_status');
             $table->string('payment_method');
             $table->date('order_date');
+            $table->string('cust_email')->nullable();
+            $table->string('cust_name')->nullable();
+            $table->string('cust_contact')->nullable();
 
 
            

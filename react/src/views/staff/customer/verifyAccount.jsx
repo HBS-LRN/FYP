@@ -5,23 +5,30 @@ import axiosClient from '../../../axios-client.js';
 import { useStateContext } from '../../../contexts/ContextProvider.jsx';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 export default function VerifyCustomer() {
   const [validated, setValidated] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
+  const [user,setNowUser] = useState({});
+  const passwordConfirmationRef = createRef();
+  const { setUser, setToken } = useStateContext();
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+ 
   let { id } = useParams();
 
   useEffect(() => {
     getUser();
+    setUser(null);
   }, [id]);
 
 console.log("id",id);
@@ -30,12 +37,10 @@ console.log("id",id);
       .then(({ data: responseData }) => {
         console.log('API Response User:', responseData);
        
-        const userData = {
-          name: responseData.user.name,
-          email: responseData.user.email,
-          password: null,
-        };
-        setUser(userData);
+        
+        setNowUser(responseData.user);
+
+        
       })
       .catch((error) => {
         setLoading(false);
@@ -43,25 +48,39 @@ console.log("id",id);
       });
   };
   console.log("user",user);
+
   const handleSubmit = async (event) => {
+    console.log("handleSubmit");
     event.preventDefault();
+    event.stopPropagation();
+    setValidated(true);
     
-    if (!validateForm()) {
-      return;
-    }
-    
-    setLoading(true);
-    const data = {
-      name: user.name,
-      email: user.email,
-      password: user.password
-    };
+    const form = event.currentTarget;
+    console.log("invalid",password,"cp:",confirmPassword,"userName:",username.length);
+    //check client side validity before send it to server
+    if (form.checkValidity() && password === confirmPassword && username.length >= 1 && username.length <= 10) {
+      const payload = {
+        name: user.name,
+        email: user.email,
+        password: password,
+  
+      };
+      
+      //set loading to true while post to server
+      setLoading(true);
+  
+    // const data = {
+    //   name: user.name,
+    //   email: user.email,
+    //   password: user.password
+    // };
     
     try {
       // Use axiosClient.post for sending data
-      const response = axiosClient.post(`/varifyAccount/${id}`, data);
+      const response = axiosClient.post(`/varifyAccount/${id}`, payload);
       console.log('API Response Verify:', response.data);
       setLoading(false);
+      setUser(user);
       Swal.fire({
         position: "center",
         icon: "success",
@@ -69,54 +88,38 @@ console.log("id",id);
         showConfirmButton: false,
         timer: 1500
       });
+      
       navigate('/login');
     } catch (error) {
       setLoading(false);
       console.error('API request error Verify:', error);
     }
+      }
   };
 
-  const validateForm = () => {
-    let isValid = true;
-    const newError = {};
 
-    if (!/^[a-zA-Z\s]{1,10}$/.test(user.name)) {
-      newError.name = 'must contain between 1 and 10 characters.';
-      user.name='';
-      isValid = false;
-    }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRegex.test(user.email)) {
-    newError.email = 'Enter a valid email address.';
-    user.email='';
-    isValid = false;
-  }
-
-    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(user.password)) {
-      newError.password = '8 characters,with 1 upper & lowercase letter & 1 number.';
-      user.password='';
-      isValid = false;
-    }
-
-    if (user.password !== user.confirmPassword) {
-      newError.confirmPassword = 'Confirm password does not match the password.';
-      user.confirmPassword='';
-      isValid = false;
-    }
-
-    console.log("error:",newError);
-    setError(newError);
-    return isValid;
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setNowUser((prevUser) => ({ ...prevUser, password: event.target.value }));
   };
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setUser({
-        ...user,
-        [name]: value
-    });
-}
+  
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+    setNowUser((prevUser) => ({ ...prevUser, confirmPassword: event.target.value }));
+  };
+  
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+    setNowUser((prevUser) => ({ ...prevUser, name: event.target.value }));
+  };
+  
+  const handleEmailChange = (event) => {
+    // Clear the message when the email field value changes
+    setEmail(event.target.value);
+    setError((prevError) => ({ ...prevError, email: null }));
+    setNowUser((prevUser) => ({ ...prevUser, email: event.target.value }));
+  };
   
 
   return (
@@ -153,16 +156,21 @@ console.log("id",id);
                   <div className="custom-form">
                     <i className="fa-regular fa-user"></i>
                     <input
+                      ref={nameRef}
                       type="text"
                       name="name"
+                      placeholder="Enter your name"
                       className="form-control"
                       required
-                      style={error.name ? { boxShadow: '0px 0px 5px red', fontSize: '15px' } : {}}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
                       value={user.name}
-                      onChange={handleInput}
-                      placeholder={error.name ? error.name : "Enter Account Name..."}
+                      pattern=".{1,10}"
+                      onChange={handleUsernameChange}
+                      title="Username must contain between 1 and 10 characters."
                     />
-                    
+                    <div className="valid-tooltip">Looks good!</div>
+                    <div className="invalid-tooltip">Username must contain between 1 and 10 characters.</div>
                   </div>
                 </div>
 
@@ -174,11 +182,11 @@ console.log("id",id);
                        type="email"
                        name="email"
                       className="form-control"
-                      required
-                      style={error.email ? { boxShadow: '0px 0px 5px red', fontSize: '15px' } : {}}
+                      readOnly
+                     
                       value={user.email}
-                      onChange={handleInput}
-                      placeholder={error.email ? error.email : "Enter Your Email..."}
+                      onChange={handleEmailChange}
+                      
                     />
 
                   </div>
@@ -190,16 +198,23 @@ console.log("id",id);
                   <div className="custom-form">
                     <i className="fa fa-key"></i>
                     <input
+                    ref={passwordRef}
                       type="password"
                       name="password"
                       className="form-control"
                       required
-                      style={error.password ? { boxShadow: '0px 0px 5px red', fontSize: '12px' } : {}}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                      title="Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number."
                       value={user.password}
-                      onChange={handleInput}
-                      placeholder={error.password ? error.password : "Enter your password..."}
+                      onChange={handlePasswordChange}
+                    
                     />
-
+                    <div className="valid-tooltip">Looks good!</div>
+                    <div className="invalid-tooltip">
+                      Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number.
+                    </div>
                    
                   </div>
                 </div>
@@ -210,16 +225,21 @@ console.log("id",id);
                   <div className="custom-form">
                     <i className="fa fa-key"></i>
                     <input
+                      ref={passwordConfirmationRef}
                       type="password"
                       name="confirmPassword"
                       className="form-control"
                       required
-                      style={error.confirmPassword ? { boxShadow: '0px 0px 5px red', fontSize: '12px' } : {}}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Confirm password must match the password."
                       value={user.confirmPassword}
-                      onChange={handleInput}
-                      placeholder={error.confirmPassword ? error.confirmPassword : "Enter your password..."}
+                      pattern={password ? `^${escapeRegExp(password)}$` : null}
+                      onChange={handleConfirmPasswordChange}
+                     
                     />
-                    
+                    <div className="valid-tooltip">Looks good!</div>
+                    <div className="invalid-tooltip">Confirm password does not match the password.</div>
                    
                   </div>
                 </div>
@@ -232,7 +252,10 @@ console.log("id",id);
                     <span className="loadCustom"></span>
                   </div>
                 ) : (
-                  <button className="button-submit">Register</button>
+                  <button type="submit" className="button-submit">
+                    Verify
+                  </button>
+
                 )}
 
               </div>

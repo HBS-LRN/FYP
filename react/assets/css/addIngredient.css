@@ -41,7 +41,20 @@ table {
     flex-basis: 90%;
     justify-content: flex-end;
 }
+.SearchBox .addOrderBtn{
+    color: white;
+    flex-basis: 15%;
+    text-align: center;
+    padding: 10px 5px;
+    background-color: blue;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+.SearchBox .addOrderBtn:hover{
+    background-color: rgb(63, 63, 229);
+}
 .Flex .searchBox input{
+    flex-basis: 50%;
     outline: 1px solid grey;
     border-radius: 5px;
     border: none;
@@ -88,3 +101,4 @@ td .order_qty{
     border: 1px solid rgb(167, 163, 163);
     text-align: center;
 }
+

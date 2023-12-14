@@ -78,7 +78,7 @@ export default function MealDetail() {
     const getMealOrderDetail = ()=>{
         axiosClient.get(`/getMealOrder/${id}`)
             .then(({ data }) => {
-                console.log('API Response Meal Order:', data); // Add this line
+                console.log('getMealOrderDetail', data); // Add this line
                 setLoading(false);
                 setMealOrderDetail(data.meal_order_details);
                 
@@ -90,6 +90,9 @@ export default function MealDetail() {
             });
             
     }
+    const selectedreplyCommandBox = document.querySelectorAll('.replyCommandBox');
+    const mdiMessageText = document.querySelectorAll('.mdi-message-text');
+    console.log("mdiMessageText",mdiMessageText);
     const submitCommand = (itemId) => {
         // Call your API to update MealOrderDetail with the commandText for the specific itemId
         axiosClient.put(`/mealOrderDetail/${itemId}`, { reply_comment: commandText })
@@ -128,67 +131,100 @@ export default function MealDetail() {
         
         
     };
-    const toggleCommandMode = (itemId) => {
-  setCommandModes((prevModes) => {
-    const newModes = [...prevModes];
-    newModes[itemId] = !newModes[itemId];
-    return newModes;
-  });
-};
-    const reviews = mealOrderDetail.map((item) => {
-        CurrentTotalOrder += item.order_quantity;
-        if(item.rating_comment!=null){
-            totalCommands+=1;
+    const toggleCommandMode = (index) => {
+        if(selectedreplyCommandBox[index].style.display=="none"){
+            selectedreplyCommandBox[index].style.display="block";
+            mdiMessageText[index].style.color="blue";
+        }else{
+            selectedreplyCommandBox[index].style.display="none";
+            mdiMessageText[index].style.color="grey";
         }
-        return (
-          item.rating_comment ? (
-            <div className="d-flex border-bottom pb-3" key={item.id}>
-              <div className="flex-1">
-                <React.Fragment>
-                  <h5 className="font-size-15 mb-3">{item.username}</h5>
-                  <p className="text-muted mb-2">{item.rating_comment}</p>
-      
-                  <ul className="list-inline product-review-link mb-0">
-                    <li className="list-inline-item">
-                      <a href="#">
-                        <i className="mdi mdi-thumb-up align-middle me-1" /> Like
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a onClick={() => toggleCommandMode(item.id)}>
-                        <i className="mdi mdi-message-text align-middle me-1" style={{ color: commandModes[item.id] ? 'blue' : '' }} /> Comment
-                      </a>
-                    </li>
-                  </ul>
-                  {item.reply_comment && (
-                    <div className="commandBox Flex">
-                      <img src="../../../assets/img/GrandImperialGroupLogoHeader.png" alt="" height="45px" width="45px" />
-                      <p className="text-muted mb-2">{item.reply_comment}</p>
-                    </div>
-                  )}
-                  {commandModes[item.id] && (
-                    <div className="commandBox">
-                      <textarea
-                        placeholder="Enter Your Command Here......"
-                        name="reply_comment"
-                        className="reply_comment"
-                        id={`reply_comment_${item.id}`}
-                        onChange={(e) => setCommandText(e.target.value)}
-                      />
-                      <button className="rate_commandBtn" onClick={() => submitCommand(item.id)}>Command</button>
-                    </div>
-                  )}
-                </React.Fragment>
-              </div>
-              <p className="float-sm-end font-size-12">{item.created_at}</p>
+      };
+
+let totalRating = 0;
+let numRatings = 0;
+const reviews =
+  mealOrderDetail && mealOrderDetail.length > 0
+    ? mealOrderDetail.map((item,index) => {
+        CurrentTotalOrder += item.order_quantity;
+        if (item.rating_comment !== null) {
+            totalCommands += 1;
+          // Increment the totalRating and numRatings for each valid rating
+          totalRating += item.rating_star;
+          numRatings += 1;
+        }
+
+        return item.rating_comment !== null ? (
+          <div className="d-flex border-bottom pb-3" key={item.meal_order_detail_id}>
+            <div className="flex-1">
+              <React.Fragment>
+                <h5 className="font-size-15 mb-3">{item.username}</h5>
+                <p className="text-muted mb-2">{item.rating_comment}</p>
+
+                <ul className="list-inline product-review-link mb-0">
+                  <li className="list-inline-item">
+                    <a href="#">
+                      <i className="mdi mdi-thumb-up align-middle me-1" /> Like
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a onClick={() => toggleCommandMode(index)}>
+                      <i
+                        className="mdi mdi-message-text align-middle me-1"
+                        
+                      />{' '}
+                      Comment
+                    </a>
+                  </li>
+                </ul>
+
+                {item.reply_comment && (
+                  <div className="commandBox Flex">
+                    <img
+                      src="../../../assets/img/GrandImperialGroupLogoHeader.png"
+                      alt=""
+                      height="45px"
+                      width="45px"
+                    />
+                    <p className="text-muted mb-2">{item.reply_comment}</p>
+                  </div>
+                )}
+
+
+                  <div className="replyCommandBox">
+                    <textarea
+                      placeholder="Enter Your Command Here......"
+                      name="reply_comment"
+                      className="reply_comment"
+                      id={`reply_comment_${item.meal_order_detail_id}`}
+                      onChange={(e) => setCommandText(e.target.value)}
+                    />
+                   
+                    <button
+                      className="rate_commandBtn"
+                      onClick={() => submitCommand(item.meal_order_detail_id)}
+                    >
+                      Command
+                    </button>
+                  </div>
+             
+              </React.Fragment>
             </div>
-          ) : (
-            <p className="text-muted">No comment available</p>
-          )
-        );
-        
-      });
-    
+            <p className="float-sm-end font-size-12">{item.created_at}</p>
+          </div>
+        ) : null;
+      })
+    : '';
+
+    const averageRating = numRatings > 0 ? totalRating / numRatings : 0;
+
+// Render the stars based on the average rating
+const starIcons = Array.from({ length: 5 }, (_, index) => (
+  <span
+    key={index}
+    className={`mdi mdi-star ${index < averageRating ? 'text-warning' : ''}`}
+  />
+));
   
     return (
         <div>
@@ -257,11 +293,7 @@ export default function MealDetail() {
                                                     </h5>
                                                     <div className="d-inline-flex">
                                                         <div className="text-muted me-3">
-                                                            <span className="mdi mdi-star text-warning" />
-                                                            <span className="mdi mdi-star text-warning" />
-                                                            <span className="mdi mdi-star text-warning" />
-                                                            <span className="mdi mdi-star text-warning" />
-                                                            <span className="mdi mdi-star" />
+                                                        {starIcons}
                                                         </div>
                                                         <div className="text-muted">({totalCommands})</div>
                                                     </div>
@@ -375,11 +407,7 @@ export default function MealDetail() {
                                             <h5 className="font-size-14">Reviews : </h5>
                                             <div className="d-inline-flex mb-3">
                                                 <div className="text-muted me-3">
-                                                    <span className="mdi mdi-star text-warning" />
-                                                    <span className="mdi mdi-star text-warning" />
-                                                    <span className="mdi mdi-star text-warning" />
-                                                    <span className="mdi mdi-star text-warning" />
-                                                    <span className="mdi mdi-star" />
+                                                    {starIcons}
                                                 </div>
                                                 <div className="text-muted">( {totalCommands} customer Review)</div>
                                             </div>
