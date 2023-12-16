@@ -22,6 +22,7 @@ export default function StaffLayout() {
     const { user, token,setToken,setUser} = useStateContext();
     const [notices, setNotices] = useState([]);
     const navigate = useNavigate();
+   
 
     const [menuVisibilitymanageDelivery, setMenuVisibilitymanageDelivery] = useState(false)
     const [menuVisibilitymanageMeal, setMenuVisibilitymanageMeal] = useState(false);
@@ -78,6 +79,24 @@ export default function StaffLayout() {
                 window.location.reload();
             });
     };
+    const handleMenuShow =()=>{
+        const menuStyle = document.getElementsByClassName("vertical-menu");
+        const computedStyle = window.getComputedStyle(menuStyle[0]);
+        const isMenuHidden = computedStyle.getPropertyValue('display') === 'none';
+        console.log("computedStyle",computedStyle.getPropertyValue('display'));
+        // Check if the display property is set to "none"
+        
+    
+        // Toggle the menuVisibility based on the current state
+        if (isMenuHidden) {
+            
+           
+        menuStyle[0].style.display="block";
+            
+        } else {
+            menuStyle[0].style.display="none";
+        }
+    }
     const fetchStaffNotice = () => {
 
         axiosClient.get(`/getNotification`)
@@ -125,7 +144,7 @@ export default function StaffLayout() {
                                         </span>
                                     </a>
 
-                                    <a href="index.html" className="logo logo-light">
+                                    <a onClick={handleMenuShow} className="logo logo-light">
                                         <span className="logo-sm">
                                             <img src="../assets/img/GrandImperialGroupLogoHeader.png" alt="logo-sm-light" height="22" />
                                         </span>
@@ -249,7 +268,7 @@ export default function StaffLayout() {
                     </div>
 
 
-                    <div className="vertical-menu">
+                    <div className="vertical-menu" id='vertical-menu'>
                         <div data-simplebar className="h-100">
                             <div id="sidebar-menu">
                                 <ul className="metismenu list-unstyled" id="side-menu">

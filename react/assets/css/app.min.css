@@ -619,7 +619,7 @@ body[data-layout=horizontal] .footer {
 
 @media (max-width:992px) {
     .vertical-menu {
-        display: none
+        display: none;
     }
 
     .main-content {
