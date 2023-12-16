@@ -185,7 +185,7 @@ console.log(filterSalesAnalyticsData);
                                            
                                         </div>
 
-                                        <h4 className="card-title mb-4">Daily Customer's Order Record</h4>
+                                        <h4 className="card-title mb-4">Sales Analytics Record</h4>
 
                                         <div className="table-responsive" style={{ overflow: 'auto', maxHeight: '480px' }}>
                                             <table className="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style={{ borderCollapse: 'collapse', borderSpacing: 0, width: '100%' }}>
@@ -196,7 +196,7 @@ console.log(filterSalesAnalyticsData);
                                                                 No.
                                                             </div>
                                                         </th>
-                                                        <th>Product Name</th>
+                                                        <th>Meal Name</th>
                                                         <th>Percentage of Sales</th>
                                                      
                                                 

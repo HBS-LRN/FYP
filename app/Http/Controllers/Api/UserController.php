@@ -577,7 +577,7 @@ class UserController extends Controller
                 $relativePath = $this->saveStaffImage($image);
                 $updateData['image'] = $relativePath;
             }
-    
+            
             // Update the user
             $user->update($updateData);
     
@@ -618,7 +618,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             }
-    
+            $staffMember->session_id = null;
             // Update the staff member's password
             $staffMember->update([
                 'password' => Hash::make($request->input('newPassword')),

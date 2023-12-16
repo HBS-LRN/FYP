@@ -99,11 +99,11 @@ export default function StaffProfile() {
  
     
     const isValidPhone = (phone) => {
-        const phoneRegex = /^\d{11}$|^\d{3}-\d{7}$/;
+        const phoneRegex = /^\d{3}-\d{7}|\d{3}-\d{8}$/;
         return phoneRegex.test(phone);
     };
     function isValidPassword(password) {
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
         return passwordRegex.test(password);
     }
     const changePassword = async (e) => {
@@ -160,16 +160,21 @@ export default function StaffProfile() {
                 confirmPassword,
             });
 
-            setUser(res.data.user);
-
             Swal.fire({
-                title: "Update!",
-                text: "Your password has been changed.",
-                icon: "success"
+              title: "Update!",
+              text: "Your password has been changed.Please Login Again",
+              icon: "success",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "OK"
+            }).then((result) => {
+              setUser(null);
+              setToken(null);
+              e.target.reset();
+              navigate("/login");
             });
-            navigate("/login");
+        
             // Reset the form
-            e.target.reset();
+            
         } catch (error) {
             console.log(error);
     
